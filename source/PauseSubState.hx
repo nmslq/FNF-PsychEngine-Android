@@ -223,6 +223,7 @@ class PauseSubState extends MusicBeatSubstate
 			{
 				case "Resume":
 					close();
+					PlayState.chartingMode = true;
 				case 'Change Difficulty':
 					menuItems = difficultyChoices;
 					regenMenu();

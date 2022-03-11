@@ -3210,12 +3210,6 @@ class PlayState extends MusicBeatState
 				#end
 			}
 
-			if (chartingMode)
-			{
-				openChartEditor();
-				return;
-			}
-
 			if (isStoryMode)
 			{
 				campaignScore += songScore;
