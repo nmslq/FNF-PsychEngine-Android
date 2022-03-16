@@ -393,14 +393,12 @@ class Controls extends FlxActionSet
 	{
 		var input = new FlxActionInputDigitalIFlxInput(button, state);
 		trackedinputsNOTES.push(input);
-		
 		action.add(input);
 	}
 
 	public function addbuttonuUI(action:FlxActionDigital, button:FlxButton, state:FlxInputState) {
 		var input = new FlxActionInputDigitalIFlxInput(button, state);
 		trackedinputsUI.push(input);
-		
 		action.add(input);
 	}
 
@@ -414,11 +412,6 @@ class Controls extends FlxActionSet
 	
 	public function setVirtualPadUI(virtualPad:FlxVirtualPad, ?DPad:FlxDPadMode, ?Action:FlxActionMode) 
 	{
-		if (DPad == null)
-			DPad = NONE;
-		if (Action == null)
-			Action = NONE;
-		
 		switch (DPad)
 		{
 			case UP_DOWN:
@@ -481,12 +474,7 @@ class Controls extends FlxActionSet
 	}
 
 	public function setVirtualPadNOTES(virtualPad:FlxVirtualPad, ?DPad:FlxDPadMode, ?Action:FlxActionMode) 
-	{
-		if (DPad == null)
-			DPad = NONE;
-		if (Action == null)
-			Action = NONE;
-		
+	{	
 		switch (DPad)
 		{
 			case UP_DOWN:
