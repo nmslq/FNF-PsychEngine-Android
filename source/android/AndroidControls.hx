@@ -6,7 +6,7 @@ import flixel.util.FlxSave;
 import flixel.math.FlxPoint;
 
 import android.FlxVirtualPad;
-import android.Hitbox;
+import android.FlxHitbox;
 
 class Config {
 	var save:FlxSave;
@@ -70,8 +70,8 @@ class AndroidControls extends FlxSpriteGroup
 {
 	public var mode:ControlsGroup = HITBOX;
 
-	public var _hitbox:Hitbox;
-	public var _virtualPad:FlxVirtualPad;
+	public var hbox:FlxHitbox;
+	public var vpad:FlxVirtualPad;
 
 	var config:Config;
 
@@ -89,8 +89,8 @@ class AndroidControls extends FlxSpriteGroup
 				initControler(0);
 			case VIRTUALPAD_LEFT:
 				initControler(1);
-                        case VIRTUALPAD_CUSTOM:
- 				initControler(2);                               
+			case VIRTUALPAD_CUSTOM:
+				initControler(2);
 			case DUO:
 				initControler(3);
 			case HITBOX:
@@ -105,29 +105,29 @@ class AndroidControls extends FlxSpriteGroup
 		switch (vpadMode)
 		{
 			case 0:
-				_virtualPad = new FlxVirtualPad(RIGHT_FULL, NONE);	
-				_virtualPad.alpha = 0.75;
-				add(_virtualPad);						
+				vpad = new FlxVirtualPad(RIGHT_FULL, NONE);	
+				vpad.alpha = 0.75;
+				add(vpad);						
 			case 1:
-				_virtualPad = new FlxVirtualPad(FULL, NONE);
-				_virtualPad.alpha = 0.75;
-				add(_virtualPad);			
+				vpad = new FlxVirtualPad(FULL, NONE);
+				vpad.alpha = 0.75;
+				add(vpad);			
 			case 2:
-				_virtualPad = new FlxVirtualPad(FULL, NONE);
-				_virtualPad = config.loadcustom(_virtualPad);
-				_virtualPad.alpha = 0.75;
-				add(_virtualPad);	
+				vpad = new FlxVirtualPad(FULL, NONE);
+				vpad = config.loadcustom(vpad);
+				vpad.alpha = 0.75;
+				add(vpad);	
 			case 3:
-				_virtualPad = new FlxVirtualPad(DUO, NONE);
-				_virtualPad.alpha = 0.75;
-				add(_virtualPad);		
+				vpad = new FlxVirtualPad(DUO, NONE);
+				vpad.alpha = 0.75;
+				add(vpad);		
 			case 4:
-				_hitbox = new Hitbox();
-				add(_hitbox);		
+				hbox = new FlxHitbox();
+				add(hbox);		
 			default:
-				_virtualPad = new FlxVirtualPad(RIGHT_FULL, NONE);	
-				_virtualPad.alpha = 0.75;
-				add(_virtualPad);					
+				vpad = new FlxVirtualPad(RIGHT_FULL, NONE);	
+				vpad.alpha = 0.75;
+				add(vpad);					
 		}
 	}
 
@@ -156,8 +156,8 @@ class AndroidControls extends FlxSpriteGroup
 enum ControlsGroup {
 	VIRTUALPAD_RIGHT;
 	VIRTUALPAD_LEFT;
-        VIRTUALPAD_CUSTOM;
-        DUO;
+	VIRTUALPAD_CUSTOM;
+	DUO;
 	HITBOX;
 	KEYBOARD;
 }
