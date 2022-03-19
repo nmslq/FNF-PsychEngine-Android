@@ -50,7 +50,7 @@ class OptionsState extends MusicBeatState
 				LoadingState.loadAndSwitchState(new options.NoteOffsetState());
                         case 'Android Controls':
                                 #if android
-				MusicBeatState.switchState(new android.CastomAndroidControls());
+				MusicBeatState.switchState(new android.AndroidControlsMenu());
                                 #end
 		}
 	}
