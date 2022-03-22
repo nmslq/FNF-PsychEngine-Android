@@ -151,6 +151,7 @@ class PlayState extends MusicBeatState
 
 	private var healthBarBG:AttachedSprite;
 	public var healthBar:FlxBar;
+	public var healthStrips:FlxSprite;
 	var songPercent:Float = 0;
 
 	private var timeBarBG:AttachedSprite;
@@ -1018,6 +1019,17 @@ class PlayState extends MusicBeatState
 		healthBar.alpha = ClientPrefs.healthBarAlpha;
 		add(healthBar);
 		healthBarBG.sprTracker = healthBar;
+		healthStrips = new FlxSprite().loadGraphic(Paths.image('health'));
+ 	    healthStrips.y = FlxG.height * 0.89;
+    	healthStrips.screenCenter(X);
+ 	    healthStrips.scrollFactor.set();
+     	healthStrips.visible = !ClientPrefs.hideHud;
+        healthStrips.color = FlxColor.BLACK;
+ 	    healthStrips.blend = MULTIPLY;
+     	healthStrips.x = healthBarBG.x-1.9;
+
+ 	    add(healthStrips);
+ 	    if(ClientPrefs.downScroll) healthStrips.y = 0.11 * FlxG.height;
 
 		iconP1 = new HealthIcon(boyfriend.healthIcon, true);
 		iconP1.y = healthBar.y - 75;
@@ -1052,6 +1064,7 @@ class PlayState extends MusicBeatState
 		strumLineNotes.cameras = [camHUD];
 		grpNoteSplashes.cameras = [camHUD];
 		notes.cameras = [camHUD];
+		healthStrips.cameras = [camHUD];
 		healthBar.cameras = [camHUD];
 		healthBarBG.cameras = [camHUD];
 		iconP1.cameras = [camHUD];
@@ -3208,6 +3221,12 @@ class PlayState extends MusicBeatState
 				if(Math.isNaN(percent)) percent = 0;
 				Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent);
 				#end
+			}
+
+			if (chartingMode)
+			{
+				openChartEditor();
+				return;
 			}
 
 			if (isStoryMode)
