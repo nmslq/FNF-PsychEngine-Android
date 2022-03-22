@@ -1027,7 +1027,6 @@ class PlayState extends MusicBeatState
         healthStrips.color = FlxColor.BLACK;
  	    healthStrips.blend = MULTIPLY;
      	healthStrips.x = healthBarBG.x-1.9;
-
  	    add(healthStrips);
  	    if(ClientPrefs.downScroll) healthStrips.y = 0.11 * FlxG.height;
 
@@ -3221,12 +3220,6 @@ class PlayState extends MusicBeatState
 				if(Math.isNaN(percent)) percent = 0;
 				Highscore.saveScore(SONG.song, songScore, storyDifficulty, percent);
 				#end
-			}
-
-			if (chartingMode)
-			{
-				openChartEditor();
-				return;
 			}
 
 			if (isStoryMode)
