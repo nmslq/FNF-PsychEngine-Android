@@ -1020,15 +1020,15 @@ class PlayState extends MusicBeatState
 		add(healthBar);
 		healthBarBG.sprTracker = healthBar;
 		healthStrips = new FlxSprite().loadGraphic(Paths.image('health'));
- 	    healthStrips.y = FlxG.height * 0.89;
-    	healthStrips.screenCenter(X);
- 	    healthStrips.scrollFactor.set();
-     	healthStrips.visible = !ClientPrefs.hideHud;
-        healthStrips.color = FlxColor.BLACK;
- 	    healthStrips.blend = MULTIPLY;
-     	healthStrips.x = healthBarBG.x-1.9;
- 	    add(healthStrips);
- 	    if(ClientPrefs.downScroll) healthStrips.y = 0.11 * FlxG.height;
+ 	        healthStrips.y = FlxG.height * 0.89;
+    	        healthStrips.screenCenter(X);
+ 	        healthStrips.scrollFactor.set();
+     	        healthStrips.visible = !ClientPrefs.hideHud;
+                healthStrips.color = FlxColor.BLACK;
+ 	        healthStrips.blend = MULTIPLY;
+     	        healthStrips.x = healthBarBG.x-1.9;
+ 	        add(healthStrips);
+ 	        if(ClientPrefs.downScroll) healthStrips.y = 0.11 * FlxG.height;
 
 		iconP1 = new HealthIcon(boyfriend.healthIcon, true);
 		iconP1.y = healthBar.y - 75;
