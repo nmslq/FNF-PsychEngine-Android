@@ -15,8 +15,6 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.FlxSubState;
-import Shaders;
-import openfl.filters.ShaderFilter;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.effects.FlxTrail;
 import flixel.addons.effects.FlxTrailArea;
@@ -57,6 +55,8 @@ import Achievements;
 import StageData;
 import FunkinLua;
 import DialogueBoxPsych;
+import Shaders;
+import openfl.filters.ShaderFilter;
 #if sys
 import sys.FileSystem;
 #end
@@ -1334,6 +1334,7 @@ class PlayState extends MusicBeatState
 		}
 		#end
 	}
+	
 	public function addShaderToCamera(cam:String, effect:ShaderEffect)
 	{ // STOLE FROM ANDROMEDA
 
