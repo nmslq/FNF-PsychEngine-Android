@@ -8,6 +8,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.addons.transition.FlxTransitionableState;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
@@ -178,7 +179,8 @@ class NotesSubState extends MusicBeatSubstate
 		if (controls.BACK || (changingNote && controls.ACCEPT)) {
 			if(!changingNote) {
 			        #if android
-                                MusicBeatState.resetState();
+                                FlxTransitionableState.skipNextTransOut = true;
+			        FlxG.resetState();
                                 #else
                                 close();
                                 #end
