@@ -38,12 +38,14 @@ class Paths
 		'songs',
 		'music',
 		'sounds',
+		'shaders',
 		'videos',
 		'images',
 		'stages',
 		'weeks',
 		'fonts',
-		'scripts'
+		'scripts',
+		'achievements'
 	];
 	#end
 
