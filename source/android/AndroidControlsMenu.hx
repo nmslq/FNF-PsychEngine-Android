@@ -37,9 +37,8 @@ class AndroidControlsMenu extends MusicBeatState
 		curSelected = config.getcontrolmode();
 
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		bg.color = 0xFFea71fd;
-		bg.updateHitbox();
-		bg.screenCenter();
+		bg.scrollFactor.set();
+		bg.color = FlxColor.fromHSB(FlxG.random.int(0, 359), FlxG.random.float(0, 0.8), FlxG.random.float(0.3, 1));
 		add(bg);
 
 		var titleText:Alphabet = new Alphabet(0, 0, "Android Controls", true, false, 0, 0.6);
