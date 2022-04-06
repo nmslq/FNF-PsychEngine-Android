@@ -42,6 +42,12 @@ import Shaders;
 import Discord;
 #end
 
+#if android
+import flixel.input.actions.FlxActionInput;
+import android.AndroidControls.AndroidControls;
+import android.FlxVirtualPad;
+#end
+
 using StringTools;
 
 class FunkinLua {
@@ -1729,12 +1735,11 @@ class FunkinLua {
 		});
 		
 		Lua_helper.add_callback(lua, "addAndroidControls", function(?DPad:FlxDPadMode, ?Action:FlxActionMode) {
-			_virtualpad = new FlxVirtualPad(DPad, Action, 0.75, ClientPrefs.globalAntialiasing);
-		    add(_virtualpad);
-		    controls.setVirtualPadUI(_virtualpad, DPad, Action);
-	    	trackedinputsUI = controls.trackedinputsUI;
-		    controls.trackedinputsUI = [];
-	    	_virtualpad.cameras = [camcontrol];
+			_virtualpad = new FlxVirtualPad(DPad, Action);
+		        _virtualpad.alpha = 0.75;
+                        _virtualpad.cameras = [camcontrol];
+                        _virtualpad.visible = false;
+		        add(_virtualpad);
 		});
 		
 		//SHADER SHIT
