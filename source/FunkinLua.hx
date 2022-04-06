@@ -42,12 +42,6 @@ import Shaders;
 import Discord;
 #end
 
-#if android
-import flixel.input.actions.FlxActionInput;
-import android.AndroidControls.AndroidControls;
-import android.FlxVirtualPad;
-#end
-
 using StringTools;
 
 class FunkinLua {
@@ -1732,14 +1726,6 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "musicFadeOut", function(duration:Float, toValue:Float = 0) {
 			FlxG.sound.music.fadeOut(duration, toValue);
 			luaTrace('musicFadeOut is deprecated! Use soundFadeOut instead.', false, true);
-		});
-		
-		Lua_helper.add_callback(lua, "addAndroidControls", function(?DPad:FlxDPadMode, ?Action:FlxActionMode) {
-			_virtualpad = new FlxVirtualPad(DPad, Action);
-		        _virtualpad.alpha = 0.75;
-                        _virtualpad.cameras = [camcontrol];
-                        _virtualpad.visible = false;
-		        add(_virtualpad);
 		});
 		
 		//SHADER SHIT
