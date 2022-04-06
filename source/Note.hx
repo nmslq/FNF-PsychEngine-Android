@@ -103,7 +103,7 @@ class Note extends FlxSprite
 					reloadNote('HURT');
 					noteSplashTexture = 'HURTnoteSplashes';
 					if(PlayState.isPixelStage) {
-						noteSplashTexture = 'HURTnoteSplashes-pixel';
+						noteSplashTexture = 'pixelUI/HURTnoteSplashes';
 					}
 					colorSwap.hue = 0;
 					colorSwap.saturation = 0;
