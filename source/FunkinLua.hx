@@ -1728,6 +1728,15 @@ class FunkinLua {
 			luaTrace('musicFadeOut is deprecated! Use soundFadeOut instead.', false, true);
 		});
 		
+		Lua_helper.add_callback(lua, "addAndroidControls", function(?DPad:FlxDPadMode, ?Action:FlxActionMode) {
+			_virtualpad = new FlxVirtualPad(DPad, Action, 0.75, ClientPrefs.globalAntialiasing);
+		    add(_virtualpad);
+		    controls.setVirtualPadUI(_virtualpad, DPad, Action);
+	    	trackedinputsUI = controls.trackedinputsUI;
+		    controls.trackedinputsUI = [];
+	    	_virtualpad.cameras = [camcontrol];
+		});
+		
 		//SHADER SHIT
 		
 		Lua_helper.add_callback(lua, "addChromaticAbberationEffect", function(camera:String,chromeOffset:Float = 0.005) {
