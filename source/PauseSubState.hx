@@ -263,7 +263,7 @@ class PauseSubState extends MusicBeatSubstate
                                 case 'Chart Editor':
 		                        MusicBeatState.switchState(new editors.ChartingState());
 		                        PlayState.chartingMode = true;
-		                        case 'Chart Editor':
+		                case 'Character Editor':
 		                        MusicBeatState.switchState(new editors.CharacterEditorState());
 		                        PlayState.chartingMode = true;
 				case "Exit to menu":
