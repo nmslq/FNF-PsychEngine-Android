@@ -264,7 +264,7 @@ class PauseSubState extends MusicBeatSubstate
 		                        MusicBeatState.switchState(new editors.ChartingState());
 		                        PlayState.chartingMode = true;
 		                case 'Character Editor':
-		                        MusicBeatState.switchState(new editors.CharacterEditorState());
+		                        MusicBeatState.switchState(new CharacterEditorState(SONG.player2));
 		                        PlayState.chartingMode = true;
 				case "Exit to menu":
 					PlayState.deathCounter = 0;
