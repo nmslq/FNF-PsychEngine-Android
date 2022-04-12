@@ -40,7 +40,7 @@ class PauseSubState extends MusicBeatSubstate
 
 		if(PlayState.chartingMode)
 		{
-		    menuItemsOG.remove('Charting Mode');
+		        menuItemsOG.remove('Charting Mode');
 			menuItemsOG.insert(2, 'Leave Charting Mode');
 			
 			var num:Int = 0;
@@ -236,7 +236,7 @@ class PauseSubState extends MusicBeatSubstate
 				case "Leave Charting Mode":
 					close();
 					PlayState.chartingMode = false;
-			   case "Charting Mode":
+			        case "Charting Mode":
 					close();
 					PlayState.chartingMode = true;
 				case 'Skip Time':
