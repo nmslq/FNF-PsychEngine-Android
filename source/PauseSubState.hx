@@ -20,7 +20,7 @@ class PauseSubState extends MusicBeatSubstate
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 
 	var menuItems:Array<String> = [];
-	var menuItemsOG:Array<String> = ['Resume', 'Restart Song', 'Change Difficulty' #if android, 'Chart Editor', 'Character Editor' #end, 'Exit to menu'];
+	var menuItemsOG:Array<String> = ['Resume', 'Restart Song', 'Change Difficulty' #if android, 'Charting Mode', 'Chart Editor', 'Character Editor' #end, 'Exit to menu'];
 	var difficultyChoices = [];
 	var curSelected:Int = 0;
 
@@ -40,6 +40,7 @@ class PauseSubState extends MusicBeatSubstate
 
 		if(PlayState.chartingMode)
 		{
+		    menuItemsOG.remove('Charting Mode');
 			menuItemsOG.insert(2, 'Leave Charting Mode');
 			
 			var num:Int = 0;
@@ -223,7 +224,6 @@ class PauseSubState extends MusicBeatSubstate
 			{
 				case "Resume":
 					close();
-					PlayState.chartingMode = true;
 				case 'Change Difficulty':
 					menuItems = difficultyChoices;
 					regenMenu();
@@ -236,6 +236,9 @@ class PauseSubState extends MusicBeatSubstate
 				case "Leave Charting Mode":
 					close();
 					PlayState.chartingMode = false;
+			   case "Charting Mode":
+					close();
+					PlayState.chartingMode = true;
 				case 'Skip Time':
 					if(curTime < Conductor.songPosition)
 					{
