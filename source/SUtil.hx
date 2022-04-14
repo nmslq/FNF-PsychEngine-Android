@@ -22,7 +22,7 @@ class SUtil
 
     static public function getPath():String
     {
-    	#if android
+        #if android
         if (aDir != null && aDir.length > 0) 
         {
             return aDir;
@@ -84,7 +84,7 @@ class SUtil
 
     //Thanks Forever Engine
     static public function gameCrashCheck(){
-    	Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
+        Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
     }
      
     static public function onCrash(e:UncaughtErrorEvent):Void {
@@ -121,7 +121,7 @@ class SUtil
         SUtil.applicationAlert("Uncaught Error:", errMsg);
         flash.system.System.exit(0);
     }
-	
+    
     public static function applicationAlert(title:String, description:String){
         Application.current.window.alert(description, title);
     }
