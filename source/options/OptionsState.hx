@@ -118,7 +118,7 @@ class OptionsState extends MusicBeatState
 		}
 
 		if (controls.ACCEPT) {
-		    #if android
+		        #if android
 			removeVirtualPad();
 			#end
 			openSelectedSubstate(options[curSelected]);
