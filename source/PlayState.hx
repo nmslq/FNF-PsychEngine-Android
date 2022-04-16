@@ -57,6 +57,7 @@ import FunkinLua;
 import DialogueBoxPsych;
 import Shaders;
 import openfl.filters.ShaderFilter;
+import flixel.system.FlxAssets.FlxShader;
 #if sys
 import sys.FileSystem;
 #end
