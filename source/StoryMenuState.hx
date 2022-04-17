@@ -269,9 +269,6 @@ class StoryMenuState extends MusicBeatState
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			movedBack = true;
-                        #if android
-	     		removeVirtualPad();
-			#end
 			MusicBeatState.switchState(new MainMenuState());
 		}
 
