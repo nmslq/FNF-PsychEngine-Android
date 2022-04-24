@@ -9,9 +9,6 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
-#if android
-import android.Hardware;
-#end
 
 class GameOverSubstate extends MusicBeatSubstate
 {
@@ -26,7 +23,6 @@ class GameOverSubstate extends MusicBeatSubstate
 	public static var deathSoundName:String = 'fnf_loss_sfx';
 	public static var loopSoundName:String = 'gameOver';
 	public static var endSoundName:String = 'gameOverEnd';
-	public static var vibrationTime:Int = 1000;//milliseconds
 
 	public static var instance:GameOverSubstate;
 
@@ -35,7 +31,6 @@ class GameOverSubstate extends MusicBeatSubstate
 		deathSoundName = 'fnf_loss_sfx';
 		loopSoundName = 'gameOver';
 		endSoundName = 'gameOverEnd';
-		vibrationTime = 1000;
 	}
 
 	override function create()
@@ -62,10 +57,6 @@ class GameOverSubstate extends MusicBeatSubstate
 		camFollow = new FlxPoint(boyfriend.getGraphicMidpoint().x, boyfriend.getGraphicMidpoint().y);
 
 		FlxG.sound.play(Paths.sound(deathSoundName));
-//Option later
-			#if android
-			Hardware.vibrate(vibrationTime);
-			#end
 
 		Conductor.changeBPM(100);
 		// FlxG.camera.followLerp = 1;
