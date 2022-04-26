@@ -358,27 +358,30 @@ class Paths
 	public static var currentTrackedSounds:Map<String, Sound> = [];
 	public static function returnSound(path:String, key:String, ?library:String) {
 		#if MODS_ALLOWED
-		var file:String = modsSounds(path, key);
-		if(FileSystem.exists(file)) {
+		var modFile:String = modsSounds(path, key);
+		if(FileSystem.exists(modFile)) {
+			if(!currentTrackedSounds.exists(modFile)) {
+				currentTrackedSounds.set(modFile, Sound.fromFile(modFile));
+			}
+			localTrackedAssets.push(key);
+			return currentTrackedSounds.get(modFile);
+		}
+		#end
+
+		var file:String = SUtil.getPath() + getPath('$path/$key.$SOUND_EXT', SOUND, library);
+		if(OpenFlAssets.exists(file)) {
 			if(!currentTrackedSounds.exists(file)) {
+				#if MODS_ALLOWED
 				currentTrackedSounds.set(file, Sound.fromFile(file));
+				#else
+				currentTrackedSounds.set(file, OpenFlAssets.getSound(getPath('$path/$key.$SOUND_EXT', SOUND, library)));
+				#end
 			}
 			localTrackedAssets.push(key);
 			return currentTrackedSounds.get(file);
 		}
-		#end
-		// I hate this so god damn much
-		var gottenPath:String = SUtil.getPath() + getPath('$path/$key.$SOUND_EXT', SOUND, library);	
-		gottenPath = gottenPath.substring(gottenPath.indexOf(':') + 1, gottenPath.length);
-		// trace(gottenPath);
-		if(!currentTrackedSounds.exists(gottenPath)) 
-		#if MODS_ALLOWED
-			currentTrackedSounds.set(gottenPath, Sound.fromFile(gottenPath));
-		#else
-			currentTrackedSounds.set(gottenPath, OpenFlAssets.getSound(getPath('$path/$key.$SOUND_EXT', SOUND, library)));
-		#end
-		localTrackedAssets.push(gottenPath);
-		return currentTrackedSounds.get(gottenPath);
+		trace('oh no its returning null NOOOO');
+		return null;
 	}
 	
 	#if MODS_ALLOWED
