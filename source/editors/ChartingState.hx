@@ -89,6 +89,8 @@ class ChartingState extends MusicBeatState
 	];
 
 	var _file:FileReference;
+	
+	var postfix:String = '';
 
 	var UI_box:FlxUITabMenu;
 
@@ -582,6 +584,11 @@ class ChartingState extends MusicBeatState
 		});
 		stageDropDown.selectedLabel = _song.stage;
 		blockPressWhileScrolling.push(stageDropDown);
+		
+		if (CoolUtil.difficulties[PlayState.storyDifficulty].toLowerCase() != 'normal')
+		{
+			postfix = '-' + CoolUtil.difficulties[PlayState.storyDifficulty].toLowerCase();
+		}
 
 		var skin = PlayState.SONG.arrowSkin;
 		if(skin == null) skin = '';
@@ -2735,13 +2742,13 @@ class ChartingState extends MusicBeatState
 		if ((data != null) && (data.length > 0))
 		{
                         #if android
-                        SUtil.saveContent(Paths.formatToSongPath(_song.song) + (CoolUtil.getDifficultyFilePath() == null ? CoolUtil.getDifficultyFilePath() : ''), ".json", data.trim());
+                        SUtil.saveContent(Paths.formatToSongPath(_song.song) + postfix, ".json", data.trim());
                         #else
 			_file = new FileReference();
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-			_file.save(data.trim(), Paths.formatToSongPath(_song.song) + (CoolUtil.getDifficultyFilePath() == null ? CoolUtil.getDifficultyFilePath() : '') + ".json");
+			_file.save(data.trim(), Paths.formatToSongPath(_song.song) + postfix + ".json");
                         #end
 		}
 	}
