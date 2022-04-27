@@ -2698,7 +2698,7 @@ class ChartingState extends MusicBeatState
 	function loadJson(song:String):Void
 	{
 		//make it look sexier if possible
-		if (CoolUtil.difficulties[PlayState.storyDifficulty] != "Normal" && CoolUtil.difficulties[PlayState.storyDifficulty] != null){
+		if (CoolUtil.difficulties[PlayState.storyDifficulty] != "Normal"){
 		PlayState.SONG = Song.loadFromJson(song.toLowerCase()+"-"+CoolUtil.difficulties[PlayState.storyDifficulty], song.toLowerCase());
 			
 		}else{
@@ -2735,13 +2735,13 @@ class ChartingState extends MusicBeatState
 		if ((data != null) && (data.length > 0))
 		{
                         #if android
-                        SUtil.saveContent(Paths.formatToSongPath(_song.song), ".json", data.trim());
+                        SUtil.saveContent(Paths.formatToSongPath(_song.song) + (CoolUtil.getDifficultyFilePath() == null ? CoolUtil.getDifficultyFilePath() : ''), ".json", data.trim());
                         #else
 			_file = new FileReference();
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-			_file.save(data.trim(), Paths.formatToSongPath(_song.song) + ".json");
+			_file.save(data.trim(), Paths.formatToSongPath(_song.song) + (CoolUtil.getDifficultyFilePath() == null ? CoolUtil.getDifficultyFilePath() : '') + ".json");
                         #end
 		}
 	}
