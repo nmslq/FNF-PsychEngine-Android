@@ -387,14 +387,13 @@ class FunkinLua {
 		
 		//state shit for trolling coming??
                 Lua_helper.add_callback(lua, "switchState", function(state:String, loadBefore:Bool = false) {
-                        var bigPiss:Dynamic = Type.resolveClass(state);
-                        if (bigPiss != null)
+                        if (state != null)
                         {
                                 if(!loadBefore) {
-			                MusicBeatState.switchState(new bigPiss());
+			                MusicBeatState.switchState(new state());
                                 }
                                 else {
-                                        LoadingState.loadAndSwitchState(new bigPiss());
+                                        LoadingState.loadAndSwitchState(new state());
                                 }
                         }
                         else
@@ -403,6 +402,10 @@ class FunkinLua {
                         }
 		});
                 Lua_helper.add_callback(lua, "resetState", MusicBeatState.resetState);
+                
+        Lua_helper.add_callback(lua, "openUrl", function(url:String) {
+                        CoolUtil.browserLoad(url);
+		});
 		
 		//shitass stuff for epic coders like me B)  *image of obama giving himself a medal*
 		Lua_helper.add_callback(lua, "getObjectOrder", function(obj:String) {
