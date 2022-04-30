@@ -401,7 +401,6 @@ class FunkinLua {
                                 luaTrace("State " + state + " doesn't exist!");
                         }
 		});
-                Lua_helper.add_callback(lua, "resetState", MusicBeatState.resetState);
                 
                         Lua_helper.add_callback(lua, "openUrl", function(url:String) {
                         CoolUtil.browserLoad(url);
