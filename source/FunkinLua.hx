@@ -403,7 +403,7 @@ class FunkinLua {
 		});
                 Lua_helper.add_callback(lua, "resetState", MusicBeatState.resetState);
                 
-        Lua_helper.add_callback(lua, "openUrl", function(url:String) {
+                        Lua_helper.add_callback(lua, "openUrl", function(url:String) {
                         CoolUtil.browserLoad(url);
 		});
 		
