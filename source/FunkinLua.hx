@@ -396,10 +396,6 @@ class FunkinLua {
                                         LoadingState.loadAndSwitchState(new bigPiss());
                                 }
                         }
-                        else
-                        {
-                                luaTrace("State " + state + " doesn't exist!");
-                        }
 		});
                 Lua_helper.add_callback(lua, "resetState", MusicBeatState.resetState(););
 		
