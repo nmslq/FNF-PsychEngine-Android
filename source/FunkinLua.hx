@@ -384,23 +384,6 @@ class FunkinLua {
 			}
 			return Reflect.setProperty(Type.resolveClass(classVar), variable, value);
 		});
-		
-		//state shit for trolling coming??
-                Lua_helper.add_callback(lua, "switchState", function(state:String, loadBefore:Bool = false) {
-                        if (state != null)
-                        {
-                                if(!loadBefore) {
-			                MusicBeatState.switchState(new state());
-                                }
-                                else {
-                                        LoadingState.loadAndSwitchState(new state());
-                                }
-                        }
-                        else
-                        {
-                                luaTrace("State " + state + " doesn't exist!");
-                        }
-		});
                 
                         Lua_helper.add_callback(lua, "openUrl", function(url:String) {
                         CoolUtil.browserLoad(url);
