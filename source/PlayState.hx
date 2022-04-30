@@ -2433,22 +2433,7 @@ class PlayState extends MusicBeatState
 		if(ratingName == '?') {
 			scoreTxt.text = 'Score: ' + songScore + ' | Misses: ' + songMisses + ' | Rating: ' + ratingName;
 		} else {
-			var convertedAccDisplay:String;
-			convertedAccDisplay = Std.string(Highscore.floorDecimal(ratingPercent * 100, 2));
-
-			for (i in 0...convertedAccDisplay.length)
-			{
-				if (convertedAccDisplay.charAt(i) == '.')
-				{
-					if (convertedAccDisplay.charAt(i + 2) == '')
-					{
-						convertedAccDisplay += '0';
-						break;
-					}
-				}
-			}
-
-			scoreTxt.text = 'Score: ' + songScore + ' | Misses: ' + songMisses + ' | Rating: ' + ratingName + ' (' + convertedAccDisplay + '%)' + ' - ' + ratingFC;//peeps wanted no integer rating
+			scoreTxt.text = 'Score: ' + songScore + ' | Misses: ' + songMisses + ' | Rating: ' + ratingName + ' (' + Highscore.floorDecimal(ratingPercent * 100, 2) + '%)' + ' - ' + ratingFC;//peeps wanted no integer rating
 		}
 
 		if(botplayTxt.visible) {
