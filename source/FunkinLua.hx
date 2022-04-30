@@ -385,20 +385,6 @@ class FunkinLua {
 			return Reflect.setProperty(Type.resolveClass(classVar), variable, value);
 		});
 		
-		Lua_helper.add_callback(lua, "switchState", function(state:String, loadBefore:Bool = false) {
-                        var bigPiss:Dynamic = Type.resolveClass(state);
-                        if (bigPiss != null)
-                        {
-			        if(!loadBefore) {
-			                MusicBeatState.switchState(new bigPiss());
-                                }
-                                else {
-                                        LoadingState.loadAndSwitchState(new bigPiss());
-                                }
-                        }
-		});
-                Lua_helper.add_callback(lua, "resetState", MusicBeatState.resetState(););
-		
 		//shitass stuff for epic coders like me B)  *image of obama giving himself a medal*
 		Lua_helper.add_callback(lua, "getObjectOrder", function(obj:String) {
 			if(PlayState.instance.modchartSprites.exists(obj))
