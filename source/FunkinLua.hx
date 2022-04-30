@@ -1167,6 +1167,14 @@ class FunkinLua {
 			}
 		});
 
+		Lua_helper.add_callback(lua, "swichState", function(state:String) {
+		    MusicBeatState.switchState(new state());
+		});
+		
+		Lua_helper.add_callback(lua, "loadingState", function(state:String) {
+		    LoadingState.loadAndSwitchState(new state());
+		});
+
 		Lua_helper.add_callback(lua, "setObjectCamera", function(obj:String, camera:String = '') {
 			if(PlayState.instance.modchartSprites.exists(obj)) {
 				PlayState.instance.modchartSprites.get(obj).cameras = [cameraFromString(camera)];
