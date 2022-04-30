@@ -386,7 +386,7 @@ class FunkinLua {
 		});
                 
                         Lua_helper.add_callback(lua, "openUrl", function(url:String) {
-                        CoolUtil.browserLoad(url);
+                            CoolUtil.browserLoad(url);
 		});
 		
 		//shitass stuff for epic coders like me B)  *image of obama giving himself a medal*
