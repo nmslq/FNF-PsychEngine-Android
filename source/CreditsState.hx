@@ -81,8 +81,6 @@ class CreditsState extends MusicBeatState
 		#end
 
 		var pisspoop:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
-		        ['ModPack & Engine'],
-			['yqwq',		    'cxy',		    'The Modpack and Engine Coder',	 'https://b23.tv/o14evVA',	    '00ffff'],
                         #if android 
 		        ['Android Port'],
 		        ['Saw (M.A. Jigsaw)','saw','Main Coder','https://www.youtube.com/channel/UC2Sk7vtPzOvbVzdVTWrribQ', 'F73838'],
