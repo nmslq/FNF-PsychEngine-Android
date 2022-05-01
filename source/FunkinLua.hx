@@ -387,23 +387,6 @@ class FunkinLua {
                 Lua_helper.add_callback(lua, "openUrl", function(url:String) {
                             CoolUtil.browserLoad(url);
                 });
-        //state shit for trolling coming??
-                Lua_helper.add_callback(lua, "switchState", function(state:String, loadBefore:Bool = false) {
-                        var bigPiss:Dynamic = Type.resolveClass(state);
-                        if (bigPiss != null)
-                        {
-                                if(!loadBefore) {
-			                MusicBeatState.switchState(bigPiss);
-                                }
-                                else {
-                                        LoadingState.loadAndSwitchState(bigPiss);
-                                }
-                        }
-                        else
-                        {
-                                luaTrace("State " + state + " doesn't exist!");
-                        }
-		});
                 Lua_helper.add_callback(lua, "resetState", MusicBeatState.resetState);
 		//shitass stuff for epic coders like me B)  *image of obama giving himself a medal*
 		Lua_helper.add_callback(lua, "getObjectOrder", function(obj:String) {
