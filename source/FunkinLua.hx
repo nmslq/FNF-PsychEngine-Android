@@ -388,7 +388,7 @@ class FunkinLua {
                             CoolUtil.browserLoad(url);
                 });
                 Lua_helper.add_callback(lua, "applicationAlert", function(title:String, description:String) {
-                            SUtil.applicationAlert(title, description);
+                            Application.current.window.alert(title, description);
                 });
                 Lua_helper.add_callback(lua, "resetState", MusicBeatState.resetState);
 		//shitass stuff for epic coders like me B)  *image of obama giving himself a medal*
