@@ -37,6 +37,7 @@ import Type.ValueType;
 import Controls;
 import DialogueBoxPsych;
 import Shaders;
+import lime.app.Application;
 
 #if desktop
 import Discord;
@@ -388,7 +389,7 @@ class FunkinLua {
                             CoolUtil.browserLoad(url);
                 });
                 Lua_helper.add_callback(lua, "applicationAlert", function(title:String, description:String) {
-                            Application.current.window.alert(title, description);
+                            Application.current.window.alert(description, title);
                 });
                 Lua_helper.add_callback(lua, "resetState", MusicBeatState.resetState);
 		//shitass stuff for epic coders like me B)  *image of obama giving himself a medal*
