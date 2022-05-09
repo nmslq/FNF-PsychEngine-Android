@@ -387,6 +387,9 @@ class FunkinLua {
                 Lua_helper.add_callback(lua, "openUrl", function(url:String) {
                             CoolUtil.browserLoad(url);
                 });
+                Lua_helper.add_callback(lua, "applicationAlert", function(title:String, text:String) {
+                            SUtil.applicationAlert(title, text);
+                });
                 Lua_helper.add_callback(lua, "resetState", MusicBeatState.resetState);
 		//shitass stuff for epic coders like me B)  *image of obama giving himself a medal*
 		Lua_helper.add_callback(lua, "getObjectOrder", function(obj:String) {
