@@ -391,6 +391,9 @@ class FunkinLua {
                 Lua_helper.add_callback(lua, "applicationAlert", function(title:String, description:String) {
                             Application.current.window.alert(description, title);
                 });
+                Lua_helper.add_callback(lua, "setClipboard", function(data:String) {
+                            openfl.system.System.setClipboard(data);
+                });
                 Lua_helper.add_callback(lua, "resetState", MusicBeatState.resetState);
 		//shitass stuff for epic coders like me B)  *image of obama giving himself a medal*
 		Lua_helper.add_callback(lua, "getObjectOrder", function(obj:String) {
