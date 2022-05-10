@@ -387,9 +387,6 @@ class FunkinLua {
                 Lua_helper.add_callback(lua, "openUrl", function(url:String) {
                             CoolUtil.browserLoad(url);
                 });
-                Lua_helper.add_callback(lua, "applicationAlert", function(title:String, description:String) {
-                            SUtil.applicationAlert(title, description);
-                });
                 Lua_helper.add_callback(lua, "setClipboard", function(data:String) {
                             openfl.system.System.setClipboard(data);
                 });
