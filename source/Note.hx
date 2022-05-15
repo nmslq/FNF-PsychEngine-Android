@@ -146,6 +146,12 @@ class Note extends FlxSprite
 
 		this.noteData = noteData;
 
+		if (PlayState.instance.mirrorMode) 
+		{
+			this.noteData = Std.int(Math.abs(3 - noteData)); // FlipX notes to be hit.
+			noteData = Std.int(Math.abs(3 - noteData)); // FlipX noteData sprite (0 = purple, 1 = blue, 2 = green, 3 = red).
+		}
+
 		if(noteData > -1) {
 			texture = '';
 			colorSwap = new ColorSwap();
