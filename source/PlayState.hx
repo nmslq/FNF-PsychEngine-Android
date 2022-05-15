@@ -3581,7 +3581,7 @@ class PlayState extends MusicBeatState
 		comboSpr.acceleration.y = 600;
 		comboSpr.velocity.y -= 150;
 		if (ClientPrefs.hideHud && combo <= 2) {
-		     comboSpr.visible = true;
+		      comboSpr.visible = true;
 		else {
 		      comboSpr.visible = false;
 		     }
