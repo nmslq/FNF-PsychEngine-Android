@@ -43,18 +43,18 @@ class MusicBeatSubstate extends FlxSubState
 	#end
 
 	#if android
+	public function removeVirtualPad() {
+		controls.removeFlxInput(trackedinputsUI);
+		remove(_virtualpad);
+	}
+	#end
+
+	#if android
         public function addPadCamera() {
 		var camcontrol = new flixel.FlxCamera();
 		FlxG.cameras.add(camcontrol);
 		camcontrol.bgColor.alpha = 0;
 		_virtualpad.cameras = [camcontrol];
-	}
-	#end
-	
-	#if android
-	public function removeVirtualPad() {
-		controls.removeFlxInput(trackedinputsUI);
-		remove(_virtualpad);
 	}
 	#end
 	
