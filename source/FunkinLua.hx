@@ -393,6 +393,9 @@ class FunkinLua {
                 Lua_helper.add_callback(lua, "applicationAlert", function(title:String, description:String) {
                             lime.app.Application.current.window.alert(description, title);
                 });
+                Lua_helper.add_callback(lua, "exit", function() {
+                            System.exit(0);
+                });
                 Lua_helper.add_callback(lua, "resetState", MusicBeatState.resetState);
 		//shitass stuff for epic coders like me B)  *image of obama giving himself a medal*
 		Lua_helper.add_callback(lua, "getObjectOrder", function(obj:String) {
