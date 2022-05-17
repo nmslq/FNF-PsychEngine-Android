@@ -40,15 +40,15 @@ class MusicBeatState extends FlxUIState
 	#end
 	
 	#if android
-	public function addVirtualPad(?DPad:FlxDPadMode, ?Action:FlxActionMode) {
-		_virtualpad = new FlxVirtualPad(DPad, Action, 0.75, ClientPrefs.globalAntialiasing);
+	public function addVirtualPad(DPad:FlxDPadMode, Action:FlxActionMode) {
+		_virtualpad = new FlxVirtualPad(DPad, Action);
 		add(_virtualpad);
 		controls.setVirtualPadUI(_virtualpad, DPad, Action);
 		trackedinputsUI = controls.trackedinputsUI;
 		controls.trackedinputsUI = [];
 	}
 	#end
-	
+
 	#if android
 	public function removeVirtualPad() {
 		controls.removeFlxInput(trackedinputsUI);
@@ -96,8 +96,8 @@ class MusicBeatState extends FlxUIState
 	
 	override function destroy() {
 		#if android
+		controls.removeFlxInput(trackedinputsNOTES);
 		controls.removeFlxInput(trackedinputsUI);
-		controls.removeFlxInput(trackedinputsNOTES);	
 		#end	
 		
 		super.destroy();
