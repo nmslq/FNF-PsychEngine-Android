@@ -393,38 +393,6 @@ class FunkinLua {
                 Lua_helper.add_callback(lua, "applicationAlert", function(title:String, description:String) {
                             lime.app.Application.current.window.alert(description, title);
                 });
-                Lua_helper.add_callback(lua, "createVideoLuaSprite", function(tag:String, videoFile:String) {
-			#if VIDEOS_ALLOWED
-			if(!FileSystem.exists(Paths.video(videoFile)) ) {
-				luaTrace('Video file not found: ' + videoFile);
-				return;
-			}
-			if (PlayState.instance.modchartSprites.exists(tag)) {
-				luaTrace('Sprite already exists')
-			}
-			tag = tag.replace('.', '');
-			resetSpriteTag(tag);
-			var leSprite:ModchartSprite = new ModchartSprite(0, 0);
-			leSprite.antialiasing = ClientPrefs.globalAntialiasing;
-			PlayState.instance.modchartSprites.set(tag, leSprite);
-			leSprite.active = true;
-			if(PlayState.instance.isDead)
-			{
-				GameOverSubstate.instance.insert(GameOverSubstate.instance.members.indexOf(GameOverSubstate.instance.boyfriend), leSprite);
-			} else {
-				var position:Int = PlayState.instance.members.indexOf(PlayState.instance.gfGroup);
-				if(PlayState.instance.members.indexOf(PlayState.instance.boyfriendGroup) < position) {
-					position = PlayState.instance.members.indexOf(PlayState.instance.boyfriendGroup);
-				} else if(PlayState.instance.members.indexOf(PlayState.instance.dadGroup) < position) {
-					position = PlayState.instance.members.indexOf(PlayState.instance.dadGroup);
-				}
-				PlayState.instance.insert(position, leSprite);
-			}
-			leSprite.video = new FlxVideo(Paths.video(videoFile), true);
-			#else
-			luaTrace('build doesn\'t support video sprites');
-			#end
-		});
                 Lua_helper.add_callback(lua, "resetState", MusicBeatState.resetState);
 		//shitass stuff for epic coders like me B)  *image of obama giving himself a medal*
 		Lua_helper.add_callback(lua, "getObjectOrder", function(obj:String) {

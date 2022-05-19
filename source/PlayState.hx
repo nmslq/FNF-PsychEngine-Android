@@ -4673,7 +4673,6 @@ class PlayState extends MusicBeatState
 				if(unlock) {
 					Achievements.unlockAchievement(achievementName);
 					return achievementName;
-				}
 			}
 		}
 		return null;
