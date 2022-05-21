@@ -1190,13 +1190,6 @@ class FunkinLua {
 				shit.updateHitbox();
 				return;
 			}
-			else if(PlayState.instance.modchartBackdrops.exists(obj)) {
-				luaTrace('Using setGraphicSize on backdrops can crash the game, so it has been disabled.');
-				/*var shit:ModchartBackdrop = PlayState.instance.modchartBackdrops.get(obj);
-				shit.setGraphicSize(x, y);
-				shit.updateHitbox();*/
-				return;
-			}
 
 			var poop:FlxSprite = Reflect.getProperty(getInstance(), obj);
 			if(poop != null) {
@@ -1225,6 +1218,11 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "updateHitbox", function(obj:String) {
 			if(PlayState.instance.modchartSprites.exists(obj)) {
 				var shit:ModchartSprite = PlayState.instance.modchartSprites.get(obj);
+				shit.updateHitbox();
+				return;
+			}
+			else if(PlayState.instance.modchartBackdrops.exists(obj)) {
+				var shit:ModchartBackdrop = PlayState.instance.modchartBackdrops.get(obj);
 				shit.updateHitbox();
 				return;
 			}
@@ -1991,6 +1989,7 @@ class FunkinLua {
 		pee.destroy();
 		PlayState.instance.modchartTexts.remove(tag);
 	}
+
 	function resetBackdropTag(tag:String) {
 		if(!PlayState.instance.modchartBackdrops.exists(tag)) {
 			return;
