@@ -1210,6 +1210,12 @@ class FunkinLua {
 				shit.updateHitbox();
 				return;
 			}
+			else if(PlayState.instance.modchartBackdrops.exists(obj)) {
+				var shit:ModchartBackdrop = PlayState.instance.modchartBackdrops.get(obj);
+				shit.scale.set(x, y);
+				shit.updateHitbox();
+				return;
+			}
 
 			var poop:FlxSprite = Reflect.getProperty(getInstance(), obj);
 			if(poop != null) {
@@ -1227,12 +1233,6 @@ class FunkinLua {
 			}
 			else if(PlayState.instance.modchartBackdrops.exists(obj)) {
 				var shit:ModchartBackdrop = PlayState.instance.modchartBackdrops.get(obj);
-				shit.updateHitbox();
-				return;
-			}
-			else if(PlayState.instance.modchartBackdrops.exists(obj)) {
-				var shit:ModchartBackdrop = PlayState.instance.modchartBackdrops.get(obj);
-				shit.scale.set(x, y);
 				shit.updateHitbox();
 				return;
 			}
