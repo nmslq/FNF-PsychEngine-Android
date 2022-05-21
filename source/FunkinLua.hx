@@ -1078,6 +1078,10 @@ class FunkinLua {
 				PlayState.instance.modchartSprites.get(obj).makeGraphic(width, height, colorNum);
 				return;
 			}
+			else if(PlayState.instance.modchartBackdrops.exists(obj)) {
+				PlayState.instance.modchartBackdrops.get(obj).makeGraphic(width, height, colorNum);
+				return;
+			}
 
 			var object:FlxSprite = Reflect.getProperty(getInstance(), obj);
 			if(object != null) {
