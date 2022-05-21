@@ -1144,7 +1144,7 @@ class FunkinLua {
 				return;
 			}
 			else if(PlayState.instance.modchartBackdrops.exists(obj)) {
-				PlayState.instance.modchartBackdrops.get(obj).makeGraphic(width, height, colorNum);
+				PlayState.instance.modchartBackdrops.get(obj).scrollFactor.set(scrollX, scrollY);
 				return;
 			}
 
