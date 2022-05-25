@@ -2248,7 +2248,7 @@ class FunkinLua {
 		} else if(checkForTextsToo && PlayState.instance.modchartTexts.exists(objectName)) {
 			coverMeInPiss = PlayState.instance.modchartTexts.get(objectName);
 		} else {
-			coverMeInPiss = Reflect.getProperty(noGameOver ? PlayState.instance : getInstance(), objectName);
+			coverMeInPiss = Reflect.getProperty(getInstance(), objectName);
 		}
 		return coverMeInPiss;
 	}
