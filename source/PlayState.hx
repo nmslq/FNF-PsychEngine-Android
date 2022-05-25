@@ -3048,7 +3048,7 @@ class PlayState extends MusicBeatState
 			if (!inCutscene) {
 				if(!cpuControlled) {
 					keyShit();
-				} else if(boyfriend.holdTimer > Conductor.stepCrochet * 0.001 * boyfriend.singDuration && boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss')) {
+				} else if(boyfriend.holdTimer > Conductor.stepCrochet * 0.0011 * boyfriend.singDuration && boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss')) {
 					boyfriend.dance();
 					//boyfriend.animation.curAnim.finish();
 				}
@@ -4098,7 +4098,7 @@ class PlayState extends MusicBeatState
 
 		if (!cpuControlled && startedCountdown && !paused && key > -1 && (FlxG.keys.checkStatus(eventKey, JUST_PRESSED) || ClientPrefs.controllerMode))
 		{
-			if(startedCountdown && !boyfriend.stunned && generatedMusic && !endingSong)
+			if(!boyfriend.stunned && generatedMusic && !endingSong)
 			{
 				//more accurate hit time for the ratings?
 				var lastTime:Float = Conductor.songPosition;
@@ -4233,7 +4233,7 @@ class PlayState extends MusicBeatState
 		}
 
 		// FlxG.watch.addQuick('asdfa', upP);
-		if (!boyfriend.stunned && generatedMusic)
+		if (startedCountdown && !boyfriend.stunned && generatedMusic)
 		{
 			// rewritten inputs???
 			notes.forEachAlive(function(daNote:Note)
