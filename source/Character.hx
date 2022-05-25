@@ -244,7 +244,7 @@ class Character extends FlxSprite
 				}
 			}*/
 		}
-        switch(curCharacter)
+                switch(curCharacter)
 		{
 			case 'pico-speaker':
 				skipDance = true;
