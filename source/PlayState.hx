@@ -211,7 +211,7 @@ class PlayState extends MusicBeatState
 	var halloweenBG:BGSprite;
 	var halloweenWhite:BGSprite;
 
-    var phillyLightsColors:Array<FlxColor>;
+	var phillyLightsColors:Array<FlxColor>;
 	var phillyWindow:BGSprite;
 	var phillyStreet:BGSprite;
 	var phillyTrain:BGSprite;
@@ -399,7 +399,7 @@ class PlayState extends MusicBeatState
 					curStage = 'school';
 				case 'thorns':
 					curStage = 'schoolEvil';
-                case 'ugh' | 'guns' | 'stress':
+				case 'ugh' | 'guns' | 'stress':
 					stage = 'tank';
 				default:
 					curStage = 'stage';
@@ -721,7 +721,7 @@ class PlayState extends MusicBeatState
 				}
 		}
 
-            case 'tank': //Week 7 - Ugh, Guns, Stress
+        case 'tank': //Week 7 - Ugh, Guns, Stress
 				var sky:BGSprite = new BGSprite('tankSky', -400, -400, 0, 0);
 				add(sky);
 
@@ -870,8 +870,8 @@ class PlayState extends MusicBeatState
 					gfVersion = 'gf-christmas';
 				case 'school' | 'schoolEvil':
 					gfVersion = 'gf-pixel';
-			    case 'tank':
-			        gfVersion = 'gf-tankmen';
+				case 'tank':
+					gfVersion = 'gf-tankmen';
 				default:
 					gfVersion = 'gf';
 			}
@@ -1284,7 +1284,6 @@ class PlayState extends MusicBeatState
 				case 'senpai' | 'roses' | 'thorns':
 					if(daSong == 'roses') FlxG.sound.play(Paths.sound('ANGRY'));
 					schoolIntro(doof);
-	
 				case 'ugh' | 'guns' | 'stress':
 					tankIntro();
 
@@ -2741,7 +2740,7 @@ class PlayState extends MusicBeatState
 
 		switch (curStage)
 		{
-		    case 'tank':
+			case 'tank':
 				moveTank(elapsed);
 			case 'schoolEvil':
 				if(!ClientPrefs.lowQuality && bgGhouls.animation.curAnim.finished) {

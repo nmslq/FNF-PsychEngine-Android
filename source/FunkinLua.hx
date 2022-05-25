@@ -50,8 +50,8 @@ import android.Hardware;
 using StringTools;
 
 class FunkinLua {
-	public static var Function_Stop:Dynamic = #if android "Function_Stop" #else 1 #end;
-	public static var Function_Continue:Dynamic = #if android "Function_Continue" #else 0 #end;
+	public static var Function_Stop:Dynamic = #if windows 1 #else "Function_Stop" #end;
+	public static var Function_Continue:Dynamic = #if windows 0 #else "Function_Continue" #end;
 
 	#if LUA_ALLOWED
 	public var lua:State = null;
@@ -396,6 +396,57 @@ class FunkinLua {
                 Lua_helper.add_callback(lua, "applicationAlert", function(title:String, description:String) {
                             lime.app.Application.current.window.alert(description, title);
                 });
+		Lua_helper.add_callback(lua, "touchJustPressed", function(button:String) {
+			var boobs = false;
+			#if android
+			for (touch in FlxG.touches.list) {
+				if (touch.justPressed) {
+					boobs = true;
+				}
+			}
+			return boobs;
+			#end
+		});
+		Lua_helper.add_callback(lua, "touchPressed", function(button:String) {
+			var boobs = false;
+			#if android
+			for (touch in FlxG.touches.list) {
+				if (touch.pressed) {
+					boobs = true;
+				}
+			}
+			#end
+			return boobs;
+		});
+		Lua_helper.add_callback(lua, "touchReleased", function(button:String) {
+			var boobs = false;
+			#if android
+			for (touch in FlxG.touches.list) {
+				if (touch.justReleased) {
+					boobs = true;
+				}
+			}
+			return boobs;
+			#end
+		});
+		Lua_helper.add_callback(lua, "getTouchX", function(camera:String) {
+			#if android
+			var cam:FlxCamera = cameraFromString(camera);
+			for (touch in FlxG.touches.list) {
+				return touch.getScreenPosition(cam).x;
+			}
+			#end
+			return 0;
+		});
+		Lua_helper.add_callback(lua, "getTouchY", function(camera:String) {
+			#if android
+			var cam:FlxCamera = cameraFromString(camera);
+			for (touch in FlxG.touches.list) {
+				return touch.getScreenPosition(cam).y;
+			}
+			#end
+			return 0;
+		});
                 Lua_helper.add_callback(lua, "resetState", MusicBeatState.resetState);
 		Lua_helper.add_callback(lua, "makeLuaBackdrop", function(tag:String, image:String, x:Float, y:Float, ?repeatX:Bool = true, ?repeatY:Bool = true) {
 			tag = tag.replace('.', '');
