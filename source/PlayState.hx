@@ -3592,12 +3592,7 @@ class PlayState extends MusicBeatState
 					});
 				}
 			case 'Set Property':
-				var killMe:Array<String> = value1.split('.');
-				if(killMe.length > 1) {
-					Reflect.setProperty(FunkinLua.getPropertyLoopThingWhatever(killMe, true, true), killMe[killMe.length-1], value2);
-				} else {
-					Reflect.setProperty(this, value1, value2);
-				}
+				Reflect.setProperty(this, value1, value2);
 		}
 		callOnLuas('onEvent', [eventName, value1, value2]);
 	}
