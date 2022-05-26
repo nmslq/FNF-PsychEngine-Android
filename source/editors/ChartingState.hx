@@ -2122,7 +2122,6 @@ class ChartingState extends MusicBeatState
 					Std.int(gridBG.height)
 				);
 			}
-			}
 
 		if (FlxG.save.data.chart_waveformVoices) {
 			var sound:FlxSound = vocals;
