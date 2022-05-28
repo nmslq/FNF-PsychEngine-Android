@@ -4006,7 +4006,7 @@ class PlayState extends MusicBeatState
 
 
 		comboSpr.velocity.x += FlxG.random.int(1, 10);
-		if (combo >= 1) add(comboSpr);
+		if (combo > 1) add(comboSpr);
 		insert(members.indexOf(strumLineNotes), rating);
 
 		if (!PlayState.isPixelStage)
