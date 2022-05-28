@@ -2229,16 +2229,16 @@ class FunkinLua {
 		return Function_Continue;
 	}
 
-	public static function getPropertyLoopThingWhatever(killMe:Array<String>, ?checkForTextsToo:Bool = true):Dynamic
+	public static function getPropertyLoopThingWhatever(killMe:Array<String>, ?checkForTextsToo:Bool = true, ?noGameOver:Bool = false):Dynamic
 	{
-		var coverMeInPiss:Dynamic = getObjectDirectly(killMe[0], checkForTextsToo);
+		var coverMeInPiss:Dynamic = getObjectDirectly(killMe[0], checkForTextsToo, noGameOver);
 		for (i in 1...killMe.length-1) {
 			coverMeInPiss = Reflect.getProperty(coverMeInPiss, killMe[i]);
 		}
 		return coverMeInPiss;
 	}
 
-	public static function getObjectDirectly(objectName:String, ?checkForTextsToo:Bool = true):Dynamic
+	public static function getObjectDirectly(objectName:String, ?checkForTextsToo:Bool = true, ?noGameOver:Bool = false):Dynamic
 	{
 		var coverMeInPiss:Dynamic = null;
 		if(PlayState.instance.modchartSprites.exists(objectName)) {
@@ -2248,7 +2248,7 @@ class FunkinLua {
 		} else if(checkForTextsToo && PlayState.instance.modchartTexts.exists(objectName)) {
 			coverMeInPiss = PlayState.instance.modchartTexts.get(objectName);
 		} else {
-			coverMeInPiss = Reflect.getProperty(getInstance(), objectName);
+			coverMeInPiss = Reflect.getProperty(noGameOver ? PlayState.instance : getInstance(), objectName);
 		}
 		return coverMeInPiss;
 	}
