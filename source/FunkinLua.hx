@@ -1388,10 +1388,11 @@ class FunkinLua {
 			}
 
 			var killMe:Array<String> = obj.split('.');
-			var poop:FlxSprite = getObjectDirectly(killMe[0]);
+			var object:FlxSprite = getObjectDirectly(killMe[0]);
 			if(killMe.length > 1) {
-				poop = getVarInArray(getPropertyLoopThingWhatever(killMe), killMe[killMe.length-1]);
+				object = getVarInArray(getPropertyLoopThingWhatever(killMe), killMe[killMe.length-1]);
 			}
+
 			if(object != null) {
 				object.cameras = [cameraFromString(camera)];
 				return true;
@@ -1410,10 +1411,11 @@ class FunkinLua {
 			}
 
 			var killMe:Array<String> = obj.split('.');
-			var poop:FlxSprite = getObjectDirectly(killMe[0]);
+			var spr:FlxSprite = getObjectDirectly(killMe[0]);
 			if(killMe.length > 1) {
-				poop = getVarInArray(getPropertyLoopThingWhatever(killMe), killMe[killMe.length-1]);
+				spr = getVarInArray(getPropertyLoopThingWhatever(killMe), killMe[killMe.length-1]);
 			}
+
 			if(spr != null) {
 				spr.blend = blendModeFromString(blend);
 				return true;
