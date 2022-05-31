@@ -389,7 +389,7 @@ class ChartingState extends MusicBeatState
 		updateGrid();
 
                 #if android
-		addVirtualPad(FULL, A_B_C_X_Y_Z);
+		addVirtualPad(FULL, FULL);
 		#end
 
 		super.create();
@@ -1718,9 +1718,9 @@ class ChartingState extends MusicBeatState
 				updateZoom();
 			}
 
-			if (FlxG.keys.justPressed.TAB)
+			if (FlxG.keys.justPressed.TAB #if android || _virtualpad.buttonD.justPressed #end)
 			{
-				if (FlxG.keys.pressed.SHIFT)
+				if (FlxG.keys.pressed.SHIFT #if android || _virtualpad.buttonY.pressed #end)
 				{
 					UI_box.selected_tab -= 1;
 					if (UI_box.selected_tab < 0)
@@ -1753,9 +1753,9 @@ class ChartingState extends MusicBeatState
 				}
 			}
 
-			if (FlxG.keys.justPressed.R)
+			if (FlxG.keys.justPressed.R #if android || _virtualpad.buttonV.justPressed #end)
 			{
-				if (FlxG.keys.pressed.SHIFT)
+				if (FlxG.keys.pressed.SHIFT #if android || _virtualpad.buttonY.justPressed #end)
 					resetSection(true);
 				else
 					resetSection();
@@ -1783,7 +1783,7 @@ class ChartingState extends MusicBeatState
 
 				var holdingShift:Float = 1;
 				if (FlxG.keys.pressed.CONTROL) holdingShift = 0.25;
-				else if (FlxG.keys.pressed.SHIFT) holdingShift = 4;
+				else if (FlxG.keys.pressed.SHIFT #if android || _virtualpad.buttonY.justPressed #end) holdingShift = 4;
 
 				var daTime:Float = 700 * FlxG.elapsed * holdingShift;
 
