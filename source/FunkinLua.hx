@@ -475,22 +475,6 @@ class FunkinLua {
 			#end
 			return 0;
 		});
-                Lua_helper.add_callback(lua, "switchState", function(state:String, loadBefore:Bool = false) {
-                        var bigPiss:Dynamic = Type.resolveClass(state);
-                        if (bigPiss != null)
-                        {
-                                if(!loadBefore) {
-			                MusicBeatState.switchState(bigPiss);
-                                }
-                                else {
-                                        LoadingState.loadAndSwitchState(bigPiss);
-                                }
-                        }
-                        else
-                        {
-                                luaTrace("State " + state + " doesn't exist!");
-                        }
-		});
 		Lua_helper.add_callback(lua, "makeLuaBackdrop", function(tag:String, image:String, x:Float, y:Float, ?repeatX:Bool = true, ?repeatY:Bool = true) {
 			tag = tag.replace('.', '');
 			resetBackdropTag(tag);
