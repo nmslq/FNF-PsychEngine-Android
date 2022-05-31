@@ -111,7 +111,7 @@ class EditorPlayState extends MusicBeatState
 			vocals = new FlxSound();
 
 		generateSong(PlayState.SONG.song);
-		#if LUA_ALLOWED
+		#if (LUA_ALLOWED && MODS_ALLOWED)
 		for (notetype in noteTypeMap.keys()) {
 			var luaToLoad:String = Paths.modFolders('custom_notetypes/' + notetype + '.lua');
 			if(sys.FileSystem.exists(luaToLoad)) {
@@ -159,13 +159,13 @@ class EditorPlayState extends MusicBeatState
 			FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 		}
 
-                #if android
-                addAndroidControls();
-                #end
+		#if android
+		addAndroidControls();
+		#end
 
-                #if android
-                androidc.visible = true;
-                #end
+		#if android
+		androidc.visible = true;
+		#end
 
 		super.create();
 	}
