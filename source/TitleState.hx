@@ -250,8 +250,6 @@ class TitleState extends MusicBeatState
 
 			if(FlxG.sound.music == null) {
 				FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
-
-				FlxG.sound.music.fadeIn(4, 0, 0.7);
 			}
 		}
 
@@ -285,7 +283,7 @@ class TitleState extends MusicBeatState
 		gfDance = new FlxSprite(titleJSON.gfx, titleJSON.gfy);
 
 		var easterEgg:String = FlxG.save.data.psychDevsEasterEgg;
-		if(easterEgg == null) easterEgg = '';
+		if(easterEgg == null) easterEgg = ''; //html5 fix
 
 		switch(easterEgg.toUpperCase())
 		{
@@ -463,50 +461,27 @@ class TitleState extends MusicBeatState
 				// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 			}
 			#if TITLE_SCREEN_EASTER_EGG
+			#if android
+			else if (FlxG.android.justReleased.BACK)
+			{
+				FlxG.stage.window.textInputEnabled = true;
+				FlxG.stage.window.onTextInput.add(function(letter:String)
+				{
+					if(allowedKeys.contains(letter) && letter != '') {
+						easterEgg(letter);
+					}
+				});
+			}
+			#else
 			else if (FlxG.keys.firstJustPressed() != FlxKey.NONE)
 			{
 				var keyPressed:FlxKey = FlxG.keys.firstJustPressed();
 				var keyName:String = Std.string(keyPressed);
 				if(allowedKeys.contains(keyName)) {
-					easterEggKeysBuffer += keyName;
-					if(easterEggKeysBuffer.length >= 32) easterEggKeysBuffer = easterEggKeysBuffer.substring(1);
-					//trace('Test! Allowed Key pressed!!! Buffer: ' + easterEggKeysBuffer);
-
-					for (wordRaw in easterEggKeys)
-					{
-						var word:String = wordRaw.toUpperCase(); //just for being sure you're doing it right
-						if (easterEggKeysBuffer.contains(word))
-						{
-							//trace('YOOO! ' + word);
-							if (FlxG.save.data.psychDevsEasterEgg == word)
-								FlxG.save.data.psychDevsEasterEgg = '';
-							else
-								FlxG.save.data.psychDevsEasterEgg = word;
-							FlxG.save.flush();
-
-							FlxG.sound.play(Paths.sound('ToggleJingle'));
-
-							var black:FlxSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-							black.alpha = 0;
-							add(black);
-
-							FlxTween.tween(black, {alpha: 1}, 1, {onComplete:
-								function(twn:FlxTween) {
-									FlxTransitionableState.skipNextTransIn = true;
-									FlxTransitionableState.skipNextTransOut = true;
-									MusicBeatState.switchState(new TitleState());
-								}
-							});
-							FlxG.sound.music.fadeOut();
-							closedState = true;
-							transitioning = true;
-							playJingle = true;
-							easterEggKeysBuffer = '';
-							break;
-						}
-					}
+					easterEgg(keyName);
 				}
 			}
+			#end
 			#end
 		}
 
@@ -522,6 +497,51 @@ class TitleState extends MusicBeatState
 		}
 
 		super.update(elapsed);
+	}
+
+	function easterEgg(name:String = '')
+	{
+		easterEggKeysBuffer += name;
+		if(easterEggKeysBuffer.length >= 32) easterEggKeysBuffer = easterEggKeysBuffer.substring(1);
+		//trace('Test! Allowed Key pressed!!! Buffer: ' + easterEggKeysBuffer);
+
+		for (wordRaw in easterEggKeys)
+		{
+			var word:String = wordRaw.toUpperCase(); //just for being sure you're doing it right
+			if (easterEggKeysBuffer.contains(word))
+			{
+				#if android
+				FlxG.stage.window.textInputEnabled = false;
+				#end
+				//trace('YOOO! ' + word);
+				if (FlxG.save.data.psychDevsEasterEgg == word)
+					FlxG.save.data.psychDevsEasterEgg = '';
+				else
+					FlxG.save.data.psychDevsEasterEgg = word;
+				FlxG.save.flush();
+
+				FlxG.sound.play(Paths.sound('ToggleJingle'));
+
+				var black:FlxSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+				black.alpha = 0;
+				add(black);
+
+				FlxTween.tween(black, {alpha: 1}, 1, {onComplete:
+					function(twn:FlxTween) {
+						FlxTransitionableState.skipNextTransIn = true;
+						FlxTransitionableState.skipNextTransOut = true;
+						MusicBeatState.switchState(new TitleState());
+					}
+				});
+				FlxG.sound.music.fadeOut();
+				closedState = true;
+				transitioning = true;
+				playJingle = true;
+				easterEggKeysBuffer = '';
+				name = '';
+				break;
+			}
+		}
 	}
 
 	function createCoolText(textArray:Array<String>, ?offset:Float = 0)
@@ -580,7 +600,7 @@ class TitleState extends MusicBeatState
 			switch (sickBeats)
 			{
 				case 1:
-				    FlxG.sound.music.stop();
+					FlxG.sound.music.stop();
 					FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 					FlxG.sound.music.fadeIn(4, 0, 0.7);
 				case 2:

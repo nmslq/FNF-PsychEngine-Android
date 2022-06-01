@@ -64,10 +64,10 @@ class FlashingState extends MusicBeatState
 					ClientPrefs.flashing = false;
 					ClientPrefs.saveSettings();
 					FlxG.sound.play(Paths.sound('confirmMenu'));
-					#if android
-					FlxFlicker.flicker(_virtualpad, 0.1, 0.1, false, true);
-					#end
 					FlxFlicker.flicker(warnText, 1, 0.1, false, true, function(flk:FlxFlicker) {
+						#if android
+						_virtualpad.alpha = 0;
+						#end
 						new FlxTimer().start(0.5, function (tmr:FlxTimer) {
 							MusicBeatState.switchState(new TitleState());
 						});
