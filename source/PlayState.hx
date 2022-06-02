@@ -3964,8 +3964,6 @@ class PlayState extends MusicBeatState
 		note.rating = daRating.name;
 
 		if(daRating.noteSplash && !note.noteSplashDisabled)
-
-		if(daRating == 'sick' && !note.noteSplashDisabled)
 		{
 			spawnNoteSplashOnNote(note);
 		}
