@@ -424,6 +424,12 @@ class FunkinLua {
                 Lua_helper.add_callback(lua, "applicationAlert", function(title:String, description:String) {
                             lime.app.Application.current.window.alert(description, title);
                 });
+                Lua_helper.add_callback(lua, "openKeyboard", function() {
+                            FlxG.stage.window.textInputEnabled = true;
+                });
+                Lua_helper.add_callback(lua, "closeKeyboard", function() {
+                            FlxG.stage.window.textInputEnabled = false;
+                });
 		Lua_helper.add_callback(lua, "touchJustPressed", function(button:String) {
 			var boobs = false;
 			#if android
@@ -850,6 +856,15 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "setHits", function(value:Int = 0) {
 			PlayState.instance.songHits = value;
 			PlayState.instance.RecalculateRating();
+		});
+		Lua_helper.add_callback(lua, "getScore", function() {
+			return PlayState.instance.songScore;
+		});
+		Lua_helper.add_callback(lua, "getMisses", function() {
+			return PlayState.instance.songMisses;
+		});
+		Lua_helper.add_callback(lua, "getHits", function() {
+			return PlayState.instance.songHits;
 		});
 
 		Lua_helper.add_callback(lua, "setHealth", function(value:Float = 0) {
@@ -1963,6 +1978,12 @@ class FunkinLua {
 			FlxG.sound.music.fadeOut(duration, toValue);
 			luaTrace('musicFadeOut is deprecated! Use soundFadeOut instead.', false, true);
 		});
+		Lua_helper.add_callback(lua, "stringStartsWith", function(str:String, start:String) {
+			return str.startsWith(start);
+		});
+		Lua_helper.add_callback(lua, "stringEndsWith", function(str:String, end:String) {
+			return str.endsWith(end);
+		});
 		
 		//SHADER SHIT
 		
@@ -1971,7 +1992,6 @@ class FunkinLua {
 			PlayState.instance.addShaderToCamera(camera, new ChromaticAberrationEffect(chromeOffset));
 			
 		});
-		
 		Lua_helper.add_callback(lua, "addScanlineEffect", function(camera:String,lockAlpha:Bool=false) {
 			
 			PlayState.instance.addShaderToCamera(camera, new ScanlineEffect(lockAlpha));
