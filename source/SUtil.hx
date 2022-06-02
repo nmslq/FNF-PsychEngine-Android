@@ -63,25 +63,20 @@ class SUtil {
 			FileSystem.createDirectory(sPath + '/' + '.' + Application.current.meta.get('file'));
 		}
 
-		var dirs:Array<String> = ['crash', 'saves'];
-		if (!FileSystem.exists(SUtil.getPath() + dirs)){
-			FileSystem.createDirectory(SUtil.getPath() + dirs);
-		}
-
 		if (!FileSystem.exists(SUtil.getPath() + 'mods') && !FileSystem.exists(SUtil.getPath() + 'assets')){
 			File.saveContent(SUtil.getPath() + 'Paste the Assets and Mods folders here.txt', 'the file name says all');
 		}
 
 		if (!FileSystem.exists(SUtil.getPath() + 'assets')){
 			SUtil.applicationAlert('Instructions:', 'You have to copy assets/assets from apk to your internal storage app directory'
-				+ " ( here ' + SUtil.getPath() + ' )"
+				+ " ( here " + SUtil.getPath() + " )"
 				+ " if you hadn't have Zarhiver Downloaded, download it and enable the show hidden files option to have the folder visible"
 				+ '\n' + 'Press Ok To Close The App');
 			System.exit(0);
 		}
 		if (!FileSystem.exists(SUtil.getPath() + 'mods')){
 			SUtil.applicationAlert('Instructions:', 'You have to copy assets/mods from apk to your internal storage app directory'
-				+ " ( here ' + SUtil.getPath() + ' )"
+				+ " ( here " + SUtil.getPath() + " )"
 				+ " if you hadn't have Zarhiver Downloaded, download it and enable the show hidden files option to have the folder visible"
 				+ '\n' + 'Press Ok To Close The App');
 			System.exit(0);
