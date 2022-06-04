@@ -85,11 +85,12 @@ class PlayState extends MusicBeatState
 		['Sick!', 1], //From 90% to 99%
 		['Perfect!!', 1] //The value on this one isn't used actually, since Perfect is always "1"
 	];
+
 	//SHADERS
-		public var camGameShaders:Array<ShaderEffect> = [];
-		public var camHUDShaders:Array<ShaderEffect> = [];
-		public var camOtherShaders:Array<ShaderEffect> = [];
-		public var shaderUpdates:Array<Float->Void> = [];
+    public var camGameShaders:Array<ShaderEffect> = [];
+	public var camHUDShaders:Array<ShaderEffect> = [];
+	public var camOtherShaders:Array<ShaderEffect> = [];
+	public var shaderUpdates:Array<Float->Void> = [];
 
 	public var modchartTweens:Map<String, FlxTween> = new Map<String, FlxTween>();
 	public var modchartSprites:Map<String, ModchartSprite> = new Map<String, ModchartSprite>();
@@ -136,7 +137,7 @@ class PlayState extends MusicBeatState
 	public static var storyPlaylist:Array<String> = [];
 	public static var storyDifficulty:Int = 1;
 
-    public var spawnTime:Float = 3000;
+        public var spawnTime:Float = 3000;
 
 	public var vocals:FlxSound;
 
