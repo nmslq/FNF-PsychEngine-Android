@@ -446,7 +446,7 @@ class Paths
 		}
 		return SUtil.getPath() + 'mods/' + key;
 	}
-    public static var globalMods:Array<String> = [];
+	public static var globalMods:Array<String> = [];
 
 	static public function getGlobalMods()
 		return globalMods;

@@ -87,7 +87,7 @@ class PlayState extends MusicBeatState
 	];
 
 	//SHADERS
-    public var camGameShaders:Array<ShaderEffect> = [];
+        public var camGameShaders:Array<ShaderEffect> = [];
 	public var camHUDShaders:Array<ShaderEffect> = [];
 	public var camOtherShaders:Array<ShaderEffect> = [];
 	public var shaderUpdates:Array<Float->Void> = [];
