@@ -1748,6 +1748,7 @@ class FunkinLua {
 			if(real!=null){
 				real.cameras = [cameraFromString(camera)];
 				return true;
+		   }
 
 			var killMe:Array<String> = obj.split('.');
 			var object:FlxSprite = getObjectDirectly(killMe[0]);
