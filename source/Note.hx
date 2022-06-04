@@ -19,6 +19,8 @@ typedef EventNote = {
 
 class Note extends FlxSprite
 {
+    public var extraData:Map<String,Dynamic> = [];
+
 	public var strumTime:Float = 0;
 
 	public var mustPress:Bool = false;
@@ -30,6 +32,12 @@ class Note extends FlxSprite
 	public var hitByOpponent:Bool = false;
 	public var noteWasHit:Bool = false;
 	public var prevNote:Note;
+	public var nextNote:Note;
+
+	public var spawned:Bool = false;
+
+	public var tail:Array<Note> = []; // for sustains
+	public var parent:Note;
 
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
@@ -189,6 +197,9 @@ class Note extends FlxSprite
 		}
 
 		// trace(prevNote);
+
+		if(prevNote!=null)
+			prevNote.nextNote = this;
 
 		if (isSustainNote && prevNote != null)
 		{
