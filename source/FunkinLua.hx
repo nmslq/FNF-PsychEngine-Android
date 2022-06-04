@@ -52,9 +52,9 @@ using StringTools;
 class FunkinLua {
 	public static var Function_Stop:Dynamic = #if windows 1 #else "Function_Stop" #end;
 	public static var Function_Continue:Dynamic = #if windows 0 #else "Function_Continue" #end;
-    public static var Function_StopLua:Dynamic = #if windows 2 #else "Function_StopLua" #end;
+        public static var Function_StopLua:Dynamic = #if windows 2 #else "Function_StopLua" #end;
 
-    public var errorHandler:String->Void;
+        public var errorHandler:String->Void;
 	#if LUA_ALLOWED
 	public var lua:State = null;
 	#end
@@ -210,7 +210,7 @@ class FunkinLua {
 		set('buildTarget', 'unknown');
 		#end
 
-        Lua_helper.add_callback(lua, "getRunningScripts", function(){
+               Lua_helper.add_callback(lua, "getRunningScripts", function(){
 			var runningScripts:Array<String> = [];
 			for (idx in 0...PlayState.instance.luaArray.length)
 				runningScripts.push(PlayState.instance.luaArray[idx].scriptName);
