@@ -2728,6 +2728,7 @@ class FunkinLua {
 		}
 		#end
 		return Function_Continue;
+
     }
 
 	public static function getPropertyLoopThingWhatever(killMe:Array<String>, ?checkForTextsToo:Bool = true, ?noGameOver:Bool = false):Dynamic
