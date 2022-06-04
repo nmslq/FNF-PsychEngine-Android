@@ -54,6 +54,7 @@ class FunkinLua {
 	public static var Function_Continue:Dynamic = #if windows 0 #else "Function_Continue" #end;
     public static var Function_StopLua:Dynamic = #if windows 2 #else "Function_StopLua" #end;
 
+    public var errorHandler:String->Void;
 	#if LUA_ALLOWED
 	public var lua:State = null;
 	#end
