@@ -1748,7 +1748,7 @@ class FunkinLua {
 			if(real!=null){
 				real.cameras = [cameraFromString(camera)];
 				return true;
-		   }
+		         }
 
 			var killMe:Array<String> = obj.split('.');
 			var object:FlxSprite = getObjectDirectly(killMe[0]);
@@ -2675,9 +2675,6 @@ class FunkinLua {
 
 		var result:Null<Int> = Lua.pcall(lua, args.length, 1, 0);
 		if(result != null && resultIsAllowed(lua, result)) {
-			/*var resultStr:String = Lua.tostring(lua, result);
-			var error:String = Lua.tostring(lua, -1);
-			Lua.pop(lua, 1);*/
 			if(Lua.type(lua, -1) == Lua.LUA_TSTRING) {
 				var error:String = Lua.tostring(lua, -1);
 				Lua.pop(lua, 1);
