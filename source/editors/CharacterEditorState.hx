@@ -1151,6 +1151,8 @@ class CharacterEditorState extends MusicBeatState
 			
 			if (FlxG.keys.justPressed.R #if android || _virtualpad.buttonZ.justPressed #end) {
 				FlxG.camera.zoom = 1;
+				if (FlxG.keys.pressed.SHIFT)
+					camFollow.screenCenter();
 			}
 
 			if (FlxG.keys.pressed.E #if android || _virtualpad.buttonX.pressed #end && FlxG.camera.zoom < 3) {
