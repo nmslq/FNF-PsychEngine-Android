@@ -2750,7 +2750,6 @@ class FunkinLua {
 				{
 					var err = getErrorMessage();
 					if(errorHandler != null)
-					{
 						errorHandler(err);
 					else
 						luaTrace("ERROR (" + func + "): " + err, false, false, FlxColor.RED);
