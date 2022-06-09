@@ -1542,6 +1542,24 @@ class FunkinLua {
 				}
 			}
 		});
+		Lua_helper.add_callback(lua, "addAnimation", function(obj:String, name:String, frames:Array<Int>, framerate:Int = 24, loop:Bool = true) {
+			if(PlayState.instance.getLuaObject(obj,false)!=null) {
+				var cock:FlxSprite = PlayState.instance.getLuaObject(obj,false);
+				cock.animation.add(name, frames, framerate, loop);
+				if(cock.animation.curAnim == null) {
+					cock.animation.play(name, true);
+				}
+				return;
+			}
+
+			var cock:FlxSprite = Reflect.getProperty(getInstance(), obj);
+			if(cock != null) {
+				cock.animation.add(name, frames, framerate, loop);
+				if(cock.animation.curAnim == null) {
+					cock.animation.play(name, true);
+				}
+			}
+		});
 		Lua_helper.add_callback(lua, "addAnimationByIndices", function(obj:String, name:String, prefix:String, indices:String, framerate:Int = 24) {
 			var strIndices:Array<String> = indices.trim().split(',');
 			var die:Array<Int> = [];
@@ -1555,9 +1573,9 @@ class FunkinLua {
 				if(pussy.animation.curAnim == null) {
 					pussy.animation.play(name, true);
 				}
-				return;
+				return true;
 			}
-			
+
 			var pussy:FlxSprite = Reflect.getProperty(getInstance(), obj);
 			if(pussy != null) {
 				pussy.animation.addByIndices(name, prefix, die, '', framerate, false);
@@ -1567,24 +1585,6 @@ class FunkinLua {
 				return true;
 			}
 			return false;
-		});
-		Lua_helper.add_callback(lua, "addAnimation", function(obj:String, name:String, frames:Array<Int>, framerate:Int = 24, loop:Bool = true) {
-			if(PlayState.instance.getLuaObject(obj,false)!=null) {
-				var cock:FlxSprite = PlayState.instance.getLuaObject(obj,false);
-				cock.animation.add(name, frames, framerate, loop);
-				if(cock.animation.curAnim == null) {
-					cock.animation.play(name, true);
-				}
-				return true;
-			}
-
-			var cock:FlxSprite = Reflect.getProperty(getInstance(), obj);
-			if(cock != null) {
-				cock.animation.add(name, frames, framerate, loop);
-				if(cock.animation.curAnim == null) {
-					cock.animation.play(name, true);
-				}
-			}
 		});
 		Lua_helper.add_callback(lua, "objectPlayAnimation", function(obj:String, name:String, forced:Bool = false, ?startFrame:Int = 0) {
 			if(PlayState.instance.getLuaObject(obj,false)!=null) {
