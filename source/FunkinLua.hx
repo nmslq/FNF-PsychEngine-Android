@@ -52,9 +52,9 @@ using StringTools;
 class FunkinLua {
 	public static var Function_Stop:Dynamic = #if windows 1 #else "Function_Stop" #end;
 	public static var Function_Continue:Dynamic = #if windows 0 #else "Function_Continue" #end;
-        public static var Function_StopLua:Dynamic = #if windows 2 #else "Function_StopLua" #end;
+ 	public static var Function_StopLua:Dynamic = #if windows 2 #else "Function_StopLua" #end;
 
-        public var errorHandler:String->Void;
+	public var errorHandler:String->Void;
 	#if LUA_ALLOWED
 	public var lua:State = null;
 	#end
@@ -210,7 +210,7 @@ class FunkinLua {
 		set('buildTarget', 'unknown');
 		#end
 
-               Lua_helper.add_callback(lua, "getRunningScripts", function(){
+		Lua_helper.add_callback(lua, "getRunningScripts", function(){
 			var runningScripts:Array<String> = [];
 			for (idx in 0...PlayState.instance.luaArray.length)
 				runningScripts.push(PlayState.instance.luaArray[idx].scriptName);
@@ -690,7 +690,7 @@ class FunkinLua {
 			if(Std.isOfType(realObject, FlxTypedGroup))
 				return getGroupStuff(realObject.members[index], variable);
 
-            var leArray:Dynamic = realObject[index];
+			var leArray:Dynamic = realObject[index];
 			if(leArray != null) {
 				if(Type.typeof(variable) == ValueType.TInt) {
 					return leArray[variable];
@@ -1589,7 +1589,7 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "objectPlayAnimation", function(obj:String, name:String, forced:Bool = false, ?startFrame:Int = 0) {
 			if(PlayState.instance.getLuaObject(obj,false)!=null) {
 				PlayState.instance.getLuaObject(obj,false).animation.play(name, forced, startFrame);
-				return;
+				return true;
 			}
 
 			var spr:FlxSprite = Reflect.getProperty(getInstance(), obj);
@@ -1804,7 +1804,7 @@ class FunkinLua {
 
 			if(spr==null){
 				var killMe:Array<String> = obj.split('.');
-				spr = getVarInArray(getInstance(), killMe[0]);
+				spr = getObjectDirectly(getInstance(), killMe[0]);
 				if(killMe.length > 1) {
 					spr = getVarInArray(getPropertyLoopThingWhatever(killMe), killMe[killMe.length-1]);
 				}
@@ -1847,7 +1847,6 @@ class FunkinLua {
 			return false;
 		});
 		Lua_helper.add_callback(lua, "getPixelColor", function(obj:String, x:Int, y:Int) {
-			var spr:FlxSprite = null;
 			var killMe:Array<String> = obj.split('.');
 			var spr:FlxSprite = getObjectDirectly(killMe[0]);
 			if(killMe.length > 1) {
@@ -1914,6 +1913,7 @@ class FunkinLua {
 					PlayState.instance.startCountdown();
 				}
 			}
+			return false;
 		});
 		Lua_helper.add_callback(lua, "startVideo", function(videoFile:String) {
 			#if VIDEOS_ALLOWED
@@ -2592,8 +2592,6 @@ class FunkinLua {
 	
 	function tweenShit(tag:String, vars:String) {
 		cancelTween(tag);
-		var variables:Array<String> = vars.replace(' ', '').split('.');
-		var sexyProp:Dynamic = Reflect.getProperty(getInstance(), variables[0]);
 		var variables:Array<String> = vars.split('.');
 		var sexyProp:Dynamic = getObjectDirectly(variables[0]);
 		if(variables.length > 1) {
