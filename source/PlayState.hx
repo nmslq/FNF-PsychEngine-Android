@@ -87,7 +87,7 @@ class PlayState extends MusicBeatState
 	];
 
 	//SHADERS
-        public var camGameShaders:Array<ShaderEffect> = [];
+	public var camGameShaders:Array<ShaderEffect> = [];
 	public var camHUDShaders:Array<ShaderEffect> = [];
 	public var camOtherShaders:Array<ShaderEffect> = [];
 	public var shaderUpdates:Array<Float->Void> = [];
@@ -137,7 +137,7 @@ class PlayState extends MusicBeatState
 	public static var storyPlaylist:Array<String> = [];
 	public static var storyDifficulty:Int = 1;
 
-        public var spawnTime:Float = 3000;
+	public var spawnTime:Float = 3000;
 
 	public var vocals:FlxSound;
 
@@ -520,7 +520,7 @@ class PlayState extends MusicBeatState
 				add(halloweenBG);
 
 				halloweenWhite = new BGSprite(null, -800, -400, 0, 0);
-				halloweenWhite.makeGraphic(Std.int(FlxG.width * 5), Std.int(FlxG.height * 2), FlxColor.WHITE);
+				halloweenWhite.makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.WHITE);
 				halloweenWhite.alpha = 0;
 				halloweenWhite.blend = ADD;
 
@@ -750,7 +750,7 @@ class PlayState extends MusicBeatState
 					add(bg);
 				}
 
-        case 'tank': //Week 7 - Ugh, Guns, Stress
+			case 'tank': //Week 7 - Ugh, Guns, Stress
 				var sky:BGSprite = new BGSprite('tankSky', -400, -400, 0, 0);
 				add(sky);
 
@@ -2141,6 +2141,7 @@ class PlayState extends MusicBeatState
 			else if (skipCountdown)
 			{
 				setSongTime(0);
+				return;
 			}
 
 			startTimer = new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
@@ -2621,7 +2622,7 @@ class PlayState extends MusicBeatState
 				smoke.flipX = true;
 				dadbattleSmokes.add(smoke);
 
-            case 'Philly Glow':
+			case 'Philly Glow':
 				blammedLightsBlack = new FlxSprite(FlxG.width * -0.5, FlxG.height * -0.5).makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), FlxColor.BLACK);
 				blammedLightsBlack.visible = false;
 				insert(members.indexOf(phillyStreet), blammedLightsBlack);
@@ -3402,7 +3403,7 @@ class PlayState extends MusicBeatState
 
 	public function triggerEventNote(eventName:String, value1:String, value2:String) {
 		switch(eventName) {
-		    case 'Dadbattle Spotlight':
+			case 'Dadbattle Spotlight':
 				var val:Null<Int> = Std.parseInt(value1);
 				if(val == null) val = 0;
 
@@ -4325,7 +4326,7 @@ class PlayState extends MusicBeatState
 	{
 		var eventKey:FlxKey = event.keyCode;
 		var key:Int = getKeyFromEvent(eventKey);
-		if(!cpuControlled && !paused && key > -1)
+		if(!cpuControlled && startedCountdown && !paused && key > -1)
 		{
 			var spr:StrumNote = playerStrums.members[key];
 			if(spr != null)
@@ -4599,6 +4600,7 @@ class PlayState extends MusicBeatState
 				note.wasGoodHit = true;
 				if (!note.isSustainNote)
 				{
+					if(modchartObjects.exists('note${note.ID}'))modchartObjects.remove('note${note.ID}');
 					note.kill();
 					notes.remove(note, true);
 					note.destroy();
@@ -4675,7 +4677,7 @@ class PlayState extends MusicBeatState
 			if (!note.isSustainNote)
 			{
 				if(modchartObjects.exists('note${note.ID}'))modchartObjects.remove('note${note.ID}');
-			    note.kill();
+				note.kill();
 				notes.remove(note, true);
 				note.destroy();
 			}

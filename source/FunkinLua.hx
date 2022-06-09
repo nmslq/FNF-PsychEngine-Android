@@ -1804,7 +1804,7 @@ class FunkinLua {
 
 			if(spr==null){
 				var killMe:Array<String> = obj.split('.');
-				spr = getObjectDirectly(getInstance(), killMe[0]);
+				spr = getObjectDirectly(killMe[0]);
 				if(killMe.length > 1) {
 					spr = getVarInArray(getPropertyLoopThingWhatever(killMe), killMe[killMe.length-1]);
 				}
