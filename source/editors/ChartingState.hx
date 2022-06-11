@@ -599,7 +599,7 @@ class ChartingState extends MusicBeatState
 		{
 			postfix = '-' + CoolUtil.difficulties[PlayState.storyDifficulty].toLowerCase();
 		} else {
-		    postfix = '';
+			postfix = '';
 		}
 
 		var skin = PlayState.SONG.arrowSkin;
@@ -2941,7 +2941,7 @@ class ChartingState extends MusicBeatState
 		{
 			postfix = '-' + CoolUtil.difficulties[PlayState.storyDifficulty].toLowerCase();
 		} else {
-		    postfix = '';
+			postfix = '';
 		}
 		MusicBeatState.resetState();
 	}
