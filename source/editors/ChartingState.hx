@@ -595,11 +595,9 @@ class ChartingState extends MusicBeatState
 		stageDropDown.selectedLabel = _song.stage;
 		blockPressWhileScrolling.push(stageDropDown);
 		
-		if (CoolUtil.difficulties[PlayState.storyDifficulty].toLowerCase() != 'normal')
+		if (CoolUtil.difficulties[PlayState.storyDifficulty] != "Normal")
 		{
 			postfix = '-' + CoolUtil.difficulties[PlayState.storyDifficulty].toLowerCase();
-		} else {
-			postfix = '';
 		}
 
 		var skin = PlayState.SONG.arrowSkin;
@@ -2931,17 +2929,15 @@ class ChartingState extends MusicBeatState
 	function loadJson(song:String):Void
 	{
 		//make it look sexier if possible
-		if (CoolUtil.difficulties[PlayState.storyDifficulty] != "Normal" && CoolUtil.difficulties[PlayState.storyDifficulty] != null){
+		if (CoolUtil.difficulties[PlayState.storyDifficulty] != "Normal"){
 		PlayState.SONG = Song.loadFromJson(song.toLowerCase()+"-"+CoolUtil.difficulties[PlayState.storyDifficulty], song.toLowerCase());
 			
 		}else{
 		PlayState.SONG = Song.loadFromJson(song.toLowerCase(), song.toLowerCase());
 		}
-		if (CoolUtil.difficulties[PlayState.storyDifficulty].toLowerCase() != 'normal')
+		if (CoolUtil.difficulties[PlayState.storyDifficulty] != "Normal")
 		{
 			postfix = '-' + CoolUtil.difficulties[PlayState.storyDifficulty].toLowerCase();
-		} else {
-			postfix = '';
 		}
 		MusicBeatState.resetState();
 	}
