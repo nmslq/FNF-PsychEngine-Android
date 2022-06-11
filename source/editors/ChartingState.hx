@@ -448,7 +448,7 @@ class ChartingState extends MusicBeatState
 			var songName:String = Paths.formatToSongPath(_song.song);
 			var file:String = Paths.json(songName + '/events');
 			#if MODS_ALLOWED
-			if (#if MODS_ALLOWED FileSystem.exists(Paths.modsJson(songName + '/events')) || #end FileSystem.exists(SUtil.getPath() + file))
+			if (FileSystem.exists(Paths.modsJson(songName + '/events')) ||FileSystem.exists(SUtil.getPath() + file))
 			#else
 			if (OpenFlAssets.exists(file))
 			#end
@@ -598,6 +598,8 @@ class ChartingState extends MusicBeatState
 		if (CoolUtil.difficulties[PlayState.storyDifficulty].toLowerCase() != 'normal')
 		{
 			postfix = '-' + CoolUtil.difficulties[PlayState.storyDifficulty].toLowerCase();
+		} else {
+		    postfix = '';
 		}
 
 		var skin = PlayState.SONG.arrowSkin;
@@ -1763,7 +1765,7 @@ class ChartingState extends MusicBeatState
 
 			if (FlxG.keys.justPressed.R #if android || _virtualpad.buttonV.justPressed #end)
 			{
-				if (FlxG.keys.pressed.SHIFT #if android || _virtualpad.buttonY.justPressed #end)
+				if (FlxG.keys.pressed.SHIFT #if android || _virtualpad.buttonY.pressed #end)
 					resetSection(true);
 				else
 					resetSection();
@@ -1791,7 +1793,7 @@ class ChartingState extends MusicBeatState
 
 				var holdingShift:Float = 1;
 				if (FlxG.keys.pressed.CONTROL) holdingShift = 0.25;
-				else if (FlxG.keys.pressed.SHIFT #if android || _virtualpad.buttonY.justPressed #end) holdingShift = 4;
+				else if (FlxG.keys.pressed.SHIFT #if android || _virtualpad.buttonY.pressed #end) holdingShift = 4;
 
 				var daTime:Float = 700 * FlxG.elapsed * holdingShift;
 
@@ -2819,7 +2821,7 @@ class ChartingState extends MusicBeatState
 		trace(undos);
 		var noteStrum = getStrumTime(dummyArrow.y, false) + sectionStartTime();
 		var noteData = 0;
-				#if android
+		#if android
 		for (touch in FlxG.touches.list)
 		{
 			noteData = Math.floor((touch.x - GRID_SIZE) / GRID_SIZE);
@@ -2935,6 +2937,12 @@ class ChartingState extends MusicBeatState
 		}else{
 		PlayState.SONG = Song.loadFromJson(song.toLowerCase(), song.toLowerCase());
 		}
+		if (CoolUtil.difficulties[PlayState.storyDifficulty].toLowerCase() != 'normal')
+		{
+			postfix = '-' + CoolUtil.difficulties[PlayState.storyDifficulty].toLowerCase();
+		} else {
+		    postfix = '';
+		}
 		MusicBeatState.resetState();
 	}
 
@@ -2947,9 +2955,6 @@ class ChartingState extends MusicBeatState
 	}
 
 	function clearEvents() {
-		
-		
-		
 		_song.events = [];
 		updateGrid();
 	}
