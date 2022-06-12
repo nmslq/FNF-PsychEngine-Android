@@ -63,10 +63,6 @@ class SUtil {
 			FileSystem.createDirectory(sPath + '/' + '.' + Application.current.meta.get('file'));
 		}
 
-		if (!FileSystem.exists(SUtil.getPath() + 'mods') && !FileSystem.exists(SUtil.getPath() + 'assets')){
-			File.saveContent(SUtil.getPath() + 'Paste the Assets and Mods folders here.txt', 'the file name says all');
-		}
-
 		if (!FileSystem.exists(SUtil.getPath() + 'assets')){
 			SUtil.applicationAlert('Instructions:', 'You have to copy assets/assets from apk to your internal storage app directory'
 				+ " ( here " + SUtil.getPath() + " )"
@@ -80,9 +76,6 @@ class SUtil {
 				+ " if you hadn't have Zarhiver Downloaded, download it and enable the show hidden files option to have the folder visible"
 				+ '\n' + 'Press Ok To Close The App');
 			System.exit(0);
-		}
-		if (FileSystem.exists(SUtil.getPath() + 'Paste the Assets and Mods folders here.txt') && FileSystem.exists(SUtil.getPath() + 'mods') && FileSystem.exists(SUtil.getPath() + 'assets')){
-			FileSystem.deleteFile(SUtil.getPath() + 'Paste the Assets and Mods folders here.txt');
 		}
 		#end
 	}
@@ -110,7 +103,7 @@ class SUtil {
 
 		errMsg += e.error;
 
-		if (!FileSystem.exists(SUtil.getPath() + 'crash')){
+		if (!FileSystem.exists(SUtil.getPath() + 'crash')) {
 			FileSystem.createDirectory(SUtil.getPath() + 'crash');
 		}
 
@@ -138,13 +131,13 @@ class SUtil {
 		SUtil.applicationAlert('Done Action :)', 'File Saved Successfully!');
 	}
 
-	static public function saveClipboard(fileName:String = 'file', fileExtension:String = '.json', fileData:String = 'you forgot something to add in your code'){
+	static public function saveClipboard(fileData:String = 'you forgot something to add in your code'){
 		openfl.system.System.setClipboard(fileData);
 		SUtil.applicationAlert('Done Action :)', 'Data Saved to Clipboard Successfully!');
 	}
 
 	static public function copyContent(copyPath:String, savePath:String) {
-		if (!FileSystem.exists(savePath)){
+		if (!FileSystem.exists(savePath)) {
 			var bytes = OpenFlAssets.getBytes(copyPath);
 			File.saveBytes(savePath, bytes);
 		}
