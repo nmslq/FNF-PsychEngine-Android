@@ -208,7 +208,7 @@ class AndroidControlsMenu extends MusicBeatState
 	{
 		if (daChoice == 'Pad-Custom')
 		{
-			if (buttonistouched)
+			if (buttonIsTouched)
 			{
 				if (bindButton.justReleased && touch.justReleased)
 				{
