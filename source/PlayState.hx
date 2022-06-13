@@ -3073,23 +3073,14 @@ class PlayState extends MusicBeatState
 			health = 2;
 
 		if (healthBar.percent < 20)
-		{
 			iconP1.animation.curAnim.curFrame = 1;
-			scoreTxt.color = FlxColor.RED;
-		} else {
+		else
 			iconP1.animation.curAnim.curFrame = 0;
-		}
 
 		if (healthBar.percent > 80)
-		{
 			iconP2.animation.curAnim.curFrame = 1;
-			scoreTxt.color = FlxColor.LIME;
-		} else {
+		else
 			iconP2.animation.curAnim.curFrame = 0;
-		}
-
-		if (healthBar.percent < 80 && healthBar.percent > 20)
-			scoreTxt.color = FlxColor.WHITE;
 
 		if (FlxG.keys.anyJustPressed(debugKeysCharacter) && !endingSong && !inCutscene) {
 			persistentUpdate = false;
