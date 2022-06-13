@@ -217,7 +217,7 @@ class AndroidControlsMenu extends MusicBeatState
 				}
 				else 
 				{
-					moveButton(touch, bindbutton);
+					moveButton(touch, bindButton);
 					positionsTexts();
 				}
 			}
