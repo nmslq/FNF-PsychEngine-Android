@@ -1889,7 +1889,7 @@ class ChartingState extends MusicBeatState
 							doANoteThing(conductorTime, i, style);
 					}
 				}
-					var feces:Float;
+				var feces:Float;
 				if (FlxG.keys.justPressed.UP || FlxG.keys.justPressed.DOWN #if android || _virtualpad.buttonUp.justPressed || _virtualpad.buttonDown.justPressed #end  )
 				{
 					FlxG.sound.music.pause();
@@ -1897,7 +1897,7 @@ class ChartingState extends MusicBeatState
 					
 					updateCurStep();
 				
-				var time:Float = FlxG.sound.music.time;
+					var time:Float = FlxG.sound.music.time;
 					var beat:Float = curDecBeat;
 					var snap:Float = 4/quantization;
 					if (FlxG.keys.pressed.UP #if android || _virtualpad.buttonUp.pressed #end)
@@ -1916,17 +1916,18 @@ class ChartingState extends MusicBeatState
 						vocals.time = FlxG.sound.music.time;
 					}
 				
-				var dastrum = 0;
-				
-				if (curSelectedNote != null){
+					var dastrum = 0;
+
+					if (curSelectedNote != null){
 						dastrum = curSelectedNote[0];
-				}
+					}
 					var secStart:Float = sectionStartTime();
 					var datime = (feces - secStart) - (dastrum - secStart); //idk math find out why it doesn't work on any other section other than 0
 					if (curSelectedNote != null)
 					{
 						var controlArray:Array<Bool> = [FlxG.keys.pressed.ONE, FlxG.keys.pressed.TWO, FlxG.keys.pressed.THREE, FlxG.keys.pressed.FOUR,
-						
+													   FlxG.keys.pressed.FIVE, FlxG.keys.pressed.SIX, FlxG.keys.pressed.SEVEN, FlxG.keys.pressed.EIGHT];
+
 						if(controlArray.contains(true))
 						{
 							for (i in 0...controlArray.length)
@@ -2944,7 +2945,7 @@ class ChartingState extends MusicBeatState
 	{
 		//make it look sexier if possible
 		if (CoolUtil.difficulties[PlayState.storyDifficulty] != "Normal"){
-		if(CoolUtil.difficulties[PlayState.storyDifficulty] == null){
+			if(CoolUtil.difficulties[PlayState.storyDifficulty] == null){
 				PlayState.SONG = Song.loadFromJson(song.toLowerCase(), song.toLowerCase());
 			}else{
 				PlayState.SONG = Song.loadFromJson(song.toLowerCase()+"-"+CoolUtil.difficulties[PlayState.storyDifficulty], song.toLowerCase());
