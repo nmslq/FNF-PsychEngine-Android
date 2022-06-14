@@ -28,9 +28,8 @@ class AndroidControlsMenu extends MusicBeatState
 	var curSelected:Int = 0;
 	var buttonIsTouched:Bool = false;
 	var bindButton:FlxButton;
-	var resetbutton:FlxButton;
+	var resetButton:FlxButton;
 	var config:Config;
-	var daChoice:String;
 
 	override function create()
 	{
@@ -48,12 +47,16 @@ class AndroidControlsMenu extends MusicBeatState
 		titleText.alpha = 0.4;
 		add(titleText);
 
-		resetbutton = new FlxButton(FlxG.width - 200, 50, "Reset Positions");
-		resetbutton.setGraphicSize(Std.int(resetbutton.width) * 3);
-		resetbutton.label.setFormat(null, 16, 0x333333, "center");
-		resetbutton.color = FlxColor.fromRGB(255, 0, 0);
-		resetbutton.visible = false;
-		add(resetbutton);
+		resetButton = new FlxButton(FlxG.width - 200, 50, "Reset Positions", function()
+		{
+			if (resetButton.visible)
+				reset();
+		});
+		resetButton.setGraphicSize(Std.int(resetButton.width) * 3);
+		resetButton.label.setFormat(null, 16, 0x333333, "center");
+		resetButton.color = FlxColor.fromRGB(255, 0, 0);
+		resetButton.visible = false;
+		add(resetButton);
 
 		vpad = new FlxVirtualPad(RIGHT_FULL, NONE);
 		vpad.visible = false;
@@ -116,12 +119,10 @@ class AndroidControlsMenu extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		daChoice = controlitems[Math.floor(curSelected)];
-
 		leftArrow.x = inputvari.x - 60;
 		rightArrow.x = inputvari.x + inputvari.width + 10;
 		inputvari.screenCenter(X);
-		
+
 		for (touch in FlxG.touches.list)
 		{
 			if(touch.overlaps(leftArrow) && touch.justPressed)
@@ -131,9 +132,6 @@ class AndroidControlsMenu extends MusicBeatState
 
 			trackButton(touch);
 		}
-
-		if (resetbutton.justPressed && resetbutton.visible == true)
-			reset();
 
 		if (FlxG.android.justReleased.BACK)
 		{
@@ -154,6 +152,8 @@ class AndroidControlsMenu extends MusicBeatState
 			curSelected = 0;
 	
 		inputvari.changeText(controlitems[curSelected]);
+
+		var daChoice:String = controlitems[Math.floor(curSelected)];
 
 		switch (daChoice)
 		{
@@ -188,7 +188,7 @@ class AndroidControlsMenu extends MusicBeatState
 
 		if (daChoice == 'Pad-Custom')
 		{
-			resetbutton.visible = true;
+			resetButton.visible = true;
 			upPozition.visible = true;
 			downPozition.visible = true;
 			leftPozition.visible = true;
@@ -196,7 +196,7 @@ class AndroidControlsMenu extends MusicBeatState
 		}
 		else
 		{
-			resetbutton.visible = false;
+			resetButton.visible = false;
 			upPozition.visible = false;
 			downPozition.visible = false;
 			leftPozition.visible = false;
@@ -206,6 +206,8 @@ class AndroidControlsMenu extends MusicBeatState
 
 	function trackButton(touch:FlxTouch):Void
 	{
+		var daChoice:String = controlitems[Math.floor(curSelected)];
+
 		if (daChoice == 'Pad-Custom')
 		{
 			if (buttonIsTouched)
@@ -259,20 +261,22 @@ class AndroidControlsMenu extends MusicBeatState
 	{
 		config.setcontrolmode(curSelected);
 
+		var daChoice:String = controlitems[Math.floor(curSelected)];
+
 		if (daChoice == 'Pad-Custom')
 			config.savecustom(vpad);
 	}
 
 	function reset():Void
 	{
-		vpad.buttonUp.y = FlxG.height - 66 - 116 * 3;
-		vpad.buttonUp.x = FlxG.width - 86 * 3;
-		vpad.buttonDown.y = FlxG.height - 66 - 45 * 3;
-		vpad.buttonDown.x = FlxG.width - 86 * 3;
-		vpad.buttonRight.y = FlxG.height - 66 - 81 * 3;
-		vpad.buttonRight.x = FlxG.width - 44 * 3;
-		vpad.buttonLeft.y = FlxG.height - 66 - 81 * 3;
-		vpad.buttonLeft.x = FlxG.width - 128 * 3;
+		vpad.buttonUp.y = FlxG.height - 300;
+		vpad.buttonUp.x = FlxG.width - 258;
+		vpad.buttonDown.y = FlxG.height - 195;
+		vpad.buttonDown.x = FlxG.width - 258;
+		vpad.buttonRight.y = FlxG.height - 341;
+		vpad.buttonRight.x = FlxG.width - 132;
+		vpad.buttonLeft.y = FlxG.height - 341;
+		vpad.buttonLeft.x = FlxG.width - 384;
 	}
 
 	function loadCustom():Void
