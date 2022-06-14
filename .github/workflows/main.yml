@@ -168,7 +168,7 @@ jobs:
           distribution: 'zulu'
           java-version: '11'
 
-      - uses: nttld/setup-ndk@v1.0.6
+      - uses: nttld/setup-ndk@main
         with:
           ndk-version: r21e
 
@@ -176,9 +176,9 @@ jobs:
       - name: Install Haxelib
         run: |
           haxelib setup ~/haxelib
+          haxelib install hxcpp > /dev/null
           haxelib install lime
           haxelib install openfl
-          haxelib install hxcpp > /dev/null
           haxelib --never install flixel
           haxelib run lime setup flixel
           haxelib run lime setup
@@ -194,7 +194,6 @@ jobs:
           haxelib git extension-androidtools https://github.com/jigsaw-4277821/extension-androidtools  
           haxelib git extension-videoview https://github.com/jigsaw-4277821/extension-videoview
           haxelib list
-          
       - name: Create Version Tag
         run: echo "${{github.run_id}}" > VERSION
       - name: Compile
