@@ -1867,31 +1867,28 @@ class ChartingState extends MusicBeatState
 
 					quantization = quantizations[curQuant];
 				}
-			
-			if(FlxG.keys.justPressed.LEFT){
+
+				if(FlxG.keys.justPressed.LEFT){
 					curQuant--;
 					if(curQuant<0)
 						curQuant = quantizations.length-1;
-				
-				quantization = quantizations[curQuant];
+
+					quantization = quantizations[curQuant];
 				}
 				quant.animation.play('q', true, false, curQuant);
 			}
 			if(vortex && !blockInput){
 				var controlArray:Array<Bool> = [FlxG.keys.justPressed.ONE, FlxG.keys.justPressed.TWO, FlxG.keys.justPressed.THREE, FlxG.keys.justPressed.FOUR,
-				
-				//FlxG.sound.music.time = (Math.round(curStep/quants[curQuant])*quants[curQuant]) * Conductor.stepCrochet;
-				
-					//(Math.floor((curStep+quants[curQuant]*1.5/(quants[curQuant]/2))/quants[curQuant])*quants[curQuant]) * Conductor.stepCrochet;//snap into quantization
+											   FlxG.keys.justPressed.FIVE, FlxG.keys.justPressed.SIX, FlxG.keys.justPressed.SEVEN, FlxG.keys.justPressed.EIGHT];
+
 				if(controlArray.contains(true))
 				{
-					
-					//var tosnapto = 0.00;
 					for (i in 0...controlArray.length)
 					{
 						if(controlArray[i])
 							doANoteThing(conductorTime, i, style);
 					}
+				}
 					var feces:Float;
 				if (FlxG.keys.justPressed.UP || FlxG.keys.justPressed.DOWN #if android || _virtualpad.buttonUp.justPressed || _virtualpad.buttonDown.justPressed #end  )
 				{
