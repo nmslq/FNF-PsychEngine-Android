@@ -55,7 +55,7 @@ class FlxHitbox extends FlxSpriteGroup
 		add(buttonUpHint = createHitboxHint(640, 0, 'up_hint', FlxColor.LIME));
 
 		hitbox.add(add(buttonRight = createHitbox(960, 0, 'right', FlxColor.RED)));
-		add(buttonRightHint = createHitboxHint(960, 0, 'right_hint', FlxColor.RED))
+		add(buttonRightHint = createHitboxHint(960, 0, 'right_hint', FlxColor.RED));
 	}
 
 	public function createHitbox(x:Float = 0, y:Float = 0, frames:String, ?color:FlxColor):FlxButton
