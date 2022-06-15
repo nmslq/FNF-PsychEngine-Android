@@ -8,7 +8,6 @@ import flixel.util.FlxDestroyUtil;
 import android.flixel.FlxButton;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.FlxGraphic;
-import flixel.util.FlxColor;
 
 // Mofifications by saw (m.a. jigsaw)
 class FlxVirtualPad extends FlxSpriteGroup 
@@ -67,35 +66,34 @@ class FlxVirtualPad extends FlxSpriteGroup
 		switch (DPad)
 		{
 			case UP_DOWN:
-				dPad.add(add(buttonUp = createButton(0, FlxG.height - 255, 132, 127, 'up', FlxColor.LIME)));
-				dPad.add(add(buttonDown = createButton(0, FlxG.height - 135, 132, 127, 'down', FlxColor.CYAN)));
+				dPad.add(add(buttonUp = createButton(0, FlxG.height - 255, 132, 127, 'up', 0xFF00FF00)));
+				dPad.add(add(buttonDown = createButton(0, FlxG.height - 135, 132, 127, 'down', 0xFF00FFFF)));
 			case LEFT_RIGHT:
-				dPad.add(add(buttonLeft = createButton(0, FlxG.height - 135, 132, 127, 'left', FlxColor.PINK)));
-				dPad.add(add(buttonRight = createButton(127, FlxG.height - 135, 132, 127, 'right', FlxColor.RED)));
+				dPad.add(add(buttonLeft = createButton(0, FlxG.height - 135, 132, 127, 'left', 0xFFFF00FF)));
+				dPad.add(add(buttonRight = createButton(127, FlxG.height - 135, 132, 127, 'right', 0xFFFF0000)));
 			case UP_LEFT_RIGHT:
-				dPad.add(add(buttonUp = createButton(105, FlxG.height - 243, 132, 127, 'up', FlxColor.LIME)));
-				dPad.add(add(buttonLeft = createButton(0, FlxG.height - 135, 132, 127, 'left', FlxColor.PINK)));
-				dPad.add(add(buttonRight = createButton(207, FlxG.height - 135, 132, 127, 'right', FlxColor.RED)));
+				dPad.add(add(buttonUp = createButton(105, FlxG.height - 243, 132, 127, 'up', 0xFF00FF00)));
+				dPad.add(add(buttonLeft = createButton(0, FlxG.height - 135, 132, 127, 'left', 0xFFFF00FF)));
+				dPad.add(add(buttonRight = createButton(207, FlxG.height - 135, 132, 127, 'right', 0xFFFF0000)));
 			case FULL:
-				dPad.add(add(buttonUp = createButton(105, FlxG.height - 348, 132, 127, 'up', FlxColor.LIME)));
-				dPad.add(add(buttonLeft = createButton(0, FlxG.height - 243, 132, 127, 'left', FlxColor.PINK)));
-				dPad.add(add(buttonRight = createButton(207, FlxG.height - 243, 132, 127, 'right', FlxColor.RED)));
-				dPad.add(add(buttonDown = createButton(105, FlxG.height - 135, 132, 127, 'down', FlxColor.CYAN)));
+				dPad.add(add(buttonUp = createButton(105, FlxG.height - 345, 132, 127, 'up', 0xFF00FF00)));
+				dPad.add(add(buttonLeft = createButton(0, FlxG.height - 243, 132, 127, 'left', 0xFFFF00FF)));
+				dPad.add(add(buttonRight = createButton(207, FlxG.height - 243, 132, 127, 'right', 0xFFFF0000)));
+				dPad.add(add(buttonDown = createButton(105, FlxG.height - 135, 132, 127, 'down', 0xFF00FFFF)));
 			case RIGHT_FULL:
-				dPad.add(add(buttonUp = createButton(FlxG.width - 258, FlxG.height - 300, 132, 127, 'up', FlxColor.LIME)));
-				dPad.add(add(buttonLeft = createButton(FlxG.width - 384, FlxG.height - 341, 132, 127, 'left', FlxColor.PINK)));
-				dPad.add(add(buttonRight = createButton(FlxG.width - 132, FlxG.height - 341, 132, 127, 'right', FlxColor.RED)));
-				dPad.add(add(buttonDown = createButton(FlxG.width - 258, FlxG.height - 195, 132, 127, 'down', FlxColor.CYAN)));
+				dPad.add(add(buttonUp = createButton(FlxG.width - 258, FlxG.height - 401, 132, 127, 'up', 0xFF00FF00)));
+				dPad.add(add(buttonLeft = createButton(FlxG.width - 384, FlxG.height - 341, 132, 127, 'left', 0xFFFF00FF)));
+				dPad.add(add(buttonRight = createButton(FlxG.width - 132, FlxG.height - 341, 132, 127, 'right', 0xFFFF0000)));
+				dPad.add(add(buttonDown = createButton(FlxG.width - 258, FlxG.height - 201, 132, 127, 'down', 0xFF00FFFF)));
 			case DUO:
-				dPad.add(add(buttonUp = createButton(105, FlxG.height - 348, 132, 127, 'up', FlxColor.LIME)));
-				dPad.add(add(buttonLeft = createButton(0, FlxG.height - 243, 132, 127, 'left', FlxColor.PINK)));
-				dPad.add(add(buttonRight = createButton(207, FlxG.height - 243, 132, 127, 'right', FlxColor.RED)));
-				dPad.add(add(buttonDown = createButton(105, FlxG.height - 135, 132, 127, 'down', FlxColor.CYAN)));
-
-				dPad.add(add(buttonUp2 = createButton(FlxG.width - 258, FlxG.height - 300, 132, 127, 'up', FlxColor.LIME)));
-				dPad.add(add(buttonLeft2 = createButton(FlxG.width - 384, FlxG.height - 341, 132, 127, 'left', FlxColor.PINK)));
-				dPad.add(add(buttonRight2 = createButton(FlxG.width - 132, FlxG.height - 341, 132, 127, 'right', FlxColor.RED)));
-				dPad.add(add(buttonDown2 = createButton(FlxG.width - 258, FlxG.height - 195, 132, 127, 'down', FlxColor.CYAN)));
+				dPad.add(add(buttonUp = createButton(105, FlxG.height - 345, 132, 127, 'up', 0xFF00FF00)));
+				dPad.add(add(buttonLeft = createButton(0, FlxG.height - 243, 132, 127, 'left', 0xFFFF00FF)));
+				dPad.add(add(buttonRight = createButton(207, FlxG.height - 243, 132, 127, 'right', 0xFFFF0000)));
+				dPad.add(add(buttonDown = createButton(105, FlxG.height - 135, 132, 127, 'down', 0xFF00FFFF)));
+				dPad.add(add(buttonUp2 = createButton(FlxG.width - 258, FlxG.height - 401, 132, 127, 'up', 0xFF00FF00)));
+				dPad.add(add(buttonLeft2 = createButton(FlxG.width - 384, FlxG.height - 341, 132, 127, 'left', 0xFFFF00FF)));
+				dPad.add(add(buttonRight2 = createButton(FlxG.width - 132, FlxG.height - 341, 132, 127, 'right', 0xFFFF0000)));
+				dPad.add(add(buttonDown2 = createButton(FlxG.width - 258, FlxG.height - 201, 132, 127, 'down', 0xFF00FFFF)));
 			case NONE:
 		}
 
@@ -149,7 +147,7 @@ class FlxVirtualPad extends FlxSpriteGroup
 		}
 	}
 
-	public function createButton(x:Float, y:Float, width:Int, height:Int, frames:String, ?color:FlxColor):FlxButton
+	public function createButton(x:Float, y:Float, width:Int, height:Int, frames:String, ?color:Int):FlxButton
 	{
 		var button:FlxButton = new FlxButton(x, y);
 		button.frames = FlxTileFrames.fromFrame(getFrames().getByName(frames), FlxPoint.get(width, height));
@@ -159,7 +157,7 @@ class FlxVirtualPad extends FlxSpriteGroup
 		button.scrollFactor.set();
 		button.alpha = 0.75;
 		button.antialiasing = ClientPrefs.globalAntialiasing;
-		if (color != null && ClientPrefs.fnfColours)
+		if (color != null)
 			button.color = color;
 		#if FLX_DEBUG
 		button.ignoreDrawDebug = true;
