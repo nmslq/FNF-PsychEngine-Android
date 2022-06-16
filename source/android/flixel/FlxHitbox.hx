@@ -28,9 +28,6 @@ class FlxHitbox extends FlxSpriteGroup
 		buttonUp = new FlxButton(0, 0);
 		buttonRight = new FlxButton(0, 0);
 
-		sizex = FlxG.width / 4;
-		sizey = FlxG.height;
-
 		hitbox.add(add(buttonLeft = createHitbox(0, 0, 'left', 0xFFFF00FF)));
 		hitbox.add(add(buttonDown = createHitbox(sizex, 0, 'down', 0xFF00FFFF)));
 		hitbox.add(add(buttonUp = createHitbox(sizex * 2, 0, 'up', 0xFF00FF00)));
