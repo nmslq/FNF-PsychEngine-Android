@@ -9,7 +9,6 @@ import android.flixel.FlxButton;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.FlxGraphic;
 
-// Mofifications by saw (m.a. jigsaw)
 class FlxVirtualPad extends FlxSpriteGroup 
 {
 	public var dPad:FlxSpriteGroup;
@@ -81,18 +80,19 @@ class FlxVirtualPad extends FlxSpriteGroup
 				dPad.add(add(buttonRight = createButton(207, FlxG.height - 243, 132, 127, 'right', 0xFFFF0000)));
 				dPad.add(add(buttonDown = createButton(105, FlxG.height - 135, 132, 127, 'down', 0xFF00FFFF)));
 			case RIGHT_FULL:
-				dPad.add(add(buttonUp = createButton(FlxG.width - 258, FlxG.height - 401, 132, 127, 'up', 0xFF00FF00)));
-				dPad.add(add(buttonLeft = createButton(FlxG.width - 384, FlxG.height - 341, 132, 127, 'left', 0xFFFF00FF)));
-				dPad.add(add(buttonRight = createButton(FlxG.width - 132, FlxG.height - 341, 132, 127, 'right', 0xFFFF0000)));
+				dPad.add(add(buttonUp = createButton(FlxG.width - 258, FlxG.height - 408, 132, 127, 'up', 0xFF00FF00)));
+				dPad.add(add(buttonLeft = createButton(FlxG.width - 384, FlxG.height - 309, 132, 127, 'left', 0xFFFF00FF)));
+				dPad.add(add(buttonRight = createButton(FlxG.width - 132, FlxG.height - 309, 132, 127, 'right', 0xFFFF0000)));
 				dPad.add(add(buttonDown = createButton(FlxG.width - 258, FlxG.height - 201, 132, 127, 'down', 0xFF00FFFF)));
 			case DUO:
 				dPad.add(add(buttonUp = createButton(105, FlxG.height - 345, 132, 127, 'up', 0xFF00FF00)));
 				dPad.add(add(buttonLeft = createButton(0, FlxG.height - 243, 132, 127, 'left', 0xFFFF00FF)));
 				dPad.add(add(buttonRight = createButton(207, FlxG.height - 243, 132, 127, 'right', 0xFFFF0000)));
 				dPad.add(add(buttonDown = createButton(105, FlxG.height - 135, 132, 127, 'down', 0xFF00FFFF)));
-				dPad.add(add(buttonUp2 = createButton(FlxG.width - 258, FlxG.height - 401, 132, 127, 'up', 0xFF00FF00)));
-				dPad.add(add(buttonLeft2 = createButton(FlxG.width - 384, FlxG.height - 341, 132, 127, 'left', 0xFFFF00FF)));
-				dPad.add(add(buttonRight2 = createButton(FlxG.width - 132, FlxG.height - 341, 132, 127, 'right', 0xFFFF0000)));
+
+				dPad.add(add(buttonUp2 = createButton(FlxG.width - 258, FlxG.height - 408, 132, 127, 'up', 0xFF00FF00)));
+				dPad.add(add(buttonLeft2 = createButton(FlxG.width - 384, FlxG.height - 309, 132, 127, 'left', 0xFFFF00FF)));
+				dPad.add(add(buttonRight2 = createButton(FlxG.width - 132, FlxG.height - 309, 132, 127, 'right', 0xFFFF0000)));
 				dPad.add(add(buttonDown2 = createButton(FlxG.width - 258, FlxG.height - 201, 132, 127, 'down', 0xFF00FFFF)));
 			case NONE:
 		}
@@ -157,7 +157,7 @@ class FlxVirtualPad extends FlxSpriteGroup
 		button.scrollFactor.set();
 		button.alpha = 0.75;
 		button.antialiasing = ClientPrefs.globalAntialiasing;
-		if (color != null)
+		if (color != null && ClientPrefs.visualColours)
 			button.color = color;
 		#if FLX_DEBUG
 		button.ignoreDrawDebug = true;
