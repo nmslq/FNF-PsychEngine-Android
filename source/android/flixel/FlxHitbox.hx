@@ -14,9 +14,6 @@ class FlxHitbox extends FlxSpriteGroup
 	public var buttonUp:FlxButton;
 	public var buttonRight:FlxButton;
 
-	public var sizex:Int = 320;
-	public var sizey:Int = 720;
-
 	public function new()
 	{
 		super();
@@ -27,9 +24,6 @@ class FlxHitbox extends FlxSpriteGroup
 		buttonDown = new FlxButton(0, 0);
 		buttonUp = new FlxButton(0, 0);
 		buttonRight = new FlxButton(0, 0);
-
-		sizex = FlxG.width / 4;
-		sizey = FlxG.height;
 
 		hitbox.add(add(buttonLeft = createHitbox(0, 0, 'left', 0xFFFF00FF)));
 		hitbox.add(add(buttonDown = createHitbox(sizex, 0, 'down', 0xFF00FFFF)));
