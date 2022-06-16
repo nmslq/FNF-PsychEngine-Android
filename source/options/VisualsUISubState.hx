@@ -90,14 +90,21 @@ class VisualsUISubState extends BaseOptionsMenu
 		addOption(option);
 
 		#if android
-		var option:Option = new Option('Visual Controls FNF Colours',
-			'If unchecked, The colours of the visual controls\nwill be like the og fnf ones.',
-			'fnfColours',
+		var option:Option = new Option('Visual Controls Colours',
+			'If unchecked, The direction visual controls will not have colours.',
+			'visualColours',
 			'bool',
-			 false);
+			false);
+		addOption(option);
+
+		var option:Option = new Option('Hitbox Hints',
+			'If unchecked, The hitbox hints will not be visible with the back hint box.',
+			'visibleHints',
+			'bool',
+			false);
 		addOption(option);
 		#end
-		
+
 		var option:Option = new Option('FPS Counter',
 			'If unchecked, hides FPS Counter.',
 			'showFPS',
