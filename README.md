@@ -6,49 +6,41 @@ You must have [the most up-to-date version of Haxe](https://haxe.org/download/),
 
 Follow a Friday Night Funkin' source code compilation tutorial, after this you will need to install LuaJIT.
 
-To install LuaJIT do this: `haxelib git linc_luajit https://github.com/nebulazorua/linc_luajit` on a Command prompt/PowerShell
+To install LuaJIT do this: `haxelib git linc_luajit https://github.com/jigsaw-4277821/linc_luajit` on a Command prompt/PowerShell
 
 ...Or if you don't want your mod to be able to run .lua scripts, delete the "LUA_ALLOWED" line on Project.xml
 
 If you get an error about StatePointer when using Lua, run `haxelib remove linc_luajit` into Command Prompt/PowerShell, then re-install linc_luajit.
+_____________________________________
 
-# Build instructions For Android
+### Build Instructions For Android:
 
 1. Download
-* <a href = "https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html"> JDK </a> - download jdk 8
-* <a href = "https://developer.android.com/studio"> Android Studio </a>
-* <a href = "https://developer.android.com/ndk/downloads/older_releases?hl=fi"> NDK </a> - download the r15c
+* [JDK](https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html) - Download the version `11` of it
+* [Android Studio](https://developer.android.com/studio) - I recomand to download the latest version
+* [NDK](https://developer.android.com/ndk/downloads/older_releases?hl=fi) - Download the version `r21e` (This is the version recomanded by Lime)
 
 2. Install JDK, Android Studio 
-Unzip ndk (ndk does not need to be installed)
+Unzip NDK (NDK does not need to be installed because is a zip archive)
 
 3. We need to set up Android Studio for this go to android studio and find android sdk (in settings -> Appearance & Behavior -> system settings -> android sdk)
 ![andr](https://user-images.githubusercontent.com/59097731/104179652-44346000-541d-11eb-8ad1-1e4dfae304a8.PNG)
 ![andr2](https://user-images.githubusercontent.com/59097731/104179943-a9885100-541d-11eb-8f69-7fb5a4bfdd37.PNG)
 
-4. And run command `lime setup android` in power shell / cmd
-You need to insert the program paths
+6. You Need to install extension-androidtools
 
-As in this picture (use jdk, not jre)
-![lime](https://user-images.githubusercontent.com/59097731/104179268-9e80f100-541c-11eb-948d-a00d85317b1a.PNG)
+To install `extension-androidtools` do this: `haxelib git extension-androidtools https://github.com/jigsaw-4277821/extension-androidtools` on a Command prompt/PowerShell
 
-5. You Need to install extension-androidtools, extension-videoview and to replace the linc_luajit
+5. And run command `lime setup android` in power shell / cmd (You need to insert the program paths)
 
-To Install Them You Need To Open Command prompt/PowerShell And To Tipe
-```cmd
-haxelib git extension-androidtools https://github.com/jigsaw-4277821/extension-androidtools.git
-
-haxelib git extension-videoview https://github.com/jigsaw-4277821/extension-videoview.git
-
-haxelib remove linc_luajit
-
-haxelib git linc_luajit https://github.com/jigsaw-4277821/linc_luajit.git
-
-```
-
-6. Open project in command line `cd (path to fnf source)`
+6. Open project in Command prompt/PowerShell `cd (path to fnf source)`
 And run command `lime build android -final`
 Apk will be generated in this path (path to source)\export\release\android\bin\app\build\outputs\apk\debug
+_____________________________________
+
+If you want video support on your mod, simply do `haxelib install hxCodec` on a Command prompt/PowerShell
+
+otherwise, you can delete the "VIDEOS_ALLOWED" Line on Project.xml
 
 ## Credits:
 * Shadow Mario - Coding
@@ -65,8 +57,8 @@ Apk will be generated in this path (path to source)\export\release\android\bin\a
 * Cary - OG Resolution code
 * Nebula_Zorua - VCR Shader code
 
-### Android Port
-* Saw (M.A. Jigsaw) - all the stuff for the android port
+### Android Support
+* Saw (M.A. Jigsaw) - All the stuff for this engine to have android support
 _____________________________________
 
 # Features
