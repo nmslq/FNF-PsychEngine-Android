@@ -144,7 +144,7 @@ jobs:
         with:
           name: macBuild
           path: export/release/macos/bin
-buildAndroid:
+  buildAndroid:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     
