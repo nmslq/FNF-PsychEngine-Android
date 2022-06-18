@@ -263,7 +263,7 @@ class FunkinLua {
 				cervix = Paths.modFolders(cervix);
 				doPush = true;
 			}
-			else if(SUtil.getPath() + FileSystem.exists(cervix))
+			else if(FileSystem.exists(SUtil.getPath() + cervix))
 			{
 				doPush = true;
 			}
@@ -318,7 +318,7 @@ class FunkinLua {
 				cervix = Paths.modFolders(cervix);
 				doPush = true;
 			}
-			else if(SUtil.getPath() + FileSystem.exists(cervix))
+			else if(FileSystem.exists(SUtil.getPath() + cervix))
 			{
 				doPush = true;
 			}
@@ -371,7 +371,7 @@ class FunkinLua {
 				cervix = Paths.modFolders(cervix);
 				doPush = true;
 			}
-			else if(SUtil.getPath() + FileSystem.exists(cervix))
+			else if(FileSystem.exists(SUtil.getPath() + cervix))
 			{
 				doPush = true;
 			}
@@ -410,7 +410,7 @@ class FunkinLua {
 				cervix = Paths.modFolders(cervix);
 				doPush = true;
 			}
-			else if(SUtil.getPath() + FileSystem.exists(cervix))
+			else if(FileSystem.exists(SUtil.getPath() + cervix))
 			{
 				doPush = true;
 			}
@@ -494,7 +494,7 @@ class FunkinLua {
 				cervix = Paths.modFolders(cervix);
 				doPush = true;
 			}
-			else if(SUtil.getPath() + FileSystem.exists(cervix))
+			else if(FileSystem.exists(SUtil.getPath() + cervix))
 			{
 				doPush = true;
 			}
@@ -532,7 +532,7 @@ class FunkinLua {
 				cervix = Paths.modFolders(cervix);
 				doPush = true;
 			}
-			else if(SUtil.getPath() + FileSystem.exists(cervix))
+			else if(FileSystem.exists(SUtil.getPath() + cervix))
 			{
 				doPush = true;
 			}
@@ -577,7 +577,7 @@ class FunkinLua {
 				cervix = Paths.modFolders(cervix);
 				doPush = true;
 			}
-			else if(SUtil.getPath() + FileSystem.exists(cervix))
+			else if(FileSystem.exists(SUtil.getPath() + cervix))
 			{
 				doPush = true;
 			}
