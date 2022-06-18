@@ -40,7 +40,7 @@ class PauseSubState extends MusicBeatSubstate
 
 		if(PlayState.chartingMode)
 		{
-		        menuItemsOG.remove('Charting Mode');
+			menuItemsOG.remove('Charting Mode');
 			menuItemsOG.insert(2, 'Leave Charting Mode');
 			
 			var num:Int = 0;
@@ -245,7 +245,7 @@ class PauseSubState extends MusicBeatSubstate
 						skipTimeText.destroy();
 					}
 					skipTimeText = null;
-			        case "Charting Mode":
+				case "Charting Mode":
 					close();
 					PlayState.chartingMode = true;
 				case 'Skip Time':
@@ -275,12 +275,12 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.instance.botplayTxt.visible = PlayState.instance.cpuControlled;
 					PlayState.instance.botplayTxt.alpha = 1;
 					PlayState.instance.botplaySine = 0;
-                                case 'Chart Editor':
-		                        MusicBeatState.switchState(new editors.ChartingState());
-		                        PlayState.chartingMode = true;
-		                case 'Character Editor':
-		                        MusicBeatState.switchState(new editors.CharacterEditorState());
-		                        PlayState.chartingMode = true;
+				case 'Chart Editor':
+					MusicBeatState.switchState(new editors.ChartingState());
+					PlayState.chartingMode = true;
+				case 'Character Editor':
+					MusicBeatState.switchState(new editors.CharacterEditorState());
+					PlayState.chartingMode = true;
 				case "Exit to menu":
 					PlayState.deathCounter = 0;
 					PlayState.seenCutscene = false;

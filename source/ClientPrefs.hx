@@ -24,7 +24,7 @@ class ClientPrefs {
 	public static var arrowHSV:Array<Array<Int>> = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
 	public static var vibration:Bool = false;
 	public static var visualColours:Bool = false;
-	public static var visibleHints:Bool = false;
+	public static var hitboxHints:Bool = false;
 	public static var ghostTapping:Bool = true;
 	public static var timeBarType:String = 'Time Left';
 	public static var scoreZoom:Bool = true;
@@ -112,7 +112,7 @@ class ClientPrefs {
 		FlxG.save.data.arrowHSV = arrowHSV;
 		FlxG.save.data.vibration = vibration;
 		FlxG.save.data.visualColours = visualColours;
-		FlxG.save.data.visibleHints = visibleHints;
+		FlxG.save.data.hitboxHints = hitboxHints;
 		FlxG.save.data.ghostTapping = ghostTapping;
 		FlxG.save.data.timeBarType = timeBarType;
 		FlxG.save.data.scoreZoom = scoreZoom;
@@ -204,8 +204,8 @@ class ClientPrefs {
 		if(FlxG.save.data.visualColours != null) {
 			visualColours = FlxG.save.data.visualColours;
 		}
-		if(FlxG.save.data.visibleHints != null) {
-			visibleHints = FlxG.save.data.visibleHints;
+		if(FlxG.save.data.hitboxHints != null) {
+			hitboxHints = FlxG.save.data.hitboxHints;
 		}
 		if(FlxG.save.data.ghostTapping != null) {
 			ghostTapping = FlxG.save.data.ghostTapping;
