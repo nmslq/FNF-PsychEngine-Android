@@ -19,7 +19,7 @@ typedef EventNote = {
 
 class Note extends FlxSprite
 {
-        public var extraData:Map<String,Dynamic> = [];
+	public var extraData:Map<String,Dynamic> = [];
 
 	public var strumTime:Float = 0;
 
@@ -50,8 +50,12 @@ class Note extends FlxSprite
 
 	public var colorSwap:ColorSwap;
 	public var inEditor:Bool = false;
+
+	public var animSuffix:String = '';
 	public var gfNote:Bool = false;
-	private var earlyHitMult:Float = 0.5;
+	public var earlyHitMult:Float = 0.5;
+	public var lateHitMult:Float = 1;
+	public var lowPriority:Bool = false;
 
 	public static var swagWidth:Float = 160 * 0.7;
 	public static var PURP_NOTE:Int = 0;
@@ -95,7 +99,7 @@ class Note extends FlxSprite
 	private function set_multSpeed(value:Float):Float {
 		resizeByRatio(value / multSpeed);
 		multSpeed = value;
-		trace('fuck cock');
+		//trace('fuck cock');
 		return value;
 	}
 
@@ -128,18 +132,19 @@ class Note extends FlxSprite
 					ignoreNote = mustPress;
 					reloadNote('HURT');
 					noteSplashTexture = 'HURTnoteSplashes';
-					if(PlayState.isPixelStage) {
-						noteSplashTexture = 'pixelUI/HURTnoteSplashes';
-					}
 					colorSwap.hue = 0;
 					colorSwap.saturation = 0;
 					colorSwap.brightness = 0;
+					lowPriority = true;
+
 					if(isSustainNote) {
 						missHealth = 0.1;
 					} else {
 						missHealth = 0.3;
 					}
 					hitCausesMiss = true;
+				case 'Alt Animation':
+					animSuffix = '-alt';
 				case 'No Animation':
 					noAnimation = true;
 					noMissAnimation = true;
@@ -275,7 +280,7 @@ class Note extends FlxSprite
 		if(prefix == null) prefix = '';
 		if(texture == null) texture = '';
 		if(suffix == null) suffix = '';
-		
+
 		var skin:String = texture;
 		if(texture.length < 1) {
 			skin = PlayState.SONG.arrowSkin;
@@ -315,12 +320,12 @@ class Note extends FlxSprite
 				offsetX += lastNoteOffsetXForPixelAutoAdjusting;
 				lastNoteOffsetXForPixelAutoAdjusting = (width - 7) * (PlayState.daPixelZoom / 2);
 				offsetX -= lastNoteOffsetXForPixelAutoAdjusting;
-				
+
 				/*if(animName != null && !animName.endsWith('end'))
 				{
 					lastScaleY /= lastNoteScaleToo;
 					lastNoteScaleToo = (6 / height);
-					lastScaleY *= lastNoteScaleToo; 
+					lastScaleY *= lastNoteScaleToo;
 				}*/
 			}
 		} else {
@@ -391,7 +396,7 @@ class Note extends FlxSprite
 		if (mustPress)
 		{
 			// ok river
-			if (strumTime > Conductor.songPosition - Conductor.safeZoneOffset
+			if (strumTime > Conductor.songPosition - (Conductor.safeZoneOffset * lateHitMult)
 				&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * earlyHitMult))
 				canBeHit = true;
 			else

@@ -263,7 +263,7 @@ class FunkinLua {
 				cervix = Paths.modFolders(cervix);
 				doPush = true;
 			}
-			else if(FileSystem.exists(cervix))
+			else if(SUtil.getPath() + FileSystem.exists(cervix))
 			{
 				doPush = true;
 			}
@@ -318,7 +318,7 @@ class FunkinLua {
 				cervix = Paths.modFolders(cervix);
 				doPush = true;
 			}
-			else if(FileSystem.exists(cervix))
+			else if(SUtil.getPath() + FileSystem.exists(cervix))
 			{
 				doPush = true;
 			}
@@ -371,7 +371,7 @@ class FunkinLua {
 				cervix = Paths.modFolders(cervix);
 				doPush = true;
 			}
-			else if(FileSystem.exists(cervix))
+			else if(SUtil.getPath() + FileSystem.exists(cervix))
 			{
 				doPush = true;
 			}
@@ -410,7 +410,7 @@ class FunkinLua {
 				cervix = Paths.modFolders(cervix);
 				doPush = true;
 			}
-			else if(FileSystem.exists(cervix))
+			else if(SUtil.getPath() + FileSystem.exists(cervix))
 			{
 				doPush = true;
 			}
@@ -421,7 +421,7 @@ class FunkinLua {
 				}
 			}
 			#else
-			cervix = SUtil.getPath() + Paths.getPreloadPath(cervix);
+			cervix = Paths.getPreloadPath(cervix);
 			if(Assets.exists(cervix)) {
 				doPush = true;
 			}
@@ -494,7 +494,7 @@ class FunkinLua {
 				cervix = Paths.modFolders(cervix);
 				doPush = true;
 			}
-			else if(FileSystem.exists(cervix))
+			else if(SUtil.getPath() + FileSystem.exists(cervix))
 			{
 				doPush = true;
 			}
@@ -532,7 +532,7 @@ class FunkinLua {
 				cervix = Paths.modFolders(cervix);
 				doPush = true;
 			}
-			else if(FileSystem.exists(cervix))
+			else if(SUtil.getPath() + FileSystem.exists(cervix))
 			{
 				doPush = true;
 			}
@@ -577,7 +577,7 @@ class FunkinLua {
 				cervix = Paths.modFolders(cervix);
 				doPush = true;
 			}
-			else if(FileSystem.exists(cervix))
+			else if(SUtil.getPath() + FileSystem.exists(cervix))
 			{
 				doPush = true;
 			}
@@ -1747,6 +1747,24 @@ class FunkinLua {
 		});
 		Lua_helper.add_callback(lua, "luaSoundExists", function(tag:String) {
 			return PlayState.instance.modchartSounds.exists(tag);
+		});
+		Lua_helper.add_callback(lua, "checkFileExists", function(filename:String, ?absolute:Bool = false) {
+			#if MODS_ALLOWED
+			if(absolute)
+			{
+				return FileSystem.exists(SUtil.getPath() + filename);
+			}
+
+			var path:String = Paths.modFolders(filename);
+			if(FileSystem.exists(path))
+			{
+				return true;
+			}
+			return FileSystem.exists(SUtil.getPath() + 'assets/$filename');
+			#else
+			luaTrace('Platform not suppoted for checkFileExists!', true, false, FlxColor.RED);
+			return false;
+			#end
 		});
 
 		Lua_helper.add_callback(lua, "setObjectCamera", function(obj:String, camera:String = '') {
