@@ -1534,6 +1534,7 @@ class ChartingState extends MusicBeatState
 			} else {
 				dummyArrow.visible = false;
 			}
+
 			if (touch.justReleased)
 			{
 				if (touch.overlaps(curRenderedNotes))
@@ -1542,6 +1543,7 @@ class ChartingState extends MusicBeatState
 					{
 						if (touch.overlaps(note))
 						{
+							//trace('tryin to delete note...');
 							deleteNote(note);
 						}
 					});
@@ -1551,7 +1553,7 @@ class ChartingState extends MusicBeatState
 					if (touch.x > gridBG.x
 						&& touch.x < gridBG.x + gridBG.width
 						&& touch.y > gridBG.y
-						&& touch.y < gridBG.y + (GRID_SIZE * getSectionBeats() * 4 * zoomList[curZoom])
+						&& touch.y < gridBG.y + (GRID_SIZE * getSectionBeats() * 4) * zoomList[curZoom])
 					{
 						FlxG.log.add('added note');
 						addNote();
