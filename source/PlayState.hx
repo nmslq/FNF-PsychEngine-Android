@@ -1236,9 +1236,9 @@ class PlayState extends MusicBeatState
 		timeTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
 
-                #if android
-                addAndroidControls();
-                #end
+		#if android
+		addAndroidControls();
+		#end
 
 		// if (SONG.song == 'South')
 		// FlxG.camera.alpha = 0.7;
@@ -1814,7 +1814,7 @@ class PlayState extends MusicBeatState
 			dadGroup.alpha = 1;
 			camHUD.visible = true;
 			#if android
-			androidc.visible = true;
+			androidControls.visible = true;
 			#end
 
 			var stuff:Array<FlxSprite> = [tankman, gfDance, gfCutscene, picoCutscene, boyfriendCutscene];
@@ -2111,9 +2111,9 @@ class PlayState extends MusicBeatState
 		var ret:Dynamic = callOnLuas('onStartCountdown', []);
 		if(ret != FunkinLua.Function_Stop) {
 			if (skipCountdown || startOnTime > 0) skipArrowStartTween = true;
-                        #if android
-                        androidc.visible = true;
-                        #end
+			#if android
+			androidControls.visible = true;
+			#end
 			generateStaticArrows(0);
 			generateStaticArrows(1);
 			for (i in 0...playerStrums.length) {
@@ -3518,7 +3518,7 @@ class PlayState extends MusicBeatState
 							}
 
 							#if android
-							androidc.color = FlxColor.WHITE;
+							androidControls.color = FlxColor.WHITE;
 							#end
 
 							phillyStreet.color = FlxColor.WHITE;
@@ -3553,7 +3553,7 @@ class PlayState extends MusicBeatState
 						}
 
 						#if android
-						androidc.color = color;
+						androidControls.color = color;
 						#end
 
 						phillyGlowParticles.forEachAlive(function(particle:PhillyGlow.PhillyGlowParticle)
@@ -3902,7 +3902,7 @@ class PlayState extends MusicBeatState
 		}
 
                 #if android
-                androidc.visible = false;
+                androidControls.visible = false;
                 #end		
 		timeBarBG.visible = false;
 		timeBar.visible = false;

@@ -83,10 +83,10 @@ class GameOverSubstate extends MusicBeatSubstate
 		camFollowPos.setPosition(FlxG.camera.scroll.x + (FlxG.camera.width / 2), FlxG.camera.scroll.y + (FlxG.camera.height / 2));
 		add(camFollowPos);
 
-                #if android
-                addVirtualPad(NONE, A_B);
-                addPadCamera();
-                #end
+		#if android
+		addVirtualPad(NONE, A_B);
+		addPadCamera();
+		#end
 	}
 
 	var isFollowingAlready:Bool = false;
@@ -135,7 +135,7 @@ class GameOverSubstate extends MusicBeatSubstate
 				{
 					playingDeathSound = true;
 					coolStartDeath(0.2);
-
+					
 					var exclude:Array<Int> = [];
 					//if(!ClientPrefs.cursing) exclude = [1, 3, 8, 13, 17, 21];
 
@@ -185,8 +185,8 @@ class GameOverSubstate extends MusicBeatSubstate
 			FlxG.sound.play(Paths.music(endSoundName));
 			new FlxTimer().start(0.7, function(tmr:FlxTimer)
 			{
-			    #if android
-				FlxTween.tween(_virtualpad, {alpha: 0}, 2);
+				#if android
+				FlxTween.tween(virtualPad, {alpha: 0}, 2);
 				#end
 				FlxG.camera.fade(FlxColor.BLACK, 2, false, function()
 				{

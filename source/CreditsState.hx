@@ -81,11 +81,11 @@ class CreditsState extends MusicBeatState
 		#end
 
 		var pisspoop:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
-                        #if android 
+			#if android
 			['Android Support'],
-			['Saw (M.A. Jigsaw)',	'saw',				'Main Programmer of Psych Engine Android',					'https://www.youtube.com/channel/UC2Sk7vtPzOvbVzdVTWrribQ', 	'444444'],
-			#end
+			['Saw (M.A. Jigsaw)',	'saw',				'Main Programmer of Psych Engine\nWith Android Support',	'https://www.youtube.com/channel/UC2Sk7vtPzOvbVzdVTWrribQ', 	'444444'],
 			[''],
+			#end
 			['Psych Engine Team'],
 			['Shadow Mario',		'shadowmario',		'Main Programmer of Psych Engine',							'https://twitter.com/Shadow_Mario_',	'444444'],
 			['RiverOaken',			'riveroaken',		'Main Artist/Animator of Psych Engine',						'https://twitter.com/RiverOaken',		'C30085'],
@@ -163,11 +163,13 @@ class CreditsState extends MusicBeatState
 
 		bg.color = getCurrentBGColor();
 		intendedColor = bg.color;
-		changeSelection();
 
-                #if android
-                addVirtualPad(UP_DOWN, A_B);
-                #end
+		#if android
+		addVirtualPad(UP_DOWN, A_B);
+		virtualPad.color = getCurrentBGColor();
+		#end
+
+		changeSelection();
 
 		super.create();
 	}
@@ -274,6 +276,13 @@ class CreditsState extends MusicBeatState
 					colorTween = null;
 				}
 			});
+			#if android
+			colorTween = FlxTween.color(virtualPad, 1, virtualPad.color, intendedColor, {
+				onComplete: function(twn:FlxTween) {
+					colorTween = null;
+				}
+			});
+			#end
 		}
 
 		var bullShit:Int = 0;
