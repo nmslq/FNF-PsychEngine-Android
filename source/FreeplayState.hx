@@ -209,9 +209,11 @@ class FreeplayState extends MusicBeatState
 		text.scrollFactor.set();
 		add(text);
 
-                #if android
-                addVirtualPad(FULL, A_B_C_X_Y_Z);
-                #end
+		#if android
+		addVirtualPad(FULL, A_B_C_X_Y_Z);
+		_virtualpad.canUseColor = false;
+		_virtualpad.y = -44;
+		#end
 
 		super.create();
 	}
@@ -332,7 +334,7 @@ class FreeplayState extends MusicBeatState
 
 		if(ctrl)
 		{
-		        #if android
+			#if android
 			removeVirtualPad();
 			#end
 			persistentUpdate = false;
@@ -401,7 +403,7 @@ class FreeplayState extends MusicBeatState
 		}
 		else if(controls.RESET #if android || _virtualpad.buttonY.justPressed #end)
 		{
-		        #if android
+			#if android
 			removeVirtualPad();
 			#end
 			persistentUpdate = false;
@@ -457,6 +459,9 @@ class FreeplayState extends MusicBeatState
 				colorTween.cancel();
 			}
 			intendedColor = newColor;
+			#if android
+			colorTween = FlxTween.color(_virtualpad, 1, _virtualpad.color, intendedColor);
+			#end
 			colorTween = FlxTween.color(bg, 1, bg.color, intendedColor, {
 				onComplete: function(twn:FlxTween) {
 					colorTween = null;
