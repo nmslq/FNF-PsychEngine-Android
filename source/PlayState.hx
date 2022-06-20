@@ -1785,7 +1785,7 @@ class PlayState extends MusicBeatState
 		dadGroup.alpha = 0.00001;
 		camHUD.visible = false;
 		#if android
-		androidc.visible = false;
+		androidControls.visible = false;
 		#end
 		//inCutscene = true; //this would stop the camera movement, oops
 
@@ -3901,9 +3901,9 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-                #if android
-                androidControls.visible = false;
-                #end		
+		#if android
+		androidControls.visible = false;
+		#end		
 		timeBarBG.visible = false;
 		timeBar.visible = false;
 		timeTxt.visible = false;
