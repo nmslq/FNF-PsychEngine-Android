@@ -1498,7 +1498,7 @@ class ChartingState extends MusicBeatState
 		FlxG.mouse.visible = true;//cause reasons. trust me 
 		camPos.y = strumLine.y;
 		if(!disableAutoScrolling.checked) {
-			if (Math.ceil(strumLine.y) >= gridBG.height / 2)
+			if (Math.ceil(strumLine.y) >= gridBG.height)
 			{
 
 				if (_song.notes[curSection + 1] == null)
@@ -2923,15 +2923,15 @@ return FlxMath.remapToRange(strumTime, 0, 16 * Conductor.stepCrochet, gridBG.y, 
 
 		if ((data != null) && (data.length > 0))
 		{
-                        #if android
-                        SUtil.saveContent(Paths.formatToSongPath(_song.song) + postfix, ".json", data.trim());
-                        #else
+			#if android
+			SUtil.saveContent(Paths.formatToSongPath(_song.song) + postfix, ".json", data.trim());
+			#else
 			_file = new FileReference();
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 			_file.save(data.trim(), Paths.formatToSongPath(_song.song) + postfix + ".json");
-                        #end
+			#end
 		}
 	}
 	
@@ -2954,15 +2954,15 @@ return FlxMath.remapToRange(strumTime, 0, 16 * Conductor.stepCrochet, gridBG.y, 
 
 		if ((data != null) && (data.length > 0))
 		{
-                        #if android
-                        SUtil.saveContent("events", ".json", data.trim());
-                        #else
+			#if android
+			SUtil.saveContent("events", ".json", data.trim());
+			#else
 			_file = new FileReference();
 			_file.addEventListener(Event.COMPLETE, onSaveComplete);
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 			_file.save(data.trim(), "events.json");
-                        #end
+			#end
 		}
 	}
 
