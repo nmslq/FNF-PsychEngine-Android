@@ -212,7 +212,7 @@ class FreeplayState extends MusicBeatState
 		#if android
 		addVirtualPad(FULL, A_B_C_X_Y_Z);
 		_virtualpad.canUseColor = false;
-		_virtualpad.y = -44;
+		_virtualpad.y = -22;
 		#end
 
 		super.create();
