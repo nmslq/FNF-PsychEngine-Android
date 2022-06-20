@@ -63,10 +63,10 @@ class OptionsState extends MusicBeatState
 				openSubState(new options.GameplaySettingsSubState());
 			case 'Adjust Delay and Combo':
 				LoadingState.loadAndSwitchState(new options.NoteOffsetState());
-                        case 'Android Controls':
-                                #if android
-				MusicBeatState.switchState(new android.AndroidControlsMenu());
-                                #end
+ 			case 'Android Controls':
+				#if android
+				MusicBeatState.switchState(new android.AndroidControls.Menu());
+				#end
 		}
 	}
 
