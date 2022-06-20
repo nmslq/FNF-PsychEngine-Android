@@ -1,44 +1,45 @@
 function onCreate()
-    makeLuaSprite('whitebg','',-1000,200)
-    makeGraphic('whitebg',400,100,'FFFFFF')
-    setObjectCamera('whitebg','other')
-    setProperty('whitebg.alpha',0.7)
-    addLuaSprite('whitebg')
+    makeLuaSprite('whitebg', nil, -1000, 200);
+    makeGraphic('whitebg', 400, 100, 'FFFFFF');
+    setObjectCamera('whitebg', 'other');
+    setProperty('whitebg.alpha', 0.7);
+    addLuaSprite('whitebg', true);
 
-    makeLuaText('songtext',songName,400,0,200)
-    setTextSize('songtext',30)
-    setObjectCamera('songtext','other')
-    setTextAlignment('songtext','center')
-    addLuaText('songtext')
+    makeLuaText('songtext', songName, 400, 0, 200);
+    setTextSize('songtext', 30);
+    setObjectCamera('songtext','other');
+    setTextAlignment('songtext','center');
+    addLuaText('songtext', true);
 
-    makeLuaText('authortext',difficultyName,400,0,260)
-    setTextSize('authortext',30)
-    setObjectCamera('authortext','other')
-    setTextAlignment('authortext','center')
-    addLuaText('authortext')
+    makeLuaText('authortext', difficultyName, 400, 0, 260);
+    setTextSize('authortext', 30);
+    setObjectCamera('authortext', 'other');
+    setTextAlignment('authortext', 'center');
+    addLuaText('authortext', true);
 end
+
 function onCreatePost()
-    doTweenX('songtweenin','whitebg',0,1,'cubeOut')
+    doTweenX('songTweenIn','whitebg',0,1,'cubeOut');
 end
 
 function onUpdate()
-    setProperty('songtext.x',getProperty('whitebg.x'))
-    setProperty('authortext.x',getProperty('whitebg.x'))
+    setProperty('songtext.x',getProperty('whitebg.x'));
+    setProperty('authortext.x',getProperty('whitebg.x')) 
 end
 
 function onTweenCompleted(tag)
-    if tag == 'songtweenin' then
-        runTimer('tweentimer',3)
+    if tag == 'songTweenIn' then
+        runTimer('tweenTimer', 3);
     end
-    if tag == 'songtweenout' then
-        removeLuaText('authortext')
-        removeLuaText('songtext')
-        removeLuaSprite('whitebg')
+    if tag == 'songTweenOut' then
+        removeLuaText('authortext', true);
+        removeLuaText('songtext', true);
+        removeLuaSprite('whitebg', true);
     end
 end
 
 function onTimerCompleted(tag)
-    if tag == 'tweentimer' then
-        doTweenX('songtweenout','whitebg',-1000,1,'cubeIn')
+    if tag == 'tweenTimer' then
+        doTweenX('songTweenOut','whitebg',-1000,1,'cubeIn');
     end
 end
