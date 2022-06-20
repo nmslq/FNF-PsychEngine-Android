@@ -44,7 +44,7 @@ class FlxHitbox extends FlxSpriteGroup
 	{
 		var hint:FlxHitboxHint = new FlxHitboxHint(x, y, frames);
 		hint.antialiasing = ClientPrefs.globalAntialiasing;
-		if (color != null && (ClientPrefs.visualColours && canUseColor))
+		if (color != null && ClientPrefs.visualColours)
 			hint.color = color;
 		return hint;
 	}
@@ -55,7 +55,7 @@ class FlxHitbox extends FlxSpriteGroup
 		hint.loadGraphic(FlxGraphic.fromFrame(getFrames().getByName(frames)));
 		hint.alpha = 0.75;
 		hint.antialiasing = ClientPrefs.globalAntialiasing;
-		if (color != null && (ClientPrefs.visualColours && canUseColor))
+		if (color != null && ClientPrefs.visualColours)
 			hint.color = color;
 		return hint;
 	}
