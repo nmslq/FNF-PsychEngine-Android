@@ -33,6 +33,8 @@ class FlxVirtualPad extends FlxSpriteGroup
 	public var buttonY:FlxButton;
 	public var buttonZ:FlxButton;
 
+	public var canUseColor:Bool = true;
+
 	public function new(DPad:FlxDPadMode, Action:FlxActionMode)
 	{
 		super();
@@ -157,7 +159,7 @@ class FlxVirtualPad extends FlxSpriteGroup
 		button.scrollFactor.set();
 		button.alpha = 0.75;
 		button.antialiasing = ClientPrefs.globalAntialiasing;
-		if (color != null && ClientPrefs.visualColours)
+		if (color != null && (ClientPrefs.visualColours && canUseColor))
 			button.color = color;
 		#if FLX_DEBUG
 		button.ignoreDrawDebug = true;
