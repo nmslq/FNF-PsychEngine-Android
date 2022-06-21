@@ -3516,12 +3516,11 @@ class PlayState extends MusicBeatState
 							{
 								who.color = FlxColor.WHITE;
 							}
+							phillyStreet.color = FlxColor.WHITE;
 
 							#if android
-							androidControls.color = FlxColor.WHITE;
+							androidControls.resetColors();
 							#end
-
-							phillyStreet.color = FlxColor.WHITE;
 						}
 
 					case 1: //turn on
@@ -3552,10 +3551,6 @@ class PlayState extends MusicBeatState
 							who.color = color;
 						}
 
-						#if android
-						androidControls.color = color;
-						#end
-
 						phillyGlowParticles.forEachAlive(function(particle:PhillyGlow.PhillyGlowParticle)
 						{
 							particle.color = color;
@@ -3566,6 +3561,10 @@ class PlayState extends MusicBeatState
 						var colorDark:FlxColor = color;
 						colorDark.brightness *= 0.5;
 						phillyStreet.color = colorDark;
+
+						#if android
+						androidControls.color = color;
+						#end
 
 					case 2: // spawn particles
 						if(!ClientPrefs.lowQuality)
