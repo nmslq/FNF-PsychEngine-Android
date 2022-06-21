@@ -596,7 +596,7 @@ class ChartingState extends MusicBeatState
 		stageDropDown.selectedLabel = _song.stage;
 		blockPressWhileScrolling.push(stageDropDown);
 		
-		if (CoolUtil.difficulties[PlayState.storyDifficulty] != "Normal" && CoolUtil.difficulties[PlayState.storyDifficulty] != null)
+		if (CoolUtil.difficulties[PlayState.storyDifficulty] != CoolUtil.defaultDifficulty && CoolUtil.difficulties[PlayState.storyDifficulty] != null)
 		{
 			postfix = '-' + CoolUtil.difficulties[PlayState.storyDifficulty].toLowerCase();
 		}
