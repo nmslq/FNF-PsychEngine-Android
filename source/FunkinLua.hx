@@ -45,6 +45,9 @@ import Discord;
 
 #if android
 import android.Hardware;
+import android.Tools;
+import android.Permissions;
+import android.PermissionsList;
 #end
 
 using StringTools;
