@@ -449,7 +449,7 @@ class ChartingState extends MusicBeatState
 			var songName:String = Paths.formatToSongPath(_song.song);
 			var file:String = Paths.json(songName + '/events');
 			#if MODS_ALLOWED
-			if (FileSystem.exists(Paths.modsJson(songName + '/events')) ||FileSystem.exists(SUtil.getPath() + file))
+			if (FileSystem.exists(Paths.modsJson(songName + '/events')) || FileSystem.exists(SUtil.getPath() + file))
 			#else
 			if (OpenFlAssets.exists(file))
 			#end
@@ -596,7 +596,7 @@ class ChartingState extends MusicBeatState
 		stageDropDown.selectedLabel = _song.stage;
 		blockPressWhileScrolling.push(stageDropDown);
 		
-		if (CoolUtil.difficulties[PlayState.storyDifficulty] != "Normal")
+		if (CoolUtil.difficulties[PlayState.storyDifficulty] != "Normal" && CoolUtil.difficulties[PlayState.storyDifficulty] != null)
 		{
 			postfix = '-' + CoolUtil.difficulties[PlayState.storyDifficulty].toLowerCase();
 		}
@@ -1162,8 +1162,8 @@ class ChartingState extends MusicBeatState
 	var metronomeStepper:FlxUINumericStepper;
 	var metronomeOffsetStepper:FlxUINumericStepper;
 	var disableAutoScrolling:FlxUICheckBox;
-	var waveformUseVoices:FlxUICheckBox;
 	var waveformUseInstrumental:FlxUICheckBox;
+	var waveformUseVoices:FlxUICheckBox;
 	var instVolume:FlxUINumericStepper;
 	var voicesVolume:FlxUINumericStepper;
 	function addChartingUI() {
@@ -1797,14 +1797,14 @@ class ChartingState extends MusicBeatState
 			}
 
 			if(!vortex){
-				if (FlxG.keys.justPressed.UP || FlxG.keys.justPressed.DOWN #if android || virtualPad.buttonUp.justPressed || virtualPad.buttonDown.justPressed #end  )
+				if (FlxG.keys.justPressed.UP || FlxG.keys.justPressed.DOWN #if android || virtualPad.buttonUp2.justPressed || virtualPad.buttonDown2.justPressed #end  )
 				{
 					FlxG.sound.music.pause();
 					updateCurStep();
 					var time:Float = FlxG.sound.music.time;
 					var beat:Float = curDecBeat;
 					var snap:Float = 4/quantization;
-					if (FlxG.keys.pressed.UP #if android || virtualPad.buttonUp.pressed #end)
+					if (FlxG.keys.pressed.UP #if android || virtualPad.buttonUp2.pressed #end)
 					{
 						var fuck:Float = CoolUtil.quantize(beat, snap) - snap; //(Math.floor((beat+snap) / snap) * snap);
 						FlxG.sound.music.time = Conductor.beatToSeconds(fuck);
@@ -2864,7 +2864,7 @@ class ChartingState extends MusicBeatState
 	{
 		var leZoom:Float = zoomList[curZoom];
 		if(!doZoomCalc) leZoom = 1;
-return FlxMath.remapToRange(strumTime, 0, 16 * Conductor.stepCrochet, gridBG.y, gridBG.y + gridBG.height * leZoom);
+		return FlxMath.remapToRange(strumTime, 0, 16 * Conductor.stepCrochet, gridBG.y, gridBG.y + gridBG.height * leZoom);
 	}
 
 	function getNotes():Array<Dynamic>
@@ -2891,10 +2891,6 @@ return FlxMath.remapToRange(strumTime, 0, 16 * Conductor.stepCrochet, gridBG.y, 
 			
 		}else{
 		PlayState.SONG = Song.loadFromJson(song.toLowerCase(), song.toLowerCase());
-		}
-		if (CoolUtil.difficulties[PlayState.storyDifficulty] != "Normal")
-		{
-			postfix = '-' + CoolUtil.difficulties[PlayState.storyDifficulty].toLowerCase();
 		}
 		MusicBeatState.resetState();
 	}
