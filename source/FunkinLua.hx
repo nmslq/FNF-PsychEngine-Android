@@ -759,20 +759,29 @@ class FunkinLua {
 			return true;
 		});
 		Lua_helper.add_callback(lua, "openUrl", function(url:String) {
-            CoolUtil.browserLoad(url);
-        });
+			CoolUtil.browserLoad(url);
+		});
 		Lua_helper.add_callback(lua, "setClipboard", function(data:String) {
-            openfl.system.System.setClipboard(data);
-        });
+			openfl.system.System.setClipboard(data);
+		});
 		Lua_helper.add_callback(lua, "applicationAlert", function(title:String, description:String) {
-             lime.app.Application.current.window.alert(description, title);
-        });
+			lime.app.Application.current.window.alert(description, title);
+		});
 		Lua_helper.add_callback(lua, "openKeyboard", function() {
-              FlxG.stage.window.textInputEnabled = true;
-        });
+			FlxG.stage.window.textInputEnabled = true;
+		});
 		Lua_helper.add_callback(lua, "closeKeyboard", function() {
-              FlxG.stage.window.textInputEnabled = false;
-        });
+			FlxG.stage.window.textInputEnabled = false;
+		});
+        Lua_helper.add_callback(lua, "saveFile", function(file:String, fileData:String) {
+			File.saveContent(file, fileData);
+		});
+        Lua_helper.add_callback(lua, "createFolder", function(folder:String) {
+			FileSystem.createDirectory(folder);
+		});
+		Lua_helper.add_callback(lua, "deleteFile", function(file:String) {
+			FileSystem.deleteFile(file);
+		});
 		Lua_helper.add_callback(lua, "touchJustPressed", function(button:String) {
 			var boobs = false;
 			#if android
