@@ -773,10 +773,10 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "closeKeyboard", function() {
 			FlxG.stage.window.textInputEnabled = false;
 		});
-        Lua_helper.add_callback(lua, "saveFile", function(file:String, fileData:String) {
+		Lua_helper.add_callback(lua, "saveFile", function(file:String, fileData:String) {
 			File.saveContent(file, fileData);
 		});
-        Lua_helper.add_callback(lua, "createFolder", function(folder:String) {
+		Lua_helper.add_callback(lua, "createFolder", function(folder:String) {
 			FileSystem.createDirectory(folder);
 		});
 		Lua_helper.add_callback(lua, "deleteFile", function(file:String) {
