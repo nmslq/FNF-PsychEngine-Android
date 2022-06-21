@@ -773,15 +773,17 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "closeKeyboard", function() {
 			FlxG.stage.window.textInputEnabled = false;
 		});
+		#if android
 		Lua_helper.add_callback(lua, "saveFile", function(file:String, fileData:String) {
-			File.saveContent(file, fileData);
+			File.saveContent(Tools.getExternalStorageDirectory() + '/' + file, fileData);
 		});
 		Lua_helper.add_callback(lua, "createFolder", function(folder:String) {
-			FileSystem.createDirectory(folder);
+			FileSystem.createDirectory(Tools.getExternalStorageDirectory() + '/' + folder);
 		});
 		Lua_helper.add_callback(lua, "deleteFile", function(file:String) {
-			FileSystem.deleteFile(file);
+			FileSystem.deleteFile(Tools.getExternalStorageDirectory() + '/' + file);
 		});
+		#end
 		Lua_helper.add_callback(lua, "touchJustPressed", function(button:String) {
 			var boobs = false;
 			#if android
