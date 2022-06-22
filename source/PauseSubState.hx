@@ -134,17 +134,17 @@ class PauseSubState extends MusicBeatSubstate
 		regenMenu();
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
 
-                #if android
-                if (PlayState.chartingMode)
-                {
-                        addVirtualPad(FULL, A);
-                }
-                else
-                {
-                        addVirtualPad(UP_DOWN, A);
-                }
-                addPadCamera();
-                #end
+		#if android
+		if (PlayState.chartingMode)
+		{
+			addVirtualPad(FULL, A);
+		}
+		else
+		{
+			addVirtualPad(UP_DOWN, A);
+		}
+		addPadCamera();
+		#end
 	}
 
 	var holdTime:Float = 0;
@@ -226,6 +226,7 @@ class PauseSubState extends MusicBeatSubstate
 					close();
 				case 'Change Difficulty':
 					menuItems = difficultyChoices;
+					deleteSkipTimeText();
 					regenMenu();
 				case 'Toggle Practice Mode':
 					PlayState.instance.practiceMode = !PlayState.instance.practiceMode;
@@ -236,15 +237,6 @@ class PauseSubState extends MusicBeatSubstate
 				case "Leave Charting Mode":
 					close();
 					PlayState.chartingMode = false;
-					skipTimeTracker = null;
-
-					if(skipTimeText != null)
-					{
-						skipTimeText.kill();
-						remove(skipTimeText);
-						skipTimeText.destroy();
-					}
-					skipTimeText = null;
 				case "Charting Mode":
 					close();
 					PlayState.chartingMode = true;
@@ -266,8 +258,8 @@ class PauseSubState extends MusicBeatSubstate
 				case "End Song":
 					close();
 					PlayState.instance.finishSong(true);
-			        case "options":
-			                PlayState.isPauseMode = true;
+				case "options":
+					PlayState.isPauseMode = true;
 					LoadingState.loadAndSwitchState(new options.OptionsState());
 				case 'Toggle Botplay':
 					PlayState.instance.cpuControlled = !PlayState.instance.cpuControlled;
@@ -296,6 +288,18 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.chartingMode = false;
 			}
 		}
+	}
+
+	function deleteSkipTimeText()
+	{
+		if(skipTimeText != null)
+		{
+			skipTimeText.kill();
+			remove(skipTimeText);
+			skipTimeText.destroy();
+		}
+		skipTimeText = null;
+		skipTimeTracker = null;
 	}
 
 	public static function restartSong(noTrans:Bool = false)
