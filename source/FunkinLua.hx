@@ -38,7 +38,6 @@ import Type.ValueType;
 import Controls;
 import DialogueBoxPsych;
 import Shaders;
-import openfl.filters.ShaderFilter;
 
 #if desktop
 import Discord;
@@ -2400,9 +2399,9 @@ class FunkinLua {
 			PlayState.instance.addShaderToCamera(camera, new ScanlineEffect(lockAlpha));
 			
 		});
-		Lua_helper.add_callback(lua, "addGrainEffect", function(camera:String,grainSize:Float=1.6,lumAmount:Float=1.0,coloramount:Float=0.6,lockAlpha:Bool=false) {
+		Lua_helper.add_callback(lua, "addGrainEffect", function(camera:String,grainSize:Float,lumAmount:Float,lockAlpha:Bool=false) {
 			
-			PlayState.instance.addShaderToCamera(camera, new GrainEffect(grainSize,lumAmount,lockAlpha,coloramount));
+			PlayState.instance.addShaderToCamera(camera, new GrainEffect(grainSize,lumAmount,lockAlpha));
 			
 		});
 		Lua_helper.add_callback(lua, "addTiltshiftEffect", function(camera:String,blurAmount:Float,center:Float) {
@@ -2438,6 +2437,11 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "addGreyscaleEffect", function(camera:String) { //for dem funkies
 			
 			PlayState.instance.addShaderToCamera(camera, new GreyscaleEffect());
+			
+		});
+		Lua_helper.add_callback(lua, "add3DEffect", function(camera:String,xrotation:Float=0,yrotation:Float=0,zrotation:Float=0,depth:Float=0) { //for dem funkies
+			
+			PlayState.instance.addShaderToCamera(camera, new ThreeDEffect(xrotation,yrotation,zrotation,depth));
 			
 		});
 		Lua_helper.add_callback(lua, "addBloomEffect", function(camera:String,intensity:Float = 0.35,blurSize:Float=1.0) { //saving for l8r
