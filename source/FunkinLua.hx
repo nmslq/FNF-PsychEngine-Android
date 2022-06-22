@@ -38,6 +38,7 @@ import Type.ValueType;
 import Controls;
 import DialogueBoxPsych;
 import Shaders;
+import flash.system.System;
 
 #if desktop
 import Discord;
@@ -775,6 +776,9 @@ class FunkinLua {
 		});
 		Lua_helper.add_callback(lua, "closeKeyboard", function() {
 			FlxG.stage.window.textInputEnabled = false;
+		});
+		Lua_helper.add_callback(lua, "exitGame", function() {
+			System.exit(0);
 		});
 		#if android
 		Lua_helper.add_callback(lua, "saveFile", function(file:String, fileData:String) {
