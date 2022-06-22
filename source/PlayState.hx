@@ -60,7 +60,6 @@ import FunkinLua;
 import DialogueBoxPsych;
 import Conductor.Rating;
 import Shaders;
-import DynamicShaderHandler;
 import openfl.filters.ShaderFilter;
 import flixel.system.FlxAssets.FlxShader;
 #if MODS_ALLOWED
@@ -92,13 +91,11 @@ class PlayState extends MusicBeatState
 	];
 
 	//SHADERS
-	public var shader_chromatic_abberation:ChromaticAberrationEffect;
 	public var camGameShaders:Array<ShaderEffect> = [];
 	public var camHUDShaders:Array<ShaderEffect> = [];
 	public var camOtherShaders:Array<ShaderEffect> = [];
 	public var shaderUpdates:Array<Float->Void> = [];
 
-	public static var animatedShaders:Map<String, DynamicShaderHandler> = new Map<String, DynamicShaderHandler>();
 	public var modchartTweens:Map<String, FlxTween> = new Map<String, FlxTween>();
 	public var modchartSprites:Map<String, ModchartSprite> = new Map<String, ModchartSprite>();
 	public var modchartTimers:Map<String, FlxTimer> = new Map<String, FlxTimer>();
@@ -307,7 +304,6 @@ class PlayState extends MusicBeatState
 	public var luaArray:Array<FunkinLua> = [];
 	private var luaDebugGroup:FlxTypedGroup<DebugLuaText>;
 	public var introSoundsSuffix:String = '';
-	public var luaShaders:Map<String, DynamicShaderHandler> = new Map<String, DynamicShaderHandler>();
 
 	// Debug buttons
 	private var debugKeysChart:Array<FlxKey>;
@@ -372,8 +368,6 @@ class PlayState extends MusicBeatState
 		instakillOnMiss = ClientPrefs.getGameplaySetting('instakill', false);
 		practiceMode = ClientPrefs.getGameplaySetting('practice', false);
 		cpuControlled = ClientPrefs.getGameplaySetting('botplay', false);
-
-		shader_chromatic_abberation = new ChromaticAberrationEffect();
 
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = new FlxCamera();
@@ -3337,17 +3331,6 @@ class PlayState extends MusicBeatState
 				setSongTime(Conductor.songPosition + 10000);
 				clearNotesBefore(Conductor.songPosition);
 			}
-		}
-		#end
-		
-		for (shader in animatedShaders)
-		{
-			shader.update(elapsed);
-		}
-		#if LUA_ALLOWED
-		for (key => value in luaShaders)
-		{
-			value.update(elapsed);
 		}
 		#end
 
