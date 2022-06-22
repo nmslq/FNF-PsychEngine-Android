@@ -2400,9 +2400,9 @@ class FunkinLua {
 			PlayState.instance.addShaderToCamera(camera, new ScanlineEffect(lockAlpha));
 			
 		});
-		Lua_helper.add_callback(lua, "addGrainEffect", function(camera:String,grainSize:Float,lumAmount:Float,lockAlpha:Bool=false) {
+		Lua_helper.add_callback(lua, "addGrainEffect", function(camera:String,grainSize:Float=1.6,lumAmount:Float=1.0,coloramount:Float=0.6,lockAlpha:Bool=false) {
 			
-			PlayState.instance.addShaderToCamera(camera, new GrainEffect(grainSize,lumAmount,lockAlpha));
+			PlayState.instance.addShaderToCamera(camera, new GrainEffect(grainSize,lumAmount,lockAlpha,coloramount));
 			
 		});
 		Lua_helper.add_callback(lua, "addTiltshiftEffect", function(camera:String,blurAmount:Float,center:Float) {

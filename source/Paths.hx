@@ -419,7 +419,7 @@ class Paths
 		return modFolders('images/' + key + '.txt');
 	}
 
-	/*inline static public function modsShaderFragment(key:String, ?library:String)
+	inline static public function modsShaderFragment(key:String, ?library:String)
 	{
 		return modFolders('shaders/'+key+'.frag');
 	}
@@ -427,7 +427,7 @@ class Paths
 	{
 		return modFolders('shaders/'+key+'.vert');
 	}
-	inline static public function modsAchievements(key:String) {
+	/*inline static public function modsAchievements(key:String) {
 		return modFolders('achievements/' + key + '.json');
 	}*/
 
