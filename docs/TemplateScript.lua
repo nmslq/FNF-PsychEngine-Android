@@ -1,4 +1,7 @@
 -- Lua stuff
+function onLoaded()
+	-- triggered when the lua file is loaded
+end
 
 function onCreate()
 	-- triggered when the lua file is started, some variables weren't created yet
@@ -161,22 +164,15 @@ function onTimerCompleted(tag, loops, loopsLeft)
 	-- loops = how many loops it will have done when it ends completely
 	-- loopsLeft = how many are remaining
 end
-function onCheckForAchievement(name)
-	
-	--deals with achievement checks
-	
-	--EX:
---[[
-  if name == 'sick-full-combo' and getProperty('bads') == 0 and getProperty('goods') == 0 and getProperty('shits') == 0 and getProperty('endingSong') then
-    return Function_Continue
-  end
-  if name == 'bad-health-finish' and getProperty('health') < 0.01 and getProperty('endingSong') then
-    return Function_Continue
-  end
-  if name == 'halfway' and getSongPosition >  getPropertyFromClass('flixel.FlxG','sound.music.length')/2 then
-    return Function_Continue
-  end
-	
-	
-	]]--
+
+function onSpawnStrum(position, player, id)
+    -- this function use onSpawnStrum
+end
+
+function onSpawnNote(index, direction, noteType, isSustainNote, id)
+    -- this function use onSpawnNote
+end
+
+function onCountdownStarted()
+    -- this function use onCountdownStarted
 end
