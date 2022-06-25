@@ -222,7 +222,6 @@ class TitleState extends MusicBeatState
 			#end
 
 			if (initialized)
-			{
 				startIntro();
 			else
 			{
