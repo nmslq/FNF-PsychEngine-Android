@@ -1632,17 +1632,17 @@ class PlayState extends MusicBeatState
 			startAndEnd();
 			return;
 		}
-		FlxG.sound.music.stop();
 		var video:MP4Handler = new MP4Handler();
 		video.playVideo(filepath);
-
 		video.finishCallback = function()
 		{
 			startAndEnd();
+			return;
 		}
 		#else
 		FlxG.log.warn('Platform not supported!');
 		startAndEnd();
+		return;
 		#end
 	}
 
@@ -3949,7 +3949,6 @@ class PlayState extends MusicBeatState
 				#end
 			}
 
-			WeekData.loadTheFirstEnabledMod();
 			if (isStoryMode)
 			{
 				campaignScore += songScore;
@@ -3980,6 +3979,7 @@ class PlayState extends MusicBeatState
 						FlxG.save.flush();
 					}
 					changedDifficulty = false;
+					WeekData.loadTheFirstEnabledMod();
 				}
 				else
 				{
@@ -4030,6 +4030,7 @@ class PlayState extends MusicBeatState
 				MusicBeatState.switchState(new FreeplayState());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 				changedDifficulty = false;
+				WeekData.loadTheFirstEnabledMod();
 			}
 			transitioning = true;
 		}
