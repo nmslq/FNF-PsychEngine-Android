@@ -165,10 +165,6 @@ function onTimerCompleted(tag, loops, loopsLeft)
 	-- loopsLeft = how many are remaining
 end
 
-function onSpawnStrum(position, player, id)
-    -- this function use onSpawnStrum
-end
-
 function onSpawnNote(index, direction, noteType, isSustainNote, id)
     -- this function use onSpawnNote
 end
