@@ -14,7 +14,8 @@ class StrumNote extends FlxSprite
 	public var direction:Float = 90;//plan on doing scroll directions soon -bb
 	public var downScroll:Bool = false;//plan on doing scroll directions soon -bb
 	public var sustainReduce:Bool = true;
-	public var player:Int;
+
+	private var player:Int;
 	
 	public var texture(default, set):String = null;
 	private function set_texture(value:String):String {
