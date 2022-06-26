@@ -17,10 +17,10 @@ class FlxHitbox extends FlxSpriteGroup
 	public var buttonUp:FlxButton;
 	public var buttonRight:FlxButton;
 
-	public var hintLeft:FlxButton;
-	public var hintDown:FlxButton;
-	public var hintUp:FlxButton;
-	public var hintRight:FlxButton;
+	public var hintLeft:FlxSprite;
+	public var hintDown:FlxSprite;
+	public var hintUp:FlxSprite;
+	public var hintRight:FlxSprite;
 
 	public var canUseColor:Bool = true;
 
