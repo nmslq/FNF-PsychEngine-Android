@@ -3582,7 +3582,7 @@ class PlayState extends MusicBeatState
 						phillyStreet.color = color;
 
 						#if android
-						androidControls.color = charColor;
+						androidControls.color = color;
 						#end
 
 					case 2: // spawn particles
