@@ -17,6 +17,11 @@ class FlxHitbox extends FlxSpriteGroup
 	public var buttonUp:FlxButton;
 	public var buttonRight:FlxButton;
 
+	public var hintLeft:FlxButton;
+	public var hintDown:FlxButton;
+	public var hintUp:FlxButton;
+	public var hintRight:FlxButton;
+
 	public var canUseColor:Bool = true;
 
 	public function new()
@@ -30,14 +35,19 @@ class FlxHitbox extends FlxSpriteGroup
 		buttonUp = new FlxButton(0, 0);
 		buttonRight = new FlxButton(0, 0);
 
+		hintLeft = new FlxSprite(0, 0);
+		hintDown = new FlxSprite(0, 0);
+		hintUp = new FlxSprite(0, 0);
+		hintRight = new FlxSprite(0, 0);
+
 		hitbox.add(add(buttonLeft = createHitbox(0, 0, 'left', 0xFFFF00FF)));
 		hitbox.add(add(buttonDown = createHitbox(320, 0, 'down', 0xFF00FFFF)));
 		hitbox.add(add(buttonUp = createHitbox(640, 0, 'up', 0xFF00FF00)));
 		hitbox.add(add(buttonRight = createHitbox(960, 0, 'right', 0xFFFF0000)));
-		hitbox.add(add(createHitboxHint(0, 0, 'left_hint', 0xFFFF00FF)));
-		hitbox.add(add(createHitboxHint(320, 0, 'down_hint', 0xFF00FFFF)));
-		hitbox.add(add(createHitboxHint(640, 0, 'up_hint', 0xFF00FF00)));
-		hitbox.add(add(createHitboxHint(960, 0, 'right_hint', 0xFFFF0000)));
+		hitbox.add(add(hintLeft = createHitboxHint(0, 0, 'left_hint', 0xFFFF00FF)));
+		hitbox.add(add(hintDown = createHitboxHint(320, 0, 'down_hint', 0xFF00FFFF)));
+		hitbox.add(add(hintUp = createHitboxHint(640, 0, 'up_hint', 0xFF00FF00)));
+		hitbox.add(add(hintRight = createHitboxHint(960, 0, 'right_hint', 0xFFFF0000)));
 	}
 
 	public function createHitbox(x:Float = 0, y:Float = 0, frames:String, ?color:Int):FlxButton
