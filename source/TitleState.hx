@@ -64,7 +64,7 @@ class TitleState extends MusicBeatState
 	var credTextShit:Alphabet;
 	var textGroup:FlxGroup;
 	var ngSpr:FlxSprite;
-
+	
 	var titleTextColors:Array<FlxColor> = [0xFF33FFFF, 0xFF3333CC];
 	var titleTextAlphas:Array<Float> = [1, .64];
 
@@ -360,19 +360,20 @@ class TitleState extends MusicBeatState
 			titleText.animation.findByPrefix(animFrames, "ENTER IDLE");
 			titleText.animation.findByPrefix(animFrames, "ENTER FREEZE");
 		}
-
+		
 		if (animFrames.length > 0) {
 			newTitle = true;
-
+			
 			titleText.animation.addByPrefix('idle', "ENTER IDLE", 24);
 			titleText.animation.addByPrefix('press', ClientPrefs.flashing ? "ENTER PRESSED" : "ENTER FREEZE", 24);
 		}
 		else {
 			newTitle = false;
-
+			
 			titleText.animation.addByPrefix('idle', "Press Enter to Begin", 24);
 			titleText.animation.addByPrefix('press', "ENTER PRESSED", 24);
 		}
+		
 		titleText.antialiasing = ClientPrefs.globalAntialiasing;
 		titleText.animation.play('idle');
 		titleText.updateHitbox();
@@ -436,7 +437,7 @@ class TitleState extends MusicBeatState
 
 	var transitioning:Bool = false;
 	private static var playJingle:Bool = false;
-
+	
 	var newTitle:Bool = false;
 	var titleTimer:Float = 0;
 
@@ -470,7 +471,7 @@ class TitleState extends MusicBeatState
 				pressedEnter = true;
 			#end
 		}
-
+		
 		if (newTitle) {
 			titleTimer += CoolUtil.boundTo(elapsed, 0, 1);
 			if (titleTimer > 2) titleTimer -= 2;
@@ -485,20 +486,23 @@ class TitleState extends MusicBeatState
 				var timer:Float = titleTimer;
 				if (timer >= 1)
 					timer = (-timer) + 2;
-
+				
 				timer = FlxEase.quadInOut(timer);
-
+				
 				titleText.color = FlxColor.interpolate(titleTextColors[0], titleTextColors[1], timer);
 				titleText.alpha = FlxMath.lerp(titleTextAlphas[0], titleTextAlphas[1], timer);
 			}
+			
 			if(pressedEnter)
 			{
-				titleText.color = FlxColor.WHITE;
-				titleText.alpha = 1;
-
 				#if (TITLE_SCREEN_EASTER_EGG && android)
 				FlxG.stage.window.textInputEnabled = false;
+				if (FlxG.stage.window.onTextInput.has(eastereggFunction))
+					FlxG.stage.window.onTextInput.remove(eastereggFunction);
 				#end
+
+				titleText.color = FlxColor.WHITE;
+				titleText.alpha = 1;
 
 				if(titleText != null) titleText.animation.play('press');
 
@@ -523,105 +527,14 @@ class TitleState extends MusicBeatState
 			else if (FlxG.android.justReleased.BACK)
 			{
 				FlxG.stage.window.textInputEnabled = true;
-				FlxG.stage.window.onTextInput.add(function(letter:String)
-				{
-					if(allowedKeys.contains(letter)) {
-						easterEggKeysBuffer += letter;
-						if(easterEggKeysBuffer.length >= 32) easterEggKeysBuffer = easterEggKeysBuffer.substring(1);
-						//trace('Test! Allowed Key pressed!!! Buffer: ' + easterEggKeysBuffer);
-
-						for (wordRaw in easterEggKeys)
-						{
-							var word:String = wordRaw.toUpperCase(); //just for being sure you're doing it right
-							if (easterEggKeysBuffer.contains(word))
-							{
-								#if android
-								FlxG.stage.window.textInputEnabled = false;
-								#end
-
-								//trace('YOOO! ' + word);
-								if (FlxG.save.data.psychDevsEasterEgg == word)
-									FlxG.save.data.psychDevsEasterEgg = '';
-								else
-									FlxG.save.data.psychDevsEasterEgg = word;
-								FlxG.save.flush();
-
-								FlxG.sound.play(Paths.sound('ToggleJingle'));
-
-								var black:FlxSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-								black.alpha = 0;
-								add(black);
-
-								FlxTween.tween(black, {alpha: 1}, 1, {onComplete:
-									function(twn:FlxTween) {
-										FlxTransitionableState.skipNextTransIn = true;
-										FlxTransitionableState.skipNextTransOut = true;
-										MusicBeatState.switchState(new TitleState());
-									}
-								});
-								FlxG.sound.music.fadeOut();
-								if(FreeplayState.vocals != null)
-								{
-									FreeplayState.vocals.fadeOut();
-								}
-								closedState = true;
-								transitioning = true;
-								playJingle = true;
-								easterEggKeysBuffer = '';
-								break;
-							}
-						}
-					}
-				});
+				FlxG.stage.window.onTextInput.add(eastereggFunction);
 			}
 			#elseif TITLE_SCREEN_EASTER_EGG
 			else if (FlxG.keys.firstJustPressed() != FlxKey.NONE)
 			{
 				var keyPressed:FlxKey = FlxG.keys.firstJustPressed();
 				var keyName:String = Std.string(keyPressed);
-				if(allowedKeys.contains(keyName)) {
-					easterEggKeysBuffer += keyName;
-					if(easterEggKeysBuffer.length >= 32) easterEggKeysBuffer = easterEggKeysBuffer.substring(1);
-					//trace('Test! Allowed Key pressed!!! Buffer: ' + easterEggKeysBuffer);
-
-					for (wordRaw in easterEggKeys)
-					{
-						var word:String = wordRaw.toUpperCase(); //just for being sure you're doing it right
-						if (easterEggKeysBuffer.contains(word))
-						{
-							//trace('YOOO! ' + word);
-							if (FlxG.save.data.psychDevsEasterEgg == word)
-								FlxG.save.data.psychDevsEasterEgg = '';
-							else
-								FlxG.save.data.psychDevsEasterEgg = word;
-							FlxG.save.flush();
-
-							FlxG.sound.play(Paths.sound('ToggleJingle'));
-
-							var black:FlxSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-							black.alpha = 0;
-							add(black);
-
-							FlxTween.tween(black, {alpha: 1}, 1, {onComplete:
-								function(twn:FlxTween) {
-									FlxTransitionableState.skipNextTransIn = true;
-									FlxTransitionableState.skipNextTransOut = true;
-									MusicBeatState.switchState(new TitleState());
-								}
-							});
-							FlxG.sound.music.fadeOut();
-							if(FreeplayState.vocals != null)
-							{
-								FreeplayState.vocals.fadeOut();
-							}
-							closedState = true;
-							transitioning = true;
-							playJingle = true;
-							easterEggKeysBuffer = '';
-							break;
-						}
-					}
-				}
+				eastereggFunction(keyName);
 			}
 			#end
 		}
@@ -638,6 +551,59 @@ class TitleState extends MusicBeatState
 		}
 
 		super.update(elapsed);
+	}
+
+	function eastereggFunction(letter:String)
+	{
+		if(allowedKeys.contains(letter)) {
+			easterEggKeysBuffer += letter;
+			if(easterEggKeysBuffer.length >= 32) easterEggKeysBuffer = easterEggKeysBuffer.substring(1);
+
+
+			for (wordRaw in easterEggKeys)
+			{
+				var word:String = wordRaw.toUpperCase(); //just for being sure you're doing it right
+				if (easterEggKeysBuffer.contains(word))
+				{
+					#if android
+					FlxG.stage.window.textInputEnabled = false;
+					if (FlxG.stage.window.onTextInput.has(eastereggFunction))
+						FlxG.stage.window.onTextInput.remove(eastereggFunction);
+					#end
+
+					//trace('YOOO! ' + word);
+					if (FlxG.save.data.psychDevsEasterEgg == word)
+						FlxG.save.data.psychDevsEasterEgg = '';
+					else
+						FlxG.save.data.psychDevsEasterEgg = word;
+					FlxG.save.flush();
+
+					FlxG.sound.play(Paths.sound('ToggleJingle'));
+
+					var black:FlxSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
+					black.alpha = 0;
+					add(black);
+
+					FlxTween.tween(black, {alpha: 1}, 1, {onComplete:
+						function(twn:FlxTween) {
+							FlxTransitionableState.skipNextTransIn = true;
+							FlxTransitionableState.skipNextTransOut = true;
+							MusicBeatState.switchState(new TitleState());
+						}
+					});
+					FlxG.sound.music.fadeOut();
+					if(FreeplayState.vocals != null)
+					{
+						FreeplayState.vocals.fadeOut();
+					}
+					closedState = true;
+					transitioning = true;
+					playJingle = true;
+					easterEggKeysBuffer = '';
+					break;
+				}
+			}
+		}
 	}
 
 	function createCoolText(textArray:Array<String>, ?offset:Float = 0)
