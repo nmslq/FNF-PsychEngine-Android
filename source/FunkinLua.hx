@@ -2750,8 +2750,7 @@ class FunkinLua {
 			return blah;
 		}
 
-		Reflect.setProperty(instance, variable);
-		return null;
+		retrun Reflect.setProperty(instance, variable);
 	}
 
 	inline static function getTextObject(name:String):FlxText
