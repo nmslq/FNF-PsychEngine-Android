@@ -2750,7 +2750,7 @@ class FunkinLua {
 			return blah;
 		}
 
-		Reflect.setProperty(instance, variable, value);
+		Reflect.setProperty(instance, variable);
 		return null;
 	}
 
