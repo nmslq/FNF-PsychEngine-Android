@@ -59,9 +59,9 @@ import android.PermissionsList;
 using StringTools;
 
 class FunkinLua {
-	public static var Function_Stop:Dynamic = #if windows 1 #else "Function_Stop" #end;
-	public static var Function_Continue:Dynamic = #if windows 0 #else "Function_Continue" #end;
- 	public static var Function_StopLua:Dynamic = #if windows 2 #else "Function_StopLua" #end;
+	public static var Function_Stop:Dynamic = #if windows 1 #else 'Function_Stop' #end;
+	public static var Function_Continue:Dynamic = #if windows 0 #else 'Function_Continue' #end;
+ 	public static var Function_StopLua:Dynamic = #if windows 2 #else 'Function_StopLua' #end;
 
 	//public var errorHandler:String->Void;
 	#if LUA_ALLOWED
@@ -75,7 +75,6 @@ class FunkinLua {
 	public static var haxeInterp:Interp = null;
 	#end
 
-	public var accessedProps:Map<String, Dynamic> = null;
 	public function new(script:String) {
 		#if LUA_ALLOWED
 		lua = LuaL.newstate();
@@ -420,7 +419,7 @@ class FunkinLua {
 				doPush = true;
 			}
 			else {
-				cervix = Paths.getPreloadPath(cervix);
+				cervix = SUtil.getPath() + Paths.getPreloadPath(cervix);
 				if(FileSystem.exists(cervix)) {
 					doPush = true;
 				}
@@ -1813,12 +1812,6 @@ class FunkinLua {
 				if(updateHitbox) shit.updateHitbox();
 				return;
 			}
-			else if(PlayState.instance.modchartBackdrops.exists(obj)) {
-				var shit:ModchartBackdrop = PlayState.instance.modchartBackdrops.get(obj);
-				shit.scale.set(x, y);
-				if(updateHitbox) shit.updateHitbox();
-				return;
-			}
 
 			var killMe:Array<String> = obj.split('.');
 			var poop:FlxSprite = getObjectDirectly(killMe[0]);
@@ -1929,7 +1922,7 @@ class FunkinLua {
 			if(real!=null){
 				real.cameras = [cameraFromString(camera)];
 				return true;
-		         }
+			}
 
 			var killMe:Array<String> = obj.split('.');
 			var object:FlxSprite = getObjectDirectly(killMe[0]);
@@ -1948,6 +1941,7 @@ class FunkinLua {
 			var real = PlayState.instance.getLuaObject(obj);
 			if(real!=null) {
 				real.blend = blendModeFromString(blend);
+				return true;
 			}
 
 			var killMe:Array<String> = obj.split('.');
@@ -2217,7 +2211,7 @@ class FunkinLua {
 			#end
 		});
 
-        Lua_helper.add_callback(lua, "vibration", function(milliseconds:Int) {
+		Lua_helper.add_callback(lua, "vibration", function(milliseconds:Int) {
 			#if android
 			Hardware.vibrate(milliseconds);
 			#end
@@ -2702,6 +2696,7 @@ class FunkinLua {
 			haxeInterp.variables.set('Character', Character);
 			haxeInterp.variables.set('Alphabet', Alphabet);
 			haxeInterp.variables.set('StringTools', StringTools);
+			haxeInterp.variables.set('SUtil', SUtil);// this is more like for android because filesaving needs it
 
 			haxeInterp.variables.set('setVar', function(name:String, value:Dynamic)
 			{
@@ -2750,7 +2745,7 @@ class FunkinLua {
 			return blah;
 		}
 
-		return Reflect.setProperty(instance, variable);
+		return Reflect.getProperty(instance, variable);
 	}
 
 	inline static function getTextObject(name:String):FlxText
@@ -3002,12 +2997,12 @@ class FunkinLua {
 			}
 			return Function_Continue;
 		}
-		catch(e:Dynamic) {
+		catch (e:Dynamic) {
 			trace(e);
 		}
 		#end
 		return Function_Continue;
-    }
+	}
 
 	public static function getPropertyLoopThingWhatever(killMe:Array<String>, ?checkForTextsToo:Bool = true, ?getProperty:Bool=true):Dynamic
 	{
@@ -3086,15 +3081,6 @@ class FunkinLua {
 	{
 		return PlayState.instance.isDead ? GameOverSubstate.instance : PlayState.instance;
 	}
-
-	static inline var CLENSE:String = "
-	os.execute, os.getenv, os.rename, os.remove, os.tmpname = nil, nil, nil, nil, nil
-	io, load, loadfile, loadstring, dofile = nil, nil, nil, nil, nil
-	require, module, package = nil, nil, nil
-	newproxy = nil
-	gcinfo = nil
-	jit = nil
-	"; // superpowers04/cyn-8/DragShot
 }
 
 class ModchartSprite extends FlxSprite
