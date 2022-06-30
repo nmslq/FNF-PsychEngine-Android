@@ -14,6 +14,12 @@ import android.flixel.FlxVirtualPad;
 
 using StringTools;
 
+/**
+ * ...
+ * @original author: luckydog
+ * @modifications author: Saw (M.A. Jigsaw)
+ */
+
 class Config
 {
 	var save:FlxSave;
@@ -47,9 +53,7 @@ class Config
 		{
 			save.data.buttons = new Array();
 			for (buttons in _pad)
-			{
 				save.data.buttons.push(FlxPoint.get(buttons.x, buttons.y));
-			}
 		}
 		else
 		{
@@ -181,6 +185,7 @@ class AndroidControls extends FlxSpriteGroup
 			hbox.buttonDown.color = 0xFF00FFFF;
 			hbox.buttonUp.color = 0xFF00FF00;
 			hbox.buttonRight.color = 0xFFFF0000;
+
 			hbox.hintLeft.color = 0xFFFF00FF;
 			hbox.hintDown.color = 0xFF00FFFF;
 			hbox.hintUp.color = 0xFF00FF00;
@@ -197,7 +202,10 @@ class Menu extends MusicBeatState
 	var downPozition:FlxText;
 	var leftPozition:FlxText;
 	var rightPozition:FlxText;
+
 	var inputvari:PsychAlphabet;
+	var funitext:PsychAlphabet;
+
 	var leftArrow:FlxSprite;
 	var rightArrow:FlxSprite;
 	var controlitems:Array<String> = ['Pad-Right', 'Pad-Left', 'Pad-Custom', 'Duo', 'Hitbox', 'Keyboard'];
@@ -241,6 +249,11 @@ class Menu extends MusicBeatState
 		hbox = new FlxHitbox();
 		hbox.visible = false;
 		add(hbox);
+
+		funitext = new PsychAlphabet(0, 0, 'No Android Controls!', true, false, 0, 1);
+		funitext.screenCenter();
+		funitext.visible = false;
+		add(funitext);
 
 		inputvari = new PsychAlphabet(0, 50, controlitems[curSelected], false, false, 0.05, 0.8);
 		inputvari.screenCenter(X);
@@ -393,6 +406,11 @@ class Menu extends MusicBeatState
 		else
 			hbox.visible = false;
 
+		if (daChoice == 'Keyboard')
+			funitext.visible = true;
+		else
+			funitext.visible = false;
+
 		if (daChoice == 'Pad-Custom')
 		{
 			resetButton.visible = true;
@@ -413,9 +431,9 @@ class Menu extends MusicBeatState
 
 	function moveButton(touch:FlxTouch, button:FlxButton):Void
 	{
+		button.x = touch.x - button.width / 2;
+		button.y = touch.y - button.height / 2;
 		bindButton = button;
-		bindButton.x = touch.x - bindButton.width / 2;
-		bindButton.y = touch.y - bindButton.height / 2;
 		buttonIsTouched = true;
 	}
 
