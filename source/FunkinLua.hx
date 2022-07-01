@@ -2421,11 +2421,7 @@ class FunkinLua {
 		{
 			try {
 				if(!absolute)
-					#if !android
-					File.saveContent(Paths.mods(path), content);
-					#else
 					File.saveContent(path, content);
-					#end
 				else
 					File.saveContent(SUtil.getPath() + path, content);
 
@@ -2442,19 +2438,12 @@ class FunkinLua {
 				if(!ignoreModFolders)
 				{
 					var lePath:String = Paths.modFolders(path);
-					#if !android
-					if(FileSystem.exists(lePath))
-					{
-						FileSystem.deleteFile(lePath);
-						return true;
-					}
-					#else
+
 					if(FileSystem.exists(path))
 					{
 						FileSystem.deleteFile(path);
 						return true;
 					}
-					#end
 				}
 
 				var lePath:String = SUtil.getPath() + Paths.getPath(path, TEXT);
