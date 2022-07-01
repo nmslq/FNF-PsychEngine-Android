@@ -2454,8 +2454,8 @@ class FunkinLua {
 						FileSystem.deleteFile(path);
 						return true;
 					}
+					#end
 				}
-				#end
 
 				var lePath:String = SUtil.getPath() + Paths.getPath(path, TEXT);
 				if(Assets.exists(lePath))
