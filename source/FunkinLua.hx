@@ -2438,7 +2438,7 @@ class FunkinLua {
 				if(!ignoreModFolders)
 				{
 					var lePath:String = Paths.modFolders(path);
-					if(FileSystem.exists(lePath))
+					if(FileSystem.exists(path))
 					{
 						FileSystem.deleteFile(path);
 						return true;
