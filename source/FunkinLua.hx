@@ -632,7 +632,7 @@ class FunkinLua {
 					case 'Null Function Pointer', 'SReturn':
 						//nothing
 					default:
-						luaTrace(scriptName + ":" + lastCalledFunction + " - " + e, false, false, FlxColor.RED);
+						luaTrace(scriptName.replace(SUtil.getPath(), "") + ":" + lastCalledFunction + " - " + e, false, false, FlxColor.RED);
 				}
 			}
 			#end
@@ -2421,13 +2421,17 @@ class FunkinLua {
 		{
 			try {
 				if(!absolute)
+					#if !android
 					File.saveContent(Paths.mods(path), content);
+					#else
+					File.saveContent(path, content);
+					#end
 				else
 					File.saveContent(SUtil.getPath() + path, content);
 
 				return true;
 			} catch (e:Dynamic) {
-				luaTrace("Error trying to save " + path + ": " + e, false, false, FlxColor.RED);
+				luaTrace("Error trying to save " + path.replace(SUtil.getPath(), "") + ": " + e, false, false, FlxColor.RED);
 			}
 			return false;
 		});
@@ -2438,9 +2442,16 @@ class FunkinLua {
 				if(!ignoreModFolders)
 				{
 					var lePath:String = Paths.modFolders(path);
+					#if !android
 					if(FileSystem.exists(lePath))
 					{
 						FileSystem.deleteFile(lePath);
+						return true;
+					}
+					#else
+					if(FileSystem.exists(path))
+					{
+						FileSystem.deleteFile(path);
 						return true;
 					}
 				}
@@ -2453,7 +2464,7 @@ class FunkinLua {
 					return true;
 				}
 			} catch (e:Dynamic) {
-				luaTrace("Error trying to delete " + path + ": " + e, false, false, FlxColor.RED);
+				luaTrace("Error trying to delete " + path.replace(SUtil.getPath(), "") + ": " + e, false, false, FlxColor.RED);
 			}
 			return false;
 		});
