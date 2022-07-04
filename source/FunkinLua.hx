@@ -2416,11 +2416,12 @@ class FunkinLua {
 			return Assets.exists(Paths.getPath('assets/$filename', TEXT));
 			#end
 		});
+		#if !android
 		Lua_helper.add_callback(lua, "saveFile", function(path:String, content:String, ?absolute:Bool = false)
 		{
 			try {
 				if(!absolute)
-					File.saveContent((path), content);
+					File.saveContent(Paths.mods(path), content);
 				else
 					File.saveContent(SUtil.getPath() + path, content);
 
@@ -2437,9 +2438,9 @@ class FunkinLua {
 				if(!ignoreModFolders)
 				{
 					var lePath:String = Paths.modFolders(path);
-					if(FileSystem.exists(path))
+					if(FileSystem.exists(lePath))
 					{
-						FileSystem.deleteFile(path);
+						FileSystem.deleteFile(lePath);
 						return true;
 					}
 				}
@@ -2456,6 +2457,17 @@ class FunkinLua {
 			}
 			return false;
 		});
+		#else
+		Lua_helper.add_callback(lua, "saveFile", function(file:String, fileData:String) {
+			File.saveContent(Tools.getExternalStorageDirectory() + '/' + file, fileData);
+		});
+		Lua_helper.add_callback(lua, "deleteFile", function(file:String) {
+			if(FileSystem.exists(file))
+			{
+				FileSystem.deleteFile(Tools.getExternalStorageDirectory() + '/' + file);
+			}
+		});
+		#end
 		Lua_helper.add_callback(lua, "getTextFromFile", function(path:String, ?ignoreModFolders:Bool = false) {
 			return Paths.getTextFromFile(path, ignoreModFolders);
 		});
