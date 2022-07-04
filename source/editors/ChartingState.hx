@@ -392,7 +392,7 @@ class ChartingState extends MusicBeatState
 		updateGrid();
 
 		#if android
-		addVirtualPad(FULL, FULL_UP_DOWN);
+		addVirtualPad(LEFT_FULL, A_B_C_D_V_X_Y_Z_UP_DOWN);
 		#end
 
 		super.create();
@@ -3076,7 +3076,7 @@ class ChartingState extends MusicBeatState
 	{
 		if (section == null) section = curSec;
 		var val:Null<Float> = null;
-
+		
 		if(_song.notes[section] != null) val = _song.notes[section].sectionBeats;
 		return val != null ? val : 4;
 	}
