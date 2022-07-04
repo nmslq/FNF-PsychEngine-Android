@@ -2416,53 +2416,12 @@ class FunkinLua {
 			return Assets.exists(Paths.getPath('assets/$filename', TEXT));
 			#end
 		});
-		#if !android
-		Lua_helper.add_callback(lua, "saveFile", function(path:String, content:String, ?absolute:Bool = false)
-		{
-			try {
-				if(!absolute)
-					File.saveContent(Paths.mods(path), content);
-				else
-					File.saveContent(SUtil.getPath() + path, content);
-
-				return true;
-			} catch (e:Dynamic) {
-				luaTrace("Error trying to save " + path + ": " + e, false, false, FlxColor.RED);
-			}
-			return false;
-		});
-		Lua_helper.add_callback(lua, "deleteFile", function(path:String, ?ignoreModFolders:Bool = false)
-		{
-			try {
-				#if MODS_ALLOWED
-				if(!ignoreModFolders)
-				{
-					var lePath:String = Paths.modFolders(path);
-					if(FileSystem.exists(lePath))
-					{
-						FileSystem.deleteFile(lePath);
-						return true;
-					}
-				}
-				#end
-
-				var lePath:String = SUtil.getPath() + Paths.getPath(path, TEXT);
-				if(Assets.exists(lePath))
-				{
-					FileSystem.deleteFile(lePath);
-					return true;
-				}
-			} catch (e:Dynamic) {
-				luaTrace("Error trying to delete " + path + ": " + e, false, false, FlxColor.RED);
-			}
-			return false;
-		});
-		#else
+		#if android
 		Lua_helper.add_callback(lua, "saveFile", function(file:String, fileData:String) {
 			File.saveContent(Tools.getExternalStorageDirectory() + '/' + file, fileData);
 		});
 		Lua_helper.add_callback(lua, "deleteFile", function(file:String) {
-			if(FileSystem.exists(file))
+			if(FileSystem.exists(Tools.getExternalStorageDirectory() + '/' + file))
 			{
 				FileSystem.deleteFile(Tools.getExternalStorageDirectory() + '/' + file);
 			}
