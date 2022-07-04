@@ -137,7 +137,7 @@ class PauseSubState extends MusicBeatSubstate
 		#if android
 		if (PlayState.chartingMode)
 		{
-			addVirtualPad(FULL, A);
+			addVirtualPad(LEFT_FULL, A);
 		}
 		else
 		{
