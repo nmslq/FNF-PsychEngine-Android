@@ -32,6 +32,11 @@ class FlxHitbox extends FlxSpriteGroup
 	public var buttonUp:FlxButton;
 	public var buttonRight:FlxButton;
 
+	public var hintLeft:FlxSprite;
+	public var hintDown:FlxSprite;
+	public var hintUp:FlxSprite;
+	public var hintRight:FlxSprite;
+
 	/**
 	 * Group of the hint buttons.
 	 */
@@ -53,6 +58,11 @@ class FlxHitbox extends FlxSpriteGroup
 		hitbox.add(add(buttonDown = createHitbox(FlxG.width / 4, 0, 'down', 0xFF00FFFF)));
 		hitbox.add(add(buttonUp = createHitbox(FlxG.width / 2, 0, 'up', 0xFF00FF00)));
 		hitbox.add(add(buttonRight = createHitbox((FlxG.width / 2) + (FlxG.width / 4), 0, 'right', 0xFFFF0000)));
+
+		hitbox.add(add(hintLeft = createHitboxHint(0, 0, 'left_hint', 0xFFFF00FF)));
+		hitbox.add(add(hintDown = createHitboxHint(FlxG.width / 4, 0, 'down_hint', 0xFF00FFFF)));
+		hitbox.add(add(hintUp = createHitboxHint(FlxG.width / 2, 0, 'up_hint', 0xFF00FF00)));
+		hitbox.add(add(hintRight = createHitboxHint((FlxG.width / 2) + (FlxG.width / 4), 0, 'right_hint', 0xFFFF0000)));
 	}
 
 	override function destroy()
@@ -66,6 +76,11 @@ class FlxHitbox extends FlxSpriteGroup
 		buttonDown = null;
 		buttonUp = null;
 		buttonRight = null;
+
+		hintLeft = null;
+		hintDown = null;
+		hintUp = null;
+		hintRight = null;
 	}
 
 	/**
@@ -129,6 +144,22 @@ class FlxHitbox extends FlxSpriteGroup
 			button.onDown.callback = OnClick;
 
 		return button;
+	}
+
+	public function createHitboxHint(x:Float = 0, y:Float = 0, frames:String, ?color:Int):FlxSprite
+	{
+		var hint:FlxSprite = new FlxSprite(x, y);
+		hint.loadGraphic(FlxGraphic.fromFrame(getFrames().getByName(frames)));
+		hint.alpha = 0.75;
+		hint.antialiasing = ClientPrefs.globalAntialiasing;
+		if (color != null)
+			hint.color = color;
+		return hint;
+	}
+
+	public function getFrames():FlxAtlasFrames
+	{
+		return Paths.getSparrowAtlas('android/hitbox');
 	}
 
 	public static function getHitboxInputFrames():FlxAtlasFrames
