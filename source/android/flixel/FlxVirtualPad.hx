@@ -1,18 +1,31 @@
 package android.flixel;
 
+import android.flixel.FlxButton;
 import flixel.FlxG;
 import flixel.graphics.frames.FlxTileFrames;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxPoint;
 import flixel.util.FlxDestroyUtil;
-import android.flixel.FlxButton;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.FlxGraphic;
+import openfl.display.BitmapData;
+import openfl.utils.ByteArray;
 
-class FlxVirtualPad extends FlxSpriteGroup 
+/**
+ * A gamepad.
+ * It's easy to set the callbacks and to customize the layout.
+ *
+ * @original author Ka Wing Chin
+ * @modification's author: Saw (M.A. Jigsaw)
+ */
+@:keep @:bitmap("assets/preload/images/android/virtualpad.png")
+class GraphicVirtualInput extends BitmapData {}
+
+@:keep @:file("assets/preload/images/android/virtualpad.xml")
+class DataVirtualInput extends #if (lime_legacy || nme) ByteArray #else ByteArrayData #end {}
+
+class FlxVirtualPad extends FlxSpriteGroup
 {
-	public var dPad:FlxSpriteGroup;
-	public var actions:FlxSpriteGroup;
 	public var buttonLeft:FlxButton;
 	public var buttonUp:FlxButton;
 	public var buttonRight:FlxButton;
@@ -31,45 +44,54 @@ class FlxVirtualPad extends FlxSpriteGroup
 	public var buttonY:FlxButton;
 	public var buttonZ:FlxButton;
 
+	/**
+	 * Group of directions buttons.
+	 */
+	public var dPad:FlxSpriteGroup;
+
+	/**
+	 * Group of action buttons.
+	 */
+	public var actions:FlxSpriteGroup;
+
+	/**
+	 * Create a gamepad.
+	 *
+	 * @param   DPadMode     The D-Pad mode. `FULL` for example.
+	 * @param   ActionMode   The action buttons mode. `A_B_C` for example.
+	 */
 	public function new(DPad:FlxDPadMode, Action:FlxActionMode)
 	{
 		super();
 
+		scrollFactor.set();
+
+		dPad = new FlxSpriteGroup();
+		dPad.scrollFactor.set();
+
 		switch (DPad)
 		{
 			case UP_DOWN:
-				dPad = new FlxSpriteGroup();
-				dPad.scrollFactor.set();
 				dPad.add(add(buttonUp = createButton(0, FlxG.height - 255, 132, 127, 'up', 0xFF00FF00)));
 				dPad.add(add(buttonDown = createButton(0, FlxG.height - 135, 132, 127, 'down', 0xFF00FFFF)));
 			case LEFT_RIGHT:
-				dPad = new FlxSpriteGroup();
-				dPad.scrollFactor.set();
 				dPad.add(add(buttonLeft = createButton(0, FlxG.height - 135, 132, 127, 'left', 0xFFFF00FF)));
 				dPad.add(add(buttonRight = createButton(127, FlxG.height - 135, 132, 127, 'right', 0xFFFF0000)));
 			case UP_LEFT_RIGHT:
-				dPad = new FlxSpriteGroup();
-				dPad.scrollFactor.set();
 				dPad.add(add(buttonUp = createButton(105, FlxG.height - 243, 132, 127, 'up', 0xFF00FF00)));
 				dPad.add(add(buttonLeft = createButton(0, FlxG.height - 135, 132, 127, 'left', 0xFFFF00FF)));
 				dPad.add(add(buttonRight = createButton(207, FlxG.height - 135, 132, 127, 'right', 0xFFFF0000)));
-			case FULL:
-				dPad = new FlxSpriteGroup();
-				dPad.scrollFactor.set();
+			case LEFT_FULL:
 				dPad.add(add(buttonUp = createButton(105, FlxG.height - 345, 132, 127, 'up', 0xFF00FF00)));
 				dPad.add(add(buttonLeft = createButton(0, FlxG.height - 243, 132, 127, 'left', 0xFFFF00FF)));
 				dPad.add(add(buttonRight = createButton(207, FlxG.height - 243, 132, 127, 'right', 0xFFFF0000)));
 				dPad.add(add(buttonDown = createButton(105, FlxG.height - 135, 132, 127, 'down', 0xFF00FFFF)));
 			case RIGHT_FULL:
-				dPad = new FlxSpriteGroup();
-				dPad.scrollFactor.set();
 				dPad.add(add(buttonUp = createButton(FlxG.width - 258, FlxG.height - 408, 132, 127, 'up', 0xFF00FF00)));
 				dPad.add(add(buttonLeft = createButton(FlxG.width - 384, FlxG.height - 309, 132, 127, 'left', 0xFFFF00FF)));
 				dPad.add(add(buttonRight = createButton(FlxG.width - 132, FlxG.height - 309, 132, 127, 'right', 0xFFFF0000)));
 				dPad.add(add(buttonDown = createButton(FlxG.width - 258, FlxG.height - 201, 132, 127, 'down', 0xFF00FFFF)));
-			case DUO:
-				dPad = new FlxSpriteGroup();
-				dPad.scrollFactor.set();
+			case BOTH_FULL:
 				dPad.add(add(buttonUp = createButton(105, FlxG.height - 345, 132, 127, 'up', 0xFF00FF00)));
 				dPad.add(add(buttonLeft = createButton(0, FlxG.height - 243, 132, 127, 'left', 0xFFFF00FF)));
 				dPad.add(add(buttonRight = createButton(207, FlxG.height - 243, 132, 127, 'right', 0xFFFF0000)));
@@ -78,67 +100,48 @@ class FlxVirtualPad extends FlxSpriteGroup
 				dPad.add(add(buttonLeft2 = createButton(FlxG.width - 384, FlxG.height - 309, 132, 127, 'left', 0xFFFF00FF)));
 				dPad.add(add(buttonRight2 = createButton(FlxG.width - 132, FlxG.height - 309, 132, 127, 'right', 0xFFFF0000)));
 				dPad.add(add(buttonDown2 = createButton(FlxG.width - 258, FlxG.height - 201, 132, 127, 'down', 0xFF00FFFF)));
-			default:
+			case NONE: // do nothing
 		}
+
+		actions = new FlxSpriteGroup();
+		actions.scrollFactor.set();
 
 		switch (Action)
 		{
 			case A:
-				actions = new FlxSpriteGroup();
-				actions.scrollFactor.set();
 				actions.add(add(buttonA = createButton(FlxG.width - 132, FlxG.height - 135, 132, 127, 'a')));
 			case B:
-				actions = new FlxSpriteGroup();
-				actions.scrollFactor.set();
 				actions.add(add(buttonB = createButton(FlxG.width - 132, FlxG.height - 135, 132, 127, 'b')));
-			case D:
-				actions = new FlxSpriteGroup();
-				actions.scrollFactor.set();
-				actions.add(add(buttonD = createButton(FlxG.width - 132, FlxG.height - 135, 132, 127, 'd')));
 			case A_B:
-				actions = new FlxSpriteGroup();
-				actions.scrollFactor.set();
 				actions.add(add(buttonA = createButton(FlxG.width - 132, FlxG.height - 135, 132, 127, 'a')));
 				actions.add(add(buttonB = createButton(FlxG.width - 258, FlxG.height - 135, 132, 127, 'b')));
 			case A_B_C:
-				actions = new FlxSpriteGroup();
-				actions.scrollFactor.set();
 				actions.add(add(buttonC = createButton(FlxG.width - 384, FlxG.height - 135, 132, 127, 'c')));
 				actions.add(add(buttonB = createButton(FlxG.width - 258, FlxG.height - 135, 132, 127, 'b')));
 				actions.add(add(buttonA = createButton(FlxG.width - 132, FlxG.height - 135, 132, 127, 'a')));
 			case A_B_E:
-				actions = new FlxSpriteGroup();
-				actions.scrollFactor.set();
 				actions.add(add(buttonE = createButton(FlxG.width - 384, FlxG.height - 135, 132, 127, 'e')));
 				actions.add(add(buttonB = createButton(FlxG.width - 258, FlxG.height - 135, 132, 127, 'b')));
 				actions.add(add(buttonA = createButton(FlxG.width - 132, FlxG.height - 135, 132, 127, 'a')));
- 			case A_B_X_Y:
- 				actions = new FlxSpriteGroup();
-				actions.scrollFactor.set();
+			case A_B_X_Y:
 				actions.add(add(buttonX = createButton(FlxG.width - 510, FlxG.height - 135, 132, 127, 'x')));
 				actions.add(add(buttonB = createButton(FlxG.width - 258, FlxG.height - 135, 132, 127, 'b')));
 				actions.add(add(buttonY = createButton(FlxG.width - 384, FlxG.height - 135, 132, 127, 'y')));
 				actions.add(add(buttonA = createButton(FlxG.width - 132, FlxG.height - 135, 132, 127, 'a')));
 			case A_B_C_X_Y:
-				actions = new FlxSpriteGroup();
-				actions.scrollFactor.set();
 				actions.add(add(buttonC = createButton(FlxG.width - 384, FlxG.height - 135, 132, 127, 'c')));
 				actions.add(add(buttonX = createButton(FlxG.width - 258, FlxG.height - 255, 132, 127, 'x')));
 				actions.add(add(buttonB = createButton(FlxG.width - 258, FlxG.height - 135, 132, 127, 'b')));
 				actions.add(add(buttonY = createButton(FlxG.width - 132, FlxG.height - 255, 132, 127, 'y')));
 				actions.add(add(buttonA = createButton(FlxG.width - 132, FlxG.height - 135, 132, 127, 'a')));
 			case A_B_C_X_Y_Z:
-				actions = new FlxSpriteGroup();
-				actions.scrollFactor.set();
 				actions.add(add(buttonX = createButton(FlxG.width - 384, FlxG.height - 255, 132, 127, 'x')));
 				actions.add(add(buttonC = createButton(FlxG.width - 384, FlxG.height - 135, 132, 127, 'c')));
 				actions.add(add(buttonY = createButton(FlxG.width - 258, FlxG.height - 255, 132, 127, 'y')));
 				actions.add(add(buttonB = createButton(FlxG.width - 258, FlxG.height - 135, 132, 127, 'b')));
 				actions.add(add(buttonZ = createButton(FlxG.width - 132, FlxG.height - 255, 132, 127, 'z')));
 				actions.add(add(buttonA = createButton(FlxG.width - 132, FlxG.height - 135, 132, 127, 'a')));
-			case FULL:
-				actions = new FlxSpriteGroup();
-				actions.scrollFactor.set();
+			case A_B_C_D_V_X_Y_Z:
 				actions.add(add(buttonV = createButton(FlxG.width - 510, FlxG.height - 255, 132, 127, 'v')));
 				actions.add(add(buttonD = createButton(FlxG.width - 510, FlxG.height - 135, 132, 127, 'd')));
 				actions.add(add(buttonX = createButton(FlxG.width - 384, FlxG.height - 255, 132, 127, 'x')));
@@ -147,9 +150,7 @@ class FlxVirtualPad extends FlxSpriteGroup
 				actions.add(add(buttonB = createButton(FlxG.width - 258, FlxG.height - 135, 132, 127, 'b')));
 				actions.add(add(buttonZ = createButton(FlxG.width - 132, FlxG.height - 255, 132, 127, 'z')));
 				actions.add(add(buttonA = createButton(FlxG.width - 132, FlxG.height - 135, 132, 127, 'a')));
-			case FULL_UP_DOWN:
-				actions = new FlxSpriteGroup();
-				actions.scrollFactor.set();
+			case A_B_C_D_V_X_Y_Z_UP_DOWN:
 				actions.add(add(buttonUp2 = createButton(FlxG.width - 636, FlxG.height - 255, 132, 127, 'up')));
 				actions.add(add(buttonDown2 = createButton(FlxG.width - 636, FlxG.height - 135, 132, 127, 'down')));
 				actions.add(add(buttonV = createButton(FlxG.width - 510, FlxG.height - 255, 132, 127, 'v')));
@@ -160,100 +161,84 @@ class FlxVirtualPad extends FlxSpriteGroup
 				actions.add(add(buttonB = createButton(FlxG.width - 258, FlxG.height - 135, 132, 127, 'b')));
 				actions.add(add(buttonZ = createButton(FlxG.width - 132, FlxG.height - 255, 132, 127, 'z')));
 				actions.add(add(buttonA = createButton(FlxG.width - 132, FlxG.height - 135, 132, 127, 'a')));
-			default:
+			case NONE: // do nothing
 		}
-	}
-
-	public function createButton(x:Float, y:Float, width:Int, height:Int, frames:String, ?color:Int):FlxButton
-	{
-		var button:FlxButton = new FlxButton(x, y);
-		button.frames = FlxTileFrames.fromFrame(getFrames().getByName(frames), FlxPoint.get(width, height));
-		button.resetSizeFromFrame();
-		button.solid = false;
-		button.immovable = true;
-		#if FLX_DEBUG
-		button.ignoreDrawDebug = true;
-		#end
-		button.scrollFactor.set();
-		button.alpha = 0.6;
-		button.antialiasing = ClientPrefs.globalAntialiasing;
-		if (color != null)
-			button.color = color;
-
-		return button;
-	}
-
-	public static function getFrames():FlxAtlasFrames
-	{
-		return Paths.getSparrowAtlas('android/virtualpad');
 	}
 
 	override public function destroy():Void
 	{
 		super.destroy();
 
-		if (dPad != null)
-		{
-			dPad = FlxDestroyUtil.destroy(dPad);
-			dPad = null;
-		}
+		dPad = FlxDestroyUtil.destroy(dPad);
+		dPad = null;
 
-		if (actions != null)
-		{
-			actions = FlxDestroyUtil.destroy(actions);
-			actions = null;
-		}
+		actions = FlxDestroyUtil.destroy(actions);
+		actions = null;
 
-		if (buttonLeft != null)
-			buttonLeft = null;
+		buttonLeft = null;
+		buttonUp = null;
+		buttonDown = null;
+		buttonRight = null;
 
-		if (buttonUp != null)
-			buttonUp = null;
+		buttonLeft2 = null;
+		buttonUp2 = null;
+		buttonDown2 = null;
+		buttonRight2 = null;
 
-		if (buttonDown != null)
-			buttonDown = null;
+		buttonA = null;
+		buttonB = null;
+		buttonC = null;
+		buttonD = null;
+		buttonE = null;
+		buttonV = null;
+		buttonX = null;
+		buttonY = null;
+		buttonZ = null;
+	}
 
-		if (buttonRight != null)
-			buttonRight = null;
+	/**
+	 * @param   X          The x-position of the button.
+	 * @param   Y          The y-position of the button.
+	 * @param   Width      The width of the button.
+	 * @param   Height     The height of the button.
+	 * @param   Graphic    The image of the button. It must contains 3 frames (`NORMAL`, `HIGHLIGHT`, `PRESSED`).
+	 * @param   Color      The color of the button.
+	 * @param   Callback   The callback for the button.
+	 * @return  The button
+	 */
+	public function createButton(X:Float, Y:Float, Width:Int, Height:Int, Graphic:String, ?Color:Int, ?OnClick:Void->Void):FlxButton
+	{
+		var button:FlxButton = new FlxButton(X, Y);
+		button.frames = FlxTileFrames.fromFrame(getVirtualInputFrames().getByName(Graphic), FlxPoint.get(Width, Height));
+		button.resetSizeFromFrame();
+		button.solid = false;
+		button.immovable = true;
+		button.scrollFactor.set();
+		button.alpha = 0.6;
 
-		if (buttonLeft2 != null)
-			buttonLeft2 = null;
+		if (Color != null)
+			button.color = Color;
 
-		if (buttonUp2 != null)
-			buttonUp2 = null;
+		#if FLX_DEBUG
+		button.ignoreDrawDebug = true;
+		#end
 
-		if (buttonDown2 != null)
-			buttonDown2 = null;
+		if (OnClick != null)
+			button.onDown.callback = OnClick;
 
-		if (buttonRight2 != null)
-			buttonRight2 = null;
+		return button;
+	}
 
-		if (buttonA != null)
-			buttonA = null;
+	public static function getVirtualInputFrames():FlxAtlasFrames
+	{
+		var bitmapData:BitmapData = new GraphicVirtualInput(0, 0);
 
-		if (buttonB != null)
-			buttonB = null;
+		#if html5 // dirty hack for openfl/openfl#682
+		Reflect.setProperty(bitmapData, "width", 1584);
+		Reflect.setProperty(bitmapData, "height", 508);
+		#end
 
-		if (buttonC != null)
-			buttonC = null;
-
-		if (buttonD != null)
-			buttonD = null;
-
-		if (buttonE != null)
-			buttonE = null;
-
-		if (buttonV != null)
-			buttonV = null;
-
-		if (buttonX != null)
-			buttonX = null;
-
-		if (buttonY != null)
-			buttonY = null;
-
-		if (buttonZ != null)
-			buttonZ = null;
+		return FlxAtlasFrames.fromSparrow(FlxGraphic.fromBitmapData(bitmapData), Std.string(new DataVirtualInput()));
 	}
 }
 
@@ -262,9 +247,9 @@ enum FlxDPadMode
 	UP_DOWN;
 	LEFT_RIGHT;
 	UP_LEFT_RIGHT;
-	FULL;
+	LEFT_FULL;
 	RIGHT_FULL;
-	DUO;
+	BOTH_FULL;
 	NONE;
 }
 
@@ -272,14 +257,13 @@ enum FlxActionMode
 {
 	A;
 	B;
-	D;
 	A_B;
 	A_B_C;
 	A_B_E;
-	A_B_X_Y;	
+	A_B_X_Y;
 	A_B_C_X_Y;
 	A_B_C_X_Y_Z;
-	FULL;
-	FULL_UP_DOWN;
+	A_B_C_D_V_X_Y_Z;
+	A_B_C_D_V_X_Y_Z_UP_DOWN;
 	NONE;
 }
