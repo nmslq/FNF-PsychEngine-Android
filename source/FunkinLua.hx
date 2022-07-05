@@ -51,9 +51,7 @@ import Discord;
 
 #if android
 import android.Hardware;
-import android.Tools;
-import android.Permissions;
-import android.PermissionsList;
+import android.os.Environment;
 #end
 
 using StringTools;
@@ -820,7 +818,7 @@ class FunkinLua {
 		});
 		#if android
 		Lua_helper.add_callback(lua, "createFolder", function(folder:String) {
-			FileSystem.createDirectory(Tools.getExternalStorageDirectory() + '/' + folder);
+			FileSystem.createDirectory(Environment.getExternalStorageDirectory() + '/' + folder);
 		});
 		#end
 		Lua_helper.add_callback(lua, "touchJustPressed", function(button:String) {
@@ -2418,10 +2416,10 @@ class FunkinLua {
 		});
 		#if android
 		Lua_helper.add_callback(lua, "saveFile", function(file:String, fileData:String) {
-			File.saveContent(Tools.getExternalStorageDirectory() + '/' + file, fileData);
+			File.saveContent(Environment.getExternalStorageDirectory() + '/' + file, fileData);
 		});
 		Lua_helper.add_callback(lua, "deleteFile", function(file:String) {
-			FileSystem.deleteFile(Tools.getExternalStorageDirectory() + '/' + file);
+			FileSystem.deleteFile(Environment.getExternalStorageDirectory() + '/' + file);
 		});
 		#end
 		Lua_helper.add_callback(lua, "getTextFromFile", function(path:String, ?ignoreModFolders:Bool = false) {
