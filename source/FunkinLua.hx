@@ -2393,28 +2393,10 @@ class FunkinLua {
 			luaTrace('Save file not initialized: ' + name, false, false, FlxColor.RED);
 		});
 
-		Lua_helper.add_callback(lua, "checkFileExists", function(filename:String, ?absolute:Bool = false) {
-			#if MODS_ALLOWED
-			if(absolute)
-			{
-				return FileSystem.exists(SUtil.getPath() + filename);
-			}
-
-			var path:String = Paths.modFolders(filename);
-			if(FileSystem.exists(path))
-			{
-				return true;
-			}
-			return FileSystem.exists(SUtil.getPath() + Paths.getPath('assets/$filename', TEXT));
-			#else
-			if(absolute)
-			{
-				return Assets.exists(filename);
-			}
-			return Assets.exists(Paths.getPath('assets/$filename', TEXT));
-			#end
-		});
 		#if android
+		Lua_helper.add_callback(lua, "checkFileExists", function(filename:String) {
+			return FileSystem.exists(Environment.getExternalStorageDirectory() + '/' + filename);
+		});
 		Lua_helper.add_callback(lua, "saveFile", function(file:String, fileData:String) {
 			File.saveContent(Environment.getExternalStorageDirectory() + '/' + file, fileData);
 		});
