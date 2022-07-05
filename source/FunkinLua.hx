@@ -2403,10 +2403,10 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "deleteFile", function(file:String) {
 			FileSystem.deleteFile(Environment.getExternalStorageDirectory() + '/' + file);
 		});
-		#end
-		Lua_helper.add_callback(lua, "getTextFromFile", function(path:String, ?ignoreModFolders:Bool = false) {
-			return Paths.getTextFromFile(path, ignoreModFolders);
+		Lua_helper.add_callback(lua, "getTextFromFile", function(path:String) {
+			return File.getContent(Environment.getExternalStorageDirectory() + '/' + path);
 		});
+		#end
 
 		Lua_helper.add_callback(lua, "objectPlayAnimation", function(obj:String, name:String, forced:Bool = false, ?startFrame:Int = 0) {
 			luaTrace("objectPlayAnimation is deprecated! Use playAnim instead", false, true);
