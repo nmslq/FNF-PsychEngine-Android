@@ -1272,6 +1272,38 @@ class FunkinLua {
 			if(!color.startsWith('0x')) color = '0xff' + color;
 			return Std.parseInt(color);
 		});
+		Lua_helper.add_callback(lua, "getColorFromRGB", function(color:String) {
+			var bitch:Array<String> = color.split(',');
+			var ass:Array<Int> = [];
+			for (i in 0...bitch.length) {
+				ass.push(Std.parseInt(bitch[i]));
+			}
+			return FlxColor.fromRGB(ass[0], ass[1], ass[2]);
+		});
+		Lua_helper.add_callback(lua, "setColorSwap", function(obj:String, hue:Float = 0, saturation:Float = 0, brightness:Float = 0) {
+			var real = PlayState.instance.getLuaObject(obj);
+			var color:ColorSwap = new ColorSwap();
+			color.hue = hue;
+			color.saturation = saturation;
+			color.brightness = brightness;
+			if(real!=null) {
+				real.shader = color.shader;
+				return true;
+			}
+
+			var killMe:Array<String> = obj.split('.');
+			var object:FlxSprite = getObjectDirectly(killMe[0]);
+			if(killMe.length > 1) {
+				object = getVarInArray(getPropertyLoopThingWhatever(killMe), killMe[killMe.length-1]);
+			}
+
+			if(object != null) {
+				object.shader = color.shader;
+				return true;
+			}
+			luaTrace("Object " + obj + " doesn't exist!", false, false, FlxColor.RED);
+			return false;
+		});
 
 		Lua_helper.add_callback(lua, "keyboardJustPressed", function(name:String)
 		{
