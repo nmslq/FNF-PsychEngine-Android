@@ -447,18 +447,19 @@ class Grain extends FlxShader
 class VCRDistortionEffect extends Effect
 {
   public var shader:VCRDistortionShader = new VCRDistortionShader();
-  public function new(glitchFactor:Float,distortion:Bool=true,perspectiveOn:Bool=true,vignetteMoving:Bool=true){
+  public function new(){
     shader.iTime.value = [0];
     shader.vignetteOn.value = [true];
-    shader.perspectiveOn.value = [perspectiveOn];
-    shader.distortionOn.value = [distortion];
+    shader.perspectiveOn.value = [true];
+    shader.distortionOn.value = [true];
     shader.scanlinesOn.value = [true];
-    shader.vignetteMoving.value = [vignetteMoving];
-    shader.glitchModifier.value = [glitchFactor];
+    shader.vignetteMoving.value = [true];
+    shader.noiseOn.value = [true];
+    shader.glitchModifier.value = [1];
     shader.iResolution.value = [Lib.current.stage.stageWidth,Lib.current.stage.stageHeight];
-   // var noise = Assets.getBitmapData(Paths.image("noise2"));
-   // shader.noiseTex.input = noise;
-   PlayState.instance.shaderUpdates.push(update);
+    var noise = Assets.getBitmapData(Paths.image("noise2"));
+    shader.noiseTex.input = noise;
+    shader.curvateOn.value = [true];
   }
 
   public function update(elapsed:Float){
@@ -466,8 +467,16 @@ class VCRDistortionEffect extends Effect
     shader.iResolution.value = [Lib.current.stage.stageWidth,Lib.current.stage.stageHeight];
   }
 
+  public function setCurvate(state:Bool){
+    shader.curvateOn.value[0] = state;
+  }
+
   public function setVignette(state:Bool){
     shader.vignetteOn.value[0] = state;
+  }
+
+  public function setNoise(state:Bool){
+    shader.noiseOn.value[0] = state;
   }
 
   public function setPerspective(state:Bool){
@@ -491,7 +500,7 @@ class VCRDistortionEffect extends Effect
   }
 }
 
-class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ldjGzV and https://www.shadertoy.com/view/Ms23DR and https://www.shadertoy.com/view/MsXGD4 and https://www.shadertoy.com/view/Xtccz4
+class VCRDistortionShader extends FlxShader
 {
 
   @:glFragmentSource('
@@ -503,9 +512,30 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
     uniform bool distortionOn;
     uniform bool scanlinesOn;
     uniform bool vignetteMoving;
-   // uniform sampler2D noiseTex;
+    uniform sampler2D noiseTex;
     uniform float glitchModifier;
     uniform vec3 iResolution;
+    uniform bool noiseOn;
+    uniform bool curvateOn;
+
+    vec2 rotate(vec2 v, float a)
+    {
+      float s = sin(a);
+      float c = cos(a);
+      mat2 m = mat2(c, -s, s, c);
+      return m * v;
+    }
+
+    vec2 vCrtCurvature (vec2 uv, float q, float daValues) {
+      float x = daValues - distance (uv, vec2 (daValues, daValues));
+      vec2 g = vec2 (daValues, daValues) - uv;
+
+      if(curvateOn){
+        return uv + g*x*q;
+      } else {
+        return uv;
+      }
+    }
 
     float onOff(float a, float b, float c)
     {
@@ -519,6 +549,12 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
     	return (1.-fact) * inside;
 
     }
+
+    float rbgToluminance(vec3 rgb)
+    {
+      return (rgb.r * 0.3) + (rgb.g * 0.59) + (rgb.b * 0.11);
+    }
+
 
     vec4 getVideo(vec2 uv)
       {
@@ -571,18 +607,25 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
 
     vec2 scandistort(vec2 uv) {
     	float scan1 = clamp(cos(uv.y * 2.0 + iTime), 0.0, 1.0);
-    	float scan2 = clamp(cos(uv.y * 2.0 + iTime + 4.0) * 10.0, 0.0, 1.0) ;
+    	float scan2 = clamp(cos(uv.y * 2.0 + iTime + 4.0) * 10.0, 0.0, 1.0);
     	float amount = scan1 * scan2 * uv.x;
+      
 
-    	//uv.x -= 0.05 * mix(flixel_texture2D(noiseTex, vec2(uv.x, amount)).r * amount, amount, 0.9);
+      uv = uv * 2.0 - 1.0;
+      uv *= 0.9;
+      uv = (uv + 1.0) * 0.5;
+
+    	uv.x -= 0.05 * mix(flixel_texture2D(noiseTex, vec2(uv.x, amount)).r * amount, amount, 0.9);
 
     	return uv;
 
     }
+
     void main()
     {
     	vec2 uv = openfl_TextureCoordv;
-      vec2 curUV = screenDistort(uv);
+      vec2 uvB = vCrtCurvature(uv, 0.5, 0.5);
+      vec2 curUV = screenDistort(uvB);
     	uv = scandistort(curUV);
     	vec4 video = getVideo(uv);
       float vigAmt = 1.0;
@@ -605,12 +648,18 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
       if(vignetteOn)
     	 video *= vignette;
 
-
-      gl_FragColor = mix(video,vec4(noise(uv * 75.)),.05);
-
       if(curUV.x<0 || curUV.x>1 || curUV.y<0 || curUV.y>1){
         gl_FragColor = vec4(0,0,0,0);
+      }else{
+        if(noiseOn){
+          gl_FragColor = mix(video,vec4(noise(uv * 75.)),.05);
+        }else{
+          gl_FragColor = video;
+        }
+
       }
+
+
 
     }
   ')
