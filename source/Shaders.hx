@@ -8,7 +8,9 @@ import openfl.display.ShaderInput;
 import openfl.utils.Assets;
 import flixel.FlxG;
 import openfl.Lib;
+
 using StringTools;
+
 typedef ShaderEffect = {
   var shader:Dynamic;
 }
@@ -447,7 +449,7 @@ class Grain extends FlxShader
 class VCRDistortionEffect extends Effect
 {
   public var shader:VCRDistortionShader = new VCRDistortionShader();
-  public function new(){
+  public function new(glitchFactor:Float,distortion:Bool=true,perspectiveOn:Bool=true,vignetteMoving:Bool=true){
     shader.iTime.value = [0];
     shader.vignetteOn.value = [true];
     shader.perspectiveOn.value = [true];
