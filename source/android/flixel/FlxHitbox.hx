@@ -83,7 +83,7 @@ class FlxHitbox extends FlxSpriteGroup
 			buttonRight = null;
 
 		if (hintLeft != null)
-			hintUp = null;
+			hintLeft = null;
 
 		if (hintUp != null)
 			hintUp = null;
