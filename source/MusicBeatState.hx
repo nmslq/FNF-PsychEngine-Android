@@ -14,9 +14,10 @@ import flixel.util.FlxGradient;
 import flixel.FlxState;
 import flixel.FlxBasic;
 #if android
-import flixel.input.actions.FlxActionInput;
-import android.AndroidControls.AndroidControls;
+import android.AndroidControls;
 import android.flixel.FlxVirtualPad;
+import flixel.input.actions.FlxActionInput;
+import flixel.util.FlxDestroyUtil;
 #end
 
 class MusicBeatState extends FlxUIState
@@ -110,12 +111,6 @@ class MusicBeatState extends FlxUIState
 	override function destroy()
 	{
 		#if android
-		if (virtualPad != null)
-			remove(virtualPad);
-
-		if (androidControls != null)
-			remove(androidControls);
-
 		if (trackedinputsNOTES != [])
 			controls.removeFlxInput(trackedinputsNOTES);
 
@@ -124,6 +119,20 @@ class MusicBeatState extends FlxUIState
 		#end
 
 		super.destroy();
+
+		#if android
+		if (virtualPad != null)
+		{
+			virtualPad = FlxDestroyUtil.destroy(virtualPad);
+			virtualPad = null;
+		}
+
+		if (androidControls != null)
+		{
+			androidControls = FlxDestroyUtil.destroy(androidControls);
+			androidControls = null;
+		}
+		#end
 	}
 
 	override function create() {
