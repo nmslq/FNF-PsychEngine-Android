@@ -66,8 +66,8 @@ class OptionsState extends MusicBeatState
  			case 'Android Controls':
 				#if android
 				removeVirtualPad();
-				#end
 				openSubState(new android.AndroidControlsSubState());
+				#end
 		}
 	}
 
