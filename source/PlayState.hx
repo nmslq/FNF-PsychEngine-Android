@@ -60,6 +60,7 @@ import FunkinLua;
 import DialogueBoxPsych;
 import Conductor.Rating;
 import Shaders;
+import VCRDistortionEffect;
 import openfl.filters.ShaderFilter;
 import flixel.system.FlxAssets.FlxShader;
 #if MODS_ALLOWED
