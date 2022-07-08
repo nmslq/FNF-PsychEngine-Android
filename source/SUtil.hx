@@ -35,13 +35,13 @@ class SUtil
 		if (!Permissions.getGrantedPermissions().contains(PermissionsList.READ_EXTERNAL_STORAGE)
 			|| !Permissions.getGrantedPermissions().contains(PermissionsList.WRITE_EXTERNAL_STORAGE))
 		{
-				Permissions.requestPermissions([PermissionsList.READ_EXTERNAL_STORAGE, PermissionsList.WRITE_EXTERNAL_STORAGE]);
+			Permissions.requestPermissions([PermissionsList.READ_EXTERNAL_STORAGE, PermissionsList.WRITE_EXTERNAL_STORAGE]);
 
 				/**
 				 * Basicaly for now i can't force the app to stop while it requst a android permission, so this make the app to stop while it request the specific permission!
 				 */
-				SUtil.applicationAlert('Permissions? ',
-					'IF you accepted the permissions all are good!' + "\nIf you didn't expect a crash" + 'Press Ok to see what happens');
+			SUtil.applicationAlert('Permissions? ',
+				'IF you accepted the permissions all are good!' + "\nIf you didn't expect a crash" + 'Press Ok to see what happens');
 		}
 
 		if (Permissions.getGrantedPermissions().contains(PermissionsList.READ_EXTERNAL_STORAGE)
