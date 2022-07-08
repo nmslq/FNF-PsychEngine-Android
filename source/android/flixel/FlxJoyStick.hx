@@ -70,7 +70,7 @@ class FlxJoyStick extends FlxSpriteGroup
 	function createBase():Void
 	{
 		base = new FlxSprite(0, 0);
-		base.loadGraphic(FlxGraphic.fromFrame(getJoyStickInputFrames().getByName('base')));
+		base.loadGraphic(FlxGraphic.fromFrame(getFrames().getByName('base')));
 		base.resetSizeFromFrame();
 		base.x += -base.width * 0.5;
 		base.y += -base.height * 0.5;
@@ -85,7 +85,7 @@ class FlxJoyStick extends FlxSpriteGroup
 	function createThumb():Void
 	{
 		thumb = new FlxSprite(0, 0);
-		thumb.loadGraphic(FlxGraphic.fromFrame(getJoyStickInputFrames().getByName('thumb')));
+		thumb.loadGraphic(FlxGraphic.fromFrame(getFrames().getByName('thumb')));
 		thumb.resetSizeFromFrame();
 		thumb.scrollFactor.set();
 		thumb.solid = false;
@@ -95,9 +95,9 @@ class FlxJoyStick extends FlxSpriteGroup
 		add(thumb);
 	}
 
-	public static function getJoyStickInputFrames():FlxAtlasFrames
+	public static function getFrames():FlxAtlasFrames
 	{
-		return FlxAtlasFrames.fromSparrow('assets/preload/images/android/joystick.png', 'assets/preload/images/android/joystick.xml');
+		return Paths.getSparrowAtlas('android/joystick');
 	}
 
 	function createZone():Void
