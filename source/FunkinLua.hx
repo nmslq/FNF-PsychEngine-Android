@@ -2626,8 +2626,7 @@ class FunkinLua {
 			PlayState.instance.addShaderToCamera(camera, new BloomEffect(blurSize/512.0,intensity));
 		});
 		Lua_helper.add_callback(lua, "VCREffect", function() {
-			var vcrDistortion:VCRDistortionEffect = new VCRDistortionEffect();
-			camHUD.setFilters([new ShaderFilter(vcrDistortion.shader)]);
+			PlayState.instance.VCRShader();
 		});
 		Lua_helper.add_callback(lua, "clearEffects", function(camera:String) {
 			PlayState.instance.clearShaderFromCamera(camera);

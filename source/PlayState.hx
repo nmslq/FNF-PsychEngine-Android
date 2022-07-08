@@ -1601,6 +1601,12 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	public function VCRShader()
+	{
+		var vcrDistortion:VCRDistortionEffect = new VCRDistortionEffect();
+		camHUD.setFilters([new ShaderFilter(vcrDistortion.shader)]);
+	}
+
 	public function getLuaObject(tag:String, text:Bool=true):FlxSprite {
 		if(modchartSprites.exists(tag)) return modchartSprites.get(tag);
 		if(text && modchartTexts.exists(tag)) return modchartTexts.get(tag);
