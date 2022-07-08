@@ -39,7 +39,6 @@ import Type.ValueType;
 import Controls;
 import DialogueBoxPsych;
 import Shaders;
-import VCRDistortionEffect;
 import flash.system.System;
 #if hscript
 import hscript.Parser;
@@ -2624,9 +2623,6 @@ class FunkinLua {
 		});
 		Lua_helper.add_callback(lua, "addBloomEffect", function(camera:String,intensity:Float = 0.35,blurSize:Float=1.0) { //saving for l8r
 			PlayState.instance.addShaderToCamera(camera, new BloomEffect(blurSize/512.0,intensity));
-		});
-		Lua_helper.add_callback(lua, "VCREffect", function() {
-			PlayState.instance.VCRShader();
 		});
 		Lua_helper.add_callback(lua, "clearEffects", function(camera:String) {
 			PlayState.instance.clearShaderFromCamera(camera);
