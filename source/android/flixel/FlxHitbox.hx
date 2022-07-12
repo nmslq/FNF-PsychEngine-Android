@@ -83,7 +83,7 @@ class FlxHitbox extends FlxSpriteGroup
 	public function createHitbox(X:Float, Y:Float, Graphic:String, ?Color:Int = 0xFFFFFF):FlxButton
 	{
 		var button:FlxButton = new FlxButton(X, Y);
-		button.loadGraphic(getFrames().getByName(Graphic)));
+		button.loadGraphic(FlxGraphic.fromFrame(getFrames().getByName(Graphic)));
 		button.setGraphicSize(Std.int(FlxG.width / 4), FlxG.height);
 		button.updateHitbox();
 		button.color = Color;
