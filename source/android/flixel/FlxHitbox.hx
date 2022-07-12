@@ -129,6 +129,16 @@ class FlxHitbox extends FlxSpriteGroup
 		return button;
 	}
 
+	public function createHitboxHint(x:Float = 0, y:Float = 0, frames:String, ?color:Int):FlxSprite
+	{
+		var hint:FlxSprite = new FlxSprite(x, y);
+		hint.loadGraphic(FlxGraphic.fromFrame(getFrames().getByName(frames)));
+		hint.alpha = 0.75;
+		hint.antialiasing = ClientPrefs.globalAntialiasing;
+		hint.color = color;
+		return hint;
+	}
+
 	public function getFrames():FlxAtlasFrames
 	{
 		return Paths.getSparrowAtlas('android/hitbox');
