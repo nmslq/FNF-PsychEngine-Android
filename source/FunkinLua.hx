@@ -49,10 +49,6 @@ import hscript.Interp;
 import Discord;
 #end
 
-#if VIDEOS_ALLOWED
-import vlc.MP4Sprite;
-#end
-
 #if android
 import android.Hardware;
 import android.os.Environment;
@@ -943,18 +939,6 @@ class FunkinLua {
 				pee.destroy();
 				PlayState.instance.modchartBackdrops.remove(tag);
 			}
-		});
-		Lua_helper.add_callback(lua, "makeLuaVideo", function(tag:String, video:String, x:Float, y:Float) {
-			tag = tag.replace('.', '');
-			resetSpriteTag(tag);
-			var leSprite:MP4Sprite = new MP4Sprite(x, y);
-			if(video != null && video.length > 0)
-			{
-				leSprite.loadGraphic(Paths.image(video));
-			}
-			leSprite.antialiasing = ClientPrefs.globalAntialiasing;
-			PlayState.instance.modchartSprites.set(tag, leSprite);
-			leSprite.active = true;
 		});
 		//shitass stuff for epic coders like me B)  *image of obama giving himself a medal*
 		Lua_helper.add_callback(lua, "getObjectOrder", function(obj:String) {
