@@ -948,7 +948,7 @@ class FunkinLua {
 			tag = tag.replace('.', '');
 			resetSpriteTag(tag);
 			var leSprite:MP4Sprite = new MP4Sprite(x, y);
-			if(image != null && image.length > 0)
+			if(video != null && video.length > 0)
 			{
 				leSprite.loadGraphic(Paths.image(video));
 			}
