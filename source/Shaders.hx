@@ -496,8 +496,8 @@ class VCRDistortionEffect extends Effect
 class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ldjGzV and https://www.shadertoy.com/view/Ms23DR and https://www.shadertoy.com/view/MsXGD4 and https://www.shadertoy.com/view/Xtccz4
 {
 
-  public function new(){super('
-    ////pragma header
+  @:glFragmentSource('
+    #pragma header
 
     uniform float iTime;
     uniform bool vignetteOn;
@@ -615,9 +615,11 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
       }
 
     }
-  ');//
-  //
-}
+  ')
+  public function new()
+  {
+    super();
+  }
 }
 
 
