@@ -450,46 +450,46 @@ class VCRDistortionEffect extends Effect
 {
   public var shader:VCRDistortionShader = new VCRDistortionShader();
   public function new(glitchFactor:Float,distortion:Bool=true,perspectiveOn:Bool=true,vignetteMoving:Bool=true){
-    shader.data.iTime.value = [0];
-    shader.data.vignetteOn.value = [true];
-    shader.data.perspectiveOn.value = [perspectiveOn];
-    shader.data.distortionOn.value = [distortion];
-    shader.data.scanlinesOn.value = [true];
-    shader.data.vignetteMoving.value = [vignetteMoving];
-    shader.data.glitchModifier.value = [glitchFactor];
-    shader.data.iResolution.value = [Lib.current.stage.stageWidth,Lib.current.stage.stageHeight];
+    shader.iTime.value = [0];
+    shader.vignetteOn.value = [true];
+    shader.perspectiveOn.value = [perspectiveOn];
+    shader.distortionOn.value = [distortion];
+    shader.scanlinesOn.value = [true];
+    shader.vignetteMoving.value = [vignetteMoving];
+    shader.glitchModifier.value = [glitchFactor];
+    shader.iResolution.value = [Lib.current.stage.stageWidth,Lib.current.stage.stageHeight];
    // var noise = Assets.getBitmapData(Paths.image("noise2"));
-   // shader.data.noiseTex.input = noise;
+   // shader.noiseTex.input = noise;
    PlayState.instance.shaderUpdates.push(update);
   }
 
   public function update(elapsed:Float){
-    shader.data.iTime.value[0] += elapsed;
-    shader.data.iResolution.value = [Lib.current.stage.stageWidth,Lib.current.stage.stageHeight];
+    shader.iTime.value[0] += elapsed;
+    shader.iResolution.value = [Lib.current.stage.stageWidth,Lib.current.stage.stageHeight];
   }
 
   public function setVignette(state:Bool){
-    shader.data.vignetteOn.value[0] = state;
+    shader.vignetteOn.value[0] = state;
   }
 
   public function setPerspective(state:Bool){
-    shader.data.perspectiveOn.value[0] = state;
+    shader.perspectiveOn.value[0] = state;
   }
 
   public function setGlitchModifier(modifier:Float){
-    shader.data.glitchModifier.value[0] = modifier;
+    shader.glitchModifier.value[0] = modifier;
   }
 
   public function setDistortion(state:Bool){
-    shader.data.distortionOn.value[0] = state;
+    shader.distortionOn.value[0] = state;
   }
 
   public function setScanlines(state:Bool){
-    shader.data.scanlinesOn.value[0] = state;
+    shader.scanlinesOn.value[0] = state;
   }
 
   public function setVignetteMoving(state:Bool){
-    shader.data.vignetteMoving.value[0] = state;
+    shader.vignetteMoving.value[0] = state;
   }
 }
 
