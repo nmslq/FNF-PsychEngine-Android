@@ -62,6 +62,8 @@ import Conductor.Rating;
 import Shaders;
 import openfl.filters.ShaderFilter;
 import flixel.system.FlxAssets.FlxShader;
+import openfl.display.Shader;
+import DynamicShaderHandler;
 #if MODS_ALLOWED
 import sys.FileSystem;
 #end
@@ -95,6 +97,9 @@ class PlayState extends MusicBeatState
 	public var camHUDShaders:Array<ShaderEffect> = [];
 	public var camOtherShaders:Array<ShaderEffect> = [];
 	public var shaderUpdates:Array<Float->Void> = [];
+	public static var animatedShaders:Map<String, DynamicShaderHandler> = new Map<String, DynamicShaderHandler>();
+	public var shader_chromatic_abberation:ChromaticAberrationEffect;
+	public var luaShaders:Map<String, DynamicShaderHandler> = new Map<String, DynamicShaderHandler>();
 
 	public var modchartTweens:Map<String, FlxTween> = new Map<String, FlxTween>();
 	public var modchartSprites:Map<String, ModchartSprite> = new Map<String, ModchartSprite>();
@@ -370,6 +375,8 @@ class PlayState extends MusicBeatState
 		practiceMode = ClientPrefs.getGameplaySetting('practice', false);
 		cpuControlled = ClientPrefs.getGameplaySetting('botplay', false);
 
+		shader_chromatic_abberation = new ChromaticAberrationEffect();
+
 		// var gameCam:FlxCamera = FlxG.camera;
 		camGame = new FlxCamera();
 		camHUD = new FlxCamera();
@@ -499,6 +506,10 @@ class PlayState extends MusicBeatState
 				stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
 				stageFront.updateHitbox();
 				add(stageFront);
+				new DynamicShaderHandler('Example', false);
+				var shaderArray = new Array<BitmapFilter>();
+				shaderArray.push(new ShaderFilter(animatedShaders['Example'].shader));
+				camGame.setFilters(shaderArray);
 				if(!ClientPrefs.lowQuality) {
 					var stageLight:BGSprite = new BGSprite('stage_light', -125, -100, 0.9, 0.9);
 					stageLight.setGraphicSize(Std.int(stageLight.width * 1.1));
@@ -3331,6 +3342,17 @@ class PlayState extends MusicBeatState
 		setOnLuas('cameraY', camFollowPos.y);
 		setOnLuas('botPlay', cpuControlled);
 		callOnLuas('onUpdatePost', [elapsed]);
+		for (shader in animatedShaders)
+		{
+			shader.update(elapsed);
+		}
+		#if LUA_ALLOWED
+
+		for (key => value in luaShaders)
+		{
+			value.update(elapsed);
+		}
+		#end
 		for (i in shaderUpdates) {
 		  i(elapsed);
 		}

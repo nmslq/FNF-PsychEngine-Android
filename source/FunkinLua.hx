@@ -38,6 +38,8 @@ import sys.io.File;
 import Type.ValueType;
 import Controls;
 import DialogueBoxPsych;
+import openfl.filters.ShaderFilter;
+import openfl.display.ShaderParameter;
 import Shaders;
 import flash.system.System;
 #if hscript
@@ -1629,6 +1631,15 @@ class FunkinLua {
 			PlayState.instance.modchartSprites.set(tag, leSprite);
 			leSprite.active = true;
 		});
+		Lua_helper.add_callback(lua, "makeLuaShaderSprite", function(tag:String, shader:String, x:Float, y:Float,optimize:Bool=false) {
+			tag = tag.replace('.', '');
+			resetSpriteTag(tag);
+			var leSprite:ModchartSprite = new ModchartSprite(x, y,true,shader,optimize);
+			leSprite.antialiasing = ClientPrefs.globalAntialiasing;
+
+			PlayState.instance.modchartSprites.set(tag, leSprite);
+			leSprite.active = true;
+		});
 		Lua_helper.add_callback(lua, "makeAnimatedLuaSprite", function(tag:String, image:String, x:Float, y:Float, ?spriteType:String = "sparrow") {
 			tag = tag.replace('.', '');
 			resetSpriteTag(tag);
@@ -2587,7 +2598,33 @@ class FunkinLua {
 		});
 		
 		//SHADER SHIT
+
+		Lua_helper.add_callback(lua, "createShaders", function(shaderName:String, ?optimize:Bool = false) {
+				var shader = new DynamicShaderHandler(shaderName, optimize);
+
+				return shaderName;
+		});
 		
+		Lua_helper.add_callback(lua, "createShaders", function(shaderName:String, ?optimize:Bool = false)
+		{
+			var shader = new DynamicShaderHandler(shaderName, optimize);
+			return shaderName;
+		});
+
+		Lua_helper.add_callback(lua, "setShadersToCamera", function(shaderName:Array<String>, cameraName:String) {
+
+			var shaderArray = new Array<BitmapFilter>();
+
+			for (i in shaderName)
+			{
+				shaderArray.push(new ShaderFilter(PlayState.instance.luaShaders[i].shader));
+			}
+
+			cameraFromString(cameraName).setFilters(shaderArray);
+		});
+		Lua_helper.add_callback(lua, "clearShadersFromCamera", function(cameraName) {
+			cameraFromString(cameraName).setFilters([]);
+		});
 		Lua_helper.add_callback(lua, "addChromaticAbberationEffect", function(camera:String,chromeOffset:Float = 0.005) {
 			PlayState.instance.addShaderToCamera(camera, new ChromaticAberrationEffect(chromeOffset));
 		});
@@ -3043,11 +3080,27 @@ class ModchartSprite extends FlxSprite
 	public var wasAdded:Bool = false;
 	public var animOffsets:Map<String, Array<Float>> = new Map<String, Array<Float>>();
 	//public var isInFront:Bool = false;
+	var hShader:DynamicShaderHandler;
 
-	public function new(?x:Float = 0, ?y:Float = 0)
+	public function new(?x:Float = 0, ?y:Float = 0,shaderSprite:Bool=false,type:String='', optimize:Bool = false)
 	{
 		super(x, y);
-		antialiasing = ClientPrefs.globalAntialiasing;
+		if(shaderSprite){
+
+			// codism
+			flipY = true;
+
+			makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT);
+
+			hShader = new DynamicShaderHandler(type, optimize);
+
+			if (hShader.shader != null)
+			{
+				shader = hShader.shader;
+			}
+
+			antialiasing = FlxG.save.data.antialiasing;
+		}
 	}
 }
 
