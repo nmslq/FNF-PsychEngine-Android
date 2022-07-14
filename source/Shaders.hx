@@ -448,56 +448,55 @@ class Grain extends FlxShader
 
 class VCRDistortionEffect extends Effect
 {
-  public var shader:VCRDistortionShader = new VCRDistortionShader();
+  public var shader(default,null):VCRDistortionShader = new VCRDistortionShader();
   public function new(glitchFactor:Float,distortion:Bool=true,perspectiveOn:Bool=true,vignetteMoving:Bool=true){
-    shader.iTime.value = [0];
-    shader.vignetteOn.value = [true];
-    shader.perspectiveOn.value = [perspectiveOn];
-    shader.distortionOn.value = [distortion];
-    shader.scanlinesOn.value = [true];
-    shader.vignetteMoving.value = [vignetteMoving];
-    shader.glitchModifier.value = [glitchFactor];
-    shader.iResolution.value = [Lib.current.stage.stageWidth,Lib.current.stage.stageHeight];
+    shader.data.iTime.value = [0];
+    shader.data.vignetteOn.value = [true];
+    shader.data.perspectiveOn.value = [perspectiveOn];
+    shader.data.distortionOn.value = [distortion];
+    shader.data.scanlinesOn.value = [true];
+    shader.data.vignetteMoving.value = [vignetteMoving];
+    shader.data.glitchModifier.value = [glitchFactor];
+    shader.data.iResolution.value = [Lib.current.stage.stageWidth,Lib.current.stage.stageHeight];
    // var noise = Assets.getBitmapData(Paths.image("noise2"));
-   // shader.noiseTex.input = noise;
+   // shader.data.noiseTex.input = noise;
    PlayState.instance.shaderUpdates.push(update);
   }
 
   public function update(elapsed:Float){
-    shader.iTime.value[0] += elapsed;
-    shader.iResolution.value = [Lib.current.stage.stageWidth,Lib.current.stage.stageHeight];
+    shader.data.iTime.value[0] += elapsed;
+    shader.data.iResolution.value = [Lib.current.stage.stageWidth,Lib.current.stage.stageHeight];
   }
 
   public function setVignette(state:Bool){
-    shader.vignetteOn.value[0] = state;
+    shader.data.vignetteOn.value[0] = state;
   }
 
   public function setPerspective(state:Bool){
-    shader.perspectiveOn.value[0] = state;
+    shader.data.perspectiveOn.value[0] = state;
   }
 
   public function setGlitchModifier(modifier:Float){
-    shader.glitchModifier.value[0] = modifier;
+    shader.data.glitchModifier.value[0] = modifier;
   }
 
   public function setDistortion(state:Bool){
-    shader.distortionOn.value[0] = state;
+    shader.data.distortionOn.value[0] = state;
   }
 
   public function setScanlines(state:Bool){
-    shader.scanlinesOn.value[0] = state;
+    shader.data.scanlinesOn.value[0] = state;
   }
 
   public function setVignetteMoving(state:Bool){
-    shader.vignetteMoving.value[0] = state;
+    shader.data.vignetteMoving.value[0] = state;
   }
 }
-
+//fixed it 
 class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ldjGzV and https://www.shadertoy.com/view/Ms23DR and https://www.shadertoy.com/view/MsXGD4 and https://www.shadertoy.com/view/Xtccz4
 {
 
-  @:glFragmentSource('
-    #pragma header
+  public function new(){super('
 
     uniform float iTime;
     uniform bool vignetteOn;
@@ -518,7 +517,7 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
     {
     	float inside = step(start,y) - step(end,y);
     	float fact = (y-start)/(end-start)*inside;
-    	return (1.-fact) * inside;
+    	return (1.0-fact) * inside;
 
     }
 
@@ -526,11 +525,11 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
       {
       	vec2 look = uv;
         if(distortionOn){
-        	float window = 1./(1.+20.*(look.y-mod(iTime/4.,1.))*(look.y-mod(iTime/4.,1.)));
-        	look.x = look.x + (sin(look.y*10. + iTime)/50.*onOff(4.,4.,.3)*(1.+cos(iTime*80.))*window)*(glitchModifier*2);
-        	float vShift = 0.4*onOff(2.,3.,.9)*(sin(iTime)*sin(iTime*20.) +
-        										 (0.5 + 0.1*sin(iTime*200.)*cos(iTime)));
-        	look.y = mod(look.y + vShift*glitchModifier, 1.);
+        	float window = 1.0/(1.0+20.0*(look.y-mod(iTime/4.0,1.0))*(look.y-mod(iTime/4.0,1.0)));
+        	look.x = look.x + (sin(look.y*10.0 + iTime)/50.0*onOff(4.0,4.0,0.3)*(1.0+cos(iTime*80.0))*window)*(glitchModifier*2.0);
+        	float vShift = 0.4*onOff(2.0,3.0,0.9)*(sin(iTime)*sin(iTime*20.0) +
+        										 (0.5 + 0.1*sin(iTime*200.0)*cos(iTime)));
+        	look.y = mod(look.y + vShift*glitchModifier, 1.0);
         }
       	vec4 video = flixel_texture2D(bitmap,look);
 
@@ -560,11 +559,11 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
         vec2 f = fract(uv);
 
         float a = random(i);
-        float b = random(i + vec2(1.,0.));
-    	float c = random(i + vec2(0., 1.));
-        float d = random(i + vec2(1.));
+        float b = random(i + vec2(1.0,0.0));
+    	float c = random(i + vec2(0.0, 1.0));
+        float d = random(i + vec2(1.0));
 
-        vec2 u = smoothstep(0., 1., f);
+        vec2 u = smoothstep(0.0, 1.0, f);
 
         return mix(a,b, u.x) + (c - a) * u.y * (1. - u.x) + (d - b) * u.x * u.y;
 
@@ -588,7 +587,7 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
     	uv = scandistort(curUV);
     	vec4 video = getVideo(uv);
       float vigAmt = 1.0;
-      float x =  0.;
+      float x =  0.0;
 
 
       video.r = getVideo(vec2(x+uv.x+0.001,uv.y+0.001)).x+0.05;
@@ -600,26 +599,24 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
 
       video = clamp(video*0.6+0.4*video*video*1.0,0.0,1.0);
       if(vignetteMoving)
-    	  vigAmt = 3.+.3*sin(iTime + 5.*cos(iTime*5.));
+    	  vigAmt = 3.0+0.3*sin(iTime + 5.0*cos(iTime*5.0));
 
-    	float vignette = (1.-vigAmt*(uv.y-.5)*(uv.y-.5))*(1.-vigAmt*(uv.x-.5)*(uv.x-.5));
+    	float vignette = (1.0-vigAmt*(uv.y-.5)*(uv.y-0.5))*(1.0-vigAmt*(uv.x-0.5)*(uv.x-0.5));
 
       if(vignetteOn)
     	 video *= vignette;
 
 
-      gl_FragColor = mix(video,vec4(noise(uv * 75.)),.05);
+      gl_FragColor = mix(video,vec4(noise(uv * 75.0)),0.05);
 
-      if(curUV.x<0 || curUV.x>1 || curUV.y<0 || curUV.y>1){
-        gl_FragColor = vec4(0,0,0,0);
+      if(curUV.x<0.0 || curUV.x>1.0 || curUV.y<0.0 || curUV.y>1.0){
+        gl_FragColor = vec4(0.0,0.0,0.0,0.0);
       }
 
     }
-  ')
-  public function new()
-  {
-    super();
-  }
+  ');//
+  //
+}
 }
 
 
