@@ -2604,13 +2604,6 @@ class FunkinLua {
 
 				return shaderName;
 		});
-		
-		Lua_helper.add_callback(lua, "createShaders", function(shaderName:String, ?optimize:Bool = false)
-		{
-			var shader = new DynamicShaderHandler(shaderName, optimize);
-			return shaderName;
-		});
-
 		Lua_helper.add_callback(lua, "setShadersToCamera", function(shaderName:Array<String>, cameraName:String) {
 
 			var shaderArray = new Array<BitmapFilter>();
