@@ -3080,9 +3080,6 @@ class ModchartSprite extends FlxSprite
 		super(x, y);
 		if(shaderSprite){
 
-			// codism
-			flipY = true;
-
 			makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT);
 
 			hShader = new DynamicShaderHandler(type, optimize);
