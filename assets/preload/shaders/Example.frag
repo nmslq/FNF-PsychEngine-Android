@@ -1,4 +1,3 @@
-@@ -0,0 +1,94 @@
     /*
         1- First of all, you need to know that shadertoy automatically uses the inputs below:
         uniform vec3      iResolution;           // viewport resolution (in pixels)
