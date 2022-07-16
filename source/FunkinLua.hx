@@ -2645,13 +2645,13 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "addInvertEffect", function(camera:String,lockAlpha:Bool=false) {
 			PlayState.instance.addShaderToCamera(camera, new InvertColorsEffect(lockAlpha));
 		});
-		Lua_helper.add_callback(lua, "addGreyscaleEffect", function(camera:String) { //for dem funkies
+		Lua_helper.add_callback(lua, "addGreyscaleEffect", function(camera:String) {
 			PlayState.instance.addShaderToCamera(camera, new GreyscaleEffect());
 		});
 		Lua_helper.add_callback(lua, "add3DEffect", function(camera:String,xrotation:Float=0,yrotation:Float=0,zrotation:Float=0,depth:Float=0) { //for dem funkies
 			PlayState.instance.addShaderToCamera(camera, new ThreeDEffect(xrotation,yrotation,zrotation,depth));
 		});
-		Lua_helper.add_callback(lua, "addBloomEffect", function(camera:String,intensity:Float = 0.35,blurSize:Float=1.0) { //saving for l8r
+		Lua_helper.add_callback(lua, "addBloomEffect", function(camera:String,intensity:Float = 0.35,blurSize:Float=1.0) {
 			PlayState.instance.addShaderToCamera(camera, new BloomEffect(blurSize/512.0,intensity));
 		});
 		Lua_helper.add_callback(lua, "clearEffects", function(camera:String) {
@@ -3078,6 +3078,8 @@ class ModchartSprite extends FlxSprite
 	public function new(?x:Float = 0, ?y:Float = 0,shaderSprite:Bool=false,type:String='', optimize:Bool = false)
 	{
 		super(x, y);
+		antialiasing = ClientPrefs.globalAntialiasing;
+
 		if(shaderSprite) {
 
 			flipY = true;
@@ -3090,8 +3092,6 @@ class ModchartSprite extends FlxSprite
 			{
 				shader = hShader.shader;
 			}
-
-			antialiasing = ClientPrefs.globalAntialiasing;
 		}
 	}
 }

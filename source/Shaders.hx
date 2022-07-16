@@ -505,7 +505,7 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
     {
     	float inside = step(start,y) - step(end,y);
     	float fact = (y-start)/(end-start)*inside;
-    	return (1.-fact) * inside;
+    	return (1.0-fact) * inside;
 
     }
 
