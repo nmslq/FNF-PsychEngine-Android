@@ -36,27 +36,27 @@ class DynamicShaderHandler
 	{
 		var path = Paths.modsShaderFragment(fileName);
 		trace(path);
-		if (!FileSystem.exists(path)) path = Paths.shaderFragment(fileName);
+		if (!FileSystem.exists(SUtil.getPath() + path)) path = Paths.shaderFragment(fileName);
 		
 		trace(path);
 		var fragSource:String = "";
 
-		if (FileSystem.exists(path))
+		if (FileSystem.exists(SUtil.getPath() + path))
 		{
-			fragSource = sys.io.File.getContent(path);
+			fragSource = sys.io.File.getContent(SUtil.getPath() + path);
 		}
 
 		
 		var path2 = Paths.modsShaderVertex(fileName);
 		trace(path2);
-		if (!FileSystem.exists(path2)) path2 = Paths.shaderVertex(fileName);
+		if (!FileSystem.exists(SUtil.getPath() + path2)) path2 = Paths.shaderVertex(fileName);
 		
 		trace(path2);
 		var vertSource:String = "";
 
-		if (FileSystem.exists(path2))
+		if (FileSystem.exists(SUtil.getPath() + path2))
 		{
-			vertSource = sys.io.File.getContent(path2);
+			vertSource = sys.io.File.getContent(SUtil.getPath() + path2);
 		}
 
 		if (fragSource != "" || vertSource != "")

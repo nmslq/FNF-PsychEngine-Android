@@ -3078,7 +3078,9 @@ class ModchartSprite extends FlxSprite
 	public function new(?x:Float = 0, ?y:Float = 0,shaderSprite:Bool=false,type:String='', optimize:Bool = false)
 	{
 		super(x, y);
-		if(shaderSprite){
+		if(shaderSprite) {
+
+			flipY = true;
 
 			makeGraphic(FlxG.width, FlxG.height, FlxColor.TRANSPARENT);
 
@@ -3089,7 +3091,7 @@ class ModchartSprite extends FlxSprite
 				shader = hShader.shader;
 			}
 
-			antialiasing = FlxG.save.data.antialiasing;
+			antialiasing = ClientPrefs.globalAntialiasing;
 		}
 	}
 }
