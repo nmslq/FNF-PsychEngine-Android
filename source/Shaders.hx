@@ -262,11 +262,12 @@ class GreyscaleShader extends FlxShader{
 class GrainEffect extends Effect {
 	
 	public var shader:Grain;
-	public function new (grainsize, lumamount,lockAlpha){
+	public function new (grainsize, lumamount,lockAlpha,coloramount){
 		shader = new Grain();
 		shader.data.lumamount.value = [lumamount];
 		shader.data.grainsize.value = [grainsize];
 		shader.data.lockAlpha.value = [lockAlpha];
+		shader.data.coloramount.value = [coloramount];
 		shader.data.uTime.value = [FlxG.random.float(0,8)];
 		PlayState.instance.shaderUpdates.push(update);
 	}
@@ -312,10 +313,10 @@ class Grain extends FlxShader
 
 		const float grainamount = 0.05; //grain amount
 		bool colored = false; //colored noise?
-		uniform float coloramount = 0.6;
-		uniform float grainsize = 1.6; //grain particle size (1.5 - 2.5)
-		uniform float lumamount = 1.0; //
-	uniform bool lockAlpha = false;
+		uniform float coloramount;
+		uniform float grainsize; //grain particle size (1.5 - 2.5)
+		uniform float lumamount; //
+		uniform bool lockAlpha;
 
 		//a random texture generator, but you can also use a pre-computed perturbation texture
 	
@@ -726,8 +727,8 @@ class BloomShader extends FlxShader{
 	
 	////pragma header
 	
-	uniform float intensity = 0.35;
-	uniform float blurSize = 1.0/512.0;
+	uniform float intensity;
+	uniform float blurSize;
 void main()
 {
    vec4 sum = vec4(0);
