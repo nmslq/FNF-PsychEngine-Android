@@ -266,7 +266,7 @@ class GrainEffect extends Effect {
 		shader = new Grain();
 		shader.data.lumamount.value = [lumamount];
 		shader.data.grainsize.value = [grainsize];
-		shader.data.lockAlpha.value = [lockAlpha];
+		shader.data.lockAlpha.value = [lockAlpha]; 
 		shader.data.coloramount.value = [coloramount];
 		shader.data.uTime.value = [FlxG.random.float(0,8)];
 		PlayState.instance.shaderUpdates.push(update);
@@ -280,7 +280,7 @@ class GrainEffect extends Effect {
 	
 }
 
-
+//fixed this shit
 class Grain extends FlxShader
 {
 	public function new(){super('
@@ -613,7 +613,7 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
 class ThreeDEffect extends Effect{
 	
 	public var shader:ThreeDShader = new ThreeDShader();
-	public function new(xrotation:Float=0,yrotation:Float=0,zrotation:Float=0,depth:Float=0){
+	public function new(xrotation:Float=0.0,yrotation:Float=0.0,zrotation:Float=0.0,depth:Float=0.0){
 		shader.data.xrot.value = [xrotation];
 		shader.data.yrot.value = [yrotation];
 		shader.data.zrot.value = [zrotation];
