@@ -628,10 +628,10 @@ class ThreeDEffect extends Effect{
 class ThreeDShader extends FlxShader{
 	public function new(){super('
 	////pragma header
-	uniform float xrot = 0.0;
-	uniform float yrot = 0.0;
-	uniform float zrot = 0.0;
-	uniform float dept = 0.0;
+	uniform float xrot;
+	uniform float yrot;
+	uniform float zrot;
+	uniform float dept;
 	float alph = 0;
 float plane( in vec3 norm, in vec3 po, in vec3 ro, in vec3 rd ) {
     float de = dot(norm, rd);
