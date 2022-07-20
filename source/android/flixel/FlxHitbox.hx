@@ -50,12 +50,10 @@ class FlxHitbox extends FlxSpriteGroup
 		hitbox.add(add(buttonUp = createHitbox(FlxG.width / 2, 0, 'up', 0xFF00FF00)));
 		hitbox.add(add(buttonRight = createHitbox((FlxG.width / 2) + (FlxG.width / 4), 0, 'right', 0xFFFF0000)));
 
-		if (PlayState.hitboxHint) {
-			hitbox.add(add(hintLeft = createHitboxHint(0, 0, 'left_hint', 0xFFFF00FF)));
-			hitbox.add(add(hintDown = createHitboxHint(FlxG.width / 4, 0, 'down_hint', 0xFF00FFFF)));
-			hitbox.add(add(hintUp = createHitboxHint(FlxG.width / 2, 0, 'up_hint', 0xFF00FF00)));
-			hitbox.add(add(hintRight = createHitboxHint((FlxG.width / 2) + (FlxG.width / 4), 0, 'right_hint', 0xFFFF0000)));
-		}
+		hitbox.add(add(hintLeft = createHitboxHint(0, 0, 'left_hint', 0xFFFF00FF)));
+		hitbox.add(add(hintDown = createHitboxHint(FlxG.width / 4, 0, 'down_hint', 0xFF00FFFF)));
+		hitbox.add(add(hintUp = createHitboxHint(FlxG.width / 2, 0, 'up_hint', 0xFF00FF00)));
+		hitbox.add(add(hintRight = createHitboxHint((FlxG.width / 2) + (FlxG.width / 4), 0, 'right_hint', 0xFFFF0000)));
 
 		hitbox.scrollFactor.set();
 	}
@@ -70,12 +68,11 @@ class FlxHitbox extends FlxSpriteGroup
 		buttonDown = null;
 		buttonUp = null;
 		buttonRight = null;
-		if (PlayState.hitboxHint) {
-			hintLeft = null;
-			hintDown = null;
-			hintUp = null;
-			hintRight = null;
-		}
+
+		hintLeft = null;
+		hintDown = null;
+		hintUp = null;
+		hintRight = null;
 	}
 
 	/**
@@ -90,8 +87,7 @@ class FlxHitbox extends FlxSpriteGroup
 		button.loadGraphic(FlxGraphic.fromFrame(getFrames().getByName(Graphic)));
 		button.setGraphicSize(Std.int(FlxG.width / 4), FlxG.height);
 		button.updateHitbox();
-		if (PlayState.hitboxColor)
-			button.color = Color;
+		button.color = Color;
 		button.alpha = 0.00001;
 
 		var tween:FlxTween;
@@ -140,8 +136,7 @@ class FlxHitbox extends FlxSpriteGroup
 		hint.loadGraphic(FlxGraphic.fromFrame(getFrames().getByName(frames)));
 		hint.alpha = 0.75;
 		hint.antialiasing = ClientPrefs.globalAntialiasing;
-		if (PlayState.hitboxColor)
-			hint.color = color;
+		hint.color = color;
 		return hint;
 	}
 
