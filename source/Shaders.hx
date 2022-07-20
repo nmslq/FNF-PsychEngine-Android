@@ -316,7 +316,7 @@ class Grain extends FlxShader
 		uniform float coloramount;
 		uniform float grainsize; //grain particle size (1.5 - 2.5)
 		uniform float lumamount; //
-		uniform bool lockAlpha;
+	uniform bool lockAlpha;
 
 		//a random texture generator, but you can also use a pre-computed perturbation texture
 	
