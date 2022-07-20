@@ -1189,6 +1189,7 @@ class PlayState extends MusicBeatState
 		healthStrips.screenCenter(X);
 		healthStrips.scrollFactor.set();
 		healthStrips.visible = !ClientPrefs.hideHud;
+		healthStrips.alpha = ClientPrefs.healthBarAlpha;
 		healthStrips.color = FlxColor.BLACK;
 		healthStrips.blend = MULTIPLY;
 		healthStrips.x = healthBarBG.x-1.9;
