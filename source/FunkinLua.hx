@@ -76,10 +76,6 @@ class FunkinLua {
 	public var scriptName:String = '';
 	public var closed:Bool = false;
 
-	#if !flash
-	public var runtimeShaders:Map<String, Array<String>> = new Map<String, Array<String>>();
-	#end
-
 	#if hscript
 	public static var haxeInterp:Interp = null;
 	#end
@@ -240,9 +236,9 @@ class FunkinLua {
 			if(!ClientPrefs.shaders) return false;
 
 			#if (!flash && MODS_ALLOWED && sys)
-			if(!runtimeShaders.exists(shader) && !initLuaShader(shader))
+			if(!PlayState.instance.runtimeShaders.exists(shader) && !initLuaShader(shader))
 			{
-				luaTrace('Shader $shader is missing! Initialize it with initLuaShader', false, false, FlxColor.RED);
+				luaTrace('Shader $shader is missing!', false, false, FlxColor.RED);
 				return false;
 			}
 
@@ -253,7 +249,7 @@ class FunkinLua {
 			}
 
 			if(leObj != null) {
-				var arr:Array<String> = runtimeShaders.get(shader);
+				var arr:Array<String> = PlayState.instance.runtimeShaders.get(shader);
 				leObj.shader = new FlxRuntimeShader(arr[0], arr[1]);
 				return true;
 			}
@@ -2843,6 +2839,10 @@ class FunkinLua {
 			haxeInterp.variables.set('ClientPrefs', ClientPrefs);
 			haxeInterp.variables.set('Character', Character);
 			haxeInterp.variables.set('Alphabet', Alphabet);
+			#if !flash
+			haxeInterp.variables.set('FlxRuntimeShader', FlxRuntimeShader);
+			haxeInterp.variables.set('ShaderFilter', openfl.filters.ShaderFilter);
+			#end
 			haxeInterp.variables.set('StringTools', StringTools);
 			haxeInterp.variables.set('SUtil', SUtil);// this is more like for android because filesaving needs it
 
@@ -2905,7 +2905,7 @@ class FunkinLua {
 	{
 		if(!ClientPrefs.shaders) return false;
 
-		if(runtimeShaders.exists(name))
+		if(PlayState.instance.runtimeShaders.exists(name))
 		{
 			luaTrace('Shader $name was already initialized!');
 			return true;
@@ -2941,8 +2941,8 @@ class FunkinLua {
 
 				if(found)
 				{
-					runtimeShaders.set(name, [frag, vert]);
-					trace('Found shader $name!');
+					PlayState.instance.runtimeShaders.set(name, [frag, vert]);
+					//trace('Found shader $name!');
 					return true;
 				}
 			}
