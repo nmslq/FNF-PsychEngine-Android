@@ -565,7 +565,7 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
     	float c = random(i + vec2(0.0, 1.0));
         float d = random(i + vec2(1.0));
 
-        vec2 u = smoothstep(0., 1., f);
+        vec2 u = smoothstep(0.0, 1.0, f);
 
         return mix(a,b, u.x) + (c - a) * u.y * (1. - u.x) + (d - b) * u.x * u.y;
 
@@ -601,7 +601,7 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
 
       video = clamp(video*0.6+0.4*video*video*1.0,0.0,1.0);
       if(vignetteMoving)
-    	  vigAmt = 3.+.3*sin(iTime + 5.*cos(iTime*5.));
+    	  vigAmt = 3.0+0.3*sin(iTime + 5.0*cos(iTime*5.0));
 
     	float vignette = (1.0-vigAmt*(uv.y-0.5)*(uv.y-0.5))*(1.0-vigAmt*(uv.x-0.5)*(uv.x-0.5));
 
@@ -609,7 +609,7 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
     	 video *= vignette;
 
 
-      gl_FragColor = mix(video,vec4(noise(uv * 75.)),.05);
+      gl_FragColor = mix(video,vec4(noise(uv * 75.0)),0.05);
 
       if(curUV.x<0.0 || curUV.x>1.0 || curUV.y<0.0 || curUV.y>1.0){
         gl_FragColor = vec4(0.0,0.0,0.0,0.0);
@@ -643,10 +643,10 @@ class ThreeDEffect extends Effect{
 class ThreeDShader extends FlxShader{
 	@:glFragmentSource('
 	#pragma header
-	uniform float xrot = 0.0;
-	uniform float yrot = 0.0;
-	uniform float zrot = 0.0;
-	uniform float dept = 0.0;
+	uniform float xrot;
+	uniform float yrot;
+	uniform float zrot;
+	uniform float dept;
 	float alph = 0;
 float plane( in vec3 norm, in vec3 po, in vec3 ro, in vec3 rd ) {
     float de = dot(norm, rd);

@@ -3295,6 +3295,7 @@ class ModchartSprite extends FlxSprite
 	{
 		super(x, y);
 		antialiasing = ClientPrefs.globalAntialiasing;
+	}
 }
 
 class ModchartBackdrop extends FlxBackdrop
