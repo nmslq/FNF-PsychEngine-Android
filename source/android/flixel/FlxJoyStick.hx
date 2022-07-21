@@ -11,8 +11,7 @@ import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.util.FlxDestroyUtil;
 import flixel.graphics.frames.FlxAtlasFrames;
-import openfl.display.BitmapData;
-import openfl.utils.ByteArray;
+import openfl.utils.Assets;
 
 /**
  * ...
@@ -65,7 +64,10 @@ class FlxJoyStick extends FlxSpriteGroup
 
 	function createBase():Void
 	{
-		base = new FlxSprite(0, 0).loadGraphic(FlxGraphic.fromFrame(getFrames().getByName('base')));
+		base = new FlxSprite(0,
+			0).loadGraphic(FlxGraphic.fromFrame(FlxAtlasFrames.fromSparrow(Assets.getBitmapData('assets/android/joystick.png'),
+				Assets.getText('assets/android/joystick.xml'))
+				.getByName('base')));
 		base.resetSizeFromFrame();
 		base.x += -base.width * 0.5;
 		base.y += -base.height * 0.5;
@@ -79,7 +81,9 @@ class FlxJoyStick extends FlxSpriteGroup
 
 	function createThumb():Void
 	{
-		thumb = new FlxSprite(0, 0).loadGraphic(FlxGraphic.fromFrame(getFrames().getByName('thumb')));
+		thumb = new FlxSprite(0,
+			0).loadGraphic(Paths.getSparrowAtlas('android/joystick'))
+				.getByName('thumb')));
 		thumb.resetSizeFromFrame();
 		thumb.x += -thumb.width * 0.5;
 		thumb.y += -thumb.height * 0.5;
@@ -89,11 +93,6 @@ class FlxJoyStick extends FlxSpriteGroup
 		thumb.ignoreDrawDebug = true;
 		#end
 		add(thumb);
-	}
-
-	public static function getFrames():FlxAtlasFrames
-	{
-		return Paths.getSparrowAtlas('android/joystick');
 	}
 
 	function createZone():Void
