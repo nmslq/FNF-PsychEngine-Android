@@ -668,7 +668,7 @@ vec2 raytraceTexturedQuad(in vec3 rayOrigin, in vec3 rayDirection, in vec3 quadC
     //--------------------------------------
     
     vec3 right = RotationMatrix * vec3(quadDimensions.x, 0.0, 0.0);
-    vec3 up = RotationMatrix * vec3(0, quadDimensions.y, 0);
+    vec3 up = RotationMatrix * vec3(0.0, quadDimensions.y, 0.0);
     vec3 normal = cross(right, up);
     normal /= length(normal);
     
@@ -685,7 +685,7 @@ void main() {
     //Screen UV goes from 0 - 1 along each axis
     vec2 screenUV = openfl_TextureCoordv;
     vec2 p = (2.0 * screenUV) - 1.0;
-    float screenAspect = 1280/720;
+    float screenAspect = 1280.0/720.0;
     p.x *= screenAspect;
     
     //Normalized Ray Dir
@@ -697,7 +697,7 @@ void main() {
     vec3 planeRotation = vec3(xrot, yrot, zrot);//this the shit you needa change
     vec2 planeDimension = vec2(-screenAspect, 1.0);
     
-    vec2 uv = raytraceTexturedQuad(vec3(0), dir, planePosition, planeRotation, planeDimension);
+    vec2 uv = raytraceTexturedQuad(vec3(0.0), dir, planePosition, planeRotation, planeDimension);
 	
     //If we hit the rectangle, sample the texture
     if (abs(uv.x - 0.5) < 0.5 && abs(uv.y - 0.5) < 0.5) {
