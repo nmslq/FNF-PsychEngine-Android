@@ -2940,6 +2940,22 @@ class FunkinLua {
 		return false;
 	}
 
+	public function getShader(obj:String):FlxRuntimeShader
+	{
+		var killMe:Array<String> = obj.split('.');
+		var leObj:FlxSprite = getObjectDirectly(killMe[0]);
+		if(killMe.length > 1) {
+			leObj = getVarInArray(getPropertyLoopThingWhatever(killMe), killMe[killMe.length-1]);
+		}
+
+		if(leObj != null) {
+			var shader:Dynamic = leObj.shader;
+			var shader:FlxRuntimeShader = shader;
+			return shader;
+		}
+		return null;
+	}
+
 	function getGroupStuff(leArray:Dynamic, variable:String) {
 		var killMe:Array<String> = variable.split('.');
 		if(killMe.length > 1) {
@@ -3297,7 +3313,6 @@ class ModchartSprite extends FlxSprite
 	public var wasAdded:Bool = false;
 	public var animOffsets:Map<String, Array<Float>> = new Map<String, Array<Float>>();
 	//public var isInFront:Bool = false;
-	var hShader:DynamicShaderHandler;
 
 	public function new(?x:Float = 0, ?y:Float = 0)
 	{
