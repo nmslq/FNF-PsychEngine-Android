@@ -68,9 +68,7 @@ class FlxHitbox extends FlxSpriteGroup
 	{
 		var hintTween:FlxTween;
 		var hint:FlxButton = new FlxButton(X, Y);
-		hint.loadGraphic(FlxGraphic.fromFrame(FlxAtlasFrames.fromSparrow(Assets.getBitmapData('assets/android/hitbox.png'),
-			Assets.getText('assets/android/hitbox.xml'))
-			.getByName(Graphic)));
+		hint.loadGraphic(FlxGraphic.fromFrame(Paths.getSparrowAtlas('android/hitbox').getByName(Graphic)));
 		hint.setGraphicSize(Std.int(FlxG.width / 4), FlxG.height);
 		hint.updateHitbox();
 		hint.scrollFactor.set();
@@ -112,13 +110,13 @@ class FlxHitbox extends FlxSpriteGroup
 		return hint;
 	}
 
-	public function createHitboxHint(x:Float = 0, y:Float = 0, frames:String, ?color:Int):FlxSprite
+	public function createHitbox(X:Float = 0, Y:Float = 0, Frames:String, ?Color:Int = 0xFFFFFF):FlxSprite
 	{
-		var hintS:FlxSprite = new FlxSprite(x, y);
-		hintS.loadGraphic(FlxGraphic.fromFrame(Paths.getSparrowAtlas('android/hitbox').getByName(frames)));
-		hintS.alpha = 0.75;
-		hintS.antialiasing = ClientPrefs.globalAntialiasing;
-		hintS.color = color;
-		return hintS;
+		var hitbox:FlxSprite = new FlxSprite(X, Y);
+		hitbox.loadGraphic(FlxGraphic.fromFrame(Paths.getSparrowAtlas('android/hitbox').getByName(Frames)));
+		hitbox.alpha = 0.75;
+		hitbox.antialiasing = ClientPrefs.globalAntialiasing;
+		hitbox.color = Color;
+		return hitbox;
 	}
 }
