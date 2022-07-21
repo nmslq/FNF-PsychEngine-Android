@@ -44,9 +44,9 @@ class FlxHitbox extends FlxSpriteGroup
 		add(buttonRight = createHint((FlxG.width / 2) + (FlxG.width / 4), 0, 'right', 0xFFFF0000));
 
 		add(hintLeft = createHitboxHint(0, 0, 'left_hint', 0xFFFF00FF)));
-		add(hintDown = createHitboxHint(FlxG.width / 4, 0, 'down_hint', 0xFF00FFFF)));
-		add(hintUp = createHitboxHint(FlxG.width / 2, 0, 'up_hint', 0xFF00FF00)));
-		add(hintRight = createHitboxHint((FlxG.width / 2) + (FlxG.width / 4), 0, 'right_hint', 0xFFFF0000)));
+		add(hintDown = createHitboxHint(FlxG.width / 4, 0, 'down_hint', 0xFF00FFFF));
+		add(hintUp = createHitboxHint(FlxG.width / 2, 0, 'up_hint', 0xFF00FF00));
+		add(hintRight = createHitboxHint((FlxG.width / 2) + (FlxG.width / 4), 0, 'right_hint', 0xFFFF0000));
 	}
 
 	override function destroy()
