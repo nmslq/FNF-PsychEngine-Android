@@ -7,8 +7,8 @@ function onCreate()
 
     makeLuaText('songtext', songName, 400, 0, 200);
     setTextSize('songtext', 30);
-    setObjectCamera('songtext','other');
-    setTextAlignment('songtext','center');
+    setObjectCamera('songtext', 'other');
+    setTextAlignment('songtext', 'center');
     addLuaText('songtext', true);
 
     makeLuaText('authortext', difficultyName, 400, 0, 260);
@@ -19,7 +19,7 @@ function onCreate()
 end
 
 function onCreatePost()
-    doTweenX('songTweenIn','whitebg',0,1,'cubeOut');
+    doTweenX('songTweenIn' ,'whitebg', 0, 1, 'cubeOut');
 end
 
 function onUpdate()
@@ -40,6 +40,6 @@ end
 
 function onTimerCompleted(tag)
     if tag == 'tweenTimer' then
-        doTweenX('songTweenOut','whitebg',-1000,1,'cubeIn');
+        doTweenX('songTweenOut', 'whitebg', -1000, 1, 'cubeIn');
     end
 end
