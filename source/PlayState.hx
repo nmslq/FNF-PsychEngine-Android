@@ -63,13 +63,13 @@ import Shaders;
 
 #if !flash
 import flixel.addons.display.FlxRuntimeShader;
+import openfl.filters.ShaderFilter;
 #end
 
 import flixel.system.FlxAssets.FlxShader;
 import openfl.display.Shader;
-import openfl.filters.ShaderFilter;
 
-#if MODS_ALLOWED
+#if sys
 import sys.FileSystem;
 import sys.io.File;
 #end
