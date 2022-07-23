@@ -5234,10 +5234,8 @@ class PlayState extends MusicBeatState
 			if(ret == FunkinLua.Function_StopLua && !ignoreStops)
 				break;
 
-			var bool:Bool = ret == FunkinLua.Function_Continue;
-			if(!bool) {
-				returnVal = cast ret;
-			}
+			if(ret != FunkinLua.Function_Continue)
+				returnVal = ret;
 		}
 		#end
 		return returnVal;
