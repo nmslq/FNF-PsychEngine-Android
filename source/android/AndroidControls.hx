@@ -112,18 +112,6 @@ class AndroidControls extends FlxSpriteGroup
 
 			if (hitbox.buttonRight != null)
 				hitbox.buttonRight.color = 0xFFFF0000;
-
-			if (hitbox.hintLeft != null)
-				hitbox.hintLeft.color = 0xFFFF00FF;
-
-			if (hitbox.hintDown != null)
-				hitbox.hintDown.color = 0xFF00FFFF;
-
-			if (hitbox.hintUp != null)
-				hitbox.hintUp.color = 0xFF00FF00;
-
-			if (hitbox.hintRight != null)
-				hitbox.hintRight.color = 0xFFFF0000;
 		}
 	}
 
