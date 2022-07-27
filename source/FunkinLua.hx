@@ -3132,6 +3132,7 @@ class FunkinLua {
 		PlayState.instance.modchartSprites.remove(tag);
 	}
 
+	#if VIDEOS_ALLOWED
 	function resetVideoSpriteTag(tag:String) {
 		if(!PlayState.instance.modchartmp4Sprites.exists(tag)) {
 			return;
@@ -3145,6 +3146,7 @@ class FunkinLua {
 		pee.destroy();
 		PlayState.instance.modchartmp4Sprites.remove(tag);
 	}
+	#end
 
 	function cancelTween(tag:String) {
 		if(PlayState.instance.modchartTweens.exists(tag)) {

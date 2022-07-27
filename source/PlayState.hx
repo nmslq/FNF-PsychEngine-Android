@@ -105,7 +105,9 @@ class PlayState extends MusicBeatState
 	public var shaderUpdates:Array<Float->Void> = [];
 
 	public var modchartTweens:Map<String, FlxTween> = new Map<String, FlxTween>();
+	#if VIDEOS_ALLOWED
 	public var modchartmp4Sprites:Map<String, ModchartMp4Sprites> = new Map<String, ModchartMp4Sprites>();
+	#end
 	public var modchartSprites:Map<String, ModchartSprite> = new Map<String, ModchartSprite>();
 	public var modchartTimers:Map<String, FlxTimer> = new Map<String, FlxTimer>();
 	public var modchartSounds:Map<String, FlxSound> = new Map<String, FlxSound>();
