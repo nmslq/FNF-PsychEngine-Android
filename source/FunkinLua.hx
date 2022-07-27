@@ -3412,7 +3412,7 @@ class ModchartSprite extends FlxSprite
 	}
 }
 
-class ModchartMp4Sprites extends MP4Sprite
+class ModchartMp4Sprites extends FlxSprite
 {
 	public var wasAdded:Bool = false;
 	//public var isInFront:Bool = false;
