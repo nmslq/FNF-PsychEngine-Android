@@ -61,6 +61,10 @@ import android.Hardware;
 import android.os.Environment;
 #end
 
+#if VIDEOS_ALLOWED
+import vlc.MP4Sprite;
+#end
+
 using StringTools;
 
 class FunkinLua {
@@ -1815,6 +1819,18 @@ class FunkinLua {
 			leSprite.antialiasing = ClientPrefs.globalAntialiasing;
 			PlayState.instance.modchartSprites.set(tag, leSprite);
 		});
+		Lua_helper.add_callback(lua, "makeLuaVideoSprite", function(tag:String, video:String, x:Float, y:Float, ?loop:Bool = false) {
+			tag = tag.replace('.', '');
+			resetVideoSpriteTag(tag);
+			var leSprite:ModchartMp4Sprites = new ModchartMp4Sprites(x, y);
+			if(video != null && video.length > 0)
+			{
+				leSprite.playVideo(Paths.video(video), loop);
+			}
+			leSprite.antialiasing = ClientPrefs.globalAntialiasing;
+			PlayState.instance.modchartmp4Sprites.set(tag, leSprite);
+			leSprite.active = true;
+		});
 
 		Lua_helper.add_callback(lua, "makeGraphic", function(obj:String, width:Int, height:Int, color:String) {
 			var colorNum:Int = Std.parseInt(color);
@@ -1964,6 +1980,36 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "addLuaSprite", function(tag:String, front:Bool = false) {
 			if(PlayState.instance.modchartSprites.exists(tag)) {
 				var shit:ModchartSprite = PlayState.instance.modchartSprites.get(tag);
+				if(!shit.wasAdded) {
+					if(front)
+					{
+						getInstance().add(shit);
+					}
+					else
+					{
+						if(PlayState.instance.isDead)
+						{
+							GameOverSubstate.instance.insert(GameOverSubstate.instance.members.indexOf(GameOverSubstate.instance.boyfriend), shit);
+						}
+						else
+						{
+							var position:Int = PlayState.instance.members.indexOf(PlayState.instance.gfGroup);
+							if(PlayState.instance.members.indexOf(PlayState.instance.boyfriendGroup) < position) {
+								position = PlayState.instance.members.indexOf(PlayState.instance.boyfriendGroup);
+							} else if(PlayState.instance.members.indexOf(PlayState.instance.dadGroup) < position) {
+								position = PlayState.instance.members.indexOf(PlayState.instance.dadGroup);
+							}
+							PlayState.instance.insert(position, shit);
+						}
+					}
+					shit.wasAdded = true;
+					//trace('added a thing: ' + tag);
+				}
+			}
+		});
+		Lua_helper.add_callback(lua, "addLuaSpriteVideo", function(tag:String, front:Bool = false) {
+			if(PlayState.instance.modchartmp4Sprites.exists(tag)) {
+				var shit:ModchartMp4Sprites = PlayState.instance.modchartmp4Sprites.get(tag);
 				if(!shit.wasAdded) {
 					if(front)
 					{
@@ -3082,6 +3128,20 @@ class FunkinLua {
 		PlayState.instance.modchartSprites.remove(tag);
 	}
 
+	function resetVideoSpriteTag(tag:String) {
+		if(!PlayState.instance.modchartmp4Sprites.exists(tag)) {
+			return;
+		}
+		
+		var pee:ModchartMp4Sprites = PlayState.instance.modchartmp4Sprites.get(tag);
+		pee.kill();
+		if(pee.wasAdded) {
+			PlayState.instance.remove(pee, true);
+		}
+		pee.destroy();
+		PlayState.instance.modchartmp4Sprites.remove(tag);
+	}
+
 	function cancelTween(tag:String) {
 		if(PlayState.instance.modchartTweens.exists(tag)) {
 			PlayState.instance.modchartTweens.get(tag).cancel();
@@ -3343,6 +3403,18 @@ class ModchartSprite extends FlxSprite
 {
 	public var wasAdded:Bool = false;
 	public var animOffsets:Map<String, Array<Float>> = new Map<String, Array<Float>>();
+	//public var isInFront:Bool = false;
+
+	public function new(?x:Float = 0, ?y:Float = 0)
+	{
+		super(x, y);
+		antialiasing = ClientPrefs.globalAntialiasing;
+	}
+}
+
+class ModchartMp4Sprites extends MP4Sprite
+{
+	public var wasAdded:Bool = false;
 	//public var isInFront:Bool = false;
 
 	public function new(?x:Float = 0, ?y:Float = 0)
