@@ -1720,12 +1720,12 @@ class PlayState extends MusicBeatState
 		#else
 		if(!OpenFlAssets.exists(filepath))
 		#end
-
 		{
 			FlxG.log.warn('Couldnt find video file: ' + name);
 			startAndEnd();
 			return;
 		}
+
 		var video:MP4Handler = new MP4Handler();
 		video.playVideo(filepath);
 		video.finishCallback = function()

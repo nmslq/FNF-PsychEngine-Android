@@ -2010,7 +2010,7 @@ class FunkinLua {
 			}
 		});
 		#if VIDEOS_ALLOWED
-		Lua_helper.add_callback(lua, "addLuaSpriteVideo", function(tag:String, front:Bool = false) {
+		Lua_helper.add_callback(lua, "addLuaVideoSprite", function(tag:String, front:Bool = false) {
 			if(PlayState.instance.modchartmp4Sprites.exists(tag)) {
 				var shit:ModchartMp4Sprites = PlayState.instance.modchartmp4Sprites.get(tag);
 				if(!shit.wasAdded) {
@@ -2131,6 +2131,32 @@ class FunkinLua {
 				PlayState.instance.modchartSprites.remove(tag);
 			}
 		});
+		#if VIDEOS_ALLOWED
+		Lua_helper.add_callback(lua, "removeLuaVideoSprite", function(tag:String, destroy:Bool = true) {
+			if(!PlayState.instance.modchartmp4Sprites.exists(tag)) {
+				return;
+			}
+			
+			var pee:ModchartMp4Sprites = PlayState.instance.modchartmp4Sprites.get(tag);
+
+			if(pee.finishCallback != null)
+				pee.finishCallback();
+
+			if(destroy) {
+				pee.kill();
+			}
+
+			if(pee.wasAdded) {
+				getInstance().remove(pee, true);
+				pee.wasAdded = false;
+			}
+
+			if(destroy) {
+				pee.destroy();
+				PlayState.instance.modchartmp4Sprites.remove(tag);
+			}
+		});
+		#end
 
 		Lua_helper.add_callback(lua, "luaSpriteExists", function(tag:String) {
 			return PlayState.instance.modchartSprites.exists(tag);
