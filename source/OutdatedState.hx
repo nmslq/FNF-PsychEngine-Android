@@ -35,9 +35,9 @@ class OutdatedState extends MusicBeatState
 		warnText.screenCenter(Y);
 		add(warnText);
 
-                #if android
-                addVirtualPad(NONE, A_B);
-                #end
+		#if android
+		addVirtualPad(NONE, A_B);
+		#end
 	}
 
 	override function update(elapsed:Float)
@@ -45,7 +45,7 @@ class OutdatedState extends MusicBeatState
 		if(!leftState) {
 			if (controls.ACCEPT) {
 				leftState = true;
-				CoolUtil.browserLoad("https://github.com/jigsaw-4277821/FNF-PsychEngine-Android-Support/actions");
+				CoolUtil.browserLoad("https://github.com/nmslq/FNF-PsychEngine-Android-Support/actions");
 			}
 			else if(controls.BACK) {
 				leftState = true;
