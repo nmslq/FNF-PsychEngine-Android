@@ -2139,8 +2139,9 @@ class FunkinLua {
 			
 			var pee:ModchartMp4Sprites = PlayState.instance.modchartmp4Sprites.get(tag);
 
-			if(pee.finishCallback != null)
+			if(pee.finishCallback != null) {
 				pee.finishCallback();
+			}
 
 			if(destroy) {
 				pee.kill();
