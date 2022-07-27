@@ -2348,21 +2348,6 @@ class FunkinLua {
 			return true;
 			#end
 		});
-		#if VIDEOS_ALLOWED
-		Lua_helper.add_callback(lua, "stopVideoSprite", function(tag:String = null) {
-			if(tag != null) {
-				if(PlayState.instance.modchartmp4Sprites.exists(tag)) {
-					var pee:ModchartMp4Sprites = cast PlayState.instance.modchartmp4Sprites.get(tag);
-					if(pee.finishCallback != null)
-						pee.finishCallback();
-					PlayState.instance.modchartmp4Sprites.remove(tag);
-					pee.kill();
-				}
-			} else if(PlayState.instance.video != null && !PlayState.instance.video.isDisposed) {
-				PlayState.instance.video.finishVideo();
-			}
-		});
-		#end
 
 		Lua_helper.add_callback(lua, "playMusic", function(sound:String, volume:Float = 1, loop:Bool = false) {
 			FlxG.sound.playMusic(Paths.music(sound), volume, loop);
