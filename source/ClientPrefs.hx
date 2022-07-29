@@ -209,7 +209,7 @@ class ClientPrefs {
 			vibration = FlxG.save.data.vibration;
 		}
 		if(FlxG.save.data.visualColors != null) {
-			visualColours = FlxG.save.data.visualColors;
+			visualColors = FlxG.save.data.visualColors;
 		}
 		if(FlxG.save.data.hitboxHints != null) {
 			hitboxHints = FlxG.save.data.hitboxHints;
