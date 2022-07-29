@@ -23,11 +23,13 @@ class FlxHitbox extends FlxSpriteGroup
 	public var buttonDown:FlxButton = new FlxButton(0, 0);
 	public var buttonUp:FlxButton = new FlxButton(0, 0);
 	public var buttonRight:FlxButton = new FlxButton(0, 0);
-
-	public var hintLeft:FlxSprite = new FlxSprite(0, 0);
-	public var hintDown:FlxSprite = new FlxSprite(0, 0);
-	public var hintUp:FlxSprite = new FlxSprite(0, 0);
-	public var hintRight:FlxSprite = new FlxSprite(0, 0);
+	
+	if(ClientPrefs.hitboxHints) {
+		public var hintLeft:FlxSprite = new FlxSprite(0, 0);
+		public var hintDown:FlxSprite = new FlxSprite(0, 0);
+		public var hintUp:FlxSprite = new FlxSprite(0, 0);
+		public var hintRight:FlxSprite = new FlxSprite(0, 0);
+	}
 
 	/**
 	 * Create a hitbox.
