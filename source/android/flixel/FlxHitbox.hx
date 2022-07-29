@@ -43,7 +43,7 @@ class FlxHitbox extends FlxSpriteGroup
 		add(buttonUp = createHint(FlxG.width / 2, 0, 'up', 0xFF00FF00));
 		add(buttonRight = createHint((FlxG.width / 2) + (FlxG.width / 4), 0, 'right', 0xFFFF0000));
 
-		if(ClientPrefs.hitboxHint) {
+		if(ClientPrefs.hitboxHints) {
 			add(hintLeft = createHitbox(0, 0, 'left_hint', 0xFFFF00FF));
 			add(hintDown = createHitbox(FlxG.width / 4, 0, 'down_hint', 0xFF00FFFF));
 			add(hintUp = createHitbox(FlxG.width / 2, 0, 'up_hint', 0xFF00FF00));
@@ -60,7 +60,7 @@ class FlxHitbox extends FlxSpriteGroup
 		buttonUp = null;
 		buttonRight = null;
 		
-		if(ClientPrefs.hitboxHint) {
+		if(ClientPrefs.hitboxHints) {
 			hintLeft = null;
 			hintDown = null;
 			hintUp = null;
