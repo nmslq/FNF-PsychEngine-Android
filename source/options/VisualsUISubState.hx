@@ -103,6 +103,18 @@ class VisualsUISubState extends BaseOptionsMenu
 			'bool',
 			false);
 		addOption(option);
+
+		var option:Option = new Option('virtualPad Transparency',
+			'How much transparent should the virtualPad.',
+			'virtualPadAlpha',
+			'percent',
+			0.6);
+		option.scrollSpeed = 1.6;
+		option.minValue = 0.0;
+		option.maxValue = 1;
+		option.changeValue = 0.1;
+		option.decimals = 1;
+		addOption(option);
 		#end
 
 		var option:Option = new Option('FPS Counter',
