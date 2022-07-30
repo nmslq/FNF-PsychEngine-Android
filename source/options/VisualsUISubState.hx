@@ -104,7 +104,7 @@ class VisualsUISubState extends BaseOptionsMenu
 			false);
 		addOption(option);
 
-		var option:Option = new Option('virtualPad Transparency',
+		var option:Option = new Option('Virtual Pad Transparency',
 			'How much transparent should the virtualPad.',
 			'virtualPadAlpha',
 			'percent',
