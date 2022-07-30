@@ -628,7 +628,7 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
 class ThreeDEffect extends Effect{
 	
 	public var shader:ThreeDShader = new ThreeDShader();
-	public function new(xrotation:Float=0.0,yrotation:Float=0.,zrotation:Float=0.0,depth:Float=0.0){
+	public function new(xrotation:Float=0.0,yrotation:Float=0.0,zrotation:Float=0.0,depth:Float=0.0){
 		shader.xrot.value = [xrotation];
 		shader.yrot.value = [yrotation];
 		shader.zrot.value = [zrotation];
