@@ -397,11 +397,11 @@ class PlayState extends MusicBeatState
 		camOther.bgColor.alpha = 0;
 
 		FlxG.cameras.reset(camGame);
-		FlxG.cameras.add(camHUD, false);
-		FlxG.cameras.add(camOther, false);
+		FlxG.cameras.add(camHUD);
+		FlxG.cameras.add(camOther);
 		grpNoteSplashes = new FlxTypedGroup<NoteSplash>();
 
-		FlxG.cameras.setDefaultDrawTarget(camGame, true);
+		FlxCamera.defaultCameras = [camGame];
 		CustomFadeTransition.nextCamera = camOther;
 
 		persistentUpdate = true;
@@ -4046,7 +4046,7 @@ class PlayState extends MusicBeatState
 
 		#if android
 		androidControls.visible = false;
-		#end		
+		#end
 		timeBarBG.visible = false;
 		timeBar.visible = false;
 		timeTxt.visible = false;
