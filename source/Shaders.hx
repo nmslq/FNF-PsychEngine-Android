@@ -628,15 +628,8 @@ class VideoGlitchEffect extends Effect{
 	public var shader:VideoGlitchShader = new VideoGlitchShader();
 	
 	public function new(){
-		shader.uTime.value = [FlxG.random.float(0,8)];
-		shader.iResolution.value = [Lib.current.stage.stageWidth,Lib.current.stage.stageHeight];
-		PlayState.instance.shaderUpdates.push(update);
+		
 	}
-
-	public function update(elapsed){
-		shader.uTime.value[0] += elapsed;
-	}
-	
 	
 }
 
