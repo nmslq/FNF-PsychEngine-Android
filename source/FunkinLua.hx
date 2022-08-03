@@ -2902,9 +2902,9 @@ class FunkinLua {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new TiltshiftEffect(blurAmount,center));
 		});
-		Lua_helper.add_callback(lua, "addVCREffect", function(camera:String,glitchFactor:Float = 0.0,distortion:Bool=true,noiseOn:Bool=true,rgbOn:Bool=true,perspectiveOn:Bool=true,vignetteMoving:Bool=true) {
+		Lua_helper.add_callback(lua, "addVCREffect", function(camera:String,glitchFactor:Float = 0.0,distortion:Bool=true,noiseOn:Bool=true,perspectiveOn:Bool=true,vignetteMoving:Bool=true) {
 			if(ClientPrefs.shaders)
-				PlayState.instance.addShaderToCamera(camera, new VCRDistortionEffect(glitchFactor,distortion,noiseOn,rgbOn,perspectiveOn,vignetteMoving));
+				PlayState.instance.addShaderToCamera(camera, new VCRDistortionEffect(glitchFactor,distortion,noiseOn,perspectiveOn,vignetteMoving));
 		});
 		Lua_helper.add_callback(lua, "addVideoGlitchEffect", function(camera:String,glitchFactor:Float = 0.0) {
 			if(ClientPrefs.shaders)
