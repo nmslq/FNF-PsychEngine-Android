@@ -640,6 +640,55 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
   }
 }
 
+class VideoGlitchEffect extends Effect
+{
+  public var shader:VideoGlitchShader = new VideoGlitchShader();
+  public function new(glitchFactor:Float){
+    shader.iTime.value = [0];
+    shader.glitchModifier.value = [glitchFactor];
+    shader.iResolution.value = [Lib.current.stage.stageWidth,Lib.current.stage.stageHeight];
+   PlayState.instance.shaderUpdates.push(update);
+  }
+
+  public function update(elapsed:Float){
+    shader.iTime.value[0] += elapsed;
+    shader.iResolution.value = [Lib.current.stage.stageWidth,Lib.current.stage.stageHeight];
+  }
+
+  public function setGlitchModifier(modifier:Float){
+    shader.glitchModifier.value[0] = modifier;
+  }
+}
+
+class VideoGlitchShader extends FlxShader
+{
+
+  @:glFragmentSource('
+    #pragma header
+
+    uniform float iTime;
+    uniform float glitchModifier;
+    uniform vec3 iResolution;
+
+    vec4 getVideo(vec2 uv)
+      {
+      	vec2 look = uv;
+        	float window = 1.0/(1.0+20.0*(look.y-mod(iTime/4.0,1.0))*(look.y-mod(iTime/4.0,1.0)));
+        	look.x = look.x + (sin(look.y*10.0 + iTime)/50.0*onOff(4.0,4.0,0.3)*(1.0+cos(iTime*80.0))*window)*(glitchModifier*2.0);
+        	float vShift = 0.4*onOff(2.0,3.0,0.9)*(sin(iTime)*sin(iTime*20.0) +
+        										 (0.5 + 0.1*sin(iTime*200.0)*cos(iTime)));
+        	look.y = mod(look.y + vShift*glitchModifier, 1.0);
+      	vec4 video = flixel_texture2D(bitmap,look);
+
+      	return video;
+      }
+  ')
+  public function new()
+  {
+    super();
+  }
+}
+
 
 
 
