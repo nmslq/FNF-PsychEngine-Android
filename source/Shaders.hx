@@ -658,7 +658,7 @@ class ThreeDShader extends FlxShader{
 	uniform float yrot;
 	uniform float zrot;
 	uniform float dept;
-	float alph = 0;
+	float alph = 0.0;
 float plane( in vec3 norm, in vec3 po, in vec3 ro, in vec3 rd ) {
     float de = dot(norm, rd);
     de = sign(de)*max( abs(de), 0.001);
