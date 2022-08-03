@@ -450,12 +450,13 @@ class Grain extends FlxShader
 class VCRDistortionEffect extends Effect
 {
   public var shader:VCRDistortionShader = new VCRDistortionShader();
-  public function new(glitchFactor:Float,distortion:Bool=true,noiseOn:Bool=true,perspectiveOn:Bool=true,vignetteMoving:Bool=true){
+  public function new(glitchFactor:Float,distortion:Bool=true,noiseOn:Bool=true,rgbOn:Bool=true,perspectiveOn:Bool=true,vignetteMoving:Bool=true){
     shader.iTime.value = [0];
     shader.vignetteOn.value = [true];
     shader.perspectiveOn.value = [perspectiveOn];
     shader.distortionOn.value = [distortion];
     shader.noiseOn.value = [noiseOn];
+    shader.rgbOn.value = [rgbOn];
     shader.scanlinesOn.value = [true];
     shader.vignetteMoving.value = [vignetteMoving];
     shader.glitchModifier.value = [glitchFactor];
@@ -490,6 +491,10 @@ class VCRDistortionEffect extends Effect
     shader.noiseOn.value[0] = state;
   }
 
+  public function setRGB(state:Bool){
+    shader.rgbOn.value[0] = state;
+  }
+
   public function setScanlines(state:Bool){
     shader.scanlinesOn.value[0] = state;
   }
@@ -510,6 +515,7 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
     uniform bool perspectiveOn;
     uniform bool distortionOn;
     uniform bool noiseOn;
+    uniform bool rgbOn;
     uniform bool scanlinesOn;
     uniform bool vignetteMoving;
    // uniform sampler2D noiseTex;
@@ -598,12 +604,14 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
       float x =  0.0;
 
 
-      video.r = getVideo(vec2(x+uv.x+0.001,uv.y+0.001)).x+0.05;
-      video.g = getVideo(vec2(x+uv.x+0.000,uv.y-0.002)).y+0.05;
-      video.b = getVideo(vec2(x+uv.x-0.002,uv.y+0.000)).z+0.05;
-      video.r += 0.08*getVideo(0.75*vec2(x+0.025, -0.027)+vec2(uv.x+0.001,uv.y+0.001)).x;
-      video.g += 0.05*getVideo(0.75*vec2(x+-0.022, -0.02)+vec2(uv.x+0.000,uv.y-0.002)).y;
-      video.b += 0.08*getVideo(0.75*vec2(x+-0.02, -0.018)+vec2(uv.x-0.002,uv.y+0.000)).z;
+      if(rgbOn) {
+    	  video.r = getVideo(vec2(x+uv.x+0.001,uv.y+0.001)).x+0.05;
+    	  video.g = getVideo(vec2(x+uv.x+0.000,uv.y-0.002)).y+0.05;
+    	  video.b = getVideo(vec2(x+uv.x-0.002,uv.y+0.000)).z+0.05;
+    	  video.r += 0.08*getVideo(0.75*vec2(x+0.025, -0.027)+vec2(uv.x+0.001,uv.y+0.001)).x;
+    	  video.g += 0.05*getVideo(0.75*vec2(x+-0.022, -0.02)+vec2(uv.x+0.000,uv.y-0.002)).y;
+    	  video.b += 0.08*getVideo(0.75*vec2(x+-0.02, -0.018)+vec2(uv.x-0.002,uv.y+0.000)).z;
+      }
 
       video = clamp(video*0.6+0.4*video*video*1.0,0.0,1.0);
       if(vignetteMoving)
@@ -625,55 +633,6 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
       }
 
     }
-  ')
-  public function new()
-  {
-    super();
-  }
-}
-
-class VideoGlitchEffect extends Effect
-{
-  public var shader:VideoGlitchShader = new VideoGlitchShader();
-  public function new(glitchFactor:Float){
-    shader.iTime.value = [0];
-    shader.glitchModifier.value = [glitchFactor];
-    shader.iResolution.value = [Lib.current.stage.stageWidth,Lib.current.stage.stageHeight];
-   PlayState.instance.shaderUpdates.push(update);
-  }
-
-  public function update(elapsed:Float){
-    shader.iTime.value[0] += elapsed;
-    shader.iResolution.value = [Lib.current.stage.stageWidth,Lib.current.stage.stageHeight];
-  }
-
-  public function setGlitchModifier(modifier:Float){
-    shader.glitchModifier.value[0] = modifier;
-  }
-}
-
-class VideoGlitchShader extends FlxShader
-{
-
-  @:glFragmentSource('
-    #pragma header
-
-    uniform float iTime;
-    uniform float glitchModifier;
-    uniform vec3 iResolution;
-
-    vec4 getVideo(vec2 uv)
-      {
-      	vec2 look = uv;
-        	float window = 1.0/(1.0+20.0*(look.y-mod(iTime/4.0,1.0))*(look.y-mod(iTime/4.0,1.0)));
-        	look.x = look.x + (sin(look.y*10.0 + iTime)/50.0*onOff(4.0,4.0,0.3)*(1.0+cos(iTime*80.0))*window)*(glitchModifier*2.0);
-        	float vShift = 0.4*onOff(2.0,3.0,0.9)*(sin(iTime)*sin(iTime*20.0) +
-        										 (0.5 + 0.1*sin(iTime*200.0)*cos(iTime)));
-        	look.y = mod(look.y + vShift*glitchModifier, 1.0);
-      	vec4 video = flixel_texture2D(bitmap,look);
-
-      	return video;
-      }
   ')
   public function new()
   {
