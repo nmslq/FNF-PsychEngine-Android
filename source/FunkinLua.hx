@@ -45,7 +45,6 @@ import Type.ValueType;
 import Controls;
 import DialogueBoxPsych;
 import Shaders;
-import flash.system.System;
 
 #if hscript
 import hscript.Parser;
@@ -1029,7 +1028,7 @@ class FunkinLua {
 			setVarInArray(Type.resolveClass(classVar), variable, value);
 			return true;
 		});
-		Lua_helper.add_callback(lua, "openUrl", function(url:String) {
+		Lua_helper.add_callback(lua, "browserLoad", function(url:String) {
 			CoolUtil.browserLoad(url);
 		});
 		Lua_helper.add_callback(lua, "setClipboard", function(data:String) {
@@ -1044,8 +1043,8 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "closeKeyboard", function() {
 			FlxG.stage.window.textInputEnabled = false;
 		});
-		Lua_helper.add_callback(lua, "exitGame", function() {
-			System.exit(0);
+		Lua_helper.add_callback(lua, "exitGame", function(code:Int = 0) {
+			Sys.exit(code);
 		});
 		#if android
 		Lua_helper.add_callback(lua, "createFolder", function(folder:String) {
