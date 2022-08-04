@@ -1196,7 +1196,7 @@ class PlayState extends MusicBeatState
 		add(healthBar);
 		healthBarBG.sprTracker = healthBar;
 
-		healthStrips = new FlxSprite().loadGraphic(Paths.image('health'));
+		healthStrips = new FlxSprite().loadGraphic(Paths.image('healthBarOverlay'));
 		healthStrips.y = FlxG.height * 0.89;
 		healthStrips.screenCenter(X);
 		healthStrips.scrollFactor.set();
