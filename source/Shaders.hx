@@ -450,13 +450,11 @@ class Grain extends FlxShader
 class VCRDistortionEffect extends Effect
 {
   public var shader:VCRDistortionShader = new VCRDistortionShader();
-  public function new(glitchFactor:Float,distortion:Bool=true,noiseOn:Bool=true,rgbOn:Bool=true,perspectiveOn:Bool=true,vignetteMoving:Bool=true){
+  public function new(glitchFactor:Float,distortion:Bool=true,perspectiveOn:Bool=true,vignetteMoving:Bool=true){
     shader.iTime.value = [0];
     shader.vignetteOn.value = [true];
     shader.perspectiveOn.value = [perspectiveOn];
     shader.distortionOn.value = [distortion];
-    shader.noiseOn.value = [noiseOn];
-    shader.rgbOn.value = [rgbOn];
     shader.scanlinesOn.value = [true];
     shader.vignetteMoving.value = [vignetteMoving];
     shader.glitchModifier.value = [glitchFactor];
@@ -487,14 +485,6 @@ class VCRDistortionEffect extends Effect
     shader.distortionOn.value[0] = state;
   }
 
-  public function setNoise(state:Bool){
-    shader.noiseOn.value[0] = state;
-  }
-
-  public function setRGB(state:Bool){
-    shader.rgbOn.value[0] = state;
-  }
-
   public function setScanlines(state:Bool){
     shader.scanlinesOn.value[0] = state;
   }
@@ -514,8 +504,6 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
     uniform bool vignetteOn;
     uniform bool perspectiveOn;
     uniform bool distortionOn;
-    uniform bool noiseOn;
-    uniform bool rgbOn;
     uniform bool scanlinesOn;
     uniform bool vignetteMoving;
    // uniform sampler2D noiseTex;
@@ -604,14 +592,12 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
       float x =  0.0;
 
 
-      if(rgbOn) {
-    	  video.r = getVideo(vec2(x+uv.x+0.001,uv.y+0.001)).x+0.05;
-    	  video.g = getVideo(vec2(x+uv.x+0.000,uv.y-0.002)).y+0.05;
-    	  video.b = getVideo(vec2(x+uv.x-0.002,uv.y+0.000)).z+0.05;
-    	  video.r += 0.08*getVideo(0.75*vec2(x+0.025, -0.027)+vec2(uv.x+0.001,uv.y+0.001)).x;
-    	  video.g += 0.05*getVideo(0.75*vec2(x+-0.022, -0.02)+vec2(uv.x+0.000,uv.y-0.002)).y;
-    	  video.b += 0.08*getVideo(0.75*vec2(x+-0.02, -0.018)+vec2(uv.x-0.002,uv.y+0.000)).z;
-      }
+      video.r = getVideo(vec2(x+uv.x+0.001,uv.y+0.001)).x+0.05;
+      video.g = getVideo(vec2(x+uv.x+0.000,uv.y-0.002)).y+0.05;
+      video.b = getVideo(vec2(x+uv.x-0.002,uv.y+0.000)).z+0.05;
+      video.r += 0.08*getVideo(0.75*vec2(x+0.025, -0.027)+vec2(uv.x+0.001,uv.y+0.001)).x;
+      video.g += 0.05*getVideo(0.75*vec2(x+-0.022, -0.02)+vec2(uv.x+0.000,uv.y-0.002)).y;
+      video.b += 0.08*getVideo(0.75*vec2(x+-0.02, -0.018)+vec2(uv.x-0.002,uv.y+0.000)).z;
 
       video = clamp(video*0.6+0.4*video*video*1.0,0.0,1.0);
       if(vignetteMoving)
@@ -622,15 +608,12 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
       if(vignetteOn)
     	 video *= vignette;
 
+
+      gl_FragColor = mix(video,vec4(noise(uv * 75.0)),0.05);
+
       if(curUV.x<0.0 || curUV.x>1.0 || curUV.y<0.0 || curUV.y>1.0){
         gl_FragColor = vec4(0.0,0.0,0.0,0.0);
-      } else {
-        if(noiseOn) {
-    	  gl_FragColor = mix(video,vec4(noise(uv * 75.0)),0.05);
-        }else{
-           gl_FragColor = video;
-        }
-     }
+      }
 
     }
   ')
@@ -639,8 +622,6 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
     super();
   }
 }
-
-
 
 
 
