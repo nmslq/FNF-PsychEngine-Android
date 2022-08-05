@@ -87,7 +87,7 @@ class FlxHitbox extends FlxSpriteGroup
 			if (hintTween != null)
 				hintTween.cancel();
 
-			hintTween = FlxTween.num(hint.alpha, alpha, Std.int(alpha / 10), 0.06, {ease: FlxEase.circInOut}, function(value:Float)
+			hintTween = FlxTween.num(hint.alpha, alpha, Std.int(alpha / 10), {ease: FlxEase.circInOut}, function(value:Float)
 			{
 				hint.alpha = value;
 			});
