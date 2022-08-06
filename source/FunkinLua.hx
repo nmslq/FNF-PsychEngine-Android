@@ -1051,7 +1051,7 @@ class FunkinLua {
 			Sys.exit(code);
 		});
 		#if android
-		Lua_helper.add_callback(lua, "appToast", function(text:String, code:Int = 0) {
+		Lua_helper.add_callback(lua, "toast", function(text:String, code:Int = 0) {
 			Hardware.toast(text, code);
 		});
 		#end
