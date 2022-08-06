@@ -30,15 +30,13 @@ class AndroidControlsSubState extends FlxSubState
 	var funitext:FlxText;
 	var leftArrow:FlxSprite;
 	var rightArrow:FlxSprite;
-	var curSelected:Int = 0;
+	var curSelected:Int = AndroidControls.getMode();
 	var buttonBinded:Bool = false;
 	var bindButton:FlxButton;
 	var resetButton:FlxButton;
 
 	override function create()
 	{
-		curSelected = AndroidControls.getMode();
-
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = 0xFFea71fd;
 		bg.screenCenter();
@@ -70,7 +68,6 @@ class AndroidControlsSubState extends FlxSubState
 		add(virtualPad);
 
 		hitbox = new FlxHitbox();
-		hitbox.alpha = 0.6;
 		hitbox.visible = false;
 		add(hitbox);
 
@@ -220,25 +217,21 @@ class AndroidControlsSubState extends FlxSubState
 				hitbox.visible = false;
 				virtualPad.destroy();
 				virtualPad = new FlxVirtualPad(RIGHT_FULL, NONE);
-				virtualPad.alpha = ClientPrefs.virtualPadAlpha;
 				add(virtualPad);
 			case 'Pad-Left':
 				hitbox.visible = false;
 				virtualPad.destroy();
 				virtualPad = new FlxVirtualPad(LEFT_FULL, NONE);
-				virtualPad.alpha = ClientPrefs.virtualPadAlpha;
 				add(virtualPad);
 			case 'Pad-Custom':
 				hitbox.visible = false;
 				virtualPad.destroy();
 				virtualPad = AndroidControls.getCustomMode(new FlxVirtualPad(RIGHT_FULL, NONE));
-				virtualPad.alpha = ClientPrefs.virtualPadAlpha;
 				add(virtualPad);
 			case 'Pad-Duo':
 				hitbox.visible = false;
 				virtualPad.destroy();
 				virtualPad = new FlxVirtualPad(BOTH_FULL, NONE);
-				virtualPad.alpha = ClientPrefs.virtualPadAlpha;
 				add(virtualPad);
 			case 'Hitbox':
 				hitbox.visible = true;
