@@ -139,6 +139,8 @@ class FlxJoyStick extends FlxSpriteGroup
 		base.y += -base.height * 0.5;
 		base.scrollFactor.set();
 		base.solid = false;
+		base.immovable = true;
+		base.alpha = AndroidControls.getOpacity();
 		#if FLX_DEBUG
 		base.ignoreDrawDebug = true;
 		#end
@@ -156,6 +158,8 @@ class FlxJoyStick extends FlxSpriteGroup
 		thumb.y += -thumb.height * 0.5;
 		thumb.scrollFactor.set();
 		thumb.solid = false;
+		thumb.immovable = true;
+		thumb.alpha = AndroidControls.getOpacity();
 		#if FLX_DEBUG
 		thumb.ignoreDrawDebug = true;
 		#end
@@ -204,9 +208,7 @@ class FlxJoyStick extends FlxSpriteGroup
 
 		// There is no reason to get into the loop if their is already a pointer on the analog
 		if (_currentTouch != null)
-		{
 			_tempTouches.push(_currentTouch);
-		}
 		else
 		{
 			for (touch in FlxG.touches.list)
@@ -325,9 +327,7 @@ class FlxJoyStick extends FlxSpriteGroup
 	 * Returns the angle in degrees.
 	 */
 	public function getAngle():Float
-	{
 		return _direction * FlxAngle.TO_DEG;
-	}
 
 	/**
 	 * Whether the thumb is pressed or not.
@@ -335,9 +335,7 @@ class FlxJoyStick extends FlxSpriteGroup
 	public var pressed(get, never):Bool;
 
 	inline function get_pressed():Bool
-	{
 		return status == PRESSED;
-	}
 
 	/**
 	 * Whether the thumb is just pressed or not.
