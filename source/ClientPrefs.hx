@@ -24,9 +24,6 @@ class ClientPrefs {
 	public static var noteOffset:Int = 0;
 	public static var arrowHSV:Array<Array<Int>> = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
 	public static var vibration:Bool = false;
-	public static var hitboxHints:Bool = false;
-	public static var visualColors:Bool = true;
-	public static var virtualPadAlpha:Float = 0.6;
 	public static var ghostTapping:Bool = true;
 	public static var timeBarType:String = 'Time Left';
 	public static var scoreZoom:Bool = true;
@@ -115,9 +112,6 @@ class ClientPrefs {
 		FlxG.save.data.hideHud = hideHud;
 		FlxG.save.data.arrowHSV = arrowHSV;
 		FlxG.save.data.vibration = vibration;
-		FlxG.save.data.hitboxHints = hitboxHints;
-		FlxG.save.data.visualColors = visualColors;
-		FlxG.save.data.virtualPadAlpha = virtualPadAlpha;
 		FlxG.save.data.ghostTapping = ghostTapping;
 		FlxG.save.data.timeBarType = timeBarType;
 		FlxG.save.data.scoreZoom = scoreZoom;
@@ -209,15 +203,6 @@ class ClientPrefs {
 		}
 		if(FlxG.save.data.vibration != null) {
 			vibration = FlxG.save.data.vibration;
-		}
-		if(FlxG.save.data.visualColors != null) {
-			visualColors = FlxG.save.data.visualColors;
-		}
-		if(FlxG.save.data.hitboxHints != null) {
-			hitboxHints = FlxG.save.data.hitboxHints;
-		}
-		if(FlxG.save.data.virtualPadAlpha != null) {
-			virtualPadAlpha = FlxG.save.data.virtualPadAlpha;
 		}
 		if(FlxG.save.data.ghostTapping != null) {
 			ghostTapping = FlxG.save.data.ghostTapping;
