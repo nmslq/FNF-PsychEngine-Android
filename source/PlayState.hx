@@ -1698,9 +1698,6 @@ class PlayState extends MusicBeatState
 		if(modchartSprites.exists(tag)) return modchartSprites.get(tag);
 		if(text && modchartTexts.exists(tag)) return modchartTexts.get(tag);
 		if(modchartBackdrops.exists(tag)) return modchartBackdrops.get(tag);
-		#if VIDEOS_ALLOWED
-		if(modchartmp4Sprites.exists(tag)) return modchartmp4Sprites.get(tag);
-		#end
 		return null;
 	}
 
