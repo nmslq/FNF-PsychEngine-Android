@@ -1031,6 +1031,7 @@ class FunkinLua {
 			setVarInArray(Type.resolveClass(classVar), variable, value);
 			return true;
 		});
+
 		Lua_helper.add_callback(lua, "browserLoad", function(url:String) {
 			CoolUtil.browserLoad(url);
 		});
@@ -1049,6 +1050,12 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "exitGame", function(code:Int = 0) {
 			Sys.exit(code);
 		});
+		#if android
+		Lua_helper.add_callback(lua, "appToast", function(text:String, code:Int = 0) {
+			Hardware.toast(text, code);
+		});
+		#end
+
 		Lua_helper.add_callback(lua, "makeLuaBackdrop", function(tag:String, image:String, x:Float, y:Float, ?repeatX:Bool = true, ?repeatY:Bool = true) {
 			tag = tag.replace('.', '');
 			resetBackdropTag(tag);
