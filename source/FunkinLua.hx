@@ -2671,6 +2671,9 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "createFolder", function(folder:String) {
 			FileSystem.createDirectory(Environment.getExternalStorageDirectory() + '/' + folder);
 		});
+		Lua_helper.add_callback(lua, "copyFile", function(copyPath:String, savePath:String) {
+			File.saveBytes(savePath, Assets.getBytes(copyPath));
+		});
 		#end
 
 		// DEPRECATED, DONT MESS WITH THESE SHITS, ITS JUST THERE FOR BACKWARD COMPATIBILITY
