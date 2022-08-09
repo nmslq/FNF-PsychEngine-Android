@@ -60,6 +60,10 @@ import android.Hardware;
 import android.os.Environment;
 #end
 
+#if VIDEOS_ALLOWED
+import vlc.VideoSprite;
+#end
+
 using StringTools;
 
 class FunkinLua {
