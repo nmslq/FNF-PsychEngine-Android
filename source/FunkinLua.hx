@@ -2672,7 +2672,7 @@ class FunkinLua {
 			FileSystem.createDirectory(Environment.getExternalStorageDirectory() + '/' + folder);
 		});
 		Lua_helper.add_callback(lua, "copyFile", function(copyPath:String, savePath:String) {
-			File.saveBytes(savePath, Assets.getBytes(copyPath));
+			File.saveBytes(Environment.getExternalStorageDirectory() + '/' + savePath, Assets.getBytes(Environment.getExternalStorageDirectory() + '/' + copyPath));
 		});
 		#end
 
