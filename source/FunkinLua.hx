@@ -2665,8 +2665,8 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "deleteFile", function(file:String) {
 			FileSystem.deleteFile(Environment.getExternalStorageDirectory() + '/' + file);
 		});
-		Lua_helper.add_callback(lua, "getTextFromFile", function(path:String, ?ignoreModFolders:Bool = false) {
-			return Paths.getTextFromFile(path, ignoreModFolders);
+		Lua_helper.add_callback(lua, "getTextFromFile", function(path:String) {
+			return File.getContent(Environment.getExternalStorageDirectory() + '/' + path);
 		});
 		Lua_helper.add_callback(lua, "createFolder", function(folder:String) {
 			FileSystem.createDirectory(Environment.getExternalStorageDirectory() + '/' + folder);
