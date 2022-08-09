@@ -1328,7 +1328,7 @@ class FunkinLua {
 			}
 			return boobs;
 		});
-		Lua_helper.add_callback(lua, "touchJustPressed", function(button:String) {
+		Lua_helper.add_callback(lua, "touchJustPressed", function() {
 			var boobs = false;
 			#if android
 			for (touch in FlxG.touches.list) {
@@ -1339,7 +1339,7 @@ class FunkinLua {
 			return boobs;
 			#end
 		});
-		Lua_helper.add_callback(lua, "touchPressed", function(button:String) {
+		Lua_helper.add_callback(lua, "touchPressed", function() {
 			var boobs = false;
 			#if android
 			for (touch in FlxG.touches.list) {
@@ -1350,7 +1350,7 @@ class FunkinLua {
 			#end
 			return boobs;
 		});
-		Lua_helper.add_callback(lua, "touchReleased", function(button:String) {
+		Lua_helper.add_callback(lua, "touchReleased", function() {
 			var boobs = false;
 			#if android
 			for (touch in FlxG.touches.list) {
@@ -1362,14 +1362,11 @@ class FunkinLua {
 			#end
 		});
 		Lua_helper.add_callback(lua, "androidBackJustPressed", function() {
-			var boobs = false;
 			#if android
-			for (back in FlxG.android.justPressed.BACK) {
-				if (back) {
-					boobs = true;
-				}
+			if (FlxG.android.justPressed.BACK) {
+				return true;
 			}
-			return boobs;
+			return false;
 			#end
 		});
 		Lua_helper.add_callback(lua, "noteTweenAngle", function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String) {
