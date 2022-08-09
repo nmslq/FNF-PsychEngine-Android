@@ -61,7 +61,7 @@ import android.os.Environment;
 #end
 
 #if VIDEOS_ALLOWED
-import vlc.VideoSprite;
+import VideoSprite;
 #end
 
 using StringTools;
