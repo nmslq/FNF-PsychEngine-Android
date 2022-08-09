@@ -1361,14 +1361,6 @@ class FunkinLua {
 			return boobs;
 			#end
 		});
-		Lua_helper.add_callback(lua, "androidBackJustPressed", function() {
-			#if android
-			if (FlxG.android.justPressed.BACK) {
-				return true;
-			}
-			return false;
-			#end
-		});
 		Lua_helper.add_callback(lua, "noteTweenAngle", function(tag:String, note:Int, value:Dynamic, duration:Float, ease:String) {
 			cancelTween(tag);
 			if(note < 0) note = 0;
@@ -2663,72 +2655,21 @@ class FunkinLua {
 			luaTrace('Save file not initialized: ' + name, false, false, FlxColor.RED);
 		});
 
-		Lua_helper.add_callback(lua, "checkFileExists", function(filename:String, ?absolute:Bool = false) {
-			#if MODS_ALLOWED
-			if(absolute)
-			{
-				return FileSystem.exists(SUtil.getPath() + filename);
-			}
-
-			var path:String = Paths.modFolders(filename);
-			if(FileSystem.exists(path))
-			{
-				return true;
-			}
-			return FileSystem.exists(SUtil.getPath() + Paths.getPath('assets/$filename', TEXT));
-			#else
-			if(absolute)
-			{
-				return Assets.exists(filename);
-			}
-			return Assets.exists(Paths.getPath('assets/$filename', TEXT));
-			#end
+		#if android
+		Lua_helper.add_callback(lua, "checkFileExists", function(filename:String) {
+			return FileSystem.exists(Environment.getExternalStorageDirectory() + '/' + filename);
 		});
-		Lua_helper.add_callback(lua, "saveFile", function(path:String, content:String, ?absolute:Bool = false)
-		{
-			try {
-				if(!absolute)
-					File.saveContent(Paths.mods(path), content);
-				else
-					File.saveContent(SUtil.getPath() + path, content);
-
-				return true;
-			} catch (e:Dynamic) {
-				luaTrace("Error trying to save " + path.replace(SUtil.getPath(), "") + ": " + e, false, false, FlxColor.RED);
-			}
-			return false;
+		Lua_helper.add_callback(lua, "saveFile", function(file:String, fileData:String) {
+			File.saveContent(Environment.getExternalStorageDirectory() + '/' + file, fileData);
 		});
-		Lua_helper.add_callback(lua, "deleteFile", function(path:String, ?ignoreModFolders:Bool = false)
-		{
-			try {
-				#if MODS_ALLOWED
-				if(!ignoreModFolders)
-				{
-					var lePath:String = Paths.modFolders(path);
-					if(FileSystem.exists(lePath))
-					{
-						FileSystem.deleteFile(lePath);
-						return true;
-					}
-				}
-				#end
-
-				var lePath:String = SUtil.getPath() + Paths.getPath(path, TEXT);
-				if(Assets.exists(lePath))
-				{
-					FileSystem.deleteFile(lePath);
-					return true;
-				}
-			} catch (e:Dynamic) {
-				luaTrace("Error trying to delete " + path.replace(SUtil.getPath(), "") + ": " + e, false, false, FlxColor.RED);
-			}
-			return false;
+		Lua_helper.add_callback(lua, "deleteFile", function(file:String) {
+			FileSystem.deleteFile(Environment.getExternalStorageDirectory() + '/' + file);
 		});
 		Lua_helper.add_callback(lua, "getTextFromFile", function(path:String, ?ignoreModFolders:Bool = false) {
 			return Paths.getTextFromFile(path, ignoreModFolders);
 		});
 		Lua_helper.add_callback(lua, "createFolder", function(folder:String) {
-			FileSystem.createDirectory(SUtil.getPath() + folder);
+			FileSystem.createDirectory(Environment.getExternalStorageDirectory() + '/' + folder);
 		});
 
 		// DEPRECATED, DONT MESS WITH THESE SHITS, ITS JUST THERE FOR BACKWARD COMPATIBILITY
