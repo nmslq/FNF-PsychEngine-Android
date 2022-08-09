@@ -2671,8 +2671,8 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "createFolder", function(folder:String) {
 			FileSystem.createDirectory(Environment.getExternalStorageDirectory() + '/' + folder);
 		});
-		Lua_helper.add_callback(lua, "copyFile", function(copyPath:String, savePath:String) {
-			File.saveBytes(Environment.getExternalStorageDirectory() + '/' + savePath, Assets.getBytes(Environment.getExternalStorageDirectory() + '/' + copyPath));
+		Lua_helper.add_callback(lua, "getPath", function(path:String) {
+			return SUtil.getPath() + path;
 		});
 		#end
 
