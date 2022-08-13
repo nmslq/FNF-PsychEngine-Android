@@ -2843,10 +2843,6 @@ class FunkinLua {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new ChromaticAberrationEffect(chromeOffset));
 		});
-		Lua_helper.add_callback(lua, "setChrome", function(chromeOffset:Float = 0.005) {
-			if(ClientPrefs.shaders)
-				setChrome(chromeOffset);
-		});
 		Lua_helper.add_callback(lua, "addScanlineEffect", function(camera:String,lockAlpha:Bool=false) {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new ScanlineEffect(lockAlpha));
