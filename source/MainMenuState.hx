@@ -233,7 +233,7 @@ class MainMenuState extends MusicBeatState
 						}
 						else
 						{
-						        FlxTween.tween(FlxG.camera, {zoom: 2.2}, 2, {ease: FlxEase.expoInOut});
+							FlxTween.tween(FlxG.camera, {zoom: 2.2}, 2, {ease: FlxEase.expoInOut});
 							FlxFlicker.flicker(spr, 1, 0.06, false, false, function(flick:FlxFlicker)
 							{
 								var daChoice:String = optionShit[curSelected];
@@ -243,7 +243,7 @@ class MainMenuState extends MusicBeatState
 									case 'story_mode':
 										MusicBeatState.switchState(new StoryMenuState());
 									case 'freeplay':
-										MusicBeatState.switchState(new FreeplayState());
+										MusicBeatState.switchState(new FreeplaySelector());
 									#if MODS_ALLOWED
 									case 'mods':
 										MusicBeatState.switchState(new ModsMenuState());
