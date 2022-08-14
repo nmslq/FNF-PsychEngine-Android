@@ -2572,8 +2572,7 @@ class PlayState extends MusicBeatState
 						strumTime: newEventNote[0] + ClientPrefs.noteOffset,
 						event: newEventNote[1],
 						value1: newEventNote[2],
-						value2: newEventNote[3],
-						value3: newEventNote[4]
+						value2: newEventNote[3]
 					};
 					subEvent.strumTime -= eventNoteEarlyTrigger(subEvent);
 					eventNotes.push(subEvent);
