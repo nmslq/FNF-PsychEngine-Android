@@ -56,7 +56,7 @@ class FlxHitbox extends FlxSpriteGroup
 	{
 		var hintTween:FlxTween = null;
 		var hint:FlxButton = new FlxButton(X, Y);
-		hint.loadGraphic(Paths.image('android/hitbox'));
+		hint.loadGraphic(Paths.image('android/hint'));
 		hint.setGraphicSize(Width, Height);
 		hint.updateHitbox();
 		hint.solid = false;
