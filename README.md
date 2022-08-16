@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://media.discordapp.net/attachments/922853801835257867/983128071244763176/psychnewlogo.png" width="640" height="312.6" /></a>
+</p>
+
 # Friday Night Funkin' - Psych Engine Android Support
 Engine originally used on [Mind Games Mod](https://gamebanana.com/mods/301107), intended to be a fix for the vanilla version's many issues while keeping the casual play aspect of it. Also aiming to be an easier alternative to newbie coders.
 
