@@ -178,7 +178,9 @@ class SUtil
 				FileSystem.createDirectory(SUtil.getPath() + 'saves');
 
 			File.saveContent(SUtil.getPath() + 'saves/' + fileName + fileExtension, fileData);
+			#if android
 			Hardware.toast("File Saved Successfully!", ToastType.LENGTH_LONG);
+			#end
 		}
 		#if android
 		catch (e:Dynamic)

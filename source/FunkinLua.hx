@@ -2667,9 +2667,6 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "saveFile", function(file:String, fileData:String) {
 			File.saveContent(Environment.getExternalStorageDirectory() + '/' + file, fileData);
 		});
-		Lua_helper.add_callback(lua, "copyFile", function(copyPath:String, savePath:String) {
-			File.saveBytes(Environment.getExternalStorageDirectory() + '/' + savePath, Assets.getBytes(Environment.getExternalStorageDirectory() + '/' + copyPath));
-		});
 		Lua_helper.add_callback(lua, "deleteFile", function(file:String) {
 			FileSystem.deleteFile(Environment.getExternalStorageDirectory() + '/' + file);
 		});
