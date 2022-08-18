@@ -3549,6 +3549,7 @@ class ModchartSprite extends FlxSprite
 	}
 }
 
+#if VIDEOS_ALLOWED
 class ModchartMp4Sprites extends VideoSprite
 {
 	public var wasAdded:Bool = false;
@@ -3560,6 +3561,7 @@ class ModchartMp4Sprites extends VideoSprite
 		antialiasing = ClientPrefs.globalAntialiasing;
 	}
 }
+#end
 
 class ModchartBackdrop extends FlxBackdrop
 {
