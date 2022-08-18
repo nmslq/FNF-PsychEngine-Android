@@ -60,7 +60,7 @@ import android.Hardware;
 #end
 
 #if VIDEOS_ALLOWED
-import VideoSprite;
+import vlc.MP4Sprite;
 #end
 
 using StringTools;
@@ -3550,7 +3550,7 @@ class ModchartSprite extends FlxSprite
 }
 
 #if VIDEOS_ALLOWED
-class ModchartMp4Sprites extends VideoSprite
+class ModchartMp4Sprites extends MP4Sprite
 {
 	public var wasAdded:Bool = false;
 	//public var isInFront:Bool = false;
