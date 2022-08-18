@@ -106,9 +106,6 @@ class PlayState extends MusicBeatState
 
 	public var modchartTweens:Map<String, FlxTween> = new Map<String, FlxTween>();
 	public var modchartSprites:Map<String, ModchartSprite> = new Map<String, ModchartSprite>();
-	#if VIDEOS_ALLOWED
-	public var modchartmp4Sprites:Map<String, ModchartMp4Sprites> = new Map<String, ModchartMp4Sprites>();
-	#end
 	public var modchartTimers:Map<String, FlxTimer> = new Map<String, FlxTimer>();
 	public var modchartSounds:Map<String, FlxSound> = new Map<String, FlxSound>();
 	public var modchartBackdrops:Map<String, ModchartBackdrop> = new Map<String, ModchartBackdrop>();
@@ -1701,7 +1698,6 @@ class PlayState extends MusicBeatState
 		if(modchartSprites.exists(tag)) return modchartSprites.get(tag);
 		if(text && modchartTexts.exists(tag)) return modchartTexts.get(tag);
 		if(modchartBackdrops.exists(tag)) return modchartBackdrops.get(tag);
-		if(modchartmp4Sprites.exists(tag)) return modchartmp4Sprites.get(tag);
 		return null;
 	}
 
