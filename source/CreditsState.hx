@@ -147,12 +147,6 @@ class CreditsState extends MusicBeatState
 				'DCD294'
 			],
 			[
-				'proxy',
-				'.MP4 Video Loader Library (hxCodec)',
-				'https://twitter.com/polybiusproxy',
-				'DCD294'
-			],
-			[
 				'KadeDev',
 				'kade',
 				'Fixed some cool stuff on Chart Editor\nand other PRs',
