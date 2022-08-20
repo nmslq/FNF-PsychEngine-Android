@@ -59,6 +59,7 @@ class FlxUIDropDownMenuCustom extends FlxUIGroup implements IFlxUIWidget impleme
 	private var _selectedLabel:String;
 
 	private var currentScroll:Int = 0; //Handles the scrolling
+
 	public var canScroll:Bool = true;
 
 	private function get_selectedId():String

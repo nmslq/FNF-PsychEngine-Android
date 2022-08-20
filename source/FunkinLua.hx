@@ -88,7 +88,8 @@ class FunkinLua {
 		//trace("LuaJIT version: " + Lua.versionJIT());
 
 		//LuaL.dostring(lua, CLENSE);
-		try{
+		try
+		{
 			var result:Dynamic = LuaL.dofile(lua, script);
 			var resultStr:String = Lua.tostring(lua, result);
 			if(resultStr != null && result != 0) {
@@ -101,7 +102,9 @@ class FunkinLua {
 				lua = null;
 				return;
 			}
-		}catch(e:Dynamic){
+		}
+		catch(e:Dynamic)
+		{
 			trace(e);
 			return;
 		}
@@ -225,7 +228,8 @@ class FunkinLua {
 		#end
 
 		Lua_helper.add_callback(lua, "initLuaShader", function(name:String, glslVersion:Int = 120) {
-			if(!ClientPrefs.shaders) return false;
+			if(!ClientPrefs.shaders)
+				return false;
 
 			#if (!flash && MODS_ALLOWED && sys)
 			return initLuaShader(name, glslVersion);
@@ -236,7 +240,8 @@ class FunkinLua {
 		});
 		
 		Lua_helper.add_callback(lua, "setSpriteShader", function(obj:String, shader:String) {
-			if(!ClientPrefs.shaders) return false;
+			if(!ClientPrefs.shaders)
+				return false;
 
 			#if (!flash && MODS_ALLOWED && sys)
 			if(!PlayState.instance.runtimeShaders.exists(shader) && !initLuaShader(shader))
@@ -274,7 +279,6 @@ class FunkinLua {
 			}
 			return false;
 		});
-
 
 		Lua_helper.add_callback(lua, "getShaderBool", function(obj:String, prop:String) {
 			#if (!flash && MODS_ALLOWED && sys)
@@ -367,11 +371,11 @@ class FunkinLua {
 			#end
 		});
 
-
 		Lua_helper.add_callback(lua, "setShaderBool", function(obj:String, prop:String, value:Bool) {
 			#if (!flash && MODS_ALLOWED && sys)
 			var shader:FlxRuntimeShader = getShader(obj);
-			if(shader == null) return;
+			if(shader == null)
+				return;
 
 			shader.setBool(prop, value);
 			#else
@@ -381,7 +385,8 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "setShaderBoolArray", function(obj:String, prop:String, values:Dynamic) {
 			#if (!flash && MODS_ALLOWED && sys)
 			var shader:FlxRuntimeShader = getShader(obj);
-			if(shader == null) return;
+			if(shader == null)
+				return;
 
 			shader.setBoolArray(prop, values);
 			#else
@@ -391,7 +396,8 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "setShaderInt", function(obj:String, prop:String, value:Int) {
 			#if (!flash && MODS_ALLOWED && sys)
 			var shader:FlxRuntimeShader = getShader(obj);
-			if(shader == null) return;
+			if(shader == null)
+				return;
 
 			shader.setInt(prop, value);
 			#else
@@ -429,7 +435,7 @@ class FunkinLua {
 			#end
 		});
 
-		Lua_helper.add_callback(lua, "getRunningScripts", function(){
+		Lua_helper.add_callback(lua, "getRunningScripts", function() {
 			var runningScripts:Array<String> = [];
 			for (idx in 0...PlayState.instance.luaArray.length)
 				runningScripts.push(PlayState.instance.luaArray[idx].scriptName);
@@ -438,42 +444,50 @@ class FunkinLua {
 			return runningScripts;
 		});
 
-		Lua_helper.add_callback(lua, "callOnLuas", function(?funcName:String, ?args:Array<Dynamic>, ignoreStops=false, ignoreSelf=true, ?exclusions:Array<String>){
-			if(funcName==null){
+		Lua_helper.add_callback(lua, "callOnLuas", function(?funcName:String, ?args:Array<Dynamic>, ignoreStops=false, ignoreSelf=true, ?exclusions:Array<String>) {
+			if(funcName == null)
+			{
 				#if (linc_luajit >= "0.0.6")
 				LuaL.error(lua, "bad argument #1 to 'callOnLuas' (string expected, got nil)");
 				#end
 				return;
 			}
-			if(args==null)args = [];
+			if(args == null)
+				args = [];
 
-			if(exclusions==null)exclusions=[];
+			if(exclusions == null)
+				exclusions=[];
 
 			Lua.getglobal(lua, scriptName);
 			var daScriptName = Lua.tostring(lua, -1);
 			Lua.pop(lua, 1);
-			if(ignoreSelf && !exclusions.contains(daScriptName))exclusions.push(daScriptName);
+			if(ignoreSelf && !exclusions.contains(daScriptName))
+				exclusions.push(daScriptName);
 			PlayState.instance.callOnLuas(funcName, args, ignoreStops, exclusions);
 		});
 
-		Lua_helper.add_callback(lua, "callScript", function(?luaFile:String, ?funcName:String, ?args:Array<Dynamic>){
-			if(luaFile==null){
+		Lua_helper.add_callback(lua, "callScript", function(?luaFile:String, ?funcName:String, ?args:Array<Dynamic>) {
+			if(luaFile == null)
+			{
 				#if (linc_luajit >= "0.0.6")
 				LuaL.error(lua, "bad argument #1 to 'callScript' (string expected, got nil)");
 				#end
 				return;
 			}
-			if(funcName==null){
+			if(funcName == null)
+			{
 				#if (linc_luajit >= "0.0.6")
 				LuaL.error(lua, "bad argument #2 to 'callScript' (string expected, got nil)");
 				#end
 				return;
 			}
-			if(args==null){
+			if(args == null)
+			{
 				args = [];
 			}
 			var cervix = luaFile + ".lua";
-			if(luaFile.endsWith(".lua"))cervix=luaFile;
+			if(luaFile.endsWith(".lua"))
+				cervix = luaFile;
 			var doPush = false;
 			#if MODS_ALLOWED
 			if(FileSystem.exists(Paths.modFolders(cervix)))
@@ -514,14 +528,16 @@ class FunkinLua {
 
 		});
 
-		Lua_helper.add_callback(lua, "getGlobalFromScript", function(?luaFile:String, ?global:String){ // returns the global from a script
-			if(luaFile==null){
+		Lua_helper.add_callback(lua, "getGlobalFromScript", function(?luaFile:String, ?global:String) { // returns the global from a script
+			if(luaFile == null)
+			{
 				#if (linc_luajit >= "0.0.6")
 				LuaL.error(lua, "bad argument #1 to 'getGlobalFromScript' (string expected, got nil)");
 				#end
 				return;
 			}
-			if(global==null){
+			if(global == null)
+			{
 				#if (linc_luajit >= "0.0.6")
 				LuaL.error(lua, "bad argument #2 to 'getGlobalFromScript' (string expected, got nil)");
 				#end
@@ -579,7 +595,7 @@ class FunkinLua {
 			}
 			Lua.pushnil(lua);
 		});
-		Lua_helper.add_callback(lua, "setGlobalFromScript", function(luaFile:String, global:String, val:Dynamic){ // returns the global from a script
+		Lua_helper.add_callback(lua, "setGlobalFromScript", function(luaFile:String, global:String, val:Dynamic) { // returns the global from a script
 			var cervix = luaFile + ".lua";
 			if(luaFile.endsWith(".lua"))cervix=luaFile;
 			var doPush = false;
