@@ -15,44 +15,39 @@ typedef ShaderEffect = {
   var shader:Dynamic;
 }
 
-class BuildingEffect
-{
-	public var shader:BuildingShader = new BuildingShader();
-	public function new()
-	{
-    	shader.alphaShit.value = [0];
-	}
-	public function addAlpha(alpha:Float)
-	{
-    	trace(shader.alphaShit.value[0]);
-    	shader.alphaShit.value[0] += alpha;
-	}
-	public function setAlpha(alpha:Float)
-	{
-    	shader.alphaShit.value[0] = alpha;
-	}
+class BuildingEffect {
+  public var shader:BuildingShader = new BuildingShader();
+  public function new(){
+    shader.alphaShit.value = [0];
+  }
+  public function addAlpha(alpha:Float){
+    trace(shader.alphaShit.value[0]);
+    shader.alphaShit.value[0]+=alpha;
+  }
+  public function setAlpha(alpha:Float){
+    shader.alphaShit.value[0]=alpha;
+  }
 }
 
 class BuildingShader extends FlxShader
 {
-	@:glFragmentSource('
-    	#pragma header
-    	uniform float alphaShit;
+  @:glFragmentSource('
+    #pragma header
+    uniform float alphaShit;
+    void main()
+    {
 
-    	void main()
-    	{
-      		vec4 color = flixel_texture2D(bitmap,openfl_TextureCoordv);
-      		if (color.a > 0.0)
-        		color-=alphaShit;
+      vec4 color = flixel_texture2D(bitmap,openfl_TextureCoordv);
+      if (color.a > 0.0)
+        color-=alphaShit;
 
-      		gl_FragColor = color;
-    	}
-	')
-
-	public function new()
-	{
-    	super();
-	}
+      gl_FragColor = color;
+    }
+  ')
+  public function new()
+  {
+    super();
+  }
 }
 
 class ChromaticAberrationShader extends FlxShader
@@ -86,14 +81,12 @@ class ChromaticAberrationShader extends FlxShader
 class ChromaticAberrationEffect extends Effect
 {
 	public var shader:ChromaticAberrationShader;
-
-	public function new(offset:Float = 0.00)
-	{
-		shader = new ChromaticAberrationShader();
-    	shader.rOffset.value = [offset];
-    	shader.gOffset.value = [0.0];
-    	shader.bOffset.value = [-offset];
-	}
+  public function new(offset:Float = 0.00){
+	shader = new ChromaticAberrationShader();
+    shader.rOffset.value = [offset];
+    shader.gOffset.value = [0.0];
+    shader.bOffset.value = [-offset];
+  }
 	
 	public function setChrome(chromeOffset:Float):Void
 	{
@@ -101,19 +94,22 @@ class ChromaticAberrationEffect extends Effect
 		shader.gOffset.value = [0.0];
 		shader.bOffset.value = [chromeOffset * -1];
 	}
+
 }
 
 
 class ScanlineEffect extends Effect
 {
+	
 	public var shader:Scanline;
-
-	public function new (lockAlpha)
-	{
+	public function new (lockAlpha){
 		shader = new Scanline();
 		shader.lockAlpha.value = [lockAlpha];
 	}
+	
+	
 }
+
 
 class Scanline extends FlxShader
 {
@@ -121,7 +117,6 @@ class Scanline extends FlxShader
 		#pragma header
 		const float scale = 1.0;
 		uniform bool lockAlpha;
-
 		void main()
 		{
 			if (mod(floor(openfl_TextureCoordv.y * openfl_TextureSize.y / scale), 2.0) == 0.0 ){
@@ -133,24 +128,23 @@ class Scanline extends FlxShader
 			}else{
 				gl_FragColor = texture2D(bitmap, openfl_TextureCoordv);
 			}
-		}
-	')
+		}')
 	public function new()
 	{
 		super();
 	}
 }
 
-class TiltshiftEffect extends Effect
-{
+class TiltshiftEffect extends Effect{
+	
 	public var shader:Tiltshift;
-
-	public function new (blurAmount:Float, center:Float)
-	{
+	public function new (blurAmount:Float, center:Float){
 		shader = new Tiltshift();
 		shader.bluramount.value = [blurAmount];
 		shader.center.value = [center];
 	}
+	
+	
 }
 
 class Tiltshift extends FlxShader
@@ -158,78 +152,127 @@ class Tiltshift extends FlxShader
 	@:glFragmentSource('
 		#pragma header
 
+		// Modified version of a tilt shift shader from Martin Jonasson (http://grapefrukt.com/)
+		// Read http://notes.underscorediscovery.com/ for context on shaders and this file
+		// License : MIT
+		 
+			/*
+				Take note that blurring in a single pass (the two for loops below) is more expensive than separating
+				the x and the y blur into different passes. This was used where bleeding edge performance
+				was not crucial and is to illustrate a point. 
+		 
+				The reason two passes is cheaper? 
+				   texture2D is a fairly high cost call, sampling a texture.
+		 
+				   So, in a single pass, like below, there are 3 steps, per x and y. 
+		 
+				   That means a total of 9 "taps", it touches the texture to sample 9 times.
+		 
+				   Now imagine we apply this to some geometry, that is equal to 16 pixels on screen (tiny)
+				   (16 * 16) * 9 = 2304 samples taken, for width * height number of pixels, * 9 taps
+				   Now, if you split them up, it becomes 3 for x, and 3 for y, a total of 6 taps
+				   (16 * 16) * 6 = 1536 samples
+			
+				   That\'s on a *tiny* sprite, let\'s scale that up to 128x128 sprite...
+				   (128 * 128) * 9 = 147,456
+				   (128 * 128) * 6 =  98,304
+		 
+				   That\'s 33.33..% cheaper for splitting them up.
+				   That\'s with 3 steps, with higher steps (more taps per pass...)
+		 
+				   A really smooth, 6 steps, 6*6 = 36 taps for one pass, 12 taps for two pass
+				   You will notice, the curve is not linear, at 12 steps it\'s 144 vs 24 taps
+				   It becomes orders of magnitude slower to do single pass!
+				   Therefore, you split them up into two passes, one for x, one for y.
+			*/
+		 
+		// I am hardcoding the constants like a jerk
+			
 		uniform float bluramount;
 		uniform float center;
-		const float stepSize = 0.004;
-		const float steps = 3.0;
+		const float stepSize    = 0.004;
+		const float steps       = 3.0;
 		 
-		const float minOffs = (float(steps-1.0)) / -2.0;
-		const float maxOffs = (float(steps-1.0)) / +2.0;
+		const float minOffs     = (float(steps-1.0)) / -2.0;
+		const float maxOffs     = (float(steps-1.0)) / +2.0;
 		 
 		void main() {
 			float amount;
 			vec4 blurred;
-
+				
+			// Work out how much to blur based on the mid point 
 			amount = pow((openfl_TextureCoordv.y * center) * 2.0 - 1.0, 2.0) * bluramount;
-
+				
+			// This is the accumulation of color from the surrounding pixels in the texture
 			blurred = vec4(0.0, 0.0, 0.0, 1.0);
-
+				
+			// From minimum offset to maximum offset
 			for (float offsX = minOffs; offsX <= maxOffs; ++offsX) {
 				for (float offsY = minOffs; offsY <= maxOffs; ++offsY) {
-
+		 
+					// copy the coord so we can mess with it
 					vec2 temp_tcoord = openfl_TextureCoordv.xy;
-
+		 
+					//work out which uv we want to sample now
 					temp_tcoord.x += offsX * amount * stepSize;
 					temp_tcoord.y += offsY * amount * stepSize;
-
+		 
+					// accumulate the sample 
 					blurred += texture2D(bitmap, temp_tcoord);
 				}
 			} 
-
+				
+			// because we are doing an average, we divide by the amount (x AND y, hence steps * steps)
 			blurred /= float(steps * steps);
-
+		 
+			// return the final blurred color
 			gl_FragColor = blurred;
-		}
-	')
+		}')
 	public function new()
 	{
 		super();
 	}
 }
-
-class GreyscaleEffect extends Effect
-{
+class GreyscaleEffect extends Effect{
+	
 	public var shader:GreyscaleShader = new GreyscaleShader();
-
-	public function new()
-	{
-
+	
+	public function new(){
+		
 	}
+	
+	
 }
-
-class GreyscaleShader extends FlxShader
-{
+class GreyscaleShader extends FlxShader{
 	@:glFragmentSource('
-		#pragma header
-		void main() {
-			vec4 color = texture2D(bitmap, openfl_TextureCoordv);
-			float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114));
-			gl_FragColor = vec4(vec3(gray), color.a);
-		}
+	#pragma header
+	void main() {
+		vec4 color = texture2D(bitmap, openfl_TextureCoordv);
+		float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114));
+		gl_FragColor = vec4(vec3(gray), color.a);
+	}
+	
+	
 	')
 	
-	public function new()
-	{
+	public function new(){
 		super();
 	}
+	
+	
+	
 }
 
-class GrainEffect extends Effect
-{
-	public var shader:Grain;
 
-	public function new(grainsize, lumamount, lockAlpha, coloramount)
-	{
+
+
+
+
+
+class GrainEffect extends Effect {
+	
+	public var shader:Grain;
+	public function new (grainsize, lumamount,lockAlpha,coloramount){
 		shader = new Grain();
 		shader.lumamount.value = [lumamount];
 		shader.grainsize.value = [grainsize];
@@ -238,11 +281,13 @@ class GrainEffect extends Effect
 		shader.uTime.value = [FlxG.random.float(0,8)];
 		PlayState.instance.shaderUpdates.push(update);
 	}
-
-	public function update(elapsed)
-	{
+	public function update(elapsed){
 		shader.uTime.value[0] += elapsed;
 	}
+	
+	
+	
+	
 }
 
 
@@ -281,7 +326,7 @@ class Grain extends FlxShader
 		uniform float coloramount;
 		uniform float grainsize; //grain particle size (1.5 - 2.5)
 		uniform float lumamount; //
-		uniform bool lockAlpha;
+	uniform bool lockAlpha;
 
 		//a random texture generator, but you can also use a pre-computed perturbation texture
 	
@@ -393,13 +438,13 @@ class Grain extends FlxShader
 			vec4 texColor = texture2D(bitmap, openfl_TextureCoordv);
 				if (lockAlpha) bitch = texColor.a;
 			gl_FragColor =  vec4(col,bitch);
-		}
-	')
-
+		}')
 	public function new()
 	{
 		super();
 	}
+	
+	
 }
 
 class VCRDistortionEffect extends Effect
