@@ -24,21 +24,36 @@ class Achievements {
 			'week1_nomiss',
 			false
 		],
-		["No More Tricks", "Beat Week 2 on Hard with no Misses.", 'week2_nomiss', false],
+		[
+			"No More Tricks",
+			"Beat Week 2 on Hard with no Misses.",
+			'week2_nomiss',
+			false
+		],
 		[
 			"Call Me The Hitman",
 			"Beat Week 3 on Hard with no Misses.",
 			'week3_nomiss',
 			false
 		],
-		["Lady Killer", "Beat Week 4 on Hard with no Misses.", 'week4_nomiss', false],
+		[
+			"Lady Killer",
+			"Beat Week 4 on Hard with no Misses.",
+			'week4_nomiss',
+			false
+		],
 		[
 			"Missless Christmas",
 			"Beat Week 5 on Hard with no Misses.",
 			'week5_nomiss',
 			false
 		],
-		["Highscore!!", "Beat Week 6 on Hard with no Misses.", 'week6_nomiss', false],
+		[
+			"Highscore!!",
+			"Beat Week 6 on Hard with no Misses.",
+			'week6_nomiss',
+			false
+		],
 		[
 			"God Effing Damn It!",
 			"Beat Week 7 on Hard with no Misses.",

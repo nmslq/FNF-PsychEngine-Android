@@ -66,8 +66,8 @@ class ClientPrefs
 	// Every key has two binds, add your key bind down here and then add your control on options/ControlsSubState.hx and Controls.hx
 	public static var keyBinds:Map<String, Array<FlxKey>> = [
 		//Key Bind, Name for ControlsSubState
-		'note_left'	=> [A, LEFT],
-		'note_down'	=> [S, DOWN],
+		'note_left' => [A, LEFT],
+		'note_down' => [S, DOWN],
 		'note_up' => [W, UP],
 		'note_right' => [D, RIGHT],
 		
@@ -82,7 +82,7 @@ class ClientPrefs
 		'reset'	=> [R, NONE],
 		
 		'volume_mute' => [ZERO, NONE],
-		'volume_up'	=> [NUMPADPLUS, PLUS],
+		'volume_up' => [NUMPADPLUS, PLUS],
 		'volume_down' => [NUMPADMINUS, MINUS],
 		
 		'debug_1' => [SEVEN, NONE],

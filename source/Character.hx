@@ -293,14 +293,15 @@ class Character extends FlxSprite
 					if (animationNotes.length > 0 && Conductor.songPosition > animationNotes[0][0])
 					{
 						var noteData:Int = 1;
-						if (animationNotes[0][1] > 2) noteData = 3;
+						if (animationNotes[0][1] > 2)
+							noteData = 3;
 
 						noteData += FlxG.random.int(0, 1);
 						playAnim('shoot' + noteData, true);
 						animationNotes.shift();
 					}
 					if (animation.curAnim.finished)
-							playAnim(animation.curAnim.name, false, false, animation.curAnim.frames.length - 3);
+						playAnim(animation.curAnim.name, false, false, animation.curAnim.frames.length - 3);
 			}
 
 			if (!isPlayer)

@@ -146,7 +146,8 @@ class Conductor
 	static function getSectionBeats(song:SwagSong, section:Int)
 	{
 		var val:Null<Float> = null;
-		if (song.notes[section] != null) val = song.notes[section].sectionBeats;
+		if (song.notes[section] != null)
+			val = song.notes[section].sectionBeats;
 		return val != null ? val : 4;
 	}
 
