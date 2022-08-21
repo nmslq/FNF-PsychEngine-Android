@@ -18,39 +18,22 @@ class AndroidControls extends FlxSpriteGroup
 
 		switch (AndroidControls.getMode())
 		{
-			case 0: // RIGHT_FULL
-				initControler(0);
-			case 1: // LEFT_FULL
-				initControler(1);
-			case 2: // CUSTOM
-				initControler(2);
-			case 3: // BOTH_FULL
-				initControler(3);
-			case 4: // HITBOX
-				initControler(4);
-			case 5: // KEYBOARD
-		}
-	}
-
-	private function initControler(virtualPadMode:Int = 0):Void
-	{
-		switch (virtualPadMode)
-		{
-			case 0:
+			case 'Pad-Right':
 				virtualPad = new FlxVirtualPad(RIGHT_FULL, NONE);
 				add(virtualPad);
-			case 1:
+			case 'Pad-Left':
 				virtualPad = new FlxVirtualPad(LEFT_FULL, NONE);
 				add(virtualPad);
-			case 2:
+			case 'Pad-Custom':
 				virtualPad = AndroidControls.getCustomMode(new FlxVirtualPad(RIGHT_FULL, NONE));
 				add(virtualPad);
-			case 3:
+			case 'Pad-Duo':
 				virtualPad = new FlxVirtualPad(BOTH_FULL, NONE);
 				add(virtualPad);
-			case 4:
+			case 'Hitbox':
 				hitbox = new FlxHitbox();
 				add(hitbox);
+			case 'Keyboard':
 		}
 	}
 
@@ -71,82 +54,59 @@ class AndroidControls extends FlxSpriteGroup
 		}
 	}
 
-	public function resetColors():Void
+	public static function setOpacity(opacity:Float, isHitbox:Bool = false):Void
 	{
-		if (virtualPad != null)
+		if (!isHitbox)
 		{
-			if (virtualPad.buttonUp != null)
-				virtualPad.buttonUp.color = 0xFF00FF00;
-
-			if (virtualPad.buttonLeft != null)
-				virtualPad.buttonLeft.color = 0xFFFF00FF;
-
-			if (virtualPad.buttonRight != null)
-				virtualPad.buttonRight.color = 0xFFFF0000;
-
-			if (virtualPad.buttonDown != null)
-				virtualPad.buttonDown.color = 0xFF00FFFF;
-
-			if (virtualPad.buttonUp2 != null)
-				virtualPad.buttonUp2.color = 0xFF00FF00;
-
-			if (virtualPad.buttonLeft2 != null)
-				virtualPad.buttonLeft2.color = 0xFFFF00FF;
-
-			if (virtualPad.buttonRight2 != null)
-				virtualPad.buttonRight2.color = 0xFFFF0000;
-
-			if (virtualPad.buttonDown2 != null)
-				virtualPad.buttonDown2.color = 0xFF00FFFF;
+			FlxG.save.data.virtualPadOpacity = opacity;
+			FlxG.save.flush();
 		}
-		else if (hitbox != null)
+		else
 		{
-			if (hitbox.buttonLeft != null)
-				hitbox.buttonLeft.color = 0xFFFF00FF;
-
-			if (hitbox.buttonDown != null)
-				hitbox.buttonDown.color = 0xFF00FFFF;
-
-			if (hitbox.buttonLeft != null)
-				hitbox.buttonUp.color = 0xFF00FF00;
-
-			if (hitbox.buttonRight != null)
-				hitbox.buttonRight.color = 0xFFFF0000;
+			FlxG.save.data.hitboxOpacity = opacity;
+			FlxG.save.flush();
 		}
 	}
 
-	public static function setOpacity(opacity:Float = 0.6):Void
+	public static function getOpacity(isHitbox:Bool = false):Float
 	{
-		FlxG.save.data.androidControlsOpacity = opacity;
+		if (!isHitbox)
+		{
+			if (FlxG.save.data.virtualPadOpacity == null)
+			{
+				FlxG.save.data.virtualPadOpacity = 0.6;
+				FlxG.save.flush();
+			}
+
+			return FlxG.save.data.virtualPadOpacity;
+		}
+		else
+		{
+			if (FlxG.save.data.hitboxOpacity == null)
+			{
+				FlxG.save.data.hitboxOpacity = 0.2;
+				FlxG.save.flush();
+			}
+
+			return FlxG.save.data.hitboxOpacity;
+		}
+	}
+
+	public static function setMode(mode:String = 'Pad-Right'):Void
+	{
+		FlxG.save.data.controlsMode = mode;
 		FlxG.save.flush();
 	}
 
-	public static function getOpacity():Float
+	public static function getMode():String
 	{
-		if (FlxG.save.data.androidControlsOpacity == null)
+		if (FlxG.save.data.controlsMode == null)
 		{
-			FlxG.save.data.androidControlsOpacity = 0.6;
+			FlxG.save.data.controlsMode = 'Pad-Right';
 			FlxG.save.flush();
 		}
 
-		return FlxG.save.data.androidControlsOpacity;
-	}
-
-	public static function setMode(mode:Int = 0):Void
-	{
-		FlxG.save.data.androidControlsMode = mode;
-		FlxG.save.flush();
-	}
-
-	public static function getMode():Int
-	{
-		if (FlxG.save.data.androidControlsMode == null)
-		{
-			FlxG.save.data.androidControlsMode = 0;
-			FlxG.save.flush();
-		}
-
-		return FlxG.save.data.androidControlsMode;
+		return FlxG.save.data.controlsMode;
 	}
 
 	public static function setCustomMode(virtualPad:FlxVirtualPad):Void
