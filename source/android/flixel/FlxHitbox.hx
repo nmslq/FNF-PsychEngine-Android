@@ -2,14 +2,12 @@ package android.flixel;
 
 import android.flixel.FlxButton;
 import flixel.FlxG;
-import flixel.FlxSprite;
 import flixel.util.FlxDestroyUtil;
-import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.graphics.FlxGraphic;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
 import flixel.group.FlxSpriteGroup;
-import openfl.utils.Assets;
+import openfl.display.Shape;
+import openfl.display.BitmapData;
 
 /**
  * A zone with 4 hint's (A hitbox).
@@ -31,12 +29,12 @@ class FlxHitbox extends FlxSpriteGroup
 	{
 		super();
 
-		scrollFactor.set();
-
 		add(buttonLeft = createHint(0, 0, Std.int(FlxG.width / 4), FlxG.height, 0xFF00FF));
 		add(buttonDown = createHint(FlxG.width / 4, 0, Std.int(FlxG.width / 4), FlxG.height, 0x00FFFF));
 		add(buttonUp = createHint(FlxG.width / 2, 0, Std.int(FlxG.width / 4), FlxG.height, 0x00FF00));
 		add(buttonRight = createHint((FlxG.width / 2) + (FlxG.width / 4), 0, Std.int(FlxG.width / 4), FlxG.height, 0xFF0000));
+
+		scrollFactor.set();
 	}
 
 	/**
@@ -52,24 +50,35 @@ class FlxHitbox extends FlxSpriteGroup
 		buttonRight = null;
 	}
 
+	private function createHintGraphic(Width:Int, Height:Int, Color:Int = 0xFFFFFF):BitmapData
+	{
+		var shape:Shape = new Shape();
+		shape.graphics.beginFill(Color);
+		shape.graphics.lineStyle(10, Color, 1);
+		shape.graphics.drawRect(0, 0, Width, Height);
+		shape.graphics.endFill();
+
+		var bitmap:BitmapData = new BitmapData(Width, Height, true, 0);
+		bitmap.draw(shape);
+
+		return bitmap;
+	}
+
 	private function createHint(X:Float, Y:Float, Width:Int, Height:Int, Color:Int = 0xFFFFFF):FlxButton
 	{
 		var hintTween:FlxTween = null;
 		var hint:FlxButton = new FlxButton(X, Y);
-		hint.loadGraphic(Paths.image('android/hint'));
-		hint.setGraphicSize(Width, Height);
-		hint.updateHitbox();
+		hint.loadGraphic(createHintGraphic(Width, Height, Color));
 		hint.solid = false;
 		hint.immovable = true;
 		hint.scrollFactor.set();
-		hint.color = Color;
 		hint.alpha = 0.00001;
 		hint.onDown.callback = function()
 		{
 			if (hintTween != null)
 				hintTween.cancel();
 
-			hintTween = FlxTween.tween(hint, {alpha: AndroidControls.getOpacity()}, 0.01, {ease: FlxEase.circInOut, onComplete: function(twn:FlxTween)
+			hintTween = FlxTween.tween(hint, {alpha: AndroidControls.getOpacity(true)}, AndroidControls.getOpacity(true) / 100, {ease: FlxEase.circInOut, onComplete: function(twn:FlxTween)
 			{
 				hintTween = null;
 			}});
@@ -79,7 +88,7 @@ class FlxHitbox extends FlxSpriteGroup
 			if (hintTween != null)
 				hintTween.cancel();
 
-			hintTween = FlxTween.tween(hint, {alpha: 0.00001}, 0.01, {ease: FlxEase.circInOut, onComplete: function(twn:FlxTween)
+			hintTween = FlxTween.tween(hint, {alpha: 0.00001}, AndroidControls.getOpacity(true) / 10, {ease: FlxEase.circInOut, onComplete: function(twn:FlxTween)
 			{
 				hintTween = null;
 			}});
@@ -89,7 +98,7 @@ class FlxHitbox extends FlxSpriteGroup
 			if (hintTween != null)
 				hintTween.cancel();
 
-			hintTween = FlxTween.tween(hint, {alpha: 0.00001}, 0.01, {ease: FlxEase.circInOut, onComplete: function(twn:FlxTween)
+			hintTween = FlxTween.tween(hint, {alpha: 0.00001}, AndroidControls.getOpacity(true) / 10, {ease: FlxEase.circInOut, onComplete: function(twn:FlxTween)
 			{
 				hintTween = null;
 			}});
