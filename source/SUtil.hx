@@ -154,13 +154,18 @@ class SUtil
 				if (!FileSystem.exists(SUtil.getPath() + 'logs'))
 					FileSystem.createDirectory(SUtil.getPath() + 'logs');
 
-				File.saveContent(SUtil.getPath() + 'logs/' + Application.current.meta.get('file') + '-'
-					+ Date.now().toString().replace(' ', '-').replace(':', "'") + '.log',
-					errMsg + '\n');
+				File.saveContent(SUtil.getPath()
+					+ 'logs/'
+					+ Application.current.meta.get('file')
+					+ '-'
+					+ Date.now().toString().replace(' ', '-').replace(':', "'")
+					+ '.log',
+					errMsg
+					+ '\n');
 			}
 			#if android
 			catch (e:Dynamic)
-				Hardware.toast("Error!\nClouldn't save the crash dump because:\n" + e, ToastType.LENGTH_LONG);
+			Hardware.toast("Error!\nClouldn't save the crash dump because:\n" + e, ToastType.LENGTH_LONG);
 			#end
 
 			Sys.println(errMsg);
@@ -170,7 +175,8 @@ class SUtil
 		});
 	}
 
-	public static function saveContent(fileName:String = 'file', fileExtension:String = '.json', fileData:String = 'you forgot to add something in your code lol')
+	public static function saveContent(fileName:String = 'file', fileExtension:String = '.json',
+			fileData:String = 'you forgot to add something in your code lol')
 	{
 		try
 		{
@@ -184,7 +190,7 @@ class SUtil
 		}
 		#if android
 		catch (e:Dynamic)
-			Hardware.toast("Error!\nClouldn't save the file because:\n" + e, ToastType.LENGTH_LONG);
+		Hardware.toast("Error!\nClouldn't save the file because:\n" + e, ToastType.LENGTH_LONG);
 		#end
 	}
 
@@ -197,7 +203,7 @@ class SUtil
 		}
 		#if android
 		catch (e:Dynamic)
-			Hardware.toast("Error!\nClouldn't copy the file because:\n" + e, ToastType.LENGTH_LONG);
+		Hardware.toast("Error!\nClouldn't copy the file because:\n" + e, ToastType.LENGTH_LONG);
 		#end
 	}
 }

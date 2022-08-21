@@ -17,6 +17,7 @@ import flixel.FlxBasic;
 #if android
 import android.AndroidControls;
 import android.flixel.FlxVirtualPad;
+import flixel.FlxCamera;
 import flixel.input.actions.FlxActionInput;
 import flixel.util.FlxDestroyUtil;
 #end
@@ -57,7 +58,7 @@ class MusicBeatState extends FlxUIState
 	public function removeVirtualPad()
 	{
 		if (trackedinputsUI != [])
-			controls.removeFlxInput(trackedinputsUI);
+			controls.removeAControlsInput(trackedinputsUI);
 
 		if (virtualPad != null)
 			remove(virtualPad);
@@ -69,19 +70,19 @@ class MusicBeatState extends FlxUIState
 
 		switch (AndroidControls.getMode())
 		{
-			case 0 | 1 | 2: // RIGHT_FULL | LEFT_FULL | CUSTOM
+			case 'Pad-Right' | 'Pad-Left' | 'Pad-Custom':
 				controls.setVirtualPadNOTES(androidControls.virtualPad, RIGHT_FULL, NONE);
-			case 3: // BOTH_FULL
+			case 'Pad-Duo':
 				controls.setVirtualPadNOTES(androidControls.virtualPad, BOTH_FULL, NONE);
-			case 4: // HITBOX
+			case 'Hitbox':
 				controls.setHitBox(androidControls.hitbox);
-			case 5: // KEYBOARD
+			case 'Keyboard':
 		}
 
 		trackedinputsNOTES = controls.trackedinputsNOTES;
 		controls.trackedinputsNOTES = [];
 
-		var camControls = new flixel.FlxCamera();
+		var camControls:FlxCamera = new FlxCamera();
 		FlxG.cameras.add(camControls, false);
 		camControls.bgColor.alpha = 0;
 
@@ -93,7 +94,7 @@ class MusicBeatState extends FlxUIState
 	public function removeAndroidControls()
 	{
 		if (trackedinputsNOTES != [])
-			controls.removeFlxInput(trackedinputsNOTES);
+			controls.removeAControlsInput(trackedinputsNOTES);
 
 		if (androidControls != null)
 			remove(androidControls);
@@ -103,7 +104,7 @@ class MusicBeatState extends FlxUIState
 	{
 		if (virtualPad != null)
 		{
-			var camControls = new flixel.FlxCamera();
+			var camControls:FlxCamera = new FlxCamera();
 			FlxG.cameras.add(camControls, false);
 			camControls.bgColor.alpha = 0;
 			virtualPad.cameras = [camControls];
@@ -115,10 +116,10 @@ class MusicBeatState extends FlxUIState
 	{
 		#if android
 		if (trackedinputsNOTES != [])
-			controls.removeFlxInput(trackedinputsNOTES);
+			controls.removeAControlsInput(trackedinputsNOTES);
 
 		if (trackedinputsUI != [])
-			controls.removeFlxInput(trackedinputsUI);
+			controls.removeAControlsInput(trackedinputsUI);
 		#end
 
 		super.destroy();
