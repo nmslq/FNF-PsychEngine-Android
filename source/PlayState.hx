@@ -5232,22 +5232,29 @@ class PlayState extends MusicBeatState
 		callOnLuas('onSectionHit', []);
 	}
 
-	public function callOnLuas(event:String, args:Array<Dynamic>, ignoreStops = true, exclusions:Array<String> = null):Dynamic {
+	public function callOnLuas(event:String, args:Array<Dynamic>, ignoreStops=false, ?exclusions:Array<String>):Dynamic {
 		var returnVal:Dynamic = FunkinLua.Function_Continue;
 		#if LUA_ALLOWED
 		if(exclusions == null) exclusions = [];
-		for (script in luaArray) {
-			if(exclusions.contains(script.scriptName))
+		for (i in 0...luaArray.length) {
+			if(exclusions.contains(luaArray[i].scriptName)){
 				continue;
+			}
 
-			var ret:Dynamic = script.call(event, args);
-			if(ret == FunkinLua.Function_StopLua && !ignoreStops)
-				break;
+			var ret:Dynamic = luaArray[i].call(event, args);
+			if(ret == FunkinLua.Function_StopLua) {
+				if(ignoreStops)
+					ret = FunkinLua.Function_Continue;
+				else
+					break;
+			}
 
-			if(ret != FunkinLua.Function_Continue)
+			if(ret != FunkinLua.Function_Continue) {
 				returnVal = ret;
+			}
 		}
 		#end
+		//trace(event, returnVal);
 		return returnVal;
 	}
 
