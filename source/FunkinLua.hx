@@ -3337,41 +3337,36 @@ class FunkinLua {
 		#end
 	}
 
+	var lastCalledFunction:String = '';
 	public function call(func:String, args:Array<Dynamic>): Dynamic{
 		#if LUA_ALLOWED
+		if(closed) return Function_Continue;
+
+		lastCalledFunction = func;
 		try {
 			if(lua == null) return Function_Continue;
 
 			Lua.getglobal(lua, func);
 			
-			#if (linc_luajit >= "0.0.6")
-			if(Lua.isfunction(lua, -1) == true)
-			#else
-			if(Lua.isfunction(lua, -1) == 1)
-			#end
-			{
-				for(arg in args) Convert.toLua(lua, arg);
-				var result: Dynamic = Lua.pcall(lua, args.length, 1, 0);
-				if(result != 0)
-				{
-					var err = getErrorMessage();
-					if(errorHandler != null)
-						errorHandler(err);
-					else
-						luaTrace("ERROR (" + func + "): " + err, false, false, FlxColor.RED);
-					//LuaL.error(state,err);
-
-					Lua.pop(lua, 1);
-					return Function_Continue;
-				}
-				else
-				{
-					var conv:Dynamic = Convert.fromLua(lua, -1);
-					Lua.pop(lua, 1);
-					if(conv == null) conv = Function_Continue;
-					return conv;
-				}
+			for(arg in args) {
+				Convert.toLua(lua, arg);
 			}
+
+			var result:Null<Int> = Lua.pcall(lua, args.length, 1, 0);
+			var error:Dynamic = getErrorMessage();
+			if(!resultIsAllowed(lua, result))
+			{
+				Lua.pop(lua, 1);
+				if(error != null) luaTrace("ERROR (" + func + "): " + error, false, false, FlxColor.RED);
+			}
+			else
+			{
+				var conv:Dynamic = Convert.fromLua(lua, result);
+				Lua.pop(lua, 1);
+				if(conv == null) conv = Function_Continue;
+				return conv;
+			}
+			return Function_Continue;
 		}
 		catch (e:Dynamic) {
 			trace(e);
@@ -3431,11 +3426,7 @@ class FunkinLua {
 
 	#if LUA_ALLOWED
 	function resultIsAllowed(leLua:State, leResult:Null<Int>) { //Makes it ignore warnings
-		switch(Lua.type(leLua, leResult)) {
-			case Lua.LUA_TNIL | Lua.LUA_TBOOLEAN | Lua.LUA_TNUMBER | Lua.LUA_TSTRING | Lua.LUA_TTABLE:
-				return true;
-		}
-		return false;
+		return Lua.type(leLua, leResult) >= Lua.LUA_TNIL;
 	}
 
 	function isErrorAllowed(error:String) {
@@ -3645,4 +3636,4 @@ class HScript
 		return interp.execute(HScript.parser.parseString(codeToRun));
 	}
 }
-#end 
+#end
