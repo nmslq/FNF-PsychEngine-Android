@@ -3358,10 +3358,7 @@ class FunkinLua {
 				if(result != 0)
 				{
 					var err = getErrorMessage();
-					if(errorHandler != null)
-						errorHandler(err);
-					else
-						luaTrace("ERROR (" + func + "): " + err, false, false, FlxColor.RED);
+					luaTrace("ERROR (" + func + "): " + err, false, false, FlxColor.RED);
 					//LuaL.error(state,err);
 
 					Lua.pop(lua, 1);
