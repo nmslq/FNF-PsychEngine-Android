@@ -3340,35 +3340,41 @@ class FunkinLua {
 	var lastCalledFunction:String = '';
 	public function call(func:String, args:Array<Dynamic>): Dynamic{
 		#if LUA_ALLOWED
-		if(closed) return Function_Continue;
 
 		lastCalledFunction = func;
 		try {
 			if(lua == null) return Function_Continue;
 
 			Lua.getglobal(lua, func);
-			var type:Int = Lua.type(lua, -1);
-			if (type != Lua.LUA_TFUNCTION) {
-				Lua.pop(lua, 1);
-				return Function_Continue;
-			}
-
-			for(arg in args) {
-				Convert.toLua(lua, arg);
-			}
-
-			var result:Null<Int> = Lua.pcall(lua, args.length, 1, 0);
-			var error:Dynamic = getErrorMessage();
-			if(resultIsAllowed(lua, -1))
+			
+			#if (linc_luajit >= "0.0.6")
+			if(Lua.isfunction(lua, -1) == true)
+			#else
+			if(Lua.isfunction(lua, -1) == 1)
+			#end
 			{
-				var conv:Dynamic = cast Convert.fromLua(lua, -1);
-				Lua.pop(lua, 1);
-				if(conv == null) conv = Function_Continue;
-				return conv;
+				for(arg in args) Convert.toLua(lua, arg);
+				var result: Dynamic = Lua.pcall(lua, args.length, 1, 0);
+				if(result != 0)
+				{
+					var err = getErrorMessage();
+					if(errorHandler != null)
+						errorHandler(err);
+					else
+						luaTrace("ERROR (" + func + "): " + err, false, false, FlxColor.RED);
+					//LuaL.error(state,err);
+
+					Lua.pop(lua, 1);
+					return Function_Continue;
+				}
+				else
+				{
+					var conv:Dynamic = Convert.fromLua(lua, -1);
+					Lua.pop(lua, 1);
+					if(conv == null) conv = Function_Continue;
+					return conv;
+				}
 			}
-			else if(error != null) luaTrace("ERROR (" + func + "): " + error, false, false, FlxColor.RED);
-			Lua.pop(lua, 1);
-			return Function_Continue;
 		}
 		catch (e:Dynamic) {
 			trace(e);
@@ -3428,8 +3434,11 @@ class FunkinLua {
 
 	#if LUA_ALLOWED
 	function resultIsAllowed(leLua:State, leResult:Null<Int>) { //Makes it ignore warnings
-		var type:Int = Lua.type(leLua, leResult);
-		return type >= Lua.LUA_TNIL && type < Lua.LUA_TTABLE && type != Lua.LUA_TLIGHTUSERDATA;
+		switch(Lua.type(leLua, leResult)) {
+			case Lua.LUA_TNIL | Lua.LUA_TBOOLEAN | Lua.LUA_TNUMBER | Lua.LUA_TSTRING | Lua.LUA_TTABLE:
+				return true;
+		}
+		return false;
 	}
 
 	function isErrorAllowed(error:String) {

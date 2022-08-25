@@ -5241,13 +5241,15 @@ class PlayState extends MusicBeatState
 				continue;
 
 			var ret:Dynamic = script.call(event, args);
-			if(ret == FunkinLua.Function_StopLua && !ignoreStops)
-				break;
-
-			var bool:Bool = ret == FunkinLua.Function_Continue;
-			if(!bool && ret != 0) {
-				returnVal = cast ret;
+			if(ret == FunkinLua.Function_StopLua) {
+				if(ignoreStops)
+					ret = FunkinLua.Function_Continue;
+				else
+					break;
 			}
+
+			if(ret != FunkinLua.Function_Continue)
+				returnVal = ret;
 		}
 		#end
 		return returnVal;
