@@ -13,8 +13,6 @@ import flixel.util.FlxSave;
 import flixel.util.FlxColor;
 import flixel.input.touch.FlxTouch;
 import flixel.text.FlxText;
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
 import openfl.utils.Assets;
 
 class AndroidControlsSubState extends FlxSubState
@@ -40,6 +38,7 @@ class AndroidControlsSubState extends FlxSubState
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = 0xFFea71fd;
 		bg.screenCenter();
+		bg.scrollFactor.set();
 		bg.antialiasing = ClientPrefs.globalAntialiasing;
 		add(bg);
 
