@@ -34,23 +34,24 @@ class BuildingEffect
 
 class BuildingShader extends FlxShader
 {
-  @:glFragmentSource('
-    #pragma header
-    uniform float alphaShit;
-    void main()
-    {
+	@:glFragmentSource('
+		#pragma header
+		uniform float alphaShit;
+		void main()
+		{
 
-      vec4 color = flixel_texture2D(bitmap,openfl_TextureCoordv);
-      if (color.a > 0.0)
-        color-=alphaShit;
+			vec4 color = flixel_texture2D(bitmap,openfl_TextureCoordv);
+			if (color.a > 0.0)
+				color-=alphaShit;
 
-      gl_FragColor = color;
-    }
-  ')
-  public function new()
-  {
-    super();
-  }
+			gl_FragColor = color;
+		}
+	')
+
+	public function new()
+	{
+		super();
+	}
 }
 
 class ChromaticAberrationShader extends FlxShader
@@ -74,7 +75,9 @@ class ChromaticAberrationShader extends FlxShader
 			//float someshit = col4.r + col4.g + col4.b;
 
 			gl_FragColor = toUse;
-		}')
+		}
+	')
+
 	public function new()
 	{
 		super();
@@ -84,33 +87,33 @@ class ChromaticAberrationShader extends FlxShader
 class ChromaticAberrationEffect extends Effect
 {
 	public var shader:ChromaticAberrationShader;
-  public function new(offset:Float = 0.00){
-	shader = new ChromaticAberrationShader();
-    shader.rOffset.value = [offset];
-    shader.gOffset.value = [0.0];
-    shader.bOffset.value = [-offset];
-  }
-	
+
+	public function new(offset:Float = 0.00)
+	{
+		shader = new ChromaticAberrationShader();
+    	shader.rOffset.value = [offset];
+    	shader.gOffset.value = [0.0];
+    	shader.bOffset.value = [-offset];
+	}
+
 	public function setChrome(chromeOffset:Float):Void
 	{
 		shader.rOffset.value = [chromeOffset];
 		shader.gOffset.value = [0.0];
 		shader.bOffset.value = [chromeOffset * -1];
 	}
-
 }
 
 
 class ScanlineEffect extends Effect
 {
-	
 	public var shader:Scanline;
-	public function new (lockAlpha){
+
+	public function new (lockAlpha)
+	{
 		shader = new Scanline();
 		shader.lockAlpha.value = [lockAlpha];
 	}
-	
-	
 }
 
 
@@ -131,23 +134,25 @@ class Scanline extends FlxShader
 			}else{
 				gl_FragColor = texture2D(bitmap, openfl_TextureCoordv);
 			}
-		}')
+		}
+	')
+
 	public function new()
 	{
 		super();
 	}
 }
 
-class TiltshiftEffect extends Effect{
-	
+class TiltshiftEffect extends Effect
+{
 	public var shader:Tiltshift;
-	public function new (blurAmount:Float, center:Float){
+
+	public function new (blurAmount:Float, center:Float)
+	{
 		shader = new Tiltshift();
 		shader.bluramount.value = [blurAmount];
 		shader.center.value = [center];
 	}
-	
-	
 }
 
 class Tiltshift extends FlxShader
