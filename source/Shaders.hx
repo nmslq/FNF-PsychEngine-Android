@@ -1,6 +1,5 @@
 package;
 
-// STOLEN FROM HAXEFLIXEL DEMO LOL
 import flixel.system.FlxAssets.FlxShader;
 import openfl.display.BitmapData;
 import openfl.display.Shader;
@@ -15,18 +14,22 @@ typedef ShaderEffect = {
   var shader:Dynamic;
 }
 
-class BuildingEffect {
-  public var shader:BuildingShader = new BuildingShader();
-  public function new(){
-    shader.alphaShit.value = [0];
-  }
-  public function addAlpha(alpha:Float){
-    trace(shader.alphaShit.value[0]);
-    shader.alphaShit.value[0]+=alpha;
-  }
-  public function setAlpha(alpha:Float){
-    shader.alphaShit.value[0]=alpha;
-  }
+class BuildingEffect
+{
+	public var shader:BuildingShader = new BuildingShader();
+	public function new()
+	{
+		shader.alphaShit.value = [0];
+	}
+	public function addAlpha(alpha:Float)
+	{
+		trace(shader.alphaShit.value[0]);
+		shader.alphaShit.value[0] += alpha;
+	}
+	public function setAlpha(alpha:Float)
+	{
+		shader.alphaShit.value[0] = alpha;
+	}
 }
 
 class BuildingShader extends FlxShader

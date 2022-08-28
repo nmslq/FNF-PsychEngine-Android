@@ -2,8 +2,6 @@ package;
 
 import Section.SwagSection;
 import haxe.Json;
-import haxe.format.JsonParser;
-import lime.utils.Assets;
 
 #if MODS_ALLOWED
 import sys.io.File;

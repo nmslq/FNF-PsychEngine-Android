@@ -1,10 +1,6 @@
 package;
 
-import Conductor.BPMChangeEvent;
-import flixel.FlxG;
 import flixel.FlxSubState;
-import flixel.FlxBasic;
-import flixel.FlxSprite;
 #if android
 import android.flixel.FlxVirtualPad;
 import flixel.input.actions.FlxActionInput;
