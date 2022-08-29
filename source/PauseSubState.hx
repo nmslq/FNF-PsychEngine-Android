@@ -258,7 +258,7 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.instance.finishSong(true);
 				case "Options":
 					PlayState.isPauseMode = true;
-					LoadingState.loadAndSwitchState(new options.OptionsState());
+					MusicBeatState.switchState(new options.OptionsState());
 				case 'Toggle Botplay':
 					PlayState.instance.cpuControlled = !PlayState.instance.cpuControlled;
 					PlayState.changedDifficulty = true;
