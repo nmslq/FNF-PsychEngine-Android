@@ -2,6 +2,7 @@ package android.flixel;
 
 import android.flixel.FlxButton;
 import flixel.FlxG;
+import flixel.util.FlxColor;
 import flixel.util.FlxDestroyUtil;
 import flixel.tweens.FlxTween;
 import flixel.tweens.FlxEase;
