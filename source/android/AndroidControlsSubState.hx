@@ -128,6 +128,20 @@ class AndroidControlsSubState extends FlxSubState
 		upPozition.borderSize = 2.4;
 		add(upPozition);
 
+		switch (AndroidControls.getMode())
+		{
+			case 'Pad-Left':
+				curSelected = 1;
+			case 'Pad-Custom':
+				curSelected = 2;
+			case 'Pad-Duo':
+				curSelected = 3;
+			case 'Hitbox':
+				curSelected = 4;
+			case 'Keyboard':
+				curSelected = 5;
+		}
+
 		changeSelection();
 
 		super.create();
