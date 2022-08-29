@@ -92,6 +92,39 @@ class VisualsUISubState extends BaseOptionsMenu
 		addOption(option);
 		#end
 
+		#if android
+		var option:Option = new Option('Gradient Hitboxes',
+			'if checked, hitboxes would have gradient',
+			'gradientHitboxes',
+			'bool',
+			false);
+		addOption(option);
+
+		var option:Option = new Option('hitbox Opacity',
+			'allows you to customize opacity of hitboxes',
+			'hitboxOpacity',
+			'percent',
+			0.3);
+		option.scrollSpeed = 1.6;
+		option.minValue = 0.0;
+		option.maxValue = 1;
+		option.changeValue = 0.1;
+		option.decimals = 1;
+		addOption(option);
+
+		var option:Option = new Option('virtualPad Opacity',
+			'allows you to customize opacity of virtualPad',
+			'virtualPadOpacity',
+			'percent',
+			0.6);
+		option.scrollSpeed = 1.6;
+		option.minValue = 0.0;
+		option.maxValue = 1;
+		option.changeValue = 0.1;
+		option.decimals = 1;
+		addOption(option);
+		#end
+
 		super();
 	}
 
