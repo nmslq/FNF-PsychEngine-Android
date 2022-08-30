@@ -105,9 +105,6 @@ class PlayState extends MusicBeatState
 	public var shaderUpdates:Array<Float->Void> = [];
 
 	public var modchartTweens:Map<String, FlxTween> = new Map<String, FlxTween>();
-	#if VIDEOS_ALLOWED
-	public var modchartmp4Sprites:Map<String, ModchartMp4Sprites> = new Map<String, ModchartMp4Sprites>();
-	#end
 	public var modchartSprites:Map<String, ModchartSprite> = new Map<String, ModchartSprite>();
 	public var modchartTimers:Map<String, FlxTimer> = new Map<String, FlxTimer>();
 	public var modchartSounds:Map<String, FlxSound> = new Map<String, FlxSound>();
@@ -1701,9 +1698,6 @@ class PlayState extends MusicBeatState
 		if(modchartSprites.exists(tag)) return modchartSprites.get(tag);
 		if(text && modchartTexts.exists(tag)) return modchartTexts.get(tag);
 		if(modchartBackdrops.exists(tag)) return modchartBackdrops.get(tag);
-		#if VIDEOS_ALLOWED
-		if(modchartmp4Sprites.exists(tag)) return modchartmp4Sprites.get(tag);
-		#end
 		return null;
 	}
 
@@ -5247,17 +5241,17 @@ class PlayState extends MusicBeatState
 				continue;
 
 			var ret:Dynamic = script.call(event, args);
-			if(ret == FunkinLua.Function_StopLua) {
-				if(ignoreStops)
-					ret = FunkinLua.Function_Continue;
-				else
-					break;
-			}
-
-			if(ret != FunkinLua.Function_Continue)
+			if(ret == FunkinLua.Function_StopLua && !ignoreStops)
+				break;
+			
+			// had to do this because there is a bug in haxe where Stop != Continue doesnt work
+			var bool:Bool = ret == FunkinLua.Function_Continue;
+			if(!bool) {
 				returnVal = ret;
+			}
 		}
 		#end
+		//trace(event, returnVal);
 		return returnVal;
 	}
 

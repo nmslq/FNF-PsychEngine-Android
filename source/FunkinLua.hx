@@ -57,9 +57,9 @@ import android.Hardware;
 using StringTools;
 
 class FunkinLua {
-	public static var Function_Stop:Dynamic = #if android 'Function_Stop' #else 1 #end;
-	public static var Function_Continue:Dynamic = #if android 'Function_Continue' #else 0 #end;
-	public static var Function_StopLua:Dynamic = #if android 'Function_StopLua' #else 2 #end;
+	public static var Function_Stop:Dynamic = 1;
+	public static var Function_Continue:Dynamic = 0;
+	public static var Function_StopLua:Dynamic = 2;
 
 	//public var errorHandler:String->Void;
 	#if LUA_ALLOWED
@@ -1913,20 +1913,6 @@ class FunkinLua {
 			PlayState.instance.modchartSprites.set(tag, leSprite);
 			leSprite.active = true;
 		});
-		#if VIDEOS_ALLOWED
-		Lua_helper.add_callback(lua, "makeLuaVideoSprite", function(tag:String, video:String, x:Float, y:Float, ?loop:Bool = false) {
-			tag = tag.replace('.', '');
-			resetVideoSpriteTag(tag);
-			var leSprite:ModchartMp4Sprites = new ModchartMp4Sprites(x, y);
-			if(video != null && video.length > 0)
-			{
-				leSprite.playVideo(Paths.video(video), loop);
-			}
-			leSprite.antialiasing = ClientPrefs.globalAntialiasing;
-			PlayState.instance.modchartmp4Sprites.set(tag, leSprite);
-			leSprite.active = true;
-		});
-		#end
 		Lua_helper.add_callback(lua, "makeAnimatedLuaSprite", function(tag:String, image:String, x:Float, y:Float, ?spriteType:String = "sparrow") {
 			tag = tag.replace('.', '');
 			resetSpriteTag(tag);
@@ -2092,38 +2078,6 @@ class FunkinLua {
 			}
 		});
 
-		#if VIDEOS_ALLOWED
-		Lua_helper.add_callback(lua, "addLuaVideoSprite", function(tag:String, front:Bool = false) {
-			if(PlayState.instance.modchartmp4Sprites.exists(tag)) {
-				var shit:ModchartMp4Sprites = PlayState.instance.modchartmp4Sprites.get(tag);
-				if(!shit.wasAdded) {
-					if(front)
-					{
-						getInstance().add(shit);
-					}
-					else
-					{
-						if(PlayState.instance.isDead)
-						{
-							GameOverSubstate.instance.insert(GameOverSubstate.instance.members.indexOf(GameOverSubstate.instance.boyfriend), shit);
-						}
-						else
-						{
-							var position:Int = PlayState.instance.members.indexOf(PlayState.instance.gfGroup);
-							if(PlayState.instance.members.indexOf(PlayState.instance.boyfriendGroup) < position) {
-								position = PlayState.instance.members.indexOf(PlayState.instance.boyfriendGroup);
-							} else if(PlayState.instance.members.indexOf(PlayState.instance.dadGroup) < position) {
-								position = PlayState.instance.members.indexOf(PlayState.instance.dadGroup);
-							}
-							PlayState.instance.insert(position, shit);
-						}
-					}
-					shit.wasAdded = true;
-					//trace('added a thing: ' + tag);
-				}
-			}
-		});
-		#end
 		Lua_helper.add_callback(lua, "setGraphicSize", function(obj:String, x:Int, y:Int = 0, updateHitbox:Bool = true) {
 			if(PlayState.instance.getLuaObject(obj)!=null) {
 				var shit:FlxSprite = PlayState.instance.getLuaObject(obj);
@@ -3255,20 +3209,6 @@ class FunkinLua {
 		PlayState.instance.modchartSprites.remove(tag);
 	}
 
-	function resetVideoSpriteTag(tag:String) {
-		if(!PlayState.instance.modchartmp4Sprites.exists(tag)) {
-			return;
-		}
-		
-		var pee:ModchartMp4Sprites = PlayState.instance.modchartmp4Sprites.get(tag);
-		pee.kill();
-		if(pee.wasAdded) {
-			PlayState.instance.remove(pee, true);
-		}
-		pee.destroy();
-		PlayState.instance.modchartmp4Sprites.remove(tag);
-	}
-
 	function cancelTween(tag:String) {
 		if(PlayState.instance.modchartTweens.exists(tag)) {
 			PlayState.instance.modchartTweens.get(tag).cancel();
@@ -3387,41 +3327,57 @@ class FunkinLua {
 		#end
 	}
 
+	function getResult(l:State, result:Int):Any {
+		var ret:Any = null;
+
+		switch(Lua.type(l, result)) {
+			case Lua.LUA_TNIL:
+				ret = null;
+			case Lua.LUA_TBOOLEAN:
+				ret = Lua.toboolean(l, -1);
+			case Lua.LUA_TNUMBER:
+				ret = Lua.tonumber(l, -1);
+			case Lua.LUA_TSTRING:
+				ret = Lua.tostring(l, -1);
+		}
+		
+		return ret;
+	}
+
 	var lastCalledFunction:String = '';
 	public function call(func:String, args:Array<Dynamic>): Dynamic{
 		#if LUA_ALLOWED
+		if(closed) return Function_Continue;
 
 		lastCalledFunction = func;
 		try {
 			if(lua == null) return Function_Continue;
 
 			Lua.getglobal(lua, func);
-			
-			#if (linc_luajit >= "0.0.6")
-			if(Lua.isfunction(lua, -1) == true)
-			#else
-			if(Lua.isfunction(lua, -1) == 1)
-			#end
-			{
-				for(arg in args) Convert.toLua(lua, arg);
-				var result: Dynamic = Lua.pcall(lua, args.length, 1, 0);
-				if(result != 0)
-				{
-					var err = getErrorMessage();
-					luaTrace("ERROR (" + func + "): " + err, false, false, FlxColor.RED);
-					//LuaL.error(state,err);
-
-					Lua.pop(lua, 1);
-					return Function_Continue;
-				}
-				else
-				{
-					var conv:Dynamic = Convert.fromLua(lua, -1);
-					Lua.pop(lua, 1);
-					if(conv == null) conv = Function_Continue;
-					return conv;
-				}
+			var type:Int = Lua.type(lua, -1);
+			if (type != Lua.LUA_TFUNCTION) {
+				return Function_Continue;
 			}
+			
+			for(arg in args) {
+				Convert.toLua(lua, arg);
+			}
+
+			var result:Null<Int> = Lua.pcall(lua, args.length, 1, 0);
+			var error:Dynamic = getErrorMessage();
+			if(!resultIsAllowed(lua, result))
+			{
+				Lua.pop(lua, 1);
+				if(error != null) luaTrace("ERROR (" + func + "): " + error, false, false, FlxColor.RED);
+			}
+			else
+			{
+				var conv:Dynamic = cast getResult(lua, result);
+				Lua.pop(lua, 1);
+				if(conv == null) conv = Function_Continue;
+				return conv;
+			}
+			return Function_Continue;
 		}
 		catch (e:Dynamic) {
 			trace(e);
@@ -3481,11 +3437,8 @@ class FunkinLua {
 
 	#if LUA_ALLOWED
 	function resultIsAllowed(leLua:State, leResult:Null<Int>) { //Makes it ignore warnings
-		switch(Lua.type(leLua, leResult)) {
-			case Lua.LUA_TNIL | Lua.LUA_TBOOLEAN | Lua.LUA_TNUMBER | Lua.LUA_TSTRING | Lua.LUA_TTABLE:
-				return true;
-		}
-		return false;
+		var type:Int = Lua.type(leLua, leResult);
+		return type >= Lua.LUA_TNIL && type < Lua.LUA_TTABLE && type != Lua.LUA_TLIGHTUSERDATA;
 	}
 
 	function isErrorAllowed(error:String) {
@@ -3554,20 +3507,6 @@ class ModchartSprite extends FlxSprite
 		antialiasing = ClientPrefs.globalAntialiasing;
 	}
 }
-
-#if VIDEOS_ALLOWED
-class ModchartMp4Sprites extends VideoSprite
-{
-	public var wasAdded:Bool = false;
-	//public var isInFront:Bool = false;
-
-	public function new(?x:Float = 0, ?y:Float = 0)
-	{
-		super(x, y);
-		antialiasing = ClientPrefs.globalAntialiasing;
-	}
-}
-#end
 
 class ModchartBackdrop extends FlxBackdrop
 {
