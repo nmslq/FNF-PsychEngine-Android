@@ -104,7 +104,7 @@ class VisualsUISubState extends BaseOptionsMenu
 			'allows you to customize opacity of hitboxes',
 			'hitboxOpacity',
 			'percent',
-			0.2);
+			0.3);
 		option.scrollSpeed = 1.6;
 		option.minValue = 0.0;
 		option.maxValue = 1;
