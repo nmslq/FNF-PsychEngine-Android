@@ -1913,6 +1913,7 @@ class FunkinLua {
 			PlayState.instance.modchartSprites.set(tag, leSprite);
 			leSprite.active = true;
 		});
+		#if VIDEOS_ALLOWED
 		Lua_helper.add_callback(lua, "makeLuaVideoSprite", function(tag:String, video:String, x:Float, y:Float, ?loop:Bool = false) {
 			tag = tag.replace('.', '');
 			resetVideoSpriteTag(tag);
@@ -1925,6 +1926,7 @@ class FunkinLua {
 			PlayState.instance.modchartmp4Sprites.set(tag, leSprite);
 			leSprite.active = true;
 		});
+		#end
 		Lua_helper.add_callback(lua, "makeAnimatedLuaSprite", function(tag:String, image:String, x:Float, y:Float, ?spriteType:String = "sparrow") {
 			tag = tag.replace('.', '');
 			resetSpriteTag(tag);
@@ -2090,6 +2092,7 @@ class FunkinLua {
 			}
 		});
 
+		#if VIDEOS_ALLOWED
 		Lua_helper.add_callback(lua, "addLuaVideoSprite", function(tag:String, front:Bool = false) {
 			if(PlayState.instance.modchartmp4Sprites.exists(tag)) {
 				var shit:ModchartMp4Sprites = PlayState.instance.modchartmp4Sprites.get(tag);
@@ -2120,6 +2123,7 @@ class FunkinLua {
 				}
 			}
 		});
+		#end
 		Lua_helper.add_callback(lua, "setGraphicSize", function(obj:String, x:Int, y:Int = 0, updateHitbox:Bool = true) {
 			if(PlayState.instance.getLuaObject(obj)!=null) {
 				var shit:FlxSprite = PlayState.instance.getLuaObject(obj);
@@ -3551,6 +3555,7 @@ class ModchartSprite extends FlxSprite
 	}
 }
 
+#if VIDEOS_ALLOWED
 class ModchartMp4Sprites extends VideoSprite
 {
 	public var wasAdded:Bool = false;
@@ -3562,6 +3567,7 @@ class ModchartMp4Sprites extends VideoSprite
 		antialiasing = ClientPrefs.globalAntialiasing;
 	}
 }
+#end
 
 class ModchartBackdrop extends FlxBackdrop
 {
