@@ -963,10 +963,6 @@ class FunkinLua {
 			Paths.clearUnusedMemory();
 			return true;
 		});
-		Lua_helper.add_callback(lua, "clearStoredMemory", function() {
-			Paths.clearStoredMemory();
-			return true;
-		});
 
 		Lua_helper.add_callback(lua, "getProperty", function(variable:String) {
 			var result:Dynamic = null;
