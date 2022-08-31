@@ -261,7 +261,7 @@ class DialogueEditorState extends MusicBeatState
 		var textToType:String = lineInputText.text;
 		if(textToType == null || textToType.length < 1) textToType = ' ';
 
-		daText = new TypedAlphabet(DialogueBoxPsych.DEFAULT_TEXT_X, DialogueBoxPsych.DEFAULT_TEXT_Y, textToType, speed, false);
+		daText = new TypedAlphabet(DialogueBoxPsych.DEFAULT_TEXT_X, DialogueBoxPsych.DEFAULT_TEXT_Y + 90, textToType, speed, false);
 		daText.sound = soundInputText.text;
 		daText.scaleX = 0.7;
 		daText.scaleY = 0.7;
