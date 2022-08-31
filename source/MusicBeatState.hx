@@ -55,7 +55,7 @@ class MusicBeatState extends FlxUIState
 			remove(virtualPad);
 	}
 
-	public function addAndroidControls()
+	public function addAndroidControls(DefaultDrawTarget:Bool = true)
 	{
 		androidControls = new AndroidControls();
 
@@ -74,7 +74,7 @@ class MusicBeatState extends FlxUIState
 		controls.trackedinputsNOTES = [];
 
 		var camControls:FlxCamera = new FlxCamera();
-		FlxG.cameras.add(camControls, false);
+		FlxG.cameras.add(camControls, DefaultDrawTarget);
 		camControls.bgColor.alpha = 0;
 
 		androidControls.cameras = [camControls];
@@ -91,12 +91,12 @@ class MusicBeatState extends FlxUIState
 			remove(androidControls);
 	}
 
-	public function addPadCamera()
+	public function addPadCamera(DefaultDrawTarget:Bool = true)
 	{
 		if (virtualPad != null)
 		{
 			var camControls:FlxCamera = new FlxCamera();
-			FlxG.cameras.add(camControls, false);
+			FlxG.cameras.add(camControls, DefaultDrawTarget);
 			camControls.bgColor.alpha = 0;
 			virtualPad.cameras = [camControls];
 		}
