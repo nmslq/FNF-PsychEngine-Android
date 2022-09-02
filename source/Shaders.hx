@@ -318,8 +318,8 @@ class Grain extends FlxShader
 		const float permTexUnit = 1.0/256.0;        // Perm texture texel-size
 		const float permTexUnitHalf = 0.5/256.0;    // Half perm texture texel-size
 
-		float width = openfl_TextureSize.x;
-		float height = openfl_TextureSize.y;
+		float width = 0.0;
+		float height = 0.0;
 
 		const float grainamount = 0.05; //grain amount
 		bool colored = false; //colored noise?
@@ -408,6 +408,9 @@ class Grain extends FlxShader
 
 		void main()
 		{
+		    width = openfl_TextureSize.x;
+			height = openfl_TextureSize.y;
+
 			vec2 texCoord = openfl_TextureCoordv.st;
 
 			vec3 rotOffset = vec3(1.425,3.892,5.835); //rotation offset values
