@@ -408,7 +408,7 @@ class Grain extends FlxShader
 
 		void main()
 		{
-		    width = openfl_TextureSize.x;
+			width = openfl_TextureSize.x;
 			height = openfl_TextureSize.y;
 
 			vec2 texCoord = openfl_TextureCoordv.st;
