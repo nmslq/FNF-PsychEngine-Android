@@ -27,39 +27,10 @@ class Main extends Sprite
 {
 	public static var fpsVar:FPS;
 
-	// You can pretty much ignore everything from here on - your code should go in your states.
-
-	public static function main():Void
-	{
-		Lib.current.addChild(new Main());
-	}
-
 	public function new()
 	{
 		super();
 
-		if (stage != null)
-		{
-			init();
-		}
-		else
-		{
-			addEventListener(Event.ADDED_TO_STAGE, init);
-		}
-	}
-
-	private function init(?E:Event):Void
-	{
-		if (hasEventListener(Event.ADDED_TO_STAGE))
-		{
-			removeEventListener(Event.ADDED_TO_STAGE, init);
-		}
-
-		setupGame();
-	}
-
-	private function setupGame():Void
-	{
 		SUtil.check();
 	
 		ClientPrefs.loadDefaultKeys();
