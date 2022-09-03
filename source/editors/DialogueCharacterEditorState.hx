@@ -455,7 +455,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 			hudGroup.remove(daText);
 			daText.destroy();
 		}
-		daText = new TypedAlphabet(DialogueBoxPsych.DEFAULT_TEXT_X, DialogueBoxPsych.DEFAULT_TEXT_Y + 90, DEFAULT_TEXT, 0.05, false);
+		daText = new TypedAlphabet(DialogueBoxPsych.DEFAULT_TEXT_X, DialogueBoxPsych.DEFAULT_TEXT_Y + 120, DEFAULT_TEXT, 0.05, false);
 		daText.scaleX = 0.7;
 		daText.scaleY = 0.7;
 		hudGroup.add(daText);
