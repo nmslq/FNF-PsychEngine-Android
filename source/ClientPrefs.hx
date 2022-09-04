@@ -35,8 +35,9 @@ class ClientPrefs
 	public static var pauseMusic:String = 'Tea Time';
 	public static var checkForUpdates:Bool = true;
 	public static var gradientHitboxes = false;
-	public static var hitboxOpacity = 0.3;
+	public static var hitboxOpacity = 0.2;
 	public static var virtualPadOpacity = 0.6;
+	public static var comboStacking = true;
 	public static var gameplaySettings:Map<String, Dynamic> = [
 		'scrollspeed' => 1.0,
 		'scrolltype' => 'multiplicative',
@@ -140,6 +141,7 @@ class ClientPrefs
 		FlxG.save.data.gradientHitboxes = gradientHitboxes;
 		FlxG.save.data.hitboxOpacity = hitboxOpacity;
 		FlxG.save.data.virtualPadOpacity = virtualPadOpacity;
+		FlxG.save.data.comboStacking = comboStacking;
 
 		FlxG.save.flush();
 
@@ -275,6 +277,8 @@ class ClientPrefs
 		{
 			virtualPadOpacity = FlxG.save.data.virtualPadOpacity;
 		}
+		if (FlxG.save.data.comboStacking != null)
+			comboStacking = FlxG.save.data.comboStacking;
 		if (FlxG.save.data.gameplaySettings != null)
 		{
 			var savedMap:Map<String, Dynamic> = FlxG.save.data.gameplaySettings;
