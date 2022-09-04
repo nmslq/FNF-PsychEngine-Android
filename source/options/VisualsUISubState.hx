@@ -104,7 +104,7 @@ class VisualsUISubState extends BaseOptionsMenu
 			'allows you to customize opacity of hitboxes',
 			'hitboxOpacity',
 			'percent',
-			0.3);
+			0.2);
 		option.scrollSpeed = 1.6;
 		option.minValue = 0.0;
 		option.maxValue = 1;
@@ -124,6 +124,13 @@ class VisualsUISubState extends BaseOptionsMenu
 		option.decimals = 1;
 		addOption(option);
 		#end
+
+		var option:Option = new Option('Combo Stacking',
+			"If unchecked, Ratings and Combo won't stack, saving on System Memory and making them easier to read",
+			'comboStacking',
+			'bool',
+			true);
+		addOption(option);
 
 		super();
 	}
