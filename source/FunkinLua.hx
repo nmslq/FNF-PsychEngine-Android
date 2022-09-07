@@ -1275,7 +1275,7 @@ class FunkinLua {
 				luaTrace('Couldnt find object: ' + vars, false, false, FlxColor.RED);
 			}
 		});
-		Lua_helper.add_callback(lua, "doTweenNum", function(tag:String, vars:String, toValue:Float, value:Dynamic, duration:Float, ease:String) {
+		Lua_helper.add_callback(lua, "doTweenNum", function(tag:String, vars:String, toValue:Float, duration:Float, ease:String) {
 			var penisExam:Dynamic = tweenShit(tag, vars);
 			if(penisExam != null) {
 				PlayState.instance.modchartTweens.set(tag, FlxTween.num(penisExam, toValue, duration, {ease: getFlxEaseByString(ease),
