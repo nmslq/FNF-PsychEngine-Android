@@ -26,7 +26,6 @@ import flixel.math.FlxMath;
 import flixel.util.FlxSave;
 import flixel.addons.display.FlxBackdrop;
 import flixel.addons.transition.FlxTransitionableState;
-import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
 
 #if !flash
 import flixel.addons.display.FlxRuntimeShader;
@@ -1936,13 +1935,6 @@ class FunkinLua {
 			leSprite.antialiasing = ClientPrefs.globalAntialiasing;
 			PlayState.instance.modchartSprites.set(tag, leSprite);
 		});
-		Lua_helper.add_callback(lua, "makeLuaSpriteGroup", function(tag:String, ?x:Float = 0, ?y:Float = 0, ?maxSize:Int = 0) {
-			tag = tag.replace('.', '');
-			resetSpriteTag(tag);
-
-			var leGroup:ModchartGroup = new ModchartGroup(x, y, maxSize);
-			PlayState.instance.modchartGroups.set(tag, leGroup);
-		});
 
 		Lua_helper.add_callback(lua, "makeGraphic", function(obj:String, width:Int, height:Int, color:String) {
 			var colorNum:Int = Std.parseInt(color);
@@ -2043,38 +2035,6 @@ class FunkinLua {
 			}
 			return false;
 		});
-		Lua_helper.add_callback(lua, "playAnimGroup", function(obj:String, name:String, forced:Bool = false, ?reverse:Bool = false, ?startFrame:Int = 0) {
-			var leGroup:ModchartGroup = PlayState.instance.modchartGroups.get(obj);
-
-			if (leGroup != null)
-			{
-				leGroup.forEach(function(spr:ModchartSprite)
-				{
-					var offsetX:Float = 0;
-					var offsetY:Float = 0;
-
-					if (spr.animOffsets.exists(name))
-					{
-						offsetX = spr.animOffsets.get(name)[0];
-						offsetY = spr.animOffsets.get(name)[1];
-					}
-
-					#if (flixel >= "4.11.0")
-					if (spr.animation.exists(name))
-					#else
-					if (spr.animation.getByName(name) != null)
-					#end
-					{
-						spr.animation.play(name, forced, reverse, startFrame);
-						spr.offset.set(offsetX, offsetY);
-					}
-				});
-
-				return true;	
-			}
-
-			return false;
-		});
 		Lua_helper.add_callback(lua, "addOffset", function(obj:String, anim:String, x:Float, y:Float) {
 			if(PlayState.instance.modchartSprites.exists(obj)) {
 				PlayState.instance.modchartSprites.get(obj).animOffsets.set(anim, [x, y]);
@@ -2130,60 +2090,6 @@ class FunkinLua {
 				}
 			}
 		});
-		Lua_helper.add_callback(lua, "setGroupScrollFactor", function(obj:String, ?scrollX:Float = 0, ?scrollY:Float = 0) {
-			var leGroup:ModchartGroup = PlayState.instance.modchartGroups.get(obj);
-
-			if (leGroup != null)
-			{	
-				leGroup.scrollFactor.set(scrollX, scrollY);
-			}
-		});
-
-		Lua_helper.add_callback(lua, "addSpriteToGroup", function(tag:String, spr:String) {
-			var leGroup:ModchartGroup = PlayState.instance.modchartGroups.get(tag);
-
-			if (leGroup != null)
-			{
-				var leSprite:ModchartSprite = PlayState.instance.modchartSprites.get(spr);
-
-				if (leSprite != null)
-				{
-					leGroup.add(leSprite);
-				}
-			}
-		});
-
-		Lua_helper.add_callback(lua, "addLuaSpriteGroup", function(tag:String, front:Bool = false) {
-			var leGroup:ModchartGroup = PlayState.instance.modchartGroups.get(tag);
-
-			if (leGroup != null)
-			{
-				if (!leGroup.wasAdded)
-				{
-					if (front)
-						getInstance().add(leGroup);
-					else
-					{
-						if(PlayState.instance.isDead)
-						{
-							GameOverSubstate.instance.insert(GameOverSubstate.instance.members.indexOf(GameOverSubstate.instance.boyfriend), leGroup);
-						}
-						else
-						{
-							var position:Int = PlayState.instance.members.indexOf(PlayState.instance.gfGroup);
-							if(PlayState.instance.members.indexOf(PlayState.instance.boyfriendGroup) < position) {
-								position = PlayState.instance.members.indexOf(PlayState.instance.boyfriendGroup);
-							} else if(PlayState.instance.members.indexOf(PlayState.instance.dadGroup) < position) {
-								position = PlayState.instance.members.indexOf(PlayState.instance.dadGroup);
-							}
-							PlayState.instance.insert(position, leGroup);
-						}
-					}
-
-					leGroup.wasAdded = true;
-				}
-			}
-		});
 
 		Lua_helper.add_callback(lua, "setGraphicSize", function(obj:String, x:Int, y:Int = 0, updateHitbox:Bool = true) {
 			if(PlayState.instance.getLuaObject(obj)!=null) {
@@ -2205,16 +2111,6 @@ class FunkinLua {
 				return;
 			}
 			luaTrace('Couldnt find object: ' + obj, false, false, FlxColor.RED);
-		});
-		Lua_helper.add_callback(lua, "setGroupGraphicSize", function(tag:String, x:Int, y:Int = 0, updateHitbox:Bool = true) {
-			var leGroup:ModchartGroup = PlayState.instance.modchartGroups.get(tag);
-
-			if (leGroup != null)
-			{
-				leGroup.setGraphicSize(x, y);
-				if (updateHitbox)
-					leGroup.updateHitbox();
-			}
 		});
 		Lua_helper.add_callback(lua, "scaleObject", function(obj:String, x:Float, y:Float, updateHitbox:Bool = true) {
 			if(PlayState.instance.getLuaObject(obj)!=null) {
@@ -2250,24 +2146,6 @@ class FunkinLua {
 				return;
 			}
 			luaTrace('Couldnt find object: ' + obj, false, false, FlxColor.RED);
-		});
-		Lua_helper.add_callback(lua, "scaleGroup", function(tag:String, x:Float, y:Float, updateHitbox:Bool = true) {
-			var leGroup:ModchartGroup = PlayState.instance.modchartGroups.get(tag);
-
-			if (leGroup != null)
-			{
-				leGroup.scale.set(x, y);
-				if (updateHitbox)
-					leGroup.updateHitbox();
-			}
-		});
-		Lua_helper.add_callback(lua, "updateGroupHitbox", function(tag:String) {
-			var leGroup:ModchartGroup = PlayState.instance.modchartGroups.get(tag);
-
-			if (leGroup != null)
-			{
-				leGroup.updateHitbox();	
-			}
 		});
 		Lua_helper.add_callback(lua, "updateHitboxFromGroup", function(group:String, index:Int) {
 			if(Std.isOfType(Reflect.getProperty(getInstance(), group), FlxTypedGroup)) {
@@ -2305,21 +2183,6 @@ class FunkinLua {
 			if(destroy) {
 				pee.destroy();
 				PlayState.instance.modchartSprites.remove(tag);
-			}
-		});
-		Lua_helper.add_callback(lua, "removeSpriteFromGroup", function(tag:String, spr:String, destroy:Bool = true) {
-			var leGroup:ModchartGroup = PlayState.instance.modchartGroups.get(tag);
-
-			if (leGroup != null)
-			{
-				var leSprite:ModchartSprite = PlayState.instance.modchartSprites.get(spr);
-				if (leSprite != null && leGroup.members.contains(leSprite))
-				{
-					leGroup.remove(leSprite);
-
-					if (destroy)
-						leGroup.destroy();
-				}
 			}
 		});
 
@@ -2431,20 +2294,6 @@ class FunkinLua {
 				}
 			}
 			luaTrace("Object " + obj + " doesn't exist!", false, false, FlxColor.RED);
-		});
-		Lua_helper.add_callback(lua, "screenCenterGroup", function(tag:String, pos:String = 'xy') {
-			var leGroup:ModchartGroup = PlayState.instance.modchartGroups.get(tag);
-
-			if (leGroup != null)
-			{
-				switch (pos.toLowerCase().trim())
-				{
-					case 'x': leGroup.screenCenter(X);
-					case 'y': leGroup.screenCenter(Y);
-					case 'xy': leGroup.screenCenter();
-					default: return;
-				}
-			}
 		});
 		Lua_helper.add_callback(lua, "objectsOverlap", function(obj1:String, obj2:String) {
 			var namesArray:Array<String> = [obj1, obj2];
@@ -3097,19 +2946,19 @@ class FunkinLua {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new ChromaticAberrationEffect(chromeOffset));
 		});
-		Lua_helper.add_callback(lua, "addScanlineEffect", function(camera:String,lockAlpha:Bool=false) {
+		Lua_helper.add_callback(lua, "addScanlineEffect", function(camera:String,lockAlpha:Bool = false) {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new ScanlineEffect(lockAlpha));
 		});
-		Lua_helper.add_callback(lua, "addGrainEffect", function(camera:String,grainSize:Float=1.6,lumAmount:Float=1.0,lockAlpha:Bool=false,coloramount:Float=0.6) {
+		Lua_helper.add_callback(lua, "addGrainEffect", function(camera:String,grainSize:Float = 1.6,lumAmount:Float = 1.0,lockAlpha:Bool = false,coloramount:Float = 0.6) {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new GrainEffect(grainSize,lumAmount,lockAlpha,coloramount));
 		});
-		Lua_helper.add_callback(lua, "addTiltshiftEffect", function(camera:String,blurAmount:Float=1.0,center:Float=1.0) {
+		Lua_helper.add_callback(lua, "addTiltshiftEffect", function(camera:String,blurAmount:Float = 1.0,center:Float = 1.0) {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new TiltshiftEffect(blurAmount,center));
 		});
-		Lua_helper.add_callback(lua, "addVCREffect", function(camera:String,glitchFactor:Float = 0.0,distortion:Bool=true,perspectiveOn:Bool=true,vignetteMoving:Bool=true) {
+		Lua_helper.add_callback(lua, "addVCREffect", function(camera:String,glitchFactor:Float = 0.0,distortion:Bool = true,perspectiveOn:Bool = true,vignetteMoving:Bool = true) {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new VCRDistortionEffect(glitchFactor,distortion,perspectiveOn,vignetteMoving));
 		});
@@ -3125,7 +2974,7 @@ class FunkinLua {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new DistortBGEffect(waveSpeed,waveFrq,waveAmp));
 		});
-		Lua_helper.add_callback(lua, "addInvertEffect", function(camera:String,lockAlpha:Bool=false) {
+		Lua_helper.add_callback(lua, "addInvertEffect", function(camera:String,lockAlpha:Bool = false) {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new InvertColorsEffect(lockAlpha));
 		});
@@ -3133,7 +2982,7 @@ class FunkinLua {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new GreyscaleEffect());
 		});
-		Lua_helper.add_callback(lua, "add3DEffect", function(camera:String,xrotation:Float=0.0,yrotation:Float=0.0,zrotation:Float=0.0,depth:Float=0.0) {
+		Lua_helper.add_callback(lua, "add3DEffect", function(camera:String,xrotation:Float = 0.0,yrotation:Float = 0.0,zrotation:Float = 0.0,depth:Float = 0.0) {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new ThreeDEffect(xrotation,yrotation,zrotation,depth));
 		});
@@ -3715,17 +3564,6 @@ class ModchartBackdrop extends FlxBackdrop
 		this.y = y;
 		antialiasing = ClientPrefs.globalAntialiasing;
 		lowestCamZoom = PlayState.instance.defaultCamZoom;
-	}
-}
-
-final class ModchartGroup extends FlxTypedSpriteGroup<ModchartSprite>
-{
-	public var wasAdded:Bool;
-	public function new(x:Float, y:Float, maxSize:Int)
-	{
-		super(x, y, maxSize);
-
-		antialiasing = ClientPrefs.globalAntialiasing;
 	}
 }
 
