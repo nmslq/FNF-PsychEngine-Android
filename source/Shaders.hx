@@ -987,7 +987,7 @@ class VHSShader extends FlxShader // i HATE shaders xd -lunar https://www.shader
 
 			vec2 look = vec2(xpos, uv.y);
 
-			float window = 1./(2.0+20.0*(look.y-mod(iTime ,1.0))*(look.y-mod(iTime ,1.0)));
+			float window = 1.0/(2.0+20.0*(look.y-mod(iTime ,1.0))*(look.y-mod(iTime ,1.0)));
 			float vShift = 0.2*onOff(2.0,3.0,0.9) * (sin(iTime)*sin(iTime*200.0) + (0.2 + 0.1*sin(iTime*200.0)*cos(iTime/10.0)));
 			look.y = mod(look.y + vShift, 1.0);
 			vec4 video = vec4(flixel_texture2D(bitmap,look));
