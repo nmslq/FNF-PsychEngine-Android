@@ -1275,10 +1275,10 @@ class FunkinLua {
 				luaTrace('Couldnt find object: ' + vars, false, false, FlxColor.RED);
 			}
 		});
-		Lua_helper.add_callback(lua, "doTweenNum", function(tag:String, vars:String, toValue:Float, duration:Float, ease:String) {
+		Lua_helper.add_callback(lua, "doTweenNum", function(tag:String, vars:String, fromValue:Float, toValue:Float, duration:Float, ease:String) {
 			var penisExam:Dynamic = tweenShit(tag, vars);
 			if(penisExam != null) {
-				PlayState.instance.modchartTweens.set(tag, FlxTween.num(penisExam, toValue, duration, {ease: getFlxEaseByString(ease),
+				PlayState.instance.modchartTweens.set(tag, FlxTween.num(penisExam, fromValue, toValue, duration, {ease: getFlxEaseByString(ease),
 					onComplete: function(twn:FlxTween) {
 						PlayState.instance.callOnLuas('onTweenCompleted', [tag]);
 						PlayState.instance.modchartTweens.remove(tag);
@@ -2965,10 +2965,6 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "addDistortionEffect", function(camera:String, glitchFactor:Float = 0.1, otherglitch:Float = 0.1, pushUpdate:Bool = true) {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new DistortionEffect(glitchFactor, otherglitch, pushUpdate));
-		});
-		Lua_helper.add_callback(lua, "setBlur", function(camera:String, size:Float = 18.0, qualitly:Float = 8.0, dim:Float = 1.8, directions:Float = 16.0) {
-			if(ClientPrefs.shaders)
-				PlayState.instance.addShaderToCamera(camera, new BlurEffect(size, qualitly, dim, directions));
 		});
 		Lua_helper.add_callback(lua, "addGlitchEffect", function(camera:String, waveSpeed:Float = 0.1, waveFrq:Float = 0.1, waveAmp:Float = 0.1) {
 			if(ClientPrefs.shaders)
