@@ -3113,6 +3113,10 @@ class FunkinLua {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new VCRDistortionEffect(glitchFactor,distortion,perspectiveOn,vignetteMoving));
 		});
+		Lua_helper.add_callback(lua, "addDistortionEffect", function(camera:String,glitchFactor:Float, otherglitch:Float, pushUpdate:Bool = true) {
+			if(ClientPrefs.shaders)
+				PlayState.instance.addShaderToCamera(camera, new DistortionEffect(glitchFactor,otherglitch,pushUpdate));
+		});
 		Lua_helper.add_callback(lua, "addGlitchEffect", function(camera:String,waveSpeed:Float = 0.1,waveFrq:Float = 0.1,waveAmp:Float = 0.1) {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new GlitchEffect(waveSpeed,waveFrq,waveAmp));
@@ -3121,7 +3125,7 @@ class FunkinLua {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new PulseEffect(waveSpeed,waveFrq,waveAmp));
 		});
-		Lua_helper.add_callback(lua, "addDistortionEffect", function(camera:String,waveSpeed:Float = 0.1,waveFrq:Float = 0.1,waveAmp:Float = 0.1) {
+		Lua_helper.add_callback(lua, "addDistortBGEffect", function(camera:String,waveSpeed:Float = 0.1,waveFrq:Float = 0.1,waveAmp:Float = 0.1) {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new DistortBGEffect(waveSpeed,waveFrq,waveAmp));
 		});
