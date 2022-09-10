@@ -118,7 +118,6 @@ class PlayState extends MusicBeatState
 	public var modchartBackdrops:Map<String, ModchartBackdrop> = new Map<String, ModchartBackdrop>();
 	public var modchartTexts:Map<String, ModchartText> = new Map<String, ModchartText>();
 	public var modchartSaves:Map<String, FlxSave> = new Map<String, FlxSave>();
-	public var modchartGroups:Map<String, ModchartGroup> = new Map();
 	#else
 	public var boyfriendMap:Map<String, Boyfriend> = new Map<String, Boyfriend>();
 	public var dadMap:Map<String, Character> = new Map<String, Character>();
@@ -131,7 +130,6 @@ class PlayState extends MusicBeatState
 	public var modchartBackdrops:Map<String, ModchartBackdrop> = new Map();
 	public var modchartTexts:Map<String, ModchartText> = new Map();
 	public var modchartSaves:Map<String, FlxSave> = new Map();
-	public var modchartGroups:Map<String, ModchartGroup> = new Map();
 	#end
 
 	public var BF_X:Float = 770;
