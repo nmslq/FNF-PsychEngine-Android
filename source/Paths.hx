@@ -2,6 +2,8 @@ package;
 
 import haxe.Json;
 import flixel.system.FlxAssets.FlxGraphicAsset;
+import flixel.math.FlxPoint;
+import flixel.math.FlxRect;
 import openfl.system.System;
 import flixel.FlxG;
 import flixel.graphics.frames.FlxAtlasFrames;
