@@ -3184,6 +3184,9 @@ class FunkinLua {
 			case "packer" | "packeratlas" | "pac":
 				spr.frames = Paths.getPackerAtlas(image);
 
+			case "i8" | "jsoni8" | "json": 
+				spr.frames = Paths.fromI8(image);
+
 			default:
 				spr.frames = Paths.getSparrowAtlas(image);
 		}
