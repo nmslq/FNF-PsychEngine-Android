@@ -27,9 +27,6 @@ typedef CharacterFile = {
 	var flip_x:Bool;
 	var no_antialiasing:Bool;
 	var healthbar_colors:Array<Int>;
-
-	var multipleI8:Bool;
-	var I8Count:Int;
 }
 
 typedef AnimArray = {
@@ -179,19 +176,7 @@ class Character extends FlxSprite
 						frames = AtlasFrameMaker.construct(json.image);
 
 					case "I8":
-						if (json.multipleI8)
-						{
-							var fuckk:Array<String> = [];
-
-							for (i in 0...json.I8Count) 
-								fuckk.push(json.image + i);
-
-							frames = Paths.fromI8Array(fuckk);
-						}
-						else
-						{
-							frames = Paths.fromI8(json.image);
-						}
+						frames = Paths.getJsonAtlas(json.image);
 				}
 				imageFile = json.image;
 
