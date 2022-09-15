@@ -22,11 +22,17 @@ import flash.media.Sound;
 using StringTools;
 
 typedef I8frame = {
-	var frame:{ x:Float, y:Float, w:Float, h:Float }
+	var frame: {
+	  x:Float, y:Float, w:Float, h:Float
+	}
 	var rotated:Bool;
 	var trimmed:Bool;
-	var spriteSourceSize:{ x:Float, y:Float, w:Float, h:Float }
-	var sourceSize:{ w:Float, h:Float }
+	var spriteSourceSize: {
+	  x:Float, y:Float, w:Float, h:Float
+	}
+	var sourceSize: {
+	  w:Float, h:Float
+	}
 	var duration:Float;
 }
 
