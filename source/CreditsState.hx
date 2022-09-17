@@ -140,6 +140,13 @@ class CreditsState extends MusicBeatState
 				'E1843A'
 			],
 			[
+				'EliteMasterEric',
+				'mastereric',
+				'Runtime Shaders support',
+				'https://twitter.com/EliteMasterEric',
+				'FFBD40'
+			],
+			[
 				'PolybiusProxy',
 				'proxy',
 				'.MP4 Video Loader Library (hxCodec)',
