@@ -638,7 +638,7 @@ class DistortionEffect extends Effect
 
 	public function new(glitchFactor:Float, otherglitch:Float, ?pushUpdate:Bool = true)
 	{
-		shaders = new DistortionShader();
+		shader = new DistortionShader();
 		shader.iTime.value = [0];
 		shader.glitchModifier.value = [glitchFactor];
 		shader.moveScreenFullX.value = [true];
@@ -970,7 +970,7 @@ class VHSShader extends FlxShader // i HATE shaders xd -lunar https://www.shader
 	float stripes(vec2 uv)
 	{
 		float noi = noise(uv*vec2(0.5,1.0) + vec2(1.0,3.0));
-		return ramp(mod(uv.y*4.0 + iTime/2.+sin(iTime + sin(iTime*0.63)),1.0),0.5,0.6)*noi;
+		return ramp(mod(uv.y*4.0 + iTime/2.0+sin(iTime + sin(iTime*0.63)),1.0),0.5,0.6)*noi;
 	}
 
 	vec4 getVideo(vec2 uv)
@@ -998,9 +998,9 @@ class VHSShader extends FlxShader // i HATE shaders xd -lunar https://www.shader
 
 	vec2 screenDistort(vec2 uv)
 	{
-		uv -= vec2(.5,.5);
+		uv -= vec2(0.5,0.5);
 		uv = uv*1.2*(1.0/1.2+2.0*uv.x*uv.x*uv.y*uv.y);
-		uv += vec2(.5,.5);
+		uv += vec2(0.5,0.5);
 		return uv;
 	}
 
@@ -1030,7 +1030,7 @@ class VHSShader extends FlxShader // i HATE shaders xd -lunar https://www.shader
 
 		uv = screenDistort(uv);
 		vec4 video = getVideo(uv);
-		float x =  0.;
+		float x =  0.0;
 
 		video.r = getVideo(vec2(x+uv.x+(0.001/1.0),uv.y+(0.001/2.0))).r;
 		video.g = getVideo(vec2(x+uv.x+(0.000/1.0),uv.y-(0.002/2.0))).g;
