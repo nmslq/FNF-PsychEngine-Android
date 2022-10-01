@@ -2996,10 +2996,6 @@ class FunkinLua {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new DistortionEffect(glitchFactor, otherglitch, pushUpdate));
 		});
-		Lua_helper.add_callback(lua, "addVHSEffect", function(camera:String) {
-			if(ClientPrefs.shaders)
-				PlayState.instance.addShaderToCamera(camera, new VHSEffect());
-		});
 		Lua_helper.add_callback(lua, "addGlitchEffect", function(camera:String, waveSpeed:Float = 0.1, waveFrq:Float = 0.1, waveAmp:Float = 0.1) {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new GlitchEffect(waveSpeed, waveFrq, waveAmp));
@@ -3019,10 +3015,6 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "addGreyscaleEffect", function(camera:String) {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new GreyscaleEffect());
-		});
-		Lua_helper.add_callback(lua, "add3DEffect", function(camera:String, xrotation:Float = 0.0, yrotation:Float = 0.0, zrotation:Float = 0.0, depth:Float = 0.0) {
-			if(ClientPrefs.shaders)
-				PlayState.instance.addShaderToCamera(camera, new ThreeDEffect(xrotation, yrotation, zrotation, depth));
 		});
 		Lua_helper.add_callback(lua, "addBloomEffect", function(camera:String, intensity:Float = 0.35, blurSize:Float = 1.0/512.0) {
 			if(ClientPrefs.shaders)
