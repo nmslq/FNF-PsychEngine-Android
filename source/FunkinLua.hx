@@ -2996,6 +2996,10 @@ class FunkinLua {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new DistortionEffect(glitchFactor, otherglitch, pushUpdate));
 		});
+		Lua_helper.add_callback(lua, "addVHSEffect", function(camera:String) {
+			if(ClientPrefs.shaders)
+				PlayState.instance.addShaderToCamera(camera, new VHSEffect());
+		});
 		Lua_helper.add_callback(lua, "addGlitchEffect", function(camera:String, waveSpeed:Float = 0.1, waveFrq:Float = 0.1, waveAmp:Float = 0.1) {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new GlitchEffect(waveSpeed, waveFrq, waveAmp));
