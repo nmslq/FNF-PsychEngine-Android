@@ -3414,7 +3414,7 @@ class PlayState extends MusicBeatState
 					}
 				}
 
-				var center:Float = strumY + Note.swagWidth / 2;
+					var center:Float = strumY + Note.swagWidth / 2;
 					if(strumGroup.members[daNote.noteData].sustainReduce && daNote.isSustainNote && (daNote.mustPress || !daNote.ignoreNote) &&
 						(!daNote.mustPress || (daNote.wasGoodHit || (daNote.prevNote.wasGoodHit && !daNote.canBeHit))))
 					{
