@@ -3824,6 +3824,7 @@ class PlayState extends MusicBeatState
 						camFollow.y = val2;
 						isCameraOnForcedPos = true;
 					}
+				}
 
 			case 'Alt Idle Animation':
 				var char:Character = dad;
