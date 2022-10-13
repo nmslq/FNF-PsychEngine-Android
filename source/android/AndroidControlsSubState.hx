@@ -35,6 +35,10 @@ class AndroidControlsSubState extends FlxSubState
 
 	override function create()
 	{
+		for (i in 0...controlsItems.length)
+			if (controlsItems[i] == MobileControls.getMode())
+				curSelected = i;
+
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = 0xFFea71fd;
 		bg.screenCenter();
@@ -127,20 +131,6 @@ class AndroidControlsSubState extends FlxSubState
 			FlxColor.BLACK, true);
 		upPozition.borderSize = 2.4;
 		add(upPozition);
-
-		switch (AndroidControls.getMode())
-		{
-			case 'Pad-Left':
-				curSelected = 1;
-			case 'Pad-Custom':
-				curSelected = 2;
-			case 'Pad-Duo':
-				curSelected = 3;
-			case 'Hitbox':
-				curSelected = 4;
-			case 'Keyboard':
-				curSelected = 5;
-		}
 
 		changeSelection();
 
