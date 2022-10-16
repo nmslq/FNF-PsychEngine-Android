@@ -252,6 +252,26 @@ class FunkinLua {
 			return false;
 		});
 
+		Lua_helper.add_callback(lua, "giveAchievement", function(name:String){
+			var me = this;
+			if(Achievements.isAchievementUnlocked(name)||!PlayState.instance.achievementArray.contains(me))
+			{
+				if(!PlayState.instance.achievementArray.contains(me)){
+					luaTrace("giveAchievement: This lua file is not a custom achievement lua.", false, false, FlxColor.RED);
+				}
+
+				return false;
+			}
+			@:privateAccess
+			if(PlayState.instance != null) {
+				Achievements.unlockAchievement(name);
+				PlayState.instance.startAchievement(name);
+				ClientPrefs.saveSettings();
+				return true;
+			}
+			else return false;
+		});
+
 		Lua_helper.add_callback(lua, "initLuaShader", function(name:String, glslVersion:Int = 120) {
 			if(!ClientPrefs.shaders)
 				return false;
@@ -2988,7 +3008,6 @@ class FunkinLua {
 			return list;
 		});
 
-		//SHADER SHIT
 		Lua_helper.add_callback(lua, "addChromaticAbberationEffect", function(camera:String, chromeOffset:Float = 0.005) {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new ChromaticAberrationEffect(chromeOffset));
