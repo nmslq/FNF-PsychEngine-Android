@@ -202,12 +202,12 @@ class Achievements {
 					if(l.endsWith('.json'))
 					{
 						var meta:AchievementMeta = cast haxe.Json.parse(File.getContent(i + l));
-						if(meta!=null)
+						if(meta != null)
 						{
 							if(meta.clearAchievements)
 								achievementsStuff = [];
 
-							if(meta.global == null || meta.global.length<1)
+							if(meta.global == null || meta.global.length < 1)
 							{
 								var achievement:Array<Dynamic> = [];
 								achievement.push(meta.name);
@@ -217,7 +217,7 @@ class Achievements {
 								var index:Null<Int> = meta.index;
 								if(!achievementsStuff.contains(achievement))
 								{
-									if(index==null||index<0)
+									if(index == null || index < 0)
 									{
 										achievementsStuff.push(achievement.copy());
 									}
@@ -249,7 +249,7 @@ class Achievements {
 				for(l in FileSystem.readDirectory(i))
 				{
 					var pushedLuas = [];
-					if(l.endsWith('.lua')&&!pushedLuas.contains(l))
+					if(l.endsWith('.lua') && !pushedLuas.contains(l))
 					{
 						luas.push(i + l);
 						pushedLuas.push(i + l);
