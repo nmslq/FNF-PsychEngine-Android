@@ -188,36 +188,47 @@ class Achievements {
 	}
 
 	#if MODS_ALLOWED
-	public static function loadModAchievements() {
+	public static function loadModAchievements()
+	{
 		achievementsStuff = copyAchievements.copy();
 
 		var paths:Array<String>= [Paths.modFolders('achievements/'),Paths.getPreloadPath('achievements/'),];
-		for(i in paths.copy()){
-			if(FileSystem.exists(i)){
-				for(l in FileSystem.readDirectory(i)){
-					if(l.endsWith('.json')){
+		for(i in paths.copy())
+		{
+			if(FileSystem.exists(i))
+			{
+				for(l in FileSystem.readDirectory(i))
+				{
+					if(l.endsWith('.json'))
+					{
 						var meta:AchievementMeta = cast haxe.Json.parse(File.getContent(i + l));
-						if(meta!=null){
+						if(meta!=null)
+						{
 							if(meta.clearAchievements)
-								achievementsStuff=[];
+								achievementsStuff = [];
 
-							if(meta.global==null||meta.global.length<1){
+							if(meta.global == null || meta.global.length<1)
+							{
 								var achievement:Array<Dynamic> = [];
 								achievement.push(meta.name);
 								achievement.push(meta.desc);
 								achievement.push(meta.save_tag);
 								achievement.push(meta.hidden);
 								var index:Null<Int> = meta.index;
-								if(!achievementsStuff.contains(achievement)) {
-									if(index==null||index<0){
+								if(!achievementsStuff.contains(achievement))
+								{
+									if(index==null||index<0)
+									{
 										achievementsStuff.push(achievement.copy());
 									}
-									else {
+									else
+									{
 										achievementsStuff.insert(index,achievement);
 									}
 								}
 							}
-							else{
+							else
+							{
 								achievementsStuff = meta.global.copy();
 							}
 						}
@@ -227,14 +238,19 @@ class Achievements {
 		}
 	}
 
-	public static function getModAchievements():Array<String> {
+	public static function getModAchievements():Array<String>
+	{
 		var paths:Array<String>= [Paths.modFolders('achievements/'),Paths.getPreloadPath('achievements/'),];
 		var luas:Array<String> = [];
-		for(i in paths){
-			if(FileSystem.exists(i)){
-				for(l in FileSystem.readDirectory(i)){
+		for(i in paths)
+		{
+			if(FileSystem.exists(i))
+			{
+				for(l in FileSystem.readDirectory(i))
+				{
 					var pushedLuas = [];
-					if(l.endsWith('.lua')&&!pushedLuas.contains(l)){
+					if(l.endsWith('.lua')&&!pushedLuas.contains(l))
+					{
 						luas.push(i + l);
 						pushedLuas.push(i + l);
 					}
