@@ -192,7 +192,7 @@ class Achievements {
 	{
 		achievementsStuff = copyAchievements.copy();
 
-		var paths:Array<String>= [Paths.modFolders('achievements/'),Paths.getPreloadPath('achievements/'),];
+		var paths:Array<String>= [Paths.modFolders('achievements/'), SUtil.getPath() + Paths.getPreloadPath('achievements/')];
 		for(i in paths.copy())
 		{
 			if(FileSystem.exists(i))
@@ -240,7 +240,7 @@ class Achievements {
 
 	public static function getModAchievements():Array<String>
 	{
-		var paths:Array<String>= [Paths.modFolders('achievements/'),Paths.getPreloadPath('achievements/'),];
+		var paths:Array<String>= [Paths.modFolders('achievements/'), SUtil.getPath() + Paths.getPreloadPath('achievements/')];
 		var luas:Array<String> = [];
 		for(i in paths)
 		{

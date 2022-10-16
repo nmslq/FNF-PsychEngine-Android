@@ -934,7 +934,8 @@ class PlayState extends MusicBeatState
 		//CUSTOM ACHIVEMENTS
 		#if (MODS_ALLOWED && LUA_ALLOWED)
 		var luaFiles:Array<String> = Achievements.getModAchievements().copy();
-		if(luaFiles.length > 0){
+		if(luaFiles.length > 0)
+		{
 			for(luaFile in luaFiles)
 			{
 				var lua = new FunkinLua(luaFile);
