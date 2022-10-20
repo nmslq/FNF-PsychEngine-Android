@@ -28,7 +28,7 @@ import flixel.addons.display.FlxBackdrop;
 import flixel.addons.transition.FlxTransitionableState;
 import openfl.display.BitmapData;
 
-#if !flash
+#if (!flash && sys)
 import flixel.addons.display.FlxRuntimeShader;
 #end
 
@@ -52,7 +52,7 @@ import Discord;
 #end
 
 #if android
-import android.Hardware;
+import android.widget.Toast;
 #end
 
 using StringTools;
@@ -1117,18 +1117,15 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "applicationAlert", function(title:String, description:String) {
 			lime.app.Application.current.window.alert(description, title);
 		});
-		Lua_helper.add_callback(lua, "openKeyboard", function() {
-			FlxG.stage.window.textInputEnabled = true;
-		});
-		Lua_helper.add_callback(lua, "closeKeyboard", function() {
-			FlxG.stage.window.textInputEnabled = false;
+		Lua_helper.add_callback(lua, "setKeyboard", function(open:Bool = false) {
+			FlxG.stage.window.textInputEnabled = open;
 		});
 		Lua_helper.add_callback(lua, "exitGame", function(code:Int = 0) {
 			Sys.exit(code);
 		});
 		#if android
 		Lua_helper.add_callback(lua, "toast", function(text:String, code:Int = 0) {
-			Hardware.toast(text, code);
+			Toast.makeText(text, code);
 		});
 		#end
 
@@ -3160,6 +3157,7 @@ class FunkinLua {
 	{
 		if(!ClientPrefs.shaders) return false;
 
+		#if (!flash && sys)
 		if(PlayState.instance.runtimeShaders.exists(name))
 		{
 			luaTrace('Shader $name was already initialized!');
@@ -3187,7 +3185,7 @@ class FunkinLua {
 				}
 				else frag = null;
 
-				if (FileSystem.exists(vert))
+				if(FileSystem.exists(vert))
 				{
 					vert = File.getContent(vert);
 					found = true;
@@ -3203,9 +3201,13 @@ class FunkinLua {
 			}
 		}
 		luaTrace('Missing shader $name .frag AND .vert files!', false, false, FlxColor.RED);
+		#else
+		luaTrace('This platform doesn\'t support Runtime Shaders!', false, false, FlxColor.RED);
+		#end
 		return false;
 	}
 
+	#if (!flash && sys)
 	public function getShader(obj:String):FlxRuntimeShader
 	{
 		var killMe:Array<String> = obj.split('.');
@@ -3221,6 +3223,7 @@ class FunkinLua {
 		}
 		return null;
 	}
+	#end
 
 	function getGroupStuff(leArray:Dynamic, variable:String) {
 		var killMe:Array<String> = variable.split('.');
@@ -3448,6 +3451,7 @@ class FunkinLua {
 
 		return v;
 		#end
+		return null;
 	}
 
 	var lastCalledFunction:String = '';
@@ -3727,10 +3731,10 @@ class HScript
 		interp.variables.set('Character', Character);
 		interp.variables.set('Alphabet', Alphabet);
 		interp.variables.set('CustomSubstate', CustomSubstate);
-		#if !flash
+		#if (!flash && sys)
 		interp.variables.set('FlxRuntimeShader', FlxRuntimeShader);
-		interp.variables.set('ShaderFilter', openfl.filters.ShaderFilter);
 		#end
+		interp.variables.set('ShaderFilter', openfl.filters.ShaderFilter);
 		interp.variables.set('StringTools', StringTools);
 		interp.variables.set('SUtil', SUtil);
 
