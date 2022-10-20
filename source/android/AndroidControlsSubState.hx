@@ -46,6 +46,21 @@ class AndroidControlsSubState extends FlxSubState
 		bg.antialiasing = ClientPrefs.globalAntialiasing;
 		add(bg);
 
+		var exitButton:FlxButton = new FlxButton(FlxG.width - 200, 50, 'Exit', function()
+		{
+			AndroidControls.setMode(controlsItems[Math.floor(curSelected)]);
+
+			if (controlsItems[Math.floor(curSelected)] == 'Pad-Custom')
+				AndroidControls.setCustomMode(virtualPad);
+
+			FlxTransitionableState.skipNextTransOut = true;
+			FlxG.resetState();
+		});
+		exitButton.setGraphicSize(Std.int(exitButton.width) * 3);
+		exitButton.label.setFormat(Assets.getFont('assets/images/android/menu/Comic Sans MS.ttf').fontName, 16, FlxColor.WHITE, CENTER, true);
+		exitButton.color = FlxColor.YELLOW;
+		add(exitButton);
+
 		resetButton = new FlxButton(FlxG.width - 200, 50, 'Reset', function()
 		{
 			if (resetButton.visible && virtualPad != null)
@@ -101,32 +116,25 @@ class AndroidControlsSubState extends FlxSubState
 		rightArrow.animation.play('idle');
 		add(rightArrow);
 
-		var tipText:FlxText = new FlxText(10, FlxG.height - 24, 0, 'Press BACK on your phone to get back to the options menu', 16);
-		tipText.setFormat(Assets.getFont('assets/images/android/menu/Comic Sans MS.ttf').fontName, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
-			FlxColor.BLACK, true);
-		tipText.borderSize = 2.4;
-		tipText.scrollFactor.set();
-		add(tipText);
-
-		rightPozition = new FlxText(10, FlxG.height - 44, 0, '', 16);
+		rightPozition = new FlxText(10, FlxG.height - 24, 0, '', 16);
 		rightPozition.setFormat(Assets.getFont('assets/images/android/menu/Comic Sans MS.ttf').fontName, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
 			FlxColor.BLACK, true);
 		rightPozition.borderSize = 2.4;
 		add(rightPozition);
 
-		leftPozition = new FlxText(10, FlxG.height - 64, 0, '', 16);
+		leftPozition = new FlxText(10, FlxG.height - 44, 0, '', 16);
 		leftPozition.setFormat(Assets.getFont('assets/images/android/menu/Comic Sans MS.ttf').fontName, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
 			FlxColor.BLACK, true);
 		leftPozition.borderSize = 2.4;
 		add(leftPozition);
 
-		downPozition = new FlxText(10, FlxG.height - 84, 0, '', 16);
+		downPozition = new FlxText(10, FlxG.height - 64, 0, '', 16);
 		downPozition.setFormat(Assets.getFont('assets/images/android/menu/Comic Sans MS.ttf').fontName, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
 			FlxColor.BLACK, true);
 		downPozition.borderSize = 2.4;
 		add(downPozition);
 
-		upPozition = new FlxText(10, FlxG.height - 104, 0, '', 16);
+		upPozition = new FlxText(10, FlxG.height - 84, 0, '', 16);
 		upPozition.setFormat(Assets.getFont('assets/images/android/menu/Comic Sans MS.ttf').fontName, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
 			FlxColor.BLACK, true);
 		upPozition.borderSize = 2.4;
@@ -139,17 +147,6 @@ class AndroidControlsSubState extends FlxSubState
 
 	override function update(elapsed:Float)
 	{
-		if (FlxG.android.justPressed.BACK || FlxG.android.justReleased.BACK)
-		{
-			AndroidControls.setMode(controlsItems[Math.floor(curSelected)]);
-
-			if (controlsItems[Math.floor(curSelected)] == 'Pad-Custom')
-				AndroidControls.setCustomMode(virtualPad);
-
-			FlxTransitionableState.skipNextTransOut = true;
-			FlxG.resetState();
-		}
-
 		super.update(elapsed);
 
 		inputvari.text = controlsItems[curSelected];
