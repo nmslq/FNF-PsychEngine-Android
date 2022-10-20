@@ -53,6 +53,7 @@ import Discord;
 
 #if android
 import android.widget.Toast;
+import android.Hardware;
 #end
 
 using StringTools;
@@ -2561,7 +2562,7 @@ class FunkinLua {
 
 		Lua_helper.add_callback(lua, "vibration", function(milliseconds:Int) {
 			#if android
-			Toast.vibrate(milliseconds);
+			Hardware.vibrate(milliseconds);
 			#end
 		});
 
