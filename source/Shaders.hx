@@ -460,7 +460,7 @@ class oldFilmEffect extends Effect
 
 	public function update(elapsed:Float)
 	{
-		shader.iTime.value[0] = Conductor.songPosition / 1000;
+		shader.iTime.value[0] = [Conductor.songPosition / 1000];
 	}
 }
 
