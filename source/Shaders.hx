@@ -456,11 +456,12 @@ class OldFilmEffect extends Effect
 		shader = new OldFilmShader();
 
 		shader.iTime.value = [0];
+		PlayState.instance.shaderUpdates.push(update);
 	}
 
 	public function update(elapsed:Float)
 	{
-		shader.iTime.value[0] = [Conductor.songPosition / 1000];
+		shader.iTime.value[0] += elapsed;
 	}
 }
 
