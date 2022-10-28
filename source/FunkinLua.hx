@@ -3025,7 +3025,7 @@ class FunkinLua {
 		});
 		Lua_helper.add_callback(lua, "addOldFilmEffect", function(camera:String) {
 			if(ClientPrefs.shaders)
-				PlayState.instance.addShaderToCamera(camera, new oldFilmEffect());
+				PlayState.instance.addShaderToCamera(camera, new OldFilmEffect());
 		});
 		Lua_helper.add_callback(lua, "addDistortionEffect", function(camera:String, glitchFactor:Float = 0.1, otherglitch:Float = 0.1, pushUpdate:Bool = true) {
 			if(ClientPrefs.shaders)

@@ -447,13 +447,13 @@ class Grain extends FlxShader
 	}
 }
 
-class oldFilmEffect extends Effect
+class OldFilmEffect extends Effect
 {
-	public var shader:oldFilmShader;
+	public var shader:OldFilmShader;
 
 	public function new()
 	{
-		shader = new oldFilmShader();
+		shader = new OldFilmShader();
 
 		shader.iTime.value = [0];
 	}
@@ -464,7 +464,7 @@ class oldFilmEffect extends Effect
 	}
 }
 
-class oldFilmShader extends FlxShader
+class OldFilmShader extends FlxShader
 {
 
 	@:glFragmentSource('
