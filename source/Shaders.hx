@@ -449,11 +449,11 @@ class Grain extends FlxShader
 
 class SnowFallEffect extends Effect
 {
-	public var shader:SnowFallEffect;
+	public var shader:SnowFallShader;
 
 	public function new(intensity:Float, amount:Int)
 	{
-		shader = new SnowFallEffect();
+		shader = new SnowFallShader();
 
 		shader.intensity.value = [intensity];
 		shader.amount.value = [amount];
