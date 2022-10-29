@@ -451,7 +451,7 @@ class SnowFallEffect extends Effect
 {
 	public var shader:SnowFallShader;
 
-	public function new(intensity:Float, amount:Int)
+	public function new(intensity:Float = 0.25, amount:Int = 75.0)
 	{
 		shader = new SnowFallShader();
 
@@ -489,6 +489,7 @@ float drawCircle(vec2 center, float radius) {
 
 void main()
 {
+    #pragma body
     uv = vec2(openfl_TextureCoordv.x * 2.0, openfl_TextureCoordv.y);
     // gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
     gl_FragColor = flixel_texture2D(bitmap, openfl_TextureCoordv);

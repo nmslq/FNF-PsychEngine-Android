@@ -3019,7 +3019,7 @@ class FunkinLua {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new TiltshiftEffect(blurAmount, center));
 		});
-		Lua_helper.add_callback(lua, "addSnowFallEffect", function(camera:String, intensity:Float = 0.25, amount:Int = 75.0) {
+		Lua_helper.add_callback(lua, "addSnowFallEffect", function(camera:String, intensity:Float, amount:Int) {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new SnowFallEffect(intensity, amount));
 		});
