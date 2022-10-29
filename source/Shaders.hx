@@ -451,12 +451,12 @@ class SnowFallEffect extends Effect
 {
 	public var shader:SnowFallShader;
 
-	public function new(intensity:Float = 0.25, amount:Int = 75.0)
+	public function new(intensity:Float = 0.25, amount:Float = 75.0)
 	{
 		shader = new SnowFallShader();
 
 		shader.intensity.value = [intensity];
-		shader.amount.value = [amount];
+		shader.amount.value = [Std.int(amount)];
 		shader.time.value = [0.0];
 
 		PlayState.instance.shaderUpdates.push(update);
