@@ -64,8 +64,8 @@ class AndroidControlsSubState extends FlxSubState
 		{
 			if (controlsItems[Math.floor(curSelected)] == 'Pad-Custom' && resetButton.visible) // being sure about something
 			{
-				MobileControls.customVirtualPad = new FlxVirtualPad(RIGHT_FULL, NONE);
-				reloadMobileControls('Pad-Custom');
+				AndroidControls.customVirtualPad = new FlxVirtualPad(RIGHT_FULL, NONE);
+				reloadAndroidControls('Pad-Custom');
 			}
 		});
 		resetButton.setGraphicSize(Std.int(resetButton.width) * 3);
@@ -215,7 +215,7 @@ class AndroidControlsSubState extends FlxSubState
 
 		var daChoice:String = controlsItems[Math.floor(curSelected)];
 
-		reloadMobileControls(daChoice);
+		reloadAndroidControls(daChoice);
 
 		funitext.visible = daChoice == 'Keyboard';
 		resetButton.visible = daChoice == 'Pad-Custom';
@@ -235,9 +235,8 @@ class AndroidControlsSubState extends FlxSubState
 			buttonBinded = true;
 	}
 
-	function reloadMobileControls(daChoice:String):Void
+	function reloadAndroidControls(daChoice:String):Void
 	{
-
 		switch (daChoice)
 		{
 			case 'Pad-Right':
