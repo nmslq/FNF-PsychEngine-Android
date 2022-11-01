@@ -647,9 +647,9 @@ class FunkinLua {
 						{
 							Lua.pushstring(lua, Lua.tostring(luaInstance.lua, -1));
 						}
-						else if(Lua.tointeger(luaInstance.lua,-1))
+						else if(Lua.isboolean(luaInstance.lua,-1))
 						{
-							Lua.pushinteger(lua, Lua.tointeger(luaInstance.lua, -1));
+							Lua.pushboolean(lua, Lua.toboolean(luaInstance.lua, -1));
 						}
 						else
 						{
