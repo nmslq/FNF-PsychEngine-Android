@@ -35,6 +35,9 @@ class MusicBeatSubstate extends FlxSubState
 
 	public function addVirtualPad(DPad:FlxDPadMode, Action:FlxActionMode)
 	{
+		if (virtualPad != null)
+			removeVirtualPad();
+
 		virtualPad = new FlxVirtualPad(DPad, Action);
 		add(virtualPad);
 

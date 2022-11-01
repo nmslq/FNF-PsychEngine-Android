@@ -38,6 +38,9 @@ class MusicBeatState extends FlxUIState
 
 	public function addVirtualPad(DPad:FlxDPadMode, Action:FlxActionMode)
 	{
+		if (virtualPad != null)
+			removeVirtualPad();
+
 		virtualPad = new FlxVirtualPad(DPad, Action);
 		add(virtualPad);
 
@@ -57,9 +60,12 @@ class MusicBeatState extends FlxUIState
 
 	public function addAndroidControls(DefaultDrawTarget:Bool = true)
 	{
+		if (mobileControls != null)
+			removeMobileControls();
+
 		androidControls = new AndroidControls();
 
-		switch (AndroidControls.getMode())
+		switch (AndroidControls.mode)
 		{
 			case 'Pad-Right' | 'Pad-Left' | 'Pad-Custom':
 				controls.setVirtualPadNOTES(androidControls.virtualPad, RIGHT_FULL, NONE);

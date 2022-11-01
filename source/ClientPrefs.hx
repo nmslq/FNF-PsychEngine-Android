@@ -35,8 +35,6 @@ class ClientPrefs
 	public static var pauseMusic:String = 'Tea Time';
 	public static var checkForUpdates:Bool = true;
 	public static var gradientHitboxes = false;
-	public static var hitboxOpacity = 0.2;
-	public static var virtualPadOpacity = 0.6;
 	public static var comboStacking = true;
 	public static var gameplaySettings:Map<String, Dynamic> = [
 		'scrollspeed' => 1.0,
@@ -139,8 +137,6 @@ class ClientPrefs
 		FlxG.save.data.laneUnderlay = laneUnderlay;
 		FlxG.save.data.checkForUpdates = checkForUpdates;
 		FlxG.save.data.gradientHitboxes = gradientHitboxes;
-		FlxG.save.data.hitboxOpacity = hitboxOpacity;
-		FlxG.save.data.virtualPadOpacity = virtualPadOpacity;
 		FlxG.save.data.comboStacking = comboStacking;
 
 		FlxG.save.flush();
@@ -268,14 +264,6 @@ class ClientPrefs
 		if (FlxG.save.data.gradientHitboxes != null)
 		{
 			gradientHitboxes = FlxG.save.data.gradientHitboxes;
-		}
-		if (FlxG.save.data.hitboxOpacity != null)
-		{
-			hitboxOpacity = FlxG.save.data.hitboxOpacity;
-		}
-		if (FlxG.save.data.virtualPadOpacity != null)
-		{
-			virtualPadOpacity = FlxG.save.data.virtualPadOpacity;
 		}
 		if (FlxG.save.data.comboStacking != null)
 			comboStacking = FlxG.save.data.comboStacking;
