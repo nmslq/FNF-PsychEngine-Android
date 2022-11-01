@@ -20,11 +20,11 @@ class AndroidControlsSubState extends FlxSubState
 	final controlsItems:Array<String> = ['Pad-Right', 'Pad-Left', 'Pad-Custom', 'Pad-Duo', 'Hitbox', 'Keyboard'];
 	var virtualPad:FlxVirtualPad;
 	var hitbox:FlxHitbox;
-	var upPozition:FlxText;
-	var downPozition:FlxText;
-	var leftPozition:FlxText;
-	var rightPozition:FlxText;
-	var inputvari:FlxText;
+	var upPosition:FlxText;
+	var downPosition:FlxText;
+	var leftPosition:FlxText;
+	var rightPosition:FlxText;
+	var grpControls:FlxText;
 	var funitext:FlxText;
 	var leftArrow:FlxSprite;
 	var rightArrow:FlxSprite;
@@ -36,109 +36,101 @@ class AndroidControlsSubState extends FlxSubState
 	override function create()
 	{
 		for (i in 0...controlsItems.length)
-			if (controlsItems[i] == AndroidControls.getMode())
+			if (controlsItems[i] == AndroidControls.mode)
 				curSelected = i;
 
-		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-		bg.color = 0xFFea71fd;
-		bg.screenCenter();
+		var bg:FlxSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.fromRGB(FlxG.random.int(0, 255), FlxG.random.int(0, 255), FlxG.random.int(0, 255)));
 		bg.scrollFactor.set();
-		bg.antialiasing = ClientPrefs.globalAntialiasing;
+		bg.alpha = 0.4;
 		add(bg);
 
 		var exitButton:FlxButton = new FlxButton(FlxG.width - 200, 50, 'Exit', function()
 		{
-			AndroidControls.setMode(controlsItems[Math.floor(curSelected)]);
+			AndroidControls.mode = controlsItems[Math.floor(curSelected)];
 
 			if (controlsItems[Math.floor(curSelected)] == 'Pad-Custom')
-				AndroidControls.setCustomMode(virtualPad);
+				AndroidControls.customVirtualPad = virtualPad;
 
 			FlxTransitionableState.skipNextTransOut = true;
 			FlxG.resetState();
 		});
 		exitButton.setGraphicSize(Std.int(exitButton.width) * 3);
-		exitButton.label.setFormat(Assets.getFont('assets/images/android/menu/Comic Sans MS.ttf').fontName, 16, FlxColor.WHITE, CENTER, true);
+		exitButton.label.setFormat(Assets.getFont('assets/android/menu/Funkin Bold.otf').fontName, 21, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,
+			FlxColor.BLACK, true);
 		exitButton.color = FlxColor.YELLOW;
 		add(exitButton);
 
 		resetButton = new FlxButton(FlxG.width - 200, 50, 'Reset', function()
 		{
-			if (resetButton.visible && virtualPad != null)
+			if (controlsItems[Math.floor(curSelected)] == 'Pad-Custom' && resetButton.visible) // being sure about something
 			{
-				virtualPad.buttonUp.x = FlxG.width - 258;
-				virtualPad.buttonUp.y = FlxG.height - 408;
-				virtualPad.buttonDown.x = FlxG.width - 258;
-				virtualPad.buttonDown.y = FlxG.height - 201;
-				virtualPad.buttonRight.x = FlxG.width - 132;
-				virtualPad.buttonRight.y = FlxG.height - 309;
-				virtualPad.buttonLeft.x = FlxG.width - 384;
-				virtualPad.buttonLeft.y = FlxG.height - 309;
+				MobileControls.customVirtualPad = new FlxVirtualPad(RIGHT_FULL, NONE);
+				reloadMobileControls('Pad-Custom');
 			}
 		});
 		resetButton.setGraphicSize(Std.int(resetButton.width) * 3);
-		resetButton.label.setFormat(Assets.getFont('assets/images/android/menu/Comic Sans MS.ttf').fontName, 16, FlxColor.WHITE, CENTER, true);
+		resetButton.label.setFormat(Assets.getFont('assets/android/menu/Funkin Bold.otf').fontName, 21, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,
+			FlxColor.BLACK, true);
 		resetButton.color = FlxColor.RED;
 		resetButton.visible = false;
 		add(resetButton);
 
-		virtualPad = new FlxVirtualPad(NONE, NONE);
-		virtualPad.visible = false;
-		add(virtualPad);
-
-		hitbox = new FlxHitbox();
-		hitbox.visible = false;
-		add(hitbox);
-
-		funitext = new FlxText(0, 50, 0, 'No Android Controls!', 32);
-		funitext.setFormat(Assets.getFont('assets/images/android/menu/Comic Sans MS.ttf').fontName, 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,
+		funitext = new FlxText(0, 0, 0, 'No Android Controls!', 42);
+		funitext.setFormat(Assets.getFont('assets/images/android/menu/Funkin Bold.otf').fontName, 42 FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,
 			FlxColor.BLACK, true);
-		funitext.borderSize = 2.4;
+		funitext.borderSize = 3;
+		funitext.borderQuality = 1;
 		funitext.screenCenter();
 		funitext.visible = false;
 		add(funitext);
 
-		inputvari = new FlxText(0, 100, 0, '', 32);
-		inputvari.setFormat(Assets.getFont('assets/images/android/menu/Comic Sans MS.ttf').fontName, 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,
+		grpControls = new FlxText(0, 100, 0, '', 42);
+		grpControls.setFormat(Assets.getFont('assets/images/android/menu/Funkin Bold.otf').fontName, 42, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,
 			FlxColor.BLACK, true);
-		inputvari.borderSize = 2.4;
-		inputvari.screenCenter(X);
-		add(inputvari);
+		grpControls.borderSize = 3;
+		grpControls.borderQuality = 1;
+		grpControls.screenCenter(X);
+		add(grpControls);
 
-		leftArrow = new FlxSprite(inputvari.x - 60, inputvari.y - 25);
+		leftArrow = new FlxSprite(grpControls.x - 60, grpControls.y - 25);
 		leftArrow.frames = Paths.getSparrowAtlas('android/menu/arrows');
 		leftArrow.animation.addByPrefix('idle', 'arrow left');
 		leftArrow.animation.play('idle');
 		add(leftArrow);
 
-		rightArrow = new FlxSprite(inputvari.x + inputvari.width + 10, inputvari.y - 25);
+		rightArrow = new FlxSprite(grpControls.x + grpControls.width + 10, grpControls.y - 25);
 		rightArrow.frames = Paths.getSparrowAtlas('android/menu/arrows');
 		rightArrow.animation.addByPrefix('idle', 'arrow right');
 		rightArrow.animation.play('idle');
 		add(rightArrow);
 
-		rightPozition = new FlxText(10, FlxG.height - 24, 0, '', 16);
-		rightPozition.setFormat(Assets.getFont('assets/images/android/menu/Comic Sans MS.ttf').fontName, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
+		rightPosition = new FlxText(10, FlxG.height - 24, 0, '', 21);
+		rightPosition.setFormat(Assets.getFont('assets/images/android/menu/Funkin Bold.otf').fontName, 21, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
 			FlxColor.BLACK, true);
-		rightPozition.borderSize = 2.4;
-		add(rightPozition);
+		rightPosition.borderSize = 3;
+		rightPosition.borderQuality = 1;
+		add(rightPosition);
 
-		leftPozition = new FlxText(10, FlxG.height - 44, 0, '', 16);
-		leftPozition.setFormat(Assets.getFont('assets/images/android/menu/Comic Sans MS.ttf').fontName, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
+		leftPosition = new FlxText(10, FlxG.height - 44, 0, '', 21);
+		leftPosition.setFormat(Assets.getFont('assets/images/android/menu/Funkin Bold.otf').fontName, 21, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
 			FlxColor.BLACK, true);
-		leftPozition.borderSize = 2.4;
-		add(leftPozition);
+		leftPosition.borderSize = 3;
+		leftPosition.borderQuality = 1;
+		add(leftPosition);
 
-		downPozition = new FlxText(10, FlxG.height - 64, 0, '', 16);
-		downPozition.setFormat(Assets.getFont('assets/images/android/menu/Comic Sans MS.ttf').fontName, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
+		downPosition = new FlxText(10, FlxG.height - 64, 0, '', 21);
+		downPosition.setFormat(Assets.getFont('assets/images/android/menu/Funkin Bold.otf').fontName, 21, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
 			FlxColor.BLACK, true);
-		downPozition.borderSize = 2.4;
-		add(downPozition);
+		downPosition.borderSize = 3;
+		downPosition.borderQuality = 1;
+		add(downPosition);
 
-		upPozition = new FlxText(10, FlxG.height - 84, 0, '', 16);
-		upPozition.setFormat(Assets.getFont('assets/images/android/menu/Comic Sans MS.ttf').fontName, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
+		upPosition = new FlxText(10, FlxG.height - 84, 0, '', 21;
+		upPosition.setFormat(Assets.getFont('assets/images/android/menu/Funkin Bold.otf').fontName, 21, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
 			FlxColor.BLACK, true);
-		upPozition.borderSize = 2.4;
-		add(upPozition);
+		upPosition.borderSize = 3;
+		upPosition.borderQuality = 1;
+		add(upPosition);
 
 		changeSelection();
 
@@ -148,11 +140,6 @@ class AndroidControlsSubState extends FlxSubState
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-
-		inputvari.text = controlsItems[curSelected];
-		inputvari.screenCenter(X);
-		leftArrow.x = inputvari.x - 60;
-		rightArrow.x = inputvari.x + inputvari.width + 10;
 
 		for (touch in FlxG.touches.list)
 		{
@@ -188,21 +175,26 @@ class AndroidControlsSubState extends FlxSubState
 						moveButton(touch, virtualPad.buttonLeft);
 				}
 			}
-		}
 
-		if (virtualPad != null)
+			for (i in [virtualPad.buttonUp, virtualPad.buttonDown, virtualPad.buttonRight, virtualPad.buttonLeft])
+					for (j in [upPosition, downPosition, leftPosition, rightPosition])
+						if (i == bindButton)
+							j.addFormat(new FlxTextFormat(FlxColor.YELLOW), 0, j.text.length);
+			}
+
+		if (virtualPad != null && controlsItems[Math.floor(curSelected)] == 'Pad-Custom')
 		{
 			if (virtualPad.buttonUp != null)
-				upPozition.text = 'Button Up X:' + virtualPad.buttonUp.x + ' Y:' + virtualPad.buttonUp.y;
+				upPosition.text = 'Button Up X:' + virtualPad.buttonUp.x + ' Y:' + virtualPad.buttonUp.y;
 
 			if (virtualPad.buttonDown != null)
-				downPozition.text = 'Button Down X:' + virtualPad.buttonDown.x + ' Y:' + virtualPad.buttonDown.y;
+				downPosition.text = 'Button Down X:' + virtualPad.buttonDown.x + ' Y:' + virtualPad.buttonDown.y;
 
 			if (virtualPad.buttonLeft != null)
-				leftPozition.text = 'Button Left X:' + virtualPad.buttonLeft.x + ' Y:' + virtualPad.buttonLeft.y;
+				leftPosition.text = 'Button Left X:' + virtualPad.buttonLeft.x + ' Y:' + virtualPad.buttonLeft.y;
 
 			if (virtualPad.buttonRight != null)
-				rightPozition.text = 'Button Right X:' + virtualPad.buttonRight.x + ' Y:' + virtualPad.buttonRight.y;
+				rightPosition.text = 'Button Right X:' + virtualPad.buttonRight.x + ' Y:' + virtualPad.buttonRight.y;
 		}
 	}
 
@@ -212,47 +204,25 @@ class AndroidControlsSubState extends FlxSubState
 
 		if (curSelected < 0)
 			curSelected = controlsItems.length - 1;
-		if (curSelected >= controlsItems.length)
+		else if (curSelected >= controlsItems.length)
 			curSelected = 0;
+
+		grpControls.text = controlsItems[curSelected].toUpperCase();
+		grpControls.screenCenter(X);
+
+		leftArrow.x = grpControls.x - 60;
+		rightArrow.x = grpControls.x + grpControls.width + 10;
 
 		var daChoice:String = controlsItems[Math.floor(curSelected)];
 
-		switch (daChoice)
-		{
-			case 'Pad-Right':
-				hitbox.visible = false;
-				remove(virtualPad);
-				virtualPad = new FlxVirtualPad(RIGHT_FULL, NONE);
-				add(virtualPad);
-			case 'Pad-Left':
-				hitbox.visible = false;
-				remove(virtualPad);
-				virtualPad = new FlxVirtualPad(LEFT_FULL, NONE);
-				add(virtualPad);
-			case 'Pad-Custom':
-				hitbox.visible = false;
-				remove(virtualPad);
-				virtualPad = AndroidControls.getCustomMode(new FlxVirtualPad(RIGHT_FULL, NONE));
-				add(virtualPad);
-			case 'Pad-Duo':
-				hitbox.visible = false;
-				remove(virtualPad);
-				virtualPad = new FlxVirtualPad(BOTH_FULL, NONE);
-				add(virtualPad);
-			case 'Hitbox':
-				hitbox.visible = true;
-				virtualPad.visible = false;
-			case 'Keyboard':
-				hitbox.visible = false;
-				virtualPad.visible = false;
-		}
+		reloadMobileControls(daChoice);
 
 		funitext.visible = daChoice == 'Keyboard';
 		resetButton.visible = daChoice == 'Pad-Custom';
-		upPozition.visible = daChoice == 'Pad-Custom';
-		downPozition.visible = daChoice == 'Pad-Custom';
-		leftPozition.visible = daChoice == 'Pad-Custom';
-		rightPozition.visible = daChoice == 'Pad-Custom';
+		upPosition.visible = daChoice == 'Pad-Custom';
+		downPosition.visible = daChoice == 'Pad-Custom';
+		leftPosition.visible = daChoice == 'Pad-Custom';
+		rightPosition.visible = daChoice == 'Pad-Custom';
 	}
 
 	function moveButton(touch:FlxTouch, button:FlxButton):Void
@@ -260,6 +230,53 @@ class AndroidControlsSubState extends FlxSubState
 		bindButton = button;
 		bindButton.x = touch.x - Std.int(bindButton.width / 2);
 		bindButton.y = touch.y - Std.int(bindButton.height / 2);
-		buttonBinded = true;
+
+		if (!buttonBinded)
+			buttonBinded = true;
+	}
+
+	function reloadMobileControls(daChoice:String):Void
+	{
+
+		switch (daChoice)
+		{
+			case 'Pad-Right':
+				removeControls();
+				virtualPad = new FlxVirtualPad(RIGHT_FULL, NONE);
+				add(virtualPad);
+			case 'Pad-Left':
+				removeControls();
+				virtualPad = new FlxVirtualPad(LEFT_FULL, NONE);
+				add(virtualPad);
+			case 'Pad-Custom':
+				removeControls();
+				virtualPad = AndroidControls.customVirtualPad;
+				add(virtualPad);
+			case 'Pad-Duo':
+				removeControls();
+				virtualPad = new FlxVirtualPad(BOTH_FULL, NONE);
+				add(virtualPad);
+			case 'Hitbox':
+				removeControls();
+				hitbox = new FlxHitbox();
+				add(hitbox);
+			default:
+				removeControls();
+		}
+
+		if (virtualPad != null)
+			virtualPad.visible = (daChoice != 'Hitbox' && daChoice != 'Keyboard');
+
+		if (hitbox != null)
+			hitbox.visible = (daChoice == 'hitbox');
+	}
+
+	private function removeControls():Void
+	{
+		if (virtualPad != null)
+			remove(virtualPad);
+
+		if (hitbox != null)
+			remove(hitbox);
 	}
 }
