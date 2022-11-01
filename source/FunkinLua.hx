@@ -418,6 +418,21 @@ class FunkinLua {
 			return null;
 			#end
 		});
+		Lua_helper.add_callback(lua, "getShaderSampler2D", function(obj:String, prop:String) {
+			#if (!flash && MODS_ALLOWED && sys)
+			var shader:FlxRuntimeShader = getShader(obj);
+			if (shader == null)
+			{
+				Lua.pushnil(lua);
+				return null;
+			}
+			return shader.getSampler2D(prop);
+			#else
+			luaTrace("getShaderSampler2D: Platform unsupported for Runtime Shaders!", false, false, FlxColor.RED);
+			Lua.pushnil(lua);
+			return null;
+			#end
+		});
 
 		Lua_helper.add_callback(lua, "setShaderBool", function(obj:String, prop:String, value:Bool) {
 			#if (!flash && MODS_ALLOWED && sys)
