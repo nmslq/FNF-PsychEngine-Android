@@ -31,7 +31,7 @@ class Main extends Sprite
 	{
 		super();
 
-		SUtil.check();
+		SUtil.checkPermissions();
 	
 		ClientPrefs.loadDefaultKeys();
 
