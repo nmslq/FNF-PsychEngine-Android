@@ -3,7 +3,6 @@ package android.flixel;
 import android.flixel.FlxButton;
 import flixel.FlxG;
 import flixel.util.FlxColor;
-import flixel.util.FlxDestroyUtil;
 import flixel.group.FlxSpriteGroup;
 import openfl.display.Shape;
 import openfl.display.BitmapData;
@@ -89,8 +88,8 @@ class FlxHitbox extends FlxSpriteGroup
 		hint.alpha = 0.00001;
 		hint.onDown.callback = function()
 		{
-			if (hint.alpha != AndroidControls.getOpacity(true))
-				hint.alpha = AndroidControls.getOpacity(true);
+			if (hint.alpha != 0.2)
+				hint.alpha = 0.2;
 		}
 		hint.onUp.callback = function()
 		{

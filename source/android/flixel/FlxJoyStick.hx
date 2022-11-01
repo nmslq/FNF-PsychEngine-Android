@@ -140,7 +140,7 @@ class FlxJoyStick extends FlxSpriteGroup
 		base.scrollFactor.set();
 		base.solid = false;
 		base.immovable = true;
-		base.alpha = AndroidControls.getOpacity();
+		base.alpha = 0.6;
 		#if FLX_DEBUG
 		base.ignoreDrawDebug = true;
 		#end
@@ -159,7 +159,7 @@ class FlxJoyStick extends FlxSpriteGroup
 		thumb.scrollFactor.set();
 		thumb.solid = false;
 		thumb.immovable = true;
-		thumb.alpha = AndroidControls.getOpacity();
+		thumb.alpha = 0.6;
 		#if FLX_DEBUG
 		thumb.ignoreDrawDebug = true;
 		#end
