@@ -76,7 +76,7 @@ class AndroidControlsSubState extends FlxSubState
 		add(resetButton);
 
 		funitext = new FlxText(0, 0, 0, 'No Android Controls!', 42);
-		funitext.setFormat(Assets.getFont('assets/images/android/menu/Funkin Bold.otf').fontName, 42 FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,
+		funitext.setFormat(Assets.getFont('assets/images/android/menu/Funkin Bold.otf').fontName, 42, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,
 			FlxColor.BLACK, true);
 		funitext.borderSize = 3;
 		funitext.borderQuality = 1;
