@@ -60,7 +60,7 @@ class MusicBeatState extends FlxUIState
 
 	public function addAndroidControls(DefaultDrawTarget:Bool = true)
 	{
-		if (mobileControls != null)
+		if (androidControls != null)
 			removeAndroidControls();
 
 		androidControls = new AndroidControls();
