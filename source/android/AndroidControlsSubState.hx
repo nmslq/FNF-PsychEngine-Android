@@ -125,7 +125,7 @@ class AndroidControlsSubState extends FlxSubState
 		downPosition.borderQuality = 1;
 		add(downPosition);
 
-		upPosition = new FlxText(10, FlxG.height - 84, 0, '', 21;
+		upPosition = new FlxText(10, FlxG.height - 84, 0, '', 21);
 		upPosition.setFormat(Assets.getFont('assets/images/android/menu/Funkin Bold.otf').fontName, 21, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
 			FlxColor.BLACK, true);
 		upPosition.borderSize = 3;
