@@ -55,7 +55,7 @@ class AndroidControlsSubState extends FlxSubState
 			FlxG.resetState();
 		});
 		exitButton.setGraphicSize(Std.int(exitButton.width) * 3);
-		exitButton.label.setFormat(Assets.getFont('assets/android/menu/Funkin Bold.otf').fontName, 21, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,
+		exitButton.label.setFormat(Assets.getFont('assets/images/android/menu/Funkin Bold.otf').fontName, 21, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,
 			FlxColor.BLACK, true);
 		exitButton.color = FlxColor.YELLOW;
 		add(exitButton);
@@ -69,7 +69,7 @@ class AndroidControlsSubState extends FlxSubState
 			}
 		});
 		resetButton.setGraphicSize(Std.int(resetButton.width) * 3);
-		resetButton.label.setFormat(Assets.getFont('assets/android/menu/Funkin Bold.otf').fontName, 21, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,
+		resetButton.label.setFormat(Assets.getFont('assets/images/android/menu/Funkin Bold.otf').fontName, 21, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,
 			FlxColor.BLACK, true);
 		resetButton.color = FlxColor.RED;
 		resetButton.visible = false;
