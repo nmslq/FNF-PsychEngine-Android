@@ -126,6 +126,7 @@ class Scanline extends FlxShader
 		uniform bool lockAlpha;
 		void main()
 		{
+			#pragma body
 			if (mod(floor(openfl_TextureCoordv.y * openfl_TextureSize.y / scale), 2.0) == 0.0 ){
 				float bitch = 1.0;
 	
@@ -204,6 +205,7 @@ class Tiltshift extends FlxShader
 		const float maxOffs     = (float(steps-1.0)) / +2.0;
 		 
 		void main() {
+			#pragma body
 			float amount;
 			vec4 blurred;
 				
@@ -255,6 +257,7 @@ class GreyscaleShader extends FlxShader
 	@:glFragmentSource('
 	#pragma header
 	void main() {
+		#pragma body
 		vec4 color = texture2D(bitmap, openfl_TextureCoordv);
 		float gray = dot(color.rgb, vec3(0.299, 0.587, 0.114));
 		gl_FragColor = vec4(vec3(gray), color.a);
@@ -406,6 +409,7 @@ class Grain extends FlxShader
 
 		void main()
 		{
+			#pragma body
 			width = openfl_TextureSize.x;
 			height = openfl_TextureSize.y;
 
@@ -448,10 +452,11 @@ class Grain extends FlxShader
 
 class VCRDistortionEffect extends Effect
 {
-	public var shader:VCRDistortionShader = new VCRDistortionShader();
+	public var shader:VCRDistortionShader;
 
 	public function new(glitchFactor:Float, distortion:Bool = true, perspectiveOn:Bool = true, vignetteMoving:Bool = true)
 	{
+		shader = new VCRDistortionShader();
 		shader.iTime.value = [0];
 		shader.vignetteOn.value = [true];
 		shader.perspectiveOn.value = [perspectiveOn];
@@ -843,6 +848,218 @@ class DistortionShader extends FlxShader
 	}
 }
 
+class VHSEffect extends Effect
+{
+	public var shader:VHSShader;
+
+	public function new(?noisePercent:Float = 0.0, ?range:Float = 0.05, ?offsetIntensity:Float = 0.02)
+	{
+		shader = new VHSShader();
+		shader.iTime.value = [0];
+		shader.noisePercent.value = [noisePercent];
+		shader.range.value = [range];
+		shader.offsetIntensity.value = [offsetIntensity];
+		shader.iResolution.value = [Lib.current.stage.stageWidth, Lib.current.stage.stageHeight];
+		PlayState.instance.shaderUpdates.push(update);
+	}
+
+	public function update(elapsed:Float)
+	{
+		shader.iTime.value[0] += elapsed;
+		shader.iResolution.value = [Lib.current.stage.stageWidth, Lib.current.stage.stageHeight];
+	}
+
+	public function setNoise(amount:Float)
+	{
+		shader.noisePercent.value[0] = amount;
+	}
+}
+
+class VHSShader extends FlxShader // i HATE shaders xd -lunar https://www.shadertoy.com/view/ldjGzV https://www.shadertoy.com/view/Ms3XWH https://www.shadertoy.com/view/XtK3W3
+{
+	@:glFragmentSource('
+		#pragma header
+
+		uniform float range;
+		uniform float iTime;
+		uniform sampler2D noiseTexture;
+		uniform float noisePercent;
+		uniform vec3 iResolution;
+		uniform float offsetIntensity;
+		
+		float rand(vec2 co)
+		{
+			float a = 12.9898;
+			float b = 78.233;
+			float c = 43758.5453;
+			float dt= dot(co.xy ,vec2(a,b));
+			float sn= mod(dt,3.14);
+			return fract(sin(sn) * c);
+		}
+
+		vec3 mod289(vec3 x) {
+			return x - floor(x * (1.0 / 289.0)) * 289.0;
+		}
+
+		vec2 mod289(vec2 x) {
+			return x - floor(x * (1.0 / 289.0)) * 289.0;
+		}
+
+		vec3 permute(vec3 x) {
+			return mod289(((x*34.0)+1.0)*x);
+		}
+
+		float snoise(vec2 v)
+		{
+			 const vec4 C = vec4(0.211324865405187,  // (3.0-sqrt(3.0))/6.0
+                      0.366025403784439,  // 0.5*(sqrt(3.0)-1.0)
+                     -0.577350269189626,  // -1.0 + 2.0 * C.x
+                      0.024390243902439); // 1.0 / 41.0
+			// First corner
+			vec2 i  = floor(v + dot(v, C.yy) );
+			vec2 x0 = v -   i + dot(i, C.xx);
+
+			// Other corners
+			vec2 i1;
+			//i1.x = step( x0.y, x0.x ); // x0.x > x0.y ? 1.0 : 0.0
+			//i1.y = 1.0 - i1.x;
+			i1 = (x0.x > x0.y) ? vec2(1.0, 0.0) : vec2(0.0, 1.0);
+			// x0 = x0 - 0.0 + 0.0 * C.xx ;
+			// x1 = x0 - i1 + 1.0 * C.xx ;
+			// x2 = x0 - 1.0 + 2.0 * C.xx ;
+			vec4 x12 = x0.xyxy + C.xxzz;
+			x12.xy -= i1;
+
+			// Permutations
+			i = mod289(i); // Avoid truncation effects in permutation
+			vec3 p = permute( permute( i.y + vec3(0.0, i1.y, 1.0 ))
+					+ i.x + vec3(0.0, i1.x, 1.0 ));
+
+			vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);
+			m = m*m ;
+			m = m*m ;
+
+			// Gradients: 41 points uniformly over a line, mapped onto a diamond.
+			// The ring size 17*17 = 289 is close to a multiple of 41 (41*7 = 287)
+
+			vec3 x = 2.0 * fract(p * C.www) - 1.0;
+			vec3 h = abs(x) - 0.5;
+			vec3 ox = floor(x + 0.5);
+			vec3 a0 = x - ox;
+
+			// Normalise gradients implicitly by scaling m
+			// Approximation of: m *= inversesqrt( a0*a0 + h*h );
+			m *= 1.79284291400159 - 0.85373472095314 * ( a0*a0 + h*h );
+
+			// Compute final noise value at P
+			vec3 g;
+			g.x  = a0.x  * x0.x  + h.x  * x0.y;
+			g.yz = a0.yz * x12.xz + h.yz * x12.yw;
+			return 90.0 * dot(m, g);
+		}
+			
+		float noise(vec2 p)
+		{
+			return rand(p) * noisePercent;
+		}
+		
+		float onOff(float a, float b, float c)
+		{
+			return step(c, sin(iTime + a*cos(iTime*b)));
+		}
+
+		float ramp(float y, float start, float end)
+		{
+			float inside = step(start,y) - step(end,y);
+			float fact = (y-start)/(end-start)*inside;
+			return (1.0-fact) * inside;
+		}
+
+		float stripes(vec2 uv)
+		{
+			float noi = noise(uv*vec2(0.5,1.0) + vec2(1.0,3.0));
+			return ramp(mod(uv.y*4.0 + iTime/2.0+sin(iTime + sin(iTime*0.63)),1.0),0.5,0.6)*noi;
+		}
+
+		vec4 getVideo(vec2 uv)
+		{
+
+			float time = iTime * 2.0;
+			
+			// Create large, incidental noise waves
+			float noise2 = max(0.0, snoise(vec2(time, uv.y * 0.3)) - 0.3) * (1.0 / 0.7);
+			
+			// Offset by smaller, constant noise waves
+			noise2 = noise2 + (snoise(vec2(time*10.0, uv.y * 2.4)) - 0.5) * 0.15;
+			
+			// Apply the noise as x displacement for every line
+			float xpos = uv.x - noise2 * noise2 * 0.25;
+
+			vec2 look = vec2(xpos, uv.y);
+
+			float window = 1.0/(2.0+20.0*(look.y-mod(iTime ,1.0))*(look.y-mod(iTime ,1.0)));
+			float vShift = 0.2*onOff(2.0,3.0,0.9) * (sin(iTime)*sin(iTime*200.0) + (0.2 + 0.1*sin(iTime*200.0)*cos(iTime/10.0)));
+			look.y = mod(look.y + vShift, 1.0);
+			vec4 video = vec4(flixel_texture2D(bitmap,look));
+			return video;
+		}
+
+		vec2 screenDistort(vec2 uv)
+		{
+			uv -= vec2(0.5,0.5);
+			uv = uv*1.2*(1.0/1.2+2.0*uv.x*uv.x*uv.y*uv.y);
+			uv += vec2(0.5,0.5);
+			return uv;
+		}
+
+		float verticalBar(float pos, float uvY, float offset)
+		{
+			float edge0 = (pos - range);
+			float edge1 = (pos + range);
+
+			float x = smoothstep(edge0, pos, uvY) * offset;
+			x -= smoothstep(pos, edge1, uvY) * offset;
+			return x;
+		}
+
+		void main()
+        {
+        	#pragma body
+			vec2 uv = openfl_TextureCoordv.xy;   
+
+			for (float i = 0.0; i < 0.71; i += 0.1313)
+			{
+				float d = mod(iTime * i, 1.7);
+				float o = sin(1.0 - tan(iTime * 0.24 * i));
+				o *= offsetIntensity;
+				uv.x += verticalBar(d, uv.y, o);
+			}
+
+			uv = screenDistort(uv);
+			vec4 video = getVideo(uv);
+			float x =  0.0;
+
+			video.r = getVideo(vec2(x+uv.x+(0.001/1.0),uv.y+(0.001/2.0)));
+          	video.g = getVideo(vec2(x+uv.x+(0.000/1.0),uv.y-(0.002/2.0)));
+          	video.b = getVideo(vec2(x+uv.x-(0.002/1.0),uv.y+(0.000/2.0)));
+			
+			float vigAmt = 3.0+0.3*sin(iTime + 5.0*cos(iTime*5.0));
+			float vignette = (1.0-vigAmt*(uv.y-0.5)*(uv.y-0.5))*(1.0-vigAmt*(uv.x-0.5)*(uv.x-0.5));
+			
+			video += stripes(uv);
+			video += noise(uv*2.0)/2.0;
+			video *= vignette;
+			video *= (12.0+mod(uv.y*30.0+iTime,1.0))/13.0;
+			
+			gl_FragColor = vec4(video);
+		}
+	')
+	public function new()
+	{
+		super();
+	}
+}
+
 class BlurEffect extends Effect
 {
 	public var shader:BlurShader;
@@ -930,6 +1147,7 @@ class BloomShader extends FlxShader
 	uniform float blurSize;
 void main()
 {
+	#pragma body
    vec4 sum = vec4(0);
    vec2 texcoord = openfl_TextureCoordv;
    int j;
@@ -1065,6 +1283,60 @@ class DistortBGEffect extends Effect
     }
 }
 
+class PulseEffect extends Effect
+{
+	public var shader:PulseShader = new PulseShader();
+
+	public var waveSpeed(default, set):Float = 0;
+	public var waveFrequency(default, set):Float = 0;
+	public var waveAmplitude(default, set):Float = 0;
+	public var Enabled(default, set):Bool = false;
+
+	public function new(waveSpeed:Float,waveFrequency:Float,waveAmplitude:Float):Void
+	{
+		this.waveSpeed = waveSpeed;
+		this.waveFrequency = waveFrequency;
+		this.waveAmplitude = waveAmplitude;
+		shader.uTime.value = [0];
+		shader.uampmul.value = [0];
+		shader.uEnabled.value = [false];
+		PlayState.instance.shaderUpdates.push(update);
+	}
+
+	public function update(elapsed:Float):Void
+	{
+		shader.uTime.value[0] += elapsed;
+	}
+
+	function set_waveSpeed(v:Float):Float
+    {
+		waveSpeed = v;
+		shader.uSpeed.value = [waveSpeed];
+		return v;
+	}
+
+	function set_Enabled(v:Bool):Bool
+	{
+		Enabled = v;
+		shader.uEnabled.value = [Enabled];
+		return v;
+	}
+    
+	function set_waveFrequency(v:Float):Float
+	{
+		waveFrequency = v;
+		shader.uFrequency.value = [waveFrequency];
+		return v;
+	}
+    
+	function set_waveAmplitude(v:Float):Float
+	{
+		waveAmplitude = v;
+		shader.uWaveAmplitude.value = [waveAmplitude];
+		return v;
+	}
+}
+
 class InvertColorsEffect extends Effect
 {
 	public var shader:InvertShader = new InvertShader();
@@ -1114,6 +1386,7 @@ class GlitchShader extends FlxShader
 
     void main()
     {
+    	#pragma body
         vec2 uv = sineWave(openfl_TextureCoordv);
         gl_FragColor = texture2D(bitmap, uv);
     }')
@@ -1137,6 +1410,7 @@ class InvertShader extends FlxShader
 
     void main()
     {
+    	#pragma body
         vec2 uv = openfl_TextureCoordv;
         gl_FragColor = sineWave(texture2D(bitmap, uv));
 		gl_FragColor.a = 1.0 - gl_FragColor.a;
@@ -1192,8 +1466,64 @@ class DistortBGShader extends FlxShader
 
     void main()
     {
+    	#pragma body
         vec2 uv = sineWave(openfl_TextureCoordv);
         gl_FragColor = makeBlack(texture2D(bitmap, uv)) + texture2D(bitmap,openfl_TextureCoordv);
+    }')
+
+    public function new()
+    {
+       super();
+    }
+}
+
+class PulseShader extends FlxShader
+{
+    @:glFragmentSource('
+    #pragma header
+    uniform float uampmul;
+
+    //modified version of the wave shader to create weird garbled corruption like messes
+    uniform float uTime;
+    
+    /**
+     * How fast the waves move over time
+     */
+    uniform float uSpeed;
+    
+    /**
+     * Number of waves over time
+     */
+    uniform float uFrequency;
+
+    uniform bool uEnabled;
+    
+    /**
+     * How much the pixels are going to stretch over the waves
+     */
+    uniform float uWaveAmplitude;
+
+    vec4 sineWave(vec4 pt, vec2 pos)
+    {
+        if (uampmul > 0.0)
+        {
+            float offsetX = sin(pt.y * uFrequency + uTime * uSpeed);
+            float offsetY = sin(pt.x * (uFrequency * 2.0) - (uTime / 2.0) * uSpeed);
+            float offsetZ = sin(pt.z * (uFrequency / 2.0) + (uTime / 3.0) * uSpeed);
+            pt.x = mix(pt.x,sin(pt.x / 2.0 * pt.y + (5.0 * offsetX) * pt.z),uWaveAmplitude * uampmul);
+            pt.y = mix(pt.y,sin(pt.y / 3.0 * pt.z + (2.0 * offsetZ) - pt.x),uWaveAmplitude * uampmul);
+            pt.z = mix(pt.z,sin(pt.z / 6.0 * (pt.x * offsetY) - (50.0 * offsetZ) * (pt.z * offsetX)),uWaveAmplitude * uampmul);
+        }
+
+
+        return vec4(pt.x, pt.y, pt.z, pt.w);
+    }
+
+    void main()
+    {
+    	#pragma body
+        vec2 uv = openfl_TextureCoordv;
+        gl_FragColor = sineWave(texture2D(bitmap, uv),uv);
     }')
 
     public function new()

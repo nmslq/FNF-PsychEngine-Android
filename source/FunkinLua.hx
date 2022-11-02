@@ -292,7 +292,7 @@ class FunkinLua {
 				return false;
 
 			#if (!flash && MODS_ALLOWED && sys)
-			if(!PlayState.instance.runtimeShaders.exists(shader) && !initLuaShader(shader))
+			if(!PlayState.instance.runtimeShaders.exists(shader) && !PlayState.instance.initLuaShader(shader))
 			{
 				luaTrace('setSpriteShader: Shader $shader is missing!', false, false, FlxColor.RED);
 				return false;
@@ -3033,6 +3033,10 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "addBlurEffect", function(camera:String, size:Float, qualitly:Float, dim:Float, directions:Float) {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new BlurEffect(size, qualitly, dim, directions));
+		});
+		Lua_helper.add_callback(lua, "addVHSEffect", function(camera:String, noisePercent:Float, range:Float, offsetIntensity:Float) {
+			if(ClientPrefs.shaders)
+				PlayState.instance.addShaderToCamera(camera, new VHSEffect(noisePercent, range, offsetIntensity));
 		});
 		Lua_helper.add_callback(lua, "addDistortionEffect", function(camera:String, glitchFactor:Float = 0.1, otherglitch:Float = 0.1, pushUpdate:Bool = true) {
 			if(ClientPrefs.shaders)
