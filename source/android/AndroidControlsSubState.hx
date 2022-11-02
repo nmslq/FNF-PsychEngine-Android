@@ -175,12 +175,7 @@ class AndroidControlsSubState extends FlxSubState
 						moveButton(touch, virtualPad.buttonLeft);
 				}
 			}
-
-			for (i in [virtualPad.buttonUp, virtualPad.buttonDown, virtualPad.buttonRight, virtualPad.buttonLeft])
-					for (j in [upPosition, downPosition, leftPosition, rightPosition])
-						if (i == bindButton)
-							j.addFormat(new FlxTextFormat(FlxColor.YELLOW), 0, j.text.length);
-			}
+		}
 
 		if (virtualPad != null && controlsItems[Math.floor(curSelected)] == 'Pad-Custom')
 		{
