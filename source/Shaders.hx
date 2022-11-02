@@ -1309,7 +1309,7 @@ class PulseEffect extends Effect
 	}
 
 	function set_waveSpeed(v:Float):Float
-    {
+	{
 		waveSpeed = v;
 		shader.uSpeed.value = [waveSpeed];
 		return v;
@@ -1479,7 +1479,7 @@ class DistortBGShader extends FlxShader
 
 class PulseShader extends FlxShader
 {
-    @:glFragmentSource('
+	@:glFragmentSource('
     #pragma header
     uniform float uampmul;
 
@@ -1526,10 +1526,10 @@ class PulseShader extends FlxShader
         gl_FragColor = sineWave(texture2D(bitmap, uv),uv);
     }')
 
-    public function new()
-    {
-       super();
-    }
+	public function new()
+	{
+		super();
+	}
 }
 
 class Effect

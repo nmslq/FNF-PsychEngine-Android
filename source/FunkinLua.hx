@@ -3030,11 +3030,11 @@ class FunkinLua {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new VCRDistortionEffect(glitchFactor, distortion, perspectiveOn, vignetteMoving));
 		});
-		Lua_helper.add_callback(lua, "addBlurEffect", function(camera:String, size:Float, qualitly:Float, dim:Float, directions:Float) {
+		Lua_helper.add_callback(lua, "addBlurEffect", function(camera:String, size:Float = 18.0, qualitly:Float = 8.0, dim:Float = 1.8, directions:Float = 16.0) {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new BlurEffect(size, qualitly, dim, directions));
 		});
-		Lua_helper.add_callback(lua, "addVHSEffect", function(camera:String, noisePercent:Float, range:Float, offsetIntensity:Float) {
+		Lua_helper.add_callback(lua, "addVHSEffect", function(camera:String, noisePercent:Float = 0.0, range:Float = 0.05, offsetIntensity:Float = 0.02) {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new VHSEffect(noisePercent, range, offsetIntensity));
 		});
@@ -3049,6 +3049,10 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "addDistortBGEffect", function(camera:String, waveSpeed:Float = 0.1, waveFrq:Float = 0.1, waveAmp:Float = 0.1) {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new DistortBGEffect(waveSpeed, waveFrq, waveAmp));
+		});
+		Lua_helper.add_callback(lua, "addPulseEffect", function(camera:String,waveSpeed:Float = 0.1,waveFrq:Float = 0.1,waveAmp:Float = 0.1) {
+			if(ClientPrefs.shaders)
+				PlayState.instance.addShaderToCamera(camera, new PulseEffect(waveSpeed,waveFrq,waveAmp));
 		});
 		Lua_helper.add_callback(lua, "addInvertEffect", function(camera:String, lockAlpha:Bool = false) {
 			if(ClientPrefs.shaders)
@@ -3620,7 +3624,6 @@ class DebugLuaText extends FlxText
 		if(disableTime < 0) disableTime = 0;
 		if(disableTime < 1) alpha = disableTime;
 	}
-	
 }
 
 class CustomSubstate extends MusicBeatSubstate
