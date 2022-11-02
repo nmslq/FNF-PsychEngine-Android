@@ -3034,9 +3034,9 @@ class FunkinLua {
 			if(ClientPrefs.shaders)
 				PlayState.instance.addShaderToCamera(camera, new BlurEffect(size, qualitly, dim, directions));
 		});
-		Lua_helper.add_callback(lua, "addVHSEffect", function(camera:String, noisePercent:Float = 0.0, range:Float = 0.05, offsetIntensity:Float = 0.02) {
+		Lua_helper.add_callback(lua, "addVHSEffect", function(camera:String) {
 			if(ClientPrefs.shaders)
-				PlayState.instance.addShaderToCamera(camera, new VHSEffect(noisePercent, range, offsetIntensity));
+				PlayState.instance.addShaderToCamera(camera, new VHSEffect());
 		});
 		Lua_helper.add_callback(lua, "addDistortionEffect", function(camera:String, glitchFactor:Float = 0.1, otherglitch:Float = 0.1, pushUpdate:Bool = true) {
 			if(ClientPrefs.shaders)
