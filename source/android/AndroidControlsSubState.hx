@@ -94,13 +94,13 @@ class AndroidControlsSubState extends FlxSubState
 		add(grpControls);
 
 		leftArrow = new FlxSprite(grpControls.x - 60, grpControls.y - 25);
-		leftArrow.frames = FlxAtlasFrames.fromSparrow(Assets.getBitmapData('assets/images/android/menu/arrows.png'), Assets.getText('assets/images/android/menu/arrows.xml'));
+		leftArrow.frames = Paths.getSparrowAtlas('android/menu/arrows'));
 		leftArrow.animation.addByPrefix('idle', 'arrow left');
 		leftArrow.animation.play('idle');
 		add(leftArrow);
 
 		rightArrow = new FlxSprite(grpControls.x + grpControls.width + 10, grpControls.y - 25);
-		rightArrow.frames = FlxAtlasFrames.fromSparrow(Assets.getBitmapData('assets/images/android/menu/arrows.png'), Assets.getText('assets/images/android/menu/arrows.xml'));
+		rightArrow.frames = Paths.getSparrowAtlas('android/menu/arrows'));
 		rightArrow.animation.addByPrefix('idle', 'arrow right');
 		rightArrow.animation.play('idle');
 		add(rightArrow);
