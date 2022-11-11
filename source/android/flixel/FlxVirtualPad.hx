@@ -188,7 +188,7 @@ class FlxVirtualPad extends FlxSpriteGroup
 	private function createButton(X:Float, Y:Float, Width:Int, Height:Int, Graphic:String, Color:Int = 0xFFFFFF):FlxButton
 	{
 		var button:FlxButton = new FlxButton(X, Y);
-		button.frames = FlxTileFrames.fromGraphic(Paths.getSparrowAtlas('assets/mobile/virtualpad/${Graphic}')), FlxPoint.get(Width, Height));
+		button.frames = FlxTileFrames.fromGraphic(Paths.getSparrowAtlas('android/virtualpad/${Graphic}')), FlxPoint.get(Width, Height));
 		button.solid = false;
 		button.immovable = true;
 		button.scrollFactor.set();
