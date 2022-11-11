@@ -656,7 +656,7 @@ class FlxRuntimeShader extends FlxShader
 	 * @param name The name of the parameter to modify.
 	 * @param value The new value to use.
 	 */
-	public function setBitmapData(name:String, value:openfl.display.BitmapData):Void
+	public function setSampler2D(name:String, value:openfl.display.BitmapData):Void
 	{
 		var prop:ShaderInput<openfl.display.BitmapData> = Reflect.field(this.data, name);
 		@:privateAccess
