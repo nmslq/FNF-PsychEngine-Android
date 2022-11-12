@@ -3,5 +3,5 @@ color 0a
 cd ..
 @echo on
 echo BUILDING GAME
-lime test android -release
+haxelib run lime test android -release
 pause
