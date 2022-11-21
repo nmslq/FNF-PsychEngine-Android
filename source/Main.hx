@@ -36,7 +36,7 @@ class Main extends Sprite
 	
 		ClientPrefs.loadDefaultKeys();
 
-		game = new FlxGame(0, 0, TitleState, 1, 60, 60, true, false);
+		game = new FlxGame(1280, 720, TitleState, 60, 60, true, false);
 		addChild(game);
 
 		fpsVar = new FPS(10, 3, 0xFFFFFF);
