@@ -453,7 +453,7 @@ class VCRDistortionEffect extends Effect
 {
 	public var shader:VCRDistortionShader;
 
-	public function new(glitchFactor:Float, distortion:Bool = true, perspectiveOn:Bool = true, vignetteMoving:Bool = true)
+	public function new(glitchFactor:Float, distortion:Bool = true, perspectiveOn:Bool = true, vignetteMoving:Bool = true, rgb:Bool = true, noise:Bool = true)
 	{
 		shader = new VCRDistortionShader();
 		shader.iTime.value = [0];
@@ -463,6 +463,8 @@ class VCRDistortionEffect extends Effect
 		shader.scanlinesOn.value = [true];
 		shader.vignetteMoving.value = [vignetteMoving];
 		shader.glitchModifier.value = [glitchFactor];
+		shader.rgb.value = [rgb];
+		shader.noise.value = [noise];
 		shader.iResolution.value = [Lib.current.stage.stageWidth, Lib.current.stage.stageHeight];
 		// var noise = Assets.getBitmapData(Paths.image("noise2"));
 		// shader.noiseTex.input = noise;
@@ -504,6 +506,16 @@ class VCRDistortionEffect extends Effect
 	{
 		shader.vignetteMoving.value[0] = state;
 	}
+
+	public function setRGB(state:Bool)
+	{
+		shader.rgb.value[0] = state;
+	}
+
+	public function setNoise(state:Bool)
+	{
+		shader.noise.value[0] = state;
+	}
 }
 
 class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ldjGzV and https://www.shadertoy.com/view/Ms23DR and https://www.shadertoy.com/view/MsXGD4 and https://www.shadertoy.com/view/Xtccz4
@@ -518,6 +530,8 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
     uniform bool distortionOn;
     uniform bool scanlinesOn;
     uniform bool vignetteMoving;
+    uniform bool rgb;
+    uniform bool noise;
    // uniform sampler2D noiseTex;
     uniform float glitchModifier;
     uniform vec3 iResolution;
@@ -606,12 +620,14 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
       float x =  0.0;
 
 
-      video.r = getVideo(vec2(x+uv.x+0.001,uv.y+0.001)).x+0.05;
-      video.g = getVideo(vec2(x+uv.x+0.000,uv.y-0.002)).y+0.05;
-      video.b = getVideo(vec2(x+uv.x-0.002,uv.y+0.000)).z+0.05;
-      video.r += 0.08*getVideo(0.75*vec2(x+0.025, -0.027)+vec2(uv.x+0.001,uv.y+0.001)).x;
-      video.g += 0.05*getVideo(0.75*vec2(x+-0.022, -0.02)+vec2(uv.x+0.000,uv.y-0.002)).y;
-      video.b += 0.08*getVideo(0.75*vec2(x+-0.02, -0.018)+vec2(uv.x-0.002,uv.y+0.000)).z;
+      if (rgb) {
+            video.r = getVideo(vec2(x+uv.x+0.001,uv.y+0.001)).x+0.05;
+            video.g = getVideo(vec2(x+uv.x+0.000,uv.y-0.002)).y+0.05;
+            video.b = getVideo(vec2(x+uv.x-0.002,uv.y+0.000)).z+0.05;
+            video.r += 0.08*getVideo(0.75*vec2(x+0.025, -0.027)+vec2(uv.x+0.001,uv.y+0.001)).x;
+            video.g += 0.05*getVideo(0.75*vec2(x+-0.022, -0.02)+vec2(uv.x+0.000,uv.y-0.002)).y;
+            video.b += 0.08*getVideo(0.75*vec2(x+-0.02, -0.018)+vec2(uv.x-0.002,uv.y+0.000)).z;
+      }
 
       video = clamp(video*0.6+0.4*video*video*1.0,0.0,1.0);
       if(vignetteMoving)
@@ -623,7 +639,11 @@ class VCRDistortionShader extends FlxShader // https://www.shadertoy.com/view/ld
     	 video *= vignette;
 
 
-      gl_FragColor = mix(video,vec4(noise(uv * 75.0)),0.05);
+      if(noise) {
+    	 gl_FragColor = mix(video,vec4(noise(uv * 75.0)),0.05);
+      }else{
+          gl_FragColor = video;
+      }
 
       if(curUV.x<0.0 || curUV.x>1.0 || curUV.y<0.0 || curUV.y>1.0){
         gl_FragColor = vec4(0.0,0.0,0.0,0.0);

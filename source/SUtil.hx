@@ -123,8 +123,6 @@ class SUtil
 				daPath = Context.getFilesDir() + '/';
 		}
 
-		SUtil.mkDirs(Path.directory(daPath));
-
 		return daPath;
 		#else
 		return '';
@@ -148,7 +146,7 @@ class SUtil
 					case CFunction:
 						errMsg += 'a C function\n';
 					case Module(m):
-						errMsg += 'module ' + m + '\n';
+						errMsg += 'module ( ' + m + ')\n';
 					case FilePos(s, file, line, column):
 						errMsg += file + ' (line ' + line + ')\n';
 					case Method(cname, meth):
