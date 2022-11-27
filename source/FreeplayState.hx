@@ -514,13 +514,11 @@ class FreeplayState extends MusicBeatState
 			bullShit++;
 
 			item.alpha = 0.6;
-			item.xAdd = 0;
 			// item.setGraphicSize(Std.int(item.width * 0.8));
 
 			if (item.targetY == 0)
 			{
 				item.alpha = 1;
-				item.xAdd = 70;
 				// item.setGraphicSize(Std.int(item.width));
 			}
 		}
