@@ -51,7 +51,7 @@ class MusicBeatState extends FlxUIState
 
 	public function removeVirtualPad()
 	{
-		if (trackedinputsUI != [])
+		if (trackedinputsUI.length > 0)
 			controls.removeAControlsInput(trackedinputsUI);
 
 		if (virtualPad != null)
@@ -115,7 +115,7 @@ class MusicBeatState extends FlxUIState
 		if (trackedinputsNOTES != [])
 			controls.removeAControlsInput(trackedinputsNOTES);
 
-		if (trackedinputsUI != [])
+		if (trackedinputsUI.length > 0)
 			controls.removeAControlsInput(trackedinputsUI);
 		#end
 
