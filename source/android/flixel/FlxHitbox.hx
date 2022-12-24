@@ -86,18 +86,16 @@ class FlxHitbox extends FlxSpriteGroup
 		hint.immovable = true;
 		hint.scrollFactor.set();
 		hint.alpha = 0.00001;
-		hint.onDown.callback = function()
+		hint.onDown.callback = hint.onOver.callback = function()
 		{
-			if (hint.alpha != 0.2)
-				hint.alpha = 0.2;
+			if (hint.alpha != 0.25)
+				hint.alpha = 0.25;
 		}
-		hint.onUp.callback = function()
+		hint.onUp.callback = hint.onOut.callback = function()
 		{
 			if (hint.alpha != 0.00001)
 				hint.alpha = 0.00001;
 		}
-		hint.onOut.callback = hint.onUp.callback;
-		hint.onOver.callback = hint.onDown.callback;
 		#if FLX_DEBUG
 		hint.ignoreDrawDebug = true;
 		#end
