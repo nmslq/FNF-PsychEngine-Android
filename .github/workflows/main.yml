@@ -180,7 +180,7 @@ jobs:
           haxelib install lime 7.9.0
           haxelib install openfl 9.1.0
           haxelib --never install flixel
-          haxelib run lime setup flixel
+          haxelib run lime setup flixel 5.0.0
           haxelib install flixel-tools
           haxelib install flixel-ui
           haxelib install hscript
@@ -209,7 +209,7 @@ jobs:
       - name: Compile
         run: haxelib run lime build android -${{ matrix.arch }}
 
-      - name: Publish Artifact
+      - name: Upload Artifact
         uses: actions/upload-artifact@main
         with:
           name: androidBuild
