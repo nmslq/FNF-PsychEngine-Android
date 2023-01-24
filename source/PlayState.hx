@@ -75,9 +75,7 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
-#if VIDEOS_ALLOWED
-import handlers.PsychVideo;
-#end
+import handlers.PsychVideo as PsychVideo;
 
 using StringTools;
 
