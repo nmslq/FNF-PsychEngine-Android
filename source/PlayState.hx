@@ -5384,7 +5384,7 @@ class PlayState extends MusicBeatState
 		}
 		else
 		{
-			luaToLoad = Paths.getPreloadPath(luaFile);
+			luaToLoad = SUtil.getStorageDirectory() + Paths.getPreloadPath(luaFile);
 			if(FileSystem.exists(luaToLoad))
 			{
 				luaArray.push(new FunkinLua(luaToLoad));
