@@ -75,6 +75,8 @@ class FunkinLua {
 	public static var hscript:HScript = null;
 	#end
 
+	public var scriptCode:String;
+
 	public function new(script:String, ?scriptCode:String) {
 		#if LUA_ALLOWED
 		lua = LuaL.newstate();
@@ -87,7 +89,12 @@ class FunkinLua {
 		//LuaL.dostring(lua, CLENSE);
 		try
 		{
-			var result:Int = scriptCode != null ? LuaL.dostring(lua, scriptCode) : LuaL.dofile(lua, script);
+			var result;
+			if(scriptCode != null) 
+				result = LuaL.dostring(lua, scriptCode);
+			else
+				result = LuaL.dofile(lua, script);
+
 			var resultStr:String = Lua.tostring(lua, result);
 			if(resultStr != null && result != 0) {
 				trace('Error on lua script! ' + resultStr);
@@ -105,6 +112,10 @@ class FunkinLua {
 			trace(e);
 			return;
 		}
+
+		if (scriptCode != null) 
+			this.scriptCode = scriptCode;
+
 		scriptName = script;
 		initHaxeModule();
 
@@ -251,28 +262,6 @@ class FunkinLua {
 				return true;
 			}
 			return false;
-		});
-
-		Lua_helper.add_callback(lua, "giveAchievement", function(name:String) {
-			var me = this;
-			if(Achievements.isAchievementUnlocked(name) || !PlayState.instance.achievementArray.contains(me))
-			{
-				if(!PlayState.instance.achievementArray.contains(me))
-				{
-					luaTrace("giveAchievement: This lua file is not a custom achievement lua.", false, false, FlxColor.RED);
-				}
-
-				return false;
-			}
-			@:privateAccess
-			if(PlayState.instance != null)
-			{
-				Achievements.unlockAchievement(name);
-				PlayState.instance.startAchievement(name);
-				ClientPrefs.saveSettings();
-				return true;
-			}
-			else return false;
 		});
 
 		Lua_helper.add_callback(lua, "initLuaShader", function(name:String) {

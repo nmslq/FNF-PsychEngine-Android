@@ -62,6 +62,13 @@ import DialogueBoxPsych;
 import Conductor.Rating;
 import Shaders;
 
+#if LUA_ALLOWED
+import llua.Lua;
+import llua.LuaL;
+import llua.State;
+import llua.Convert;
+#end
+
 #if !flash
 import flixel.addons.display.FlxRuntimeShader;
 import openfl.filters.ShaderFilter;
@@ -75,7 +82,8 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
-import handlers.PsychVideo;
+//import handlers.PsychVideo;
+import hxcodec.VideoHandler;
 
 using StringTools;
 
@@ -315,11 +323,12 @@ class PlayState extends MusicBeatState
 	var keysPressed:Array<Bool> = [];
 	var boyfriendIdleTime:Float = 0.0;
 	var boyfriendIdled:Bool = false;
+	var achievementsArray:Array<FunkinLua> = [];
+	var achievementWeeks:Array<String> = [];
 
 	// Lua shit
 	public static var instance:PlayState;
 	public var luaArray:Array<FunkinLua> = [];
-	public var achievementArray:Array<FunkinLua> = [];
 	public var achievementWeeks:Array<String> = [];
 	private var luaDebugGroup:FlxTypedGroup<DebugLuaText>;
 	public var introSoundsSuffix:String = '';
@@ -882,6 +891,71 @@ class PlayState extends MusicBeatState
 		luaDebugGroup = new FlxTypedGroup<DebugLuaText>();
 		luaDebugGroup.cameras = [camOther];
 		add(luaDebugGroup);
+		#end
+
+		function addAbilityToUnlockAchievements(funkinLua:FunkinLua)
+		{
+			var lua = funkinLua.lua;
+			if (lua != null){
+				Lua_helper.add_callback(lua, "giveAchievement", function(name:String){
+					if (luaArray.contains(funkinLua))
+						throw 'Illegal attempt to unlock ' + name;
+					@:privateAccess
+					if (Achievements.isAchievementUnlocked(name))
+						return "Achievement " + name + " is already unlocked!";
+					if (!Achievements.exists(name))
+						return "Achievement " + name + " does not exist."; 
+					if(instance != null) { 
+						Achievements.unlockAchievement(name);
+						instance.startAchievement(name);
+						ClientPrefs.saveSettings();
+						return "Unlocked achievement " + name + "!";
+					}
+					else return "Instance is null.";
+				});
+		
+			}
+		}
+
+		//CUSTOM ACHIVEMENTS
+		#if (MODS_ALLOWED && LUA_ALLOWED && ACHIEVEMENTS_ALLOWED)
+		var luaFiles:Array<String> = Achievements.getModAchievements().copy();
+		if(luaFiles.length > 0)
+		{
+			for(luaFile in luaFiles)
+			{
+				var meta:Achievements.AchievementMeta = try Json.parse(File.getContent(luaFile.substring(0, luaFile.length - 4) + '.json')) catch(e) throw e;
+				if (meta != null)
+				{
+					if ((meta.global == null || meta.global.length < 1) && meta.song != null && meta.song.length > 0 && SONG.song.toLowerCase().replace(' ', '-') != meta.song.toLowerCase().replace(' ', '-'))
+						continue;
+
+					var lua = new FunkinLua(luaFile);
+					addAbilityToUnlockAchievements(lua);
+					achievementsArray.push(lua);
+				}
+			}
+		}
+
+		var achievementMetas = Achievements.getModAchievementMetas().copy();
+		for (i in achievementMetas) { 
+			if (i.global == null || i.global.length < 1)
+			{
+				if(i.song != null)
+				{
+					if(i.song.length > 0 && SONG.song.toLowerCase().replace(' ', '-') != i.song.toLowerCase().replace(' ', '-'))
+						continue;
+				}
+				if(i.lua_code != null) {
+					var lua = new FunkinLua(null, i.lua_code);
+					addAbilityToUnlockAchievements(lua);
+					achievementsArray.push(lua);
+				}
+				if(i.week_nomiss != null) {
+					achievementWeeks.push(i.week_nomiss + '_nomiss');
+				}
+			}
+		}
 		#end
 
 		// "GLOBAL" SCRIPTS
@@ -1737,7 +1811,7 @@ class PlayState extends MusicBeatState
 		char.y += char.positionArray[1];
 	}
 
-	public function loadVideo(name:String) {
+	/*public function loadVideo(name:String) {
 		#if VIDEOS_ALLOWED
 		var videoHandler:PsychVideo = new PsychVideo();
 		videoHandler.loadCutscene(name);
@@ -1801,6 +1875,37 @@ class PlayState extends MusicBeatState
 		add(video);
 
 		return;
+		#else
+		FlxG.log.warn('Platform not supported!');
+		startAndEnd();
+		return;
+		#end
+	}*/
+
+	public function startVideo(name:String)
+	{
+		#if VIDEOS_ALLOWED
+		inCutscene = true;
+
+		var filepath:String = Paths.video(name);
+		#if sys
+		if(!FileSystem.exists(filepath))
+		#else
+		if(!OpenFlAssets.exists(filepath))
+		#end
+		{
+			FlxG.log.warn('Couldnt find video file: ' + name);
+			startAndEnd();
+			return;
+		}
+
+		var video:VideoHandler = new VideoHandler();
+		video.playVideo(filepath);
+		video.finishCallback = function()
+		{
+			startAndEnd();
+			return;
+		}
 		#else
 		FlxG.log.warn('Platform not supported!');
 		startAndEnd();
@@ -2828,8 +2933,8 @@ class PlayState extends MusicBeatState
 				phillyGlowParticles.visible = false;
 				insert(members.indexOf(phillyGlowGradient) + 1, phillyGlowParticles);
 
-			case 'Play Video Sprite':
-				loadVideo(Std.string(event.value1));
+			/*case 'Play Video Sprite':
+				loadVideo(Std.string(event.value1));*/
 		}
 
 		if(!eventPushedMap.exists(event.event)) {
@@ -2921,9 +3026,9 @@ class PlayState extends MusicBeatState
 
 			if(carTimer != null) carTimer.active = false;
 
-			#if VIDEOS_ALLOWED
+			/*#if VIDEOS_ALLOWED
 			PsychVideo.isActive(false);
-			#end
+			#end*/
 
 			var chars:Array<Character> = [boyfriend, gf, dad];
 			for (char in chars) {
@@ -2989,9 +3094,9 @@ class PlayState extends MusicBeatState
 			#end
 		}
 
-		#if VIDEOS_ALLOWED
+		/*#if VIDEOS_ALLOWED
 		PsychVideo.isActive(false);
-		#end
+		#end*/
 
 		super.closeSubState();
 	}
@@ -3012,9 +3117,9 @@ class PlayState extends MusicBeatState
 		}
 		#end
 
-		#if VIDEOS_ALLOWED
+		/*#if VIDEOS_ALLOWED
 		PsychVideo.isActive(true);
-		#end
+		#end*/
 
 		super.onFocus();
 	}
@@ -3028,9 +3133,9 @@ class PlayState extends MusicBeatState
 		}
 		#end
 
-		#if VIDEOS_ALLOWED
+		/*#if VIDEOS_ALLOWED
 		PsychVideo.isActive(false);
-		#end
+		#end*/
 
 		super.onFocusLost();
 	}
@@ -4005,7 +4110,7 @@ class PlayState extends MusicBeatState
 					});
 				}
 
-			case 'Play Video Sprite':
+			/*case 'Play Video Sprite':
 				var contents:Array<Dynamic> = [0, 0, 1, 'world'];
 				if (Std.string(value2) != null && Std.string(value2).length > 1) {
 					contents = Std.string(value2).split(',');
@@ -4016,7 +4121,7 @@ class PlayState extends MusicBeatState
 				var op:Float = Std.parseFloat(contents[2]);
 				var cam:String = Std.string(contents[3]);
 
-				startVideoSprite(Std.string(value1), x, y, op, cam);
+				startVideoSprite(Std.string(value1), x, y, op, cam);*/
 
 			case 'Set Property':
 				var killMe:Array<String> = value1.split('.');
@@ -4161,8 +4266,8 @@ class PlayState extends MusicBeatState
 				'ur_good', 'hype', 'two_keys', 'toastie', 'debugger']);
 			var customAchieves:String = checkForAchievement(achievementWeeks);
 
-			if(achieve != null || customAchieves != null) {
-				startAchievement(achieve);
+			if(achieve != null || customAchieve != null) {
+				startAchievement(customAchieve != null ? customAchieve : achieve);
 				return;
 			}
 		}
@@ -5205,9 +5310,9 @@ class PlayState extends MusicBeatState
 		FlxAnimationController.globalSpeed = 1;
 		FlxG.sound.music.pitch = 1;
 
-		#if VIDEOS_ALLOWED
+		/*#if VIDEOS_ALLOWED
 		PsychVideo.clearAll();
-		#end
+		#end*/
 
 		super.destroy();
 	}
@@ -5423,6 +5528,8 @@ class PlayState extends MusicBeatState
 				returnVal = myValue;
 			}
 		}
+		for (i in achievementsArray)
+			i.call(event, args);
 		#end
 		return returnVal;
 	}
@@ -5433,6 +5540,8 @@ class PlayState extends MusicBeatState
 			luaArray[i].set(variable, arg);
 		}
 		#end
+		for(i in achievementsArray)
+			i.set(variable, arg);
 	}
 
 	function StrumPlayAnim(isDad:Bool, id:Int, time:Float) {
