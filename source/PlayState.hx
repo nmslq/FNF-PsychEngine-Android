@@ -75,7 +75,7 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
-import handlers.PsychVideo as PsychVideo;
+import handlers.PsychVideo;
 
 using StringTools;
 
@@ -2919,7 +2919,9 @@ class PlayState extends MusicBeatState
 
 			if(carTimer != null) carTimer.active = false;
 
+			#if VIDEOS_ALLOWED
 			PsychVideo.isActive(false);
+			#end
 
 			var chars:Array<Character> = [boyfriend, gf, dad];
 			for (char in chars) {
@@ -2985,7 +2987,9 @@ class PlayState extends MusicBeatState
 			#end
 		}
 
+		#if VIDEOS_ALLOWED
 		PsychVideo.isActive(false);
+		#end
 
 		super.closeSubState();
 	}
@@ -3006,7 +3010,9 @@ class PlayState extends MusicBeatState
 		}
 		#end
 
+		#if VIDEOS_ALLOWED
 		PsychVideo.isActive(true);
+		#end
 
 		super.onFocus();
 	}
@@ -3020,7 +3026,9 @@ class PlayState extends MusicBeatState
 		}
 		#end
 
+		#if VIDEOS_ALLOWED
 		PsychVideo.isActive(false);
+		#end
 
 		super.onFocusLost();
 	}
@@ -5194,7 +5202,11 @@ class PlayState extends MusicBeatState
 		}
 		FlxAnimationController.globalSpeed = 1;
 		FlxG.sound.music.pitch = 1;
+
+		#if VIDEOS_ALLOWED
 		PsychVideo.clearAll();
+		#end
+
 		super.destroy();
 	}
 
