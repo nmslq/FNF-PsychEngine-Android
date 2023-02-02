@@ -1840,7 +1840,7 @@ class PlayState extends MusicBeatState
 		startAndEnd();
 		return;
 		#end
-	}
+	}*/
 
 	/**
 		Renders a Video Sprite on Screen
@@ -1852,7 +1852,7 @@ class PlayState extends MusicBeatState
 		@param loop [if the Video should play from the start once it's done]
 		@param pauseMusic [if the Current Song should be paused while playing the video]
 	**/
-	public function startVideoSprite(name:String, x:Float = 0, y:Float = 0, op:Float = 1, strCamera:String = 'world',
+	/*public function startVideoSprite(name:String, x:Float = 0, y:Float = 0, op:Float = 1, strCamera:String = 'world',
 		?loop:Bool = false, ?pauseMusic:Bool = false)
 	{
 		#if VIDEOS_ALLOWED
