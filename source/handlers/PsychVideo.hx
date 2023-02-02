@@ -8,8 +8,8 @@ import openfl.Assets as OpenFlAssets;
 import sys.FileSystem;
 #end
 #if VIDEOS_ALLOWED
-import VideoHandler;
-import VideoSprite;
+import hxcodec.VideoHandler;
+import hxcodec.VideoSprite;
 
 /**
 	Handles the execution of Video Cutscenes and Video Sprites with hxCodec
