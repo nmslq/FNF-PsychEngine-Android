@@ -4506,11 +4506,11 @@ class PlayState extends MusicBeatState
 		coolText.text = Std.string(seperatedScore);
 		// add(coolText);
 
-		FlxTween.tween(rating, {alpha: 0}, 0.2, {
-			startDelay: Conductor.crochet * 0.001
+		FlxTween.tween(rating, {alpha: 0}, 0.2 / playbackRate, {
+			startDelay: Conductor.crochet * 0.001 / playbackRate
 		});
 
-		FlxTween.tween(comboSpr, {alpha: 0}, 0.2, {
+		FlxTween.tween(comboSpr, {alpha: 0}, 0.2 / playbackRate, {
 			onComplete: function(tween:FlxTween)
 			{
 				coolText.destroy();
@@ -4518,7 +4518,7 @@ class PlayState extends MusicBeatState
 
 				rating.destroy();
 			},
-			startDelay: Conductor.crochet * 0.002
+			startDelay: Conductor.crochet * 0.002 / playbackRate
 		});
 	}
 
