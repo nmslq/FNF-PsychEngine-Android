@@ -328,8 +328,6 @@ class PlayState extends MusicBeatState
 	// Lua shit
 	public static var instance:PlayState;
 	public var luaArray:Array<FunkinLua> = [];
-	public var achievementArray:Array<FunkinLua> = [];
-	public var achievementWeeks:Array<String> = [];
 	private var luaDebugGroup:FlxTypedGroup<DebugLuaText>;
 	public var introSoundsSuffix:String = '';
 
@@ -2035,7 +2033,7 @@ class PlayState extends MusicBeatState
 
 	function tankIntro()
 	{
-		var cutsceneHandler:CutsceneHandler = new CutsceneHandler();
+		var cutsceneHandler:handlers.CutsceneHandler = new handlers.CutsceneHandler();
 
 		var songName:String = Paths.formatToSongPath(SONG.song);
 		dadGroup.alpha = 0.00001;
@@ -4111,6 +4109,19 @@ class PlayState extends MusicBeatState
 					});
 				}
 
+			case 'Play Video Sprite':
+				var contents:Array<Dynamic> = [0, 0, 1, 'world'];
+				if (Std.string(value2) != null && Std.string(value2).length > 1) {
+					contents = Std.string(value2).split(',');
+				}
+
+				var x:Float = Std.parseFloat(contents[0]);
+				var y:Float = Std.parseFloat(contents[1]);
+				var op:Float = Std.parseFloat(contents[2]);
+				var cam:String = Std.string(contents[3]);
+
+				startVideoSprite(Std.string(value1), x, y, op, cam);
+
 			case 'Set Property':
 				var killMe:Array<String> = value1.split('.');
 				if(killMe.length > 1) {
@@ -4601,11 +4612,11 @@ class PlayState extends MusicBeatState
 		coolText.text = Std.string(seperatedScore);
 		// add(coolText);
 
-		FlxTween.tween(rating, {alpha: 0}, 0.2, {
-			startDelay: Conductor.crochet * 0.001
+		FlxTween.tween(rating, {alpha: 0}, 0.2 / playbackRate, {
+			startDelay: Conductor.crochet * 0.001 / playbackRate
 		});
 
-		FlxTween.tween(comboSpr, {alpha: 0}, 0.2, {
+		FlxTween.tween(comboSpr, {alpha: 0}, 0.2 / playbackRate, {
 			onComplete: function(tween:FlxTween)
 			{
 				coolText.destroy();
@@ -4613,7 +4624,7 @@ class PlayState extends MusicBeatState
 
 				rating.destroy();
 			},
-			startDelay: Conductor.crochet * 0.002
+			startDelay: Conductor.crochet * 0.002 / playbackRate
 		});
 	}
 
