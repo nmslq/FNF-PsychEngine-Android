@@ -18,6 +18,7 @@ typedef AchievementMeta = {
 	public var desc:String;
 	public var save_tag:String;
 	public var hidden:Bool;
+	public var ?song:String;
 
 	public var ?week_nomiss:String;
 	public var ?lua_code:String;
@@ -217,7 +218,6 @@ class Achievements {
 							if(meta.global==null||meta.global.length<1){
 								if(meta.clearAchievements)
 									achievementsStuff=[];
-
 								var achievement:Array<Dynamic> = [];
 								achievement.push(meta.name);
 								achievement.push(meta.desc);
