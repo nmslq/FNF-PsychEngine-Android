@@ -2396,7 +2396,7 @@ class FunkinLua {
 			return true;
 			#end
 		});
-		Lua_helper.add_callback(lua, "startVideoSprite",
+		/*Lua_helper.add_callback(lua, "startVideoSprite",
 			function(videoFile:String, x:Float = 0, y:Float = 0, op:Float = 1, cam:String = 'world',
 				?loop:Bool = false, ?pauseMusic:Bool = false) {
 			//
@@ -2412,7 +2412,7 @@ class FunkinLua {
 			PlayState.instance.startAndEnd();
 			return true;
 			#end
-		});
+		});*/
 
 		Lua_helper.add_callback(lua, "playMusic", function(sound:String, volume:Float = 1, loop:Bool = false) {
 			FlxG.sound.playMusic(Paths.music(sound), volume, loop);
