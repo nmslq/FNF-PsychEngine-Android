@@ -59,9 +59,9 @@ import android.Tools;
 using StringTools;
 
 class FunkinLua {
-	public static var Function_Stop:Dynamic = 1;
-	public static var Function_Continue:Dynamic = 0;
-	public static var Function_StopLua:Dynamic = 2;
+	public static var Function_Stop:Dynamic = "##PSYCHLUA_FUNCTIONSTOP";
+	public static var Function_Continue:Dynamic = "##PSYCHLUA_FUNCTIONCONTINUE";
+	public static var Function_StopLua:Dynamic = "##PSYCHLUA_FUNCTIONSTOPLUA";
 
 	//public var errorHandler:String->Void;
 	#if LUA_ALLOWED
@@ -75,6 +75,8 @@ class FunkinLua {
 	public static var hscript:HScript = null;
 	#end
 
+	public var scriptCode:String;
+
 	public function new(script:String, ?scriptCode:String) {
 		#if LUA_ALLOWED
 		lua = LuaL.newstate();
@@ -87,7 +89,12 @@ class FunkinLua {
 		//LuaL.dostring(lua, CLENSE);
 		try
 		{
-			var result:Int = scriptCode != null ? LuaL.dostring(lua, scriptCode) : LuaL.dofile(lua, script);
+			var result;
+			if(scriptCode != null) 
+				result = LuaL.dostring(lua, scriptCode);
+			else
+				result = LuaL.dofile(lua, script);
+
 			var resultStr:String = Lua.tostring(lua, result);
 			if(resultStr != null && result != 0) {
 				trace('Error on lua script! ' + resultStr);
@@ -105,6 +112,9 @@ class FunkinLua {
 			trace(e);
 			return;
 		}
+
+		if (scriptCode != null) 
+			this.scriptCode = scriptCode;
 
 		scriptName = script;
 		initHaxeModule();
@@ -2396,7 +2406,7 @@ class FunkinLua {
 			return true;
 			#end
 		});
-		Lua_helper.add_callback(lua, "startVideoSprite",
+		/*Lua_helper.add_callback(lua, "startVideoSprite",
 			function(videoFile:String, x:Float = 0, y:Float = 0, op:Float = 1, cam:String = 'world',
 				?loop:Bool = false, ?pauseMusic:Bool = false) {
 			//
@@ -2412,7 +2422,7 @@ class FunkinLua {
 			PlayState.instance.startAndEnd();
 			return true;
 			#end
-		});
+		});*/
 
 		Lua_helper.add_callback(lua, "playMusic", function(sound:String, volume:Float = 1, loop:Bool = false) {
 			FlxG.sound.playMusic(Paths.music(sound), volume, loop);
