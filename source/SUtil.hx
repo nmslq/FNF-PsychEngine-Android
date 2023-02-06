@@ -58,7 +58,7 @@ class SUtil
 	 */
 	public static function checkFiles():Void
 	{
-		#if mobile
+		#if android
 		if (!FileSystem.exists(SUtil.getStorageDirectory() + 'assets') && !FileSystem.exists(SUtil.getStorageDirectory() + 'mods'))
 		{
 			Lib.application.window.alert("Whoops, seems like you didn't extract the files from the .APK!\nPlease copy the files from the .APK to\n" + SUtil.getStorageDirectory(),
