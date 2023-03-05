@@ -82,7 +82,9 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
-import vlc.MP4handler as VideoHandler;
+#if VIDEOS_ALLOWED
+import vlc.MP4Handler;
+#end
 
 using StringTools;
 
@@ -1800,7 +1802,7 @@ class PlayState extends MusicBeatState
 			return;
 		}
 
-		var video:VideoHandler = new VideoHandler();
+		var video:MP4Handler = new MP4Handler();
 		video.playVideo(filepath);
 		video.finishCallback = function()
 		{
