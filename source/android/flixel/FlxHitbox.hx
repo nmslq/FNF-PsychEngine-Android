@@ -1,17 +1,17 @@
 package android.flixel;
 
-import android.flixel.FlxButton;
 import flixel.FlxG;
-import flixel.util.FlxColor;
 import flixel.group.FlxSpriteGroup;
-import openfl.display.Shape;
+import flixel.util.FlxDestroyUtil;
 import openfl.display.BitmapData;
+import openfl.display.Shape;
+import android.flixel.FlxButton;
 
 /**
  * A zone with 4 hint's (A hitbox).
  * It's really easy to customize the layout.
  *
- * @author: Saw (M.A. Jigsaw)
+ * @author Mihai Alexandru (M.A. Jigsaw)
  */
 class FlxHitbox extends FlxSpriteGroup
 {
@@ -23,7 +23,7 @@ class FlxHitbox extends FlxSpriteGroup
 	/**
 	 * Create the zone.
 	 */
-	public function new()
+	public function new():Void
 	{
 		super();
 
@@ -38,43 +38,26 @@ class FlxHitbox extends FlxSpriteGroup
 	/**
 	 * Clean up memory.
 	 */
-	override function destroy()
+	override function destroy():Void
 	{
 		super.destroy();
 
-		buttonLeft = null;
-		buttonDown = null;
-		buttonUp = null;
-		buttonRight = null;
+		buttonLeft = FlxDestroyUtil.destroy(buttonLeft);
+		buttonUp = FlxDestroyUtil.destroy(buttonUp);
+		buttonDown = FlxDestroyUtil.destroy(buttonDown);
+		buttonRight = FlxDestroyUtil.destroy(buttonRight);
 	}
 
 	private function createHintGraphic(Width:Int, Height:Int, Color:Int = 0xFFFFFF):BitmapData
 	{
 		var shape:Shape = new Shape();
-
-		if (ClientPrefs.gradientHitboxes)
-		{
-			shape.graphics.beginFill(Color);
-			shape.graphics.lineStyle(3, Color, 1);
-			shape.graphics.drawRect(0, 0, Width, Height);
-			shape.graphics.lineStyle(0, 0, 0);
-			shape.graphics.drawRect(3, 3, Width - 6, Height - 6);
-			shape.graphics.endFill();
-			shape.graphics.beginGradientFill(RADIAL, [Color, FlxColor.TRANSPARENT], [0.6, 0], [0, 255], null, null, null, 0.5);
-			shape.graphics.drawRect(3, 3, Width - 6, Height - 6);
-			shape.graphics.endFill();
-		}
-		else
-		{
-			shape.graphics.beginFill(Color);
-			shape.graphics.lineStyle(10, Color, 1);
-			shape.graphics.drawRect(0, 0, Width, Height);
-			shape.graphics.endFill();
-		}
+		shape.graphics.beginFill(Color);
+		shape.graphics.lineStyle(10, Color, 1);
+		shape.graphics.drawRect(0, 0, Width, Height);
+		shape.graphics.endFill();
 
 		var bitmap:BitmapData = new BitmapData(Width, Height, true, 0);
 		bitmap.draw(shape);
-
 		return bitmap;
 	}
 

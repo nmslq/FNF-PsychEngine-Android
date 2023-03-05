@@ -2,22 +2,21 @@ package android.flixel;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.graphics.FlxGraphic;
+import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxSpriteGroup;
 import flixel.input.touch.FlxTouch;
 import flixel.math.FlxAngle;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-import flixel.graphics.FlxGraphic;
 import flixel.util.FlxDestroyUtil;
-import flixel.graphics.frames.FlxAtlasFrames;
-import openfl.utils.Assets;
 
 /**
- * A virtual thumbstick - useful for input on mobile devices.
+ * A virtual thumbstick - useful for input on android devices.
  *
  * @author Ka Wing Chin
- * @modification author Saw (M.A. Jigsaw) to work only with touch and to use custom assets
+ * @author Mihai Alexandru (M.A. Jigsaw) to work only with touch and to use custom assets
  */
 class FlxJoyStick extends FlxSpriteGroup
 {
@@ -133,7 +132,7 @@ class FlxJoyStick extends FlxSpriteGroup
 	 */
 	function createBase():Void
 	{
-		base = new FlxSprite(0, 0)
+		base = new FlxSprite(0, 0);
 		base.loadGraphic(Paths.getSparrowAtlas('android/joystick/base'));
 		base.x += -base.width * 0.5;
 		base.y += -base.height * 0.5;
@@ -152,7 +151,7 @@ class FlxJoyStick extends FlxSpriteGroup
 	 */
 	function createThumb():Void
 	{
-		thumb = new FlxSprite(0, 0)
+		thumb = new FlxSprite(0, 0);
 		thumb.loadGraphic(Paths.getSparrowAtlas('android/joystick/thumb'));
 		thumb.x += -thumb.width * 0.5;
 		thumb.y += -thumb.height * 0.5;
