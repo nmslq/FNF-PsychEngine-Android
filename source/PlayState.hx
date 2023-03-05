@@ -82,7 +82,9 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
-import handlers.PsychVideo;
+#if VIDEOS_ALLOWED
+import vlc.MP4Handler;
+#end
 
 using StringTools;
 
@@ -1783,70 +1785,30 @@ class PlayState extends MusicBeatState
 		char.y += char.positionArray[1];
 	}
 
-	public function loadVideo(name:String) {
-		#if VIDEOS_ALLOWED
-		var videoHandler:PsychVideo = new PsychVideo();
-		videoHandler.loadCutscene(name);
-		return;
-		#else
-		FlxG.log.warn('Platform not supported!');
-		startAndEnd();
-		return;
-		#end
-	}
-
 	public function startVideo(name:String)
 	{
 		#if VIDEOS_ALLOWED
 		inCutscene = true;
 
-		var videoHandler:PsychVideo = new PsychVideo(function() {
+		var filepath:String = Paths.video(name);
+		#if sys
+		if(!FileSystem.exists(filepath))
+		#else
+		if(!OpenFlAssets.exists(filepath))
+		#end
+		{
+			FlxG.log.warn('Couldnt find video file: ' + name);
 			startAndEnd();
 			return;
-		});
-		videoHandler.startVideo(name);
-		return;
-
-		#else
-		FlxG.log.warn('Platform not supported!');
-		startAndEnd();
-		return;
-		#end
-	}
-
-	/**
-		Renders a Video Sprite on Screen
-		@param name [the Video Name in the "assets/videos" folder]
-		@param x [the Horizontal Position of the Rendered Video]
-		@param y [the Vertical Position of the Rendered Video]
-		@param op [the Opacity of the Rendered Video]
-		@param strCamera [the camera that should be used for rendering the video (e.g: hud)]
-		@param loop [if the Video should play from the start once it's done]
-		@param pauseMusic [if the Current Song should be paused while playing the video]
-	**/
-	public function startVideoSprite(name:String, x:Float = 0, y:Float = 0, op:Float = 1, strCamera:String = 'world',
-		?loop:Bool = false, ?pauseMusic:Bool = false)
-	{
-		#if VIDEOS_ALLOWED
-		var myCamera:FlxCamera = camGame;
-		// stinks but whatever
-		switch (strCamera) {
-			case 'alt' | 'other' | 'above': myCamera = camOther;
-			case 'hud' | 'ui' | 'interface': myCamera = camHUD;
-			default: myCamera = camGame;
 		}
 
-		var videoHandler:PsychVideo = new PsychVideo(function() {
+		var video:MP4Handler = new MP4Handler();
+		video.playVideo(filepath);
+		video.finishCallback = function()
+		{
 			startAndEnd();
 			return;
-		});
-		var video:FlxSprite = null;
-
-		video = videoHandler.startVideoSprite(x, y, op, name, myCamera, loop, pauseMusic);
-		if (video == null) return;
-		add(video);
-
-		return;
+		}
 		#else
 		FlxG.log.warn('Platform not supported!');
 		startAndEnd();
@@ -1854,10 +1816,12 @@ class PlayState extends MusicBeatState
 		#end
 	}
 
-	public function startAndEnd()
+	function startAndEnd()
 	{
-		var exec:Void->Void = endingSong ? endSong : startCountdown;
-		exec();
+		if(endingSong)
+			endSong();
+		else
+			startCountdown();
 	}
 
 	var dialogueCount:Int = 0;
@@ -2871,9 +2835,6 @@ class PlayState extends MusicBeatState
 				phillyGlowParticles = new FlxTypedGroup<PhillyGlow.PhillyGlowParticle>();
 				phillyGlowParticles.visible = false;
 				insert(members.indexOf(phillyGlowGradient) + 1, phillyGlowParticles);
-
-			case 'Play Video Sprite':
-				loadVideo(Std.string(event.value1));
 		}
 
 		if(!eventPushedMap.exists(event.event)) {
@@ -2965,8 +2926,6 @@ class PlayState extends MusicBeatState
 
 			if(carTimer != null) carTimer.active = false;
 
-			PsychVideo.isActive(false);
-
 			var chars:Array<Character> = [boyfriend, gf, dad];
 			for (char in chars) {
 				if(char != null && char.colorTween != null) {
@@ -3031,8 +2990,6 @@ class PlayState extends MusicBeatState
 			#end
 		}
 
-		PsychVideo.isActive(false);
-
 		super.closeSubState();
 	}
 
@@ -3052,8 +3009,6 @@ class PlayState extends MusicBeatState
 		}
 		#end
 
-		PsychVideo.isActive(true);
-
 		super.onFocus();
 	}
 
@@ -3065,8 +3020,6 @@ class PlayState extends MusicBeatState
 			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
 		}
 		#end
-
-		PsychVideo.isActive(false);
 
 		super.onFocusLost();
 	}
@@ -4040,19 +3993,6 @@ class PlayState extends MusicBeatState
 						}
 					});
 				}
-
-			case 'Play Video Sprite':
-				var contents:Array<Dynamic> = [0, 0, 1, 'world'];
-				if (Std.string(value2) != null && Std.string(value2).length > 1) {
-					contents = Std.string(value2).split(',');
-				}
-
-				var x:Float = Std.parseFloat(contents[0]);
-				var y:Float = Std.parseFloat(contents[1]);
-				var op:Float = Std.parseFloat(contents[2]);
-				var cam:String = Std.string(contents[3]);
-
-				startVideoSprite(Std.string(value1), x, y, op, cam);
 
 			case 'Set Property':
 				var killMe:Array<String> = value1.split('.');
@@ -5240,8 +5180,6 @@ class PlayState extends MusicBeatState
 		}
 		FlxAnimationController.globalSpeed = 1;
 		FlxG.sound.music.pitch = 1;
-	
-		PsychVideo.clearAll();
 
 		super.destroy();
 	}
