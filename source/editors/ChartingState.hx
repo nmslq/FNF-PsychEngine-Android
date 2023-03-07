@@ -1757,6 +1757,7 @@ class ChartingState extends MusicBeatState
 			
 			if (FlxG.keys.justPressed.BACKSPACE #if android || virtualPad.buttonB.justPressed #end) {
 				PlayState.chartingMode = false;
+				autosaveSong();
 				MusicBeatState.switchState(new editors.MasterEditorMenu());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 				FlxG.mouse.visible = false;
