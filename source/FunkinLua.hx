@@ -27,6 +27,7 @@ import flixel.util.FlxSave;
 import flixel.addons.display.FlxBackdrop;
 import flixel.addons.transition.FlxTransitionableState;
 import openfl.display.BitmapData;
+import haxe.Json;
 
 #if (!flash && sys)
 import flixel.addons.display.FlxRuntimeShader;
@@ -238,6 +239,34 @@ class FunkinLua {
 		#else
 		set('buildTarget', 'unknown');
 		#end
+
+		Lua_helper.add_callback(lua, "parseJson", function(jsonStr:String, varName:String) {
+			var json = Paths.modFolders('data/' + jsonStr + '.json');
+			var foundJson:Bool;
+
+			#if sys
+				if (FileSystem.exists(json)) {
+					foundJson = true;
+				} else {
+					luaTrace('parseJsonData: Invalid json file path!', false, false, FlxColor.RED);
+					foundJson = false;
+					return;	
+				}
+			#else
+				if (Assets.exists(json)) {
+					foundJson = true;
+				} else {
+					luaTrace('parseJson: Invalid json file path!', false, false, FlxColor.RED);
+					foundJson = false;
+					return;	
+				}
+			#end
+
+			if (foundJson) {
+				var parsedJson = haxe.Json.parse(File.getContent(json));				
+				PlayState.instance.variables.set(varName, parsedJson);
+			}
+		});
 
 		// custom substate
 		Lua_helper.add_callback(lua, "openCustomSubstate", function(name:String, pauseGame:Bool = false) {
