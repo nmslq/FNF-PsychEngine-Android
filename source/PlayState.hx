@@ -5168,6 +5168,10 @@ class PlayState extends MusicBeatState
 		}
 		luaArray = [];
 
+		#if LUA_ALLOWED
+		Lua_helper.callbacks.clear();
+		#end
+
 		#if hscript
 		if(FunkinLua.hscript != null)
 			FunkinLua.hscript = null;
