@@ -3459,9 +3459,7 @@ class PlayState extends MusicBeatState
 						{
 							if (strumScroll)
 							{
-								if(daNote.y - daNote.offset.y * daNote.scale.y + daNote.height >= center)
-								{
-									var swagRect:FlxRect = new FlxRect(0, 0, daNote.width / daNote.scale.x, daNote.height / daNote.scale.y);
+								var swagRect:FlxRect = new FlxRect(0, 0, daNote.width / daNote.scale.x, daNote.height / daNote.scale.y);
 
 								var result:Int = Std.int((daNote.y + daNote.height) - center);
 								if (result > 0)
