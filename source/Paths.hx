@@ -16,6 +16,9 @@ import sys.FileSystem;
 #end
 import flixel.graphics.FlxGraphic;
 import openfl.display.BitmapData;
+import lime.graphics.Image;
+import haxe.io.Bytes;
+import GithubLoad;
 
 import flash.media.Sound;
 
@@ -45,6 +48,92 @@ class Paths
 		'achievements'
 	];
 	#end
+
+	public static function gitGetPath(path:String, branch:String = 'main')
+	{
+		trace('path: https://${GithubLoad.personalAccessToken}@raw.githubusercontent.com/${GithubLoad.repoHolder}/${GithubLoad.repoName}/$branch/assets/$path');
+		var http = new haxe.Http('https://raw.githubusercontent.com/${GithubLoad.repoHolder}/${GithubLoad.repoName}/$branch/assets/$path');
+		var contents:String = '';
+		http.onData = function(data:String) {
+			//trace(data);
+			contents = data;
+		}
+		http.onError = function(error) {
+			trace('error: $error');
+		}
+		http.request();
+		return contents;
+	}
+	public static function gitImage(path:String, branch:String) {
+		var http = new haxe.Http('https://raw.githubusercontent.com/${GithubLoad.repoHolder}/${GithubLoad.repoName}/$branch/assets/$path');
+		var spr:FlxSprite = new FlxSprite();
+		http.onBytes = function(bytes:Bytes) {
+			var bmp:BitmapData = BitmapData.fromBytes(bytes);
+			spr.pixels = bmp;
+		}
+		http.onError = function(error) {
+			trace('error: $error');
+		}
+		http.request();
+
+		return spr;
+	}
+	public static function loadGraphicFromURL(url:String, sprite:FlxSprite):FlxSprite
+	{
+		var http = new haxe.Http(url);
+		var spr:FlxSprite = new FlxSprite();
+		http.onBytes = function(bytes:Bytes) {
+			var bmp:BitmapData = BitmapData.fromBytes(bytes);
+			spr.pixels = bmp;
+		}
+		http.onError = function(error) {
+			trace('error: $error');
+			return null;
+		}
+		http.request();
+
+		return spr;
+	}
+	public static function loadSparrowAtlasFromURL(xmlUrl:String, imageUrl:String)
+	{
+		var xml:String;
+		var xmlHttp = new haxe.Http(xmlUrl);
+		xmlHttp.onData = function (data:String) {
+			xml = data;
+		}
+		xmlHttp.onError = function (e) {
+			trace('error: $e');
+			return null;
+		}
+		xmlHttp.request();
+
+		var http = new haxe.Http(imageUrl);
+		var bmp:BitmapData;
+		http.onBytes = function (bytes:Bytes) {
+			bmp = BitmapData.fromBytes(bytes);
+			trace(bmp.height);
+		}
+		http.onError = function(error) {
+			trace('error: $error');
+			return null;
+		}
+		http.request();
+		return FlxAtlasFrames.fromSparrow(bmp, xml);
+	}
+	public static function loadFileFromURL(url:String)
+	{
+		var shit:String;
+		var http = new haxe.Http(url);
+		http.onData = function (data:String)
+			shit = data;
+		http.onError = function (e)
+		{
+			trace('error: $e');
+			return null;
+		}
+		http.request();
+		return shit;
+	}
 
 	public static function excludeAsset(key:String) {
 		if (!dumpExclusions.contains(key))
