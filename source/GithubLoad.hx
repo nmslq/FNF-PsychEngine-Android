@@ -1,4 +1,4 @@
-ckage;
+package;
 
 class GithubLoad
 {
