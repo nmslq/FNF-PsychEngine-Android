@@ -78,7 +78,7 @@ class Paths
 
 		return spr;
 	}
-	public static function loadGraphicFromURL(url:String):FlxSprite
+	public static function loadGraphicFromURL(url:String)
 	{
 		var http = new haxe.Http(url);
 		var spr:FlxSprite = new FlxSprite();
