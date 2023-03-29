@@ -387,30 +387,42 @@ class Controls extends FlxActionSet
 	public var trackedinputsUI:Array<FlxActionInput> = [];
 	public var trackedinputsNOTES:Array<FlxActionInput> = [];
 
-	public function addbuttonNOTES(action:FlxActionDigital, button:FlxButton, state:FlxInputState)
+	public function addbuttonNOTES(action:FlxActionDigital, button:FlxButton, state:FlxInputState):Void
 	{
+		if (button == null)
+			return;
+
 		var input:FlxActionInputDigitalIFlxInput = new FlxActionInputDigitalIFlxInput(button, state);
 		trackedinputsNOTES.push(input);
 		action.add(input);
 	}
 
-	public function addbuttonUI(action:FlxActionDigital, button:FlxButton, state:FlxInputState)
+	public function addbuttonUI(action:FlxActionDigital, button:FlxButton, state:FlxInputState):Void
 	{
+		if (button == null)
+			return;
+
 		var input:FlxActionInputDigitalIFlxInput = new FlxActionInputDigitalIFlxInput(button, state);
 		trackedinputsUI.push(input);
 		action.add(input);
 	}
 
-	public function setHitBox(Hitbox:FlxHitbox) 
+	public function setHitBox(Hitbox:FlxHitbox):Void
 	{
+		if (Hitbox == null)
+			return;
+
 		inline forEachBound(Control.NOTE_UP, (action, state) -> addbuttonNOTES(action, Hitbox.buttonUp, state));
 		inline forEachBound(Control.NOTE_DOWN, (action, state) -> addbuttonNOTES(action, Hitbox.buttonDown, state));
 		inline forEachBound(Control.NOTE_LEFT, (action, state) -> addbuttonNOTES(action, Hitbox.buttonLeft, state));
 		inline forEachBound(Control.NOTE_RIGHT, (action, state) -> addbuttonNOTES(action, Hitbox.buttonRight, state));
 	}
 
-	public function setVirtualPadUI(VirtualPad:FlxVirtualPad, DPad:FlxDPadMode, Action:FlxActionMode)
+	public function setVirtualPadUI(VirtualPad:FlxVirtualPad, DPad:FlxDPadMode, Action:FlxActionMode):Void
 	{
+		if (VirtualPad == null)
+			return;
+
 		switch (DPad)
 		{
 			case UP_DOWN:
@@ -453,8 +465,11 @@ class Controls extends FlxActionSet
 		}
 	}
 
-	public function setVirtualPadNOTES(VirtualPad:FlxVirtualPad, DPad:FlxDPadMode, Action:FlxActionMode) 
+	public function setVirtualPadNOTES(VirtualPad:FlxVirtualPad, DPad:FlxDPadMode, Action:FlxActionMode):Void
 	{
+		if (VirtualPad == null)
+			return;
+
 		switch (DPad)
 		{
 			case UP_DOWN:
@@ -497,7 +512,7 @@ class Controls extends FlxActionSet
 		}
 	}
 
-	public function removeAControlsInput(Tinputs:Array<FlxActionInput>)
+	public function removeAControlsInput(Tinputs:Array<FlxActionInput>):Void
 	{
 		for (action in this.digitalActions)
 		{
