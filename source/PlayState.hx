@@ -1107,12 +1107,12 @@ class PlayState extends MusicBeatState
 
 		if (ClientPrefs.middleScroll) {
 			if (ClientPrefs.laneUnderlay > 0) {
-				lane = new FlxSprite(42 + 50 + (FlxG.width/2) - 10, 0).makeGraphic(Std.int(42 + Note.swagWidth * 3 + 90), FlxG.height);
-				lane.color = FlxColor.BLACK;
-				lane.alpha = ClientPrefs.laneUnderlay;
-				add(lane);
-				lane.screenCenter(X);
-				lane.cameras = [camHUD];
+				lanea = new FlxSprite(42 + 50 + (FlxG.width/2) - 10, 0).makeGraphic(Std.int(42 + Note.swagWidth * 3 + 90), FlxG.height);
+				lanea.color = FlxColor.BLACK;
+				lanea.alpha = ClientPrefs.laneUnderlay;
+				add(lanea);
+				lanea.screenCenter(X);
+				lanea.cameras = [camHUD];
 			}
 		} else {
 			if (ClientPrefs.laneUnderlay > 0) {
