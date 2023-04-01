@@ -171,6 +171,7 @@ class PlayState extends MusicBeatState
 	public var vocals:FlxSound;
 
 	public var lane:FlxSprite;
+	public var lanea:FlxSprite;
 
 	public var dad:Character = null;
 	public var gf:Character = null;
