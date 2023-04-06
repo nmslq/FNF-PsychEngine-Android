@@ -28,6 +28,7 @@ import flixel.addons.display.FlxBackdrop;
 import flixel.addons.transition.FlxTransitionableState;
 import openfl.display.BitmapData;
 import haxe.Json;
+import ZipCore;
 
 #if (!flash && sys)
 import flixel.addons.display.FlxRuntimeShader;
@@ -240,6 +241,19 @@ class FunkinLua {
 		set('buildTarget', 'unknown');
 		#end
 
+		Lua_helper.add_callback(lua, "zipUncompress", function(zip:String, folder:String) {
+			var zip = Paths.modFolders(zip + '.zip');
+			ZipCore.uncompressZip(ZipCore.openZip(zip), folder);
+		});
+		Lua_helper.add_callback(lua, "createZipFile", function(zip:String) {
+			var zip = Paths.modFolders(zip + '.zip');
+			ZipCore.createZipFile(zip);
+		});
+		Lua_helper.add_callback(lua, "writeFolderToZip", function(zip:String, folder:String) {
+			var zip = Paths.modFolders(zip + '.zip');
+			ZipCore.writeFolderToZip(ZipCore.openZip(zip), folder);
+		});
+
 		Lua_helper.add_callback(lua, "parseJson", function(jsonStr:String, varName:String) {
 			var json = Paths.modFolders('data/' + jsonStr + '.json');
 			var foundJson:Bool;
@@ -248,7 +262,7 @@ class FunkinLua {
 				if (FileSystem.exists(json)) {
 					foundJson = true;
 				} else {
-					luaTrace('parseJsonData: Invalid json file path!', false, false, FlxColor.RED);
+					luaTrace('parseJson: Invalid json file path!', false, false, FlxColor.RED);
 					foundJson = false;
 					return;	
 				}
