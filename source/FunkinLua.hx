@@ -245,7 +245,7 @@ class FunkinLua {
 			var zip = Paths.modFolders(zip + '.zip');
 			ZipCore.uncompressZip(ZipCore.openZip(zip), folder);
 		});
-		Lua_helper.add_callback(lua, "createZipFile", function(zip:String, folder:String ?prefix:String) {
+		Lua_helper.add_callback(lua, "createZipFile", function(zip:String, folder:String, ?prefix:String) {
 			var pathfile = Paths.modFolders(zip + '.zip');
 			var zipfile = ZipCore.createZipFile(zip);
 			ZipCore.writeFolderToZip(zipfile, folder, prefix);
