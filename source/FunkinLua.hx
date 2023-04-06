@@ -245,13 +245,12 @@ class FunkinLua {
 			var zip = Paths.modFolders(zip + '.zip');
 			ZipCore.uncompressZip(ZipCore.openZip(zip), folder);
 		});
-		Lua_helper.add_callback(lua, "createZipFile", function(zip:String) {
-			var zip = Paths.modFolders(zip + '.zip');
-			ZipCore.createZipFile(zip);
-		});
-		Lua_helper.add_callback(lua, "writeFolderToZip", function(zip:String, folder:String) {
-			var zip = Paths.modFolders(zip + '.zip');
-			ZipCore.writeFolderToZip(ZipCore.openZip(zip), folder);
+		Lua_helper.add_callback(lua, "createZipFile", function(zip:String, folder:String ?prefix:String) {
+			var pathfile = Paths.modFolders(zip + '.zip');
+			var zipfile = ZipCore.createZipFile(zip);
+			ZipCore.writeFolderToZip(zipfile, folder, prefix);
+			zipfile.flush();
+			zipfile.close();
 		});
 
 		Lua_helper.add_callback(lua, "parseJson", function(jsonStr:String, varName:String) {

@@ -150,6 +150,22 @@ class CoolUtil
 		#end
 	}
 
+	public static function getInterval(size:Float):String
+	{
+		var data:Int = 0;
+
+		final intervalArray:Array<String> = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
+		while (size > 1024 && data < intervalArray.length - 1)
+		{
+			data++;
+			size = size / 1024;
+		}
+
+		size = Math.round(size * 100) / 100;
+		return size + ' ' + intervalArray[data];
+	}
+
+
 	/** Quick Function to Fix Save Files for Flixel 5
 		if you are making a mod, you are gonna wanna change "ShadowMario" to something else
 		so Base Psych saves won't conflict with yours
