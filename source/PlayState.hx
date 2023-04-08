@@ -5411,8 +5411,6 @@ class PlayState extends MusicBeatState
 				returnVal = myValue;
 			}
 		}
-		for (i in achievementsArray)
-			i.call(event, args);
 		#end
 		return returnVal;
 	}
