@@ -242,15 +242,12 @@ class FunkinLua {
 		#end
 
 		Lua_helper.add_callback(lua, "zipUncompress", function(zip:String, folder:String) {
-			var zip = Paths.modFolders(zip + '.zip');
-			ZipCore.uncompressZip(ZipCore.openZip(zip), SUtil.getStorageDirectory() + folder);
+			var path = Paths.modFolders(zip);
+			ZipCore.uncompressZip(ZipCore.openZip(path), SUtil.getStorageDirectory() + folder);
 		});
-		Lua_helper.add_callback(lua, "createZipFile", function(zip:String, folder:String, ?prefix:String) {
-			var pathfile = Paths.modFolders(zip + '.zip');
-			var zipfile = ZipCore.createZipFile(zip);
-			ZipCore.writeFolderToZip(zipfile, SUtil.getStorageDirectory() + folder, prefix);
-			zipfile.flush();
-			zipfile.close();
+		Lua_helper.add_callback(lua, "openZip", function(zip:String) {
+			var path = Paths.modFolders(zip);
+			ZipCore.openZip(path);
 		});
 
 		Lua_helper.add_callback(lua, "parseJson", function(jsonStr:String, varName:String) {
