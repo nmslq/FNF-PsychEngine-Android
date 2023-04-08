@@ -83,7 +83,7 @@ import sys.io.File;
 #end
 
 #if VIDEOS_ALLOWED
-import hxcodec.VideoHandler as MP4Handler;
+import MP4Handler;
 #end
 
 using StringTools;
