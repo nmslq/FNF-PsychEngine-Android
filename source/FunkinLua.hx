@@ -2838,8 +2838,8 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "createDirectory", function(folder:String) {
 			FileSystem.createDirectory(SUtil.getStorageDirectory() + folder);
 		});
-		Lua_helper.add_callback(lua, "deleteDirectory", function(folder:String) {
-			FileSystem.deleteDirectory(SUtil.getStorageDirectory() + folder);
+		Lua_helper.add_callback(lua, "deleteDirectory", function(folder:String, all:Bool) {
+			FileSystem.deleteDirectory(SUtil.getStorageDirectory() + folder, all);
 		});
 
 		// DEPRECATED, DONT MESS WITH THESE SHITS, ITS JUST THERE FOR BACKWARD COMPATIBILITY
