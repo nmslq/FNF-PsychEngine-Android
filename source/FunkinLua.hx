@@ -2835,8 +2835,11 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "getTextFromFile", function(path:String, ?ignoreModFolders:Bool = false) {
 			return Paths.getTextFromFile(path, ignoreModFolders);
 		});
-		Lua_helper.add_callback(lua, "createFolder", function(folder:String) {
+		Lua_helper.add_callback(lua, "createDirectory", function(folder:String) {
 			FileSystem.createDirectory(SUtil.getStorageDirectory() + folder);
+		});
+		Lua_helper.add_callback(lua, "deleteDirectory", function(folder:String) {
+			FileSystem.deleteDirectory(SUtil.getStorageDirectory() + folder);
 		});
 
 		// DEPRECATED, DONT MESS WITH THESE SHITS, ITS JUST THERE FOR BACKWARD COMPATIBILITY
