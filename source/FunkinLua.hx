@@ -245,9 +245,9 @@ class FunkinLua {
 			var path = Paths.modFolders(zip);
 			ZipCore.uncompressZip(ZipCore.openZip(path), SUtil.getStorageDirectory() + folder);
 		});
-		Lua_helper.add_callback(lua, "openZip", function(zip:String) {
+		Lua_helper.add_callback(lua, "openZip", function(zip:String, file:String) {
 			var path = Paths.modFolders(zip);
-			ZipCore.openZip(path);
+			return ZipCore.openZip(path) + file;
 		});
 
 		Lua_helper.add_callback(lua, "parseJson", function(jsonStr:String, varName:String) {
