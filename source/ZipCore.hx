@@ -18,7 +18,7 @@ using StringTools;
 
 /**
  * import ZipCore;
- * ZipUtils.uncompressZip(ZipUtils.openZip('theZip location'), 'destination');
+ * ZipCore.uncompressZip(ZipCore.openZip('theZip location'), 'destination');
  * 
  * import ZipCore;
  * var daCore = ZipCore.createZipFile("gjnsdghs.ycemod");

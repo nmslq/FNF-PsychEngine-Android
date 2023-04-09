@@ -28,7 +28,6 @@ import flixel.addons.display.FlxBackdrop;
 import flixel.addons.transition.FlxTransitionableState;
 import openfl.display.BitmapData;
 import haxe.Json;
-import ZipCore;
 
 #if (!flash && sys)
 import flixel.addons.display.FlxRuntimeShader;
@@ -240,15 +239,6 @@ class FunkinLua {
 		#else
 		set('buildTarget', 'unknown');
 		#end
-
-		Lua_helper.add_callback(lua, "zipUncompress", function(zip:String, folder:String) {
-			var path = Paths.modFolders(zip);
-			ZipCore.uncompressZip(ZipCore.openZip(path), SUtil.getStorageDirectory() + folder);
-		});
-		Lua_helper.add_callback(lua, "openZip", function(zip:String, file:String) {
-			var path = Paths.modFolders(zip);
-			return ZipCore.openZip(path) + file;
-		});
 
 		Lua_helper.add_callback(lua, "parseJson", function(jsonStr:String, varName:String) {
 			var json = Paths.modFolders('data/' + jsonStr + '.json');
