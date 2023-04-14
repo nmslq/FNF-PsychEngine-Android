@@ -60,7 +60,6 @@ import StageData;
 import FunkinLua;
 import DialogueBoxPsych;
 import Conductor.Rating;
-import Shaders;
 
 #if LUA_ALLOWED
 import llua.Lua;

@@ -40,7 +40,6 @@ import sys.io.File;
 
 import Type.ValueType;
 import DialogueBoxPsych;
-import Shaders;
 
 #if hscript
 import hscript.Parser;
