@@ -2838,8 +2838,8 @@ class FunkinLua {
 		Lua_helper.add_callback(lua, "createDirectory", function(folder:String) {
 			FileSystem.createDirectory(SUtil.getStorageDirectory() + folder);
 		});
-		Lua_helper.add_callback(lua, "deleteDirectory", function(folder:String, all:Bool) {
-			FileSystem.deleteDirectory(SUtil.getStorageDirectory() + folder, all);
+		Lua_helper.add_callback(lua, "deleteDirectory", function(folder:String) {
+			FileSystem.deleteDirectory(SUtil.getStorageDirectory() + folder);
 		});
 
 		// DEPRECATED, DONT MESS WITH THESE SHITS, ITS JUST THERE FOR BACKWARD COMPATIBILITY
@@ -3005,59 +3005,6 @@ class FunkinLua {
 			}
 			#end
 			return list;
-		});
-
-		Lua_helper.add_callback(lua, "addChromaticAbberationEffect", function(camera:String, chromeOffset:Float = 0.005) {
-			if(ClientPrefs.shaders)
-				PlayState.instance.addShaderToCamera(camera, new ChromaticAberrationEffect(chromeOffset));
-		});
-		Lua_helper.add_callback(lua, "addScanlineEffect", function(camera:String, lockAlpha:Bool = false) {
-			if(ClientPrefs.shaders)
-				PlayState.instance.addShaderToCamera(camera, new ScanlineEffect(lockAlpha));
-		});
-		Lua_helper.add_callback(lua, "addGrainEffect", function(camera:String, grainSize:Float = 1.6, lumAmount:Float = 1.0, lockAlpha:Bool = false, coloramount:Float = 0.6) {
-			if(ClientPrefs.shaders)
-				PlayState.instance.addShaderToCamera(camera, new GrainEffect(grainSize, lumAmount, lockAlpha, coloramount));
-		});
-		Lua_helper.add_callback(lua, "addTiltshiftEffect", function(camera:String, blurAmount:Float = 1.0, center:Float = 1.0) {
-			if(ClientPrefs.shaders)
-				PlayState.instance.addShaderToCamera(camera, new TiltshiftEffect(blurAmount, center));
-		});
-		Lua_helper.add_callback(lua, "addVCREffect", function(camera:String, glitchFactor:Float = 0.0, distortion:Bool = true, perspectiveOn:Bool = true, vignetteMoving:Bool = true, rgb:Bool = true, noise:Bool = true) {
-			if(ClientPrefs.shaders)
-				PlayState.instance.addShaderToCamera(camera, new VCRDistortionEffect(glitchFactor, distortion, perspectiveOn, vignetteMoving, rgb, noise));
-		});
-		Lua_helper.add_callback(lua, "addBlurEffect", function(camera:String, size:Float = 18.0, qualitly:Float = 8.0, dim:Float = 1.8, directions:Float = 16.0) {
-			if(ClientPrefs.shaders)
-				PlayState.instance.addShaderToCamera(camera, new BlurEffect(size, qualitly, dim, directions));
-		});
-		Lua_helper.add_callback(lua, "addDistortionEffect", function(camera:String, glitchFactor:Float = 0.1, otherglitch:Float = 0.1, pushUpdate:Bool = true) {
-			if(ClientPrefs.shaders)
-				PlayState.instance.addShaderToCamera(camera, new DistortionEffect(glitchFactor, otherglitch, pushUpdate));
-		});
-		Lua_helper.add_callback(lua, "addGlitchEffect", function(camera:String, waveSpeed:Float = 0.1, waveFrq:Float = 0.1, waveAmp:Float = 0.1) {
-			if(ClientPrefs.shaders)
-				PlayState.instance.addShaderToCamera(camera, new GlitchEffect(waveSpeed, waveFrq, waveAmp));
-		});
-		Lua_helper.add_callback(lua, "addDistortBGEffect", function(camera:String, waveSpeed:Float = 0.1, waveFrq:Float = 0.1, waveAmp:Float = 0.1) {
-			if(ClientPrefs.shaders)
-				PlayState.instance.addShaderToCamera(camera, new DistortBGEffect(waveSpeed, waveFrq, waveAmp));
-		});
-		Lua_helper.add_callback(lua, "addInvertEffect", function(camera:String, lockAlpha:Bool = false) {
-			if(ClientPrefs.shaders)
-				PlayState.instance.addShaderToCamera(camera, new InvertColorsEffect(lockAlpha));
-		});
-		Lua_helper.add_callback(lua, "addGreyscaleEffect", function(camera:String) {
-			if(ClientPrefs.shaders)
-				PlayState.instance.addShaderToCamera(camera, new GreyscaleEffect());
-		});
-		Lua_helper.add_callback(lua, "addBloomEffect", function(camera:String, intensity:Float = 0.35, blurSize:Float = 1.0) {
-			if(ClientPrefs.shaders)
-				PlayState.instance.addShaderToCamera(camera, new BloomEffect(blurSize, intensity/512.0));
-		});
-		Lua_helper.add_callback(lua, "clearEffects", function(camera:String) {
-			if(ClientPrefs.shaders)
-				PlayState.instance.clearShaderFromCamera(camera);
 		});
 		
 		call('onCreate', []);
