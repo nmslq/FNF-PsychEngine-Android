@@ -133,7 +133,7 @@ class FlxJoyStick extends FlxSpriteGroup
 	function createBase():Void
 	{
 		base = new FlxSprite(0, 0);
-		base.loadGraphic(Paths.getSparrowAtlas('android/joystick/base'));
+		base.loadGraphic('assets/images/android/joystick/base.png');
 		base.x += -base.width * 0.5;
 		base.y += -base.height * 0.5;
 		base.scrollFactor.set();
@@ -152,7 +152,7 @@ class FlxJoyStick extends FlxSpriteGroup
 	function createThumb():Void
 	{
 		thumb = new FlxSprite(0, 0);
-		thumb.loadGraphic(Paths.getSparrowAtlas('android/joystick/thumb'));
+		thumb.loadGraphic('assets/images/android/joystick/thumb.png');
 		thumb.x += -thumb.width * 0.5;
 		thumb.y += -thumb.height * 0.5;
 		thumb.scrollFactor.set();
