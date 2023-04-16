@@ -56,7 +56,7 @@ class AndroidControlsSubState extends FlxSubState
 			FlxG.resetState();
 		});
 		exitButton.setGraphicSize(Std.int(exitButton.width) * 3);
-		exitButton.label.setFormat(Assets.getFont('assets/images/android/menu/vcr.ttf').fontName, 21, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,
+		exitButton.label.setFormat(Assets.getFont('assets/fonts/vcr.ttf').fontName, 21, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,
 			FlxColor.BLACK, true);
 		exitButton.color = FlxColor.LIME;
 		add(exitButton);
@@ -70,14 +70,14 @@ class AndroidControlsSubState extends FlxSubState
 			}
 		});
 		resetButton.setGraphicSize(Std.int(resetButton.width) * 3);
-		resetButton.label.setFormat(Assets.getFont('assets/images/android/menu/vcr.ttf').fontName, 21, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,
+		resetButton.label.setFormat(Assets.getFont('assets/fonts/vcr.ttf').fontName, 21, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,
 			FlxColor.BLACK, true);
 		resetButton.color = FlxColor.RED;
 		resetButton.visible = false;
 		add(resetButton);
 
 		funitext = new FlxText(0, 0, 0, 'No Android Controls!', 32);
-		funitext.setFormat(Assets.getFont('assets/images/android/menu/vcr.ttf').fontName, 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,
+		funitext.setFormat(Assets.getFont('assets/fonts/vcr.ttf').fontName, 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,
 			FlxColor.BLACK, true);
 		funitext.borderSize = 3;
 		funitext.borderQuality = 1;
@@ -86,7 +86,7 @@ class AndroidControlsSubState extends FlxSubState
 		add(funitext);
 
 		grpControls = new FlxText(0, 100, 0, '', 32);
-		grpControls.setFormat(Assets.getFont('assets/images/android/menu/vcr.ttf').fontName, 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,
+		grpControls.setFormat(Assets.getFont('assets/fonts/vcr.ttf').fontName, 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,
 			FlxColor.BLACK, true);
 		grpControls.borderSize = 3;
 		grpControls.borderQuality = 1;
@@ -106,28 +106,28 @@ class AndroidControlsSubState extends FlxSubState
 		add(rightArrow);
 
 		rightPosition = new FlxText(10, FlxG.height - 24, 0, '', 16);
-		rightPosition.setFormat(Assets.getFont('assets/images/android/menu/vcr.ttf').fontName, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
+		rightPosition.setFormat(Assets.getFont('assets/fonts/vcr.ttf').fontName, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
 			FlxColor.BLACK, true);
 		rightPosition.borderSize = 3;
 		rightPosition.borderQuality = 1;
 		add(rightPosition);
 
 		leftPosition = new FlxText(10, FlxG.height - 44, 0, '', 16);
-		leftPosition.setFormat(Assets.getFont('assets/images/android/menu/vcr.ttf').fontName, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
+		leftPosition.setFormat(Assets.getFont('assets/fonts/vcr.ttf').fontName, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
 			FlxColor.BLACK, true);
 		leftPosition.borderSize = 3;
 		leftPosition.borderQuality = 1;
 		add(leftPosition);
 
 		downPosition = new FlxText(10, FlxG.height - 64, 0, '', 16);
-		downPosition.setFormat(Assets.getFont('assets/images/android/menu/vcr.ttf').fontName, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
+		downPosition.setFormat(Assets.getFont('assets/fonts/vcr.ttf').fontName, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
 			FlxColor.BLACK, true);
 		downPosition.borderSize = 3;
 		downPosition.borderQuality = 1;
 		add(downPosition);
 
 		upPosition = new FlxText(10, FlxG.height - 84, 0, '', 16);
-		upPosition.setFormat(Assets.getFont('assets/images/android/menu/vcr.ttf').fontName, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
+		upPosition.setFormat(Assets.getFont('assets/fonts/vcr.ttf').fontName, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
 			FlxColor.BLACK, true);
 		upPosition.borderSize = 3;
 		upPosition.borderQuality = 1;
