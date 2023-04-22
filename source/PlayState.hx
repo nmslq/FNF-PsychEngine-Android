@@ -4178,15 +4178,21 @@ class PlayState extends MusicBeatState
 	public var showCombo:Bool = false;
 	public var showComboNum:Bool = true;
 	public var showRating:Bool = true;
+	
+	public var pixelShitPart1:String = '';
+	public var pixelShitPart2:String = '';
 
 	private function cachePopUpScore()
 	{
-		var pixelShitPart1:String = '';
-		var pixelShitPart2:String = '';
 		if (isPixelStage)
 		{
 			pixelShitPart1 = 'pixelUI/';
 			pixelShitPart2 = '-pixel';
+		}
+		else
+		{
+			pixelShitPart1:String = '';
+			pixelShitPart2:String = '';
 		}
 
 		Paths.image(pixelShitPart1 + "sick" + pixelShitPart2);
@@ -4242,13 +4248,15 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		var pixelShitPart1:String = "";
-		var pixelShitPart2:String = '';
-
 		if (PlayState.isPixelStage)
 		{
 			pixelShitPart1 = 'pixelUI/';
 			pixelShitPart2 = '-pixel';
+		}
+		else
+		{
+			pixelShitPart1:String = '';
+			pixelShitPart2:String = '';
 		}
 
 		rating.loadGraphic(Paths.image(pixelShitPart1 + daRating.image + pixelShitPart2));
