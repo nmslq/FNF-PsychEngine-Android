@@ -62,7 +62,7 @@ import sys.io.File;
 import sys.FileSystem;
 #end
 
-if (flixel >= "5.3.0")
+#if (flixel >= "5.3.0")
 @:access(flixel.sound.FlxSound._sound)
 #else
 @:access(flixel.system.FlxSound._sound)
