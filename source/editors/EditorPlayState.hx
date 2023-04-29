@@ -1,4 +1,4 @@
- editors;
+package editors;
 
 import Section.SwagSection;
 import Song.SwagSong;
