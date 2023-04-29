@@ -2390,12 +2390,24 @@ class PlayState extends MusicBeatState
 		}
 	}
 
+	public var tempScore:String = "";
+	public var scoreSeparator:String = ' | ';
+	public var displayRatings:Bool = true;
+
 	public function updateScore(miss:Bool = false)
 	{
-		scoreTxt.text = 'Score: ' + songScore
-		+ ' | Misses: ' + songMisses
-		+ ' | Rating: ' + ratingName
-		+ (ratingName != '?' ? ' (${Highscore.floorDecimal(ratingPercent * 100, 2)}%) - $ratingFC' : '');
+		tempScore = "Score: " + songScore;
+
+		if (displayRatings)
+		{
+			tempScore += scoreSeparator + "Misses: " + songMisses;
+			tempScore += scoreSeparator + "Rating: " + ratingName;
+			tempScore += (ratingName != '?' ? ' (${Highscore.floorDecimal(ratingPercent * 100, 2)}%)' : '');
+			tempScore += (ratingFC != null && ratingFC != '' ? ' - $ratingFC' : '');
+		}
+		tempScore += '\n';
+
+		scoreTxt.text = tempScore;
 
 		if(ClientPrefs.scoreZoom && !miss && !cpuControlled)
 		{
@@ -2820,29 +2832,6 @@ class PlayState extends MusicBeatState
 				FlxG.sound.music.pause();
 				vocals.pause();
 			}
-
-			if (startTimer != null && !startTimer.finished)
-				startTimer.active = false;
-			if (finishTimer != null && !finishTimer.finished)
-				finishTimer.active = false;
-			if (songSpeedTween != null)
-				songSpeedTween.active = false;
-
-			if(carTimer != null) carTimer.active = false;
-
-			var chars:Array<Character> = [boyfriend, gf, dad];
-			for (char in chars) {
-				if(char != null && char.colorTween != null) {
-					char.colorTween.active = false;
-				}
-			}
-
-			for (tween in modchartTweens) {
-				tween.active = false;
-			}
-			for (timer in modchartTimers) {
-				timer.active = false;
-			}
 		}
 
 		super.openSubState(SubState);
@@ -2857,28 +2846,17 @@ class PlayState extends MusicBeatState
 				resyncVocals();
 			}
 
-			if (startTimer != null && !startTimer.finished)
-				startTimer.active = true;
-			if (finishTimer != null && !finishTimer.finished)
-				finishTimer.active = true;
-			if (songSpeedTween != null)
-				songSpeedTween.active = true;
+			FlxTimer.globalManager.forEach(function(tmr:FlxTimer)
+			{
+				if (!tmr.finished)
+					tmr.active = true;
+			});
 
-			if(carTimer != null) carTimer.active = true;
-
-			var chars:Array<Character> = [boyfriend, gf, dad];
-			for (char in chars) {
-				if(char != null && char.colorTween != null) {
-					char.colorTween.active = true;
-				}
-			}
-
-			for (tween in modchartTweens) {
-				tween.active = true;
-			}
-			for (timer in modchartTimers) {
-				timer.active = true;
-			}
+			FlxTween.globalManager.forEach(function(twn:FlxTween)
+			{
+				if (!twn.finished)
+					twn.active = true;
+			});
 			paused = false;
 			callOnLuas('onResume', []);
 
@@ -3432,6 +3410,17 @@ class PlayState extends MusicBeatState
 
 	function openPauseMenu()
 	{
+		FlxTimer.globalManager.forEach(function(tmr:FlxTimer)
+		{
+			if (!tmr.finished)
+				tmr.active = false;
+		});
+
+		FlxTween.globalManager.forEach(function(twn:FlxTween)
+		{
+			if (!twn.finished)
+				twn.active = false;
+		});
 		persistentUpdate = false;
 		persistentDraw = true;
 		paused = true;
