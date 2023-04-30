@@ -1,10 +1,13 @@
-package shaders;
+package;
+
 import flixel.util.FlxColor;
 import openfl.display.ShaderParameter;
+
 typedef BlendModeShader =
 {
 	var uBlendColor:ShaderParameter<Float>;
 }
+
 class BlendModeEffect
 {
 	public var shader(default, null):BlendModeShader;
