@@ -43,7 +43,7 @@ import sys.io.File;
 #end
 
 import Type.ValueType;
-import cutscenes.DialogueBoxPsych;
+import cutscenes.DialogueBoxPsych as DialogueBoxPsych;
 
 #if hscript
 import hscript.Parser;

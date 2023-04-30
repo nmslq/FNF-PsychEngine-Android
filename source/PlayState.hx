@@ -62,7 +62,7 @@ import animateatlas.AtlasFrameMaker;
 import Achievements;
 import StageData;
 import FunkinLua;
-import DialogueBoxPsych;
+import cutscenes.DialogueBoxPsych as DialogueBoxPsych;
 import Conductor.Rating;
 
 #if LUA_ALLOWED
