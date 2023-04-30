@@ -240,7 +240,7 @@ class PlayState extends MusicBeatState
 	public var cameraSpeed:Float = 1;
 
 	var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
-	var dialogueJson:cutscenes.DialogueFile = null;
+	var dialogueJson:DialogueFile = null;
 
 	var dadbattleBlack:BGSprite;
 	var dadbattleLight:BGSprite;
