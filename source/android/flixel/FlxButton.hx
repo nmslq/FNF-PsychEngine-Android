@@ -140,6 +140,11 @@ class FlxTypedButton<T:FlxSprite> extends FlxSprite implements IFlxInput
 	public var allowSwiping:Bool = true;
 
 	/**
+	 * Whether the button can use multiple fingers on it.
+	 */
+	public var multiTouch:Bool = false;
+
+	/**
 	 * Maximum distance a pointer can move to still trigger event handlers.
 	 * If it moves beyond this limit, onOut is triggered.
 	 * Defaults to `Math.POSITIVE_INFINITY` (i.e. no limit).
@@ -436,7 +441,7 @@ class FlxTypedButton<T:FlxSprite> extends FlxSprite implements IFlxInput
 	 */
 	function onUpHandler():Void
 	{
-		status = FlxButton.NORMAL;
+		status = multiTouch ? FlxButton.NORMAL : FlxButton.HIGHLIGHT;
 		input.release();
 		currentInput = null;
 		onUp.fire(); // Order matters here, because onUp.fire() could cause a state change and destroy this object.
