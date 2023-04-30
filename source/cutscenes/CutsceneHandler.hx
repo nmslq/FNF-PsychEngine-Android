@@ -1,4 +1,4 @@
-package handlers;
+package cutscenes;
 
 import flixel.FlxG;
 import flixel.FlxBasic;
