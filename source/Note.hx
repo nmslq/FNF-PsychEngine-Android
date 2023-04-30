@@ -44,7 +44,7 @@ class Note extends FlxSprite
 	public var eventVal1:String = '';
 	public var eventVal2:String = '';
 
-	public var colorSwap:ColorSwap;
+	public var colorSwap:shaders.ColorSwap;
 	public var inEditor:Bool = false;
 
 	public var animSuffix:String = '';
@@ -181,7 +181,7 @@ class Note extends FlxSprite
 
 		if(noteData > -1) {
 			texture = '';
-			colorSwap = new ColorSwap();
+			colorSwap = new shaders.ColorSwap();
 			shader = colorSwap.shader;
 
 			x += swagWidth * (noteData);
