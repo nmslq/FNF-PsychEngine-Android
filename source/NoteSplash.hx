@@ -5,7 +5,7 @@ import flixel.FlxSprite;
 
 class NoteSplash extends FlxSprite
 {
-	public var colorSwap:ColorSwap = null;
+	public var colorSwap:shaders.ColorSwap = null;
 	private var idleAnim:String;
 	private var textureLoaded:String = null;
 
