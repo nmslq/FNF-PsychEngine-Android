@@ -132,7 +132,7 @@ class TitleState extends MusicBeatState
 
 		// DEBUG BULLSHIT
 
-		swagShader = new shaders.ColorSwap();
+		swagShader = new ColorSwap();
 		super.create();
 
 		FlxG.save.bind('funkin', CoolUtil.getSavePath());
@@ -230,7 +230,7 @@ class TitleState extends MusicBeatState
 	var gfDance:FlxSprite;
 	var danceLeft:Bool = false;
 	var titleText:FlxSprite;
-	var swagShader:shaders.ColorSwap = null;
+	var swagShader:ColorSwap = null;
 
 	function startIntro()
 	{
@@ -288,7 +288,7 @@ class TitleState extends MusicBeatState
 		// logoBl.screenCenter();
 		// logoBl.color = FlxColor.BLACK;
 
-		swagShader = new shaders.ColorSwap();
+		swagShader = new ColorSwap();
 		gfDance = new FlxSprite(titleJSON.gfx, titleJSON.gfy);
 
 		var easterEgg:String = FlxG.save.data.psychDevsEasterEgg;

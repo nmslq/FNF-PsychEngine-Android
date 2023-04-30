@@ -6,7 +6,7 @@ import Discord.DiscordClient;
 #end
 import Section.SwagSection;
 import Song.SwagSong;
-import shaders.WiggleEffect.WiggleEffectType;
+import WiggleEffect.WiggleEffectType;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -62,7 +62,7 @@ import animateatlas.AtlasFrameMaker;
 import Achievements;
 import StageData;
 import FunkinLua;
-import cutscenes.DialogueBoxPsych as DialogueBoxPsych;
+import DialogueBoxPsych;
 import Conductor.Rating;
 
 #if LUA_ALLOWED
