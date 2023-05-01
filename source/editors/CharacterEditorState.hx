@@ -612,32 +612,6 @@ class CharacterEditorState extends MusicBeatState
 		UI_characterbox.addGroup(tab_group);
 	}
 
-	var characterDeathName:FlxUIInputText;
-	var characterDeathSound:FlxUIInputText;
-	var characterDeathConfirm:FlxUIInputText;
-	var characterDeathMusic:FlxUIInputText;
-	function addPropertiesUI() {
-		var tab_group = new FlxUI(null, UI_box);
-		tab_group.name = "Properties";
-
-		characterDeathName = new FlxUIInputText(15, 35, 150, char.deathChar, 8);
-		characterDeathSound = new FlxUIInputText(characterDeathName.x, characterDeathName.y + 45, 150, char.deathSound, 8);
-		characterDeathConfirm = new FlxUIInputText(characterDeathName.x, characterDeathName.y + 85, 150, char.deathConfirm, 8);
-		characterDeathMusic = new FlxUIInputText(characterDeathName.x, characterDeathName.y + 125, 150, char.deathMusic, 8);
-
-		tab_group.add(new FlxText(characterDeathName.x, characterDeathName.y - 18, 0, 'Game Over Character:'));
-		tab_group.add(new FlxText(characterDeathSound.x, characterDeathSound.y - 18, 0, 'Game Over Starting Sound:'));
-		tab_group.add(new FlxText(characterDeathConfirm.x, characterDeathConfirm.y - 18, 0, 'Game Over Confirm Sound:'));
-		tab_group.add(new FlxText(characterDeathMusic.x, characterDeathMusic.y - 18, 0, 'Game Over Music:'));
-
-		tab_group.add(characterDeathName);
-		tab_group.add(characterDeathSound);
-		tab_group.add(characterDeathConfirm);
-		tab_group.add(characterDeathMusic);
-
-		UI_characterbox.addGroup(tab_group);
-	}
-
 	var ghostDropDown:FlxUIDropDownMenuCustom;
 	var animationDropDown:FlxUIDropDownMenuCustom;
 	var animationInputText:FlxUIInputText;
