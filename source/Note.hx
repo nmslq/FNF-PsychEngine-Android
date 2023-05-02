@@ -1,9 +1,10 @@
 package;
 
+import flixel.FlxSprite;
 import flixel.math.FlxRect;
 import editors.ChartingState;
-import shaders.ColorSwap;
-import flixel.FlxSprite;
+
+using StringTools;
 
 typedef EventNote = {
 	strumTime:Float,
