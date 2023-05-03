@@ -1458,7 +1458,7 @@ class FunkinLua {
 			#end
 		});
 
-		Lua_helper.add_callback(lua, "LuaUtils.cancelTween", function(tag:String) {
+		Lua_helper.add_callback(lua, "cancelTween", function(tag:String) {
 			LuaUtils.cancelTween(tag);
 		});
 
@@ -1472,7 +1472,7 @@ class FunkinLua {
 				//trace('Timer Completed: ' + tag);
 			}, loops));
 		});
-		Lua_helper.add_callback(lua, "LuaUtils.cancelTimer", function(tag:String) {
+		Lua_helper.add_callback(lua, "cancelTimer", function(tag:String) {
 			LuaUtils.cancelTimer(tag);
 		});
 
