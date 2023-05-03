@@ -61,7 +61,7 @@ import flixel.animation.FlxAnimationController;
 import animateatlas.AtlasFrameMaker;
 import Achievements;
 import StageData;
-import FunkinLua;
+import psychlua.FunkinLua;
 import DialogueBoxPsych;
 import Conductor.Rating;
 
