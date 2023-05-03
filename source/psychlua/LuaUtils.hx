@@ -244,7 +244,7 @@ class LuaUtils
 		PlayState.instance.modchartSprites.remove(tag);
 	}
 
-	function resetBackdropTag(tag:String) {
+	public static function resetBackdropTag(tag:String) {
 		if(!PlayState.instance.modchartBackdrops.exists(tag)) {
 			return;
 		}
