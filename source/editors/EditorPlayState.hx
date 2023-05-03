@@ -22,7 +22,6 @@ import flixel.util.FlxSort;
 import flixel.util.FlxTimer;
 import flixel.input.keyboard.FlxKey;
 import openfl.events.KeyboardEvent;
-import psychlua.FunkinLua;
 
 using StringTools;
 
