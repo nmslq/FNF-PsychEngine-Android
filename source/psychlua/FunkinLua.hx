@@ -44,7 +44,7 @@ import sys.io.File;
 #end
 
 import Type.ValueType;
-import DialogueBoxPsych;
+import cutscenes.DialogueBoxPsych;
 
 #if hscript
 import hscript.Parser;
@@ -1931,7 +1931,7 @@ class FunkinLua {
 
 			return 0;
 		});
-		Lua_helper.add_callback(lua, "getScreenPositionX", function(variable:String) {
+		Lua_helper.add_callback(lua, "getScreenPositionX", function(variable:String, ?camera:String) {
 			var killMe:Array<String> = variable.split('.');
 			var obj:FlxSprite = getObjectDirectly(killMe[0]);
 			if(killMe.length > 1) {
@@ -1941,7 +1941,7 @@ class FunkinLua {
 
 			return 0;
 		});
-		Lua_helper.add_callback(lua, "getScreenPositionY", function(variable:String) {
+		Lua_helper.add_callback(lua, "getScreenPositionY", function(variable:String, ?camera:String) {
 			var killMe:Array<String> = variable.split('.');
 			var obj:FlxSprite = getObjectDirectly(killMe[0]);
 			if(killMe.length > 1) {
