@@ -350,6 +350,8 @@ class PlayState extends MusicBeatState
 	// stores the last combo score objects in an array
 	public static var lastScore:Array<FlxSprite> = [];
 
+	public var songName:String;
+
 	override public function create()
 	{
 		Paths.clearStoredMemory();
