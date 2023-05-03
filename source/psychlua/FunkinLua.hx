@@ -8,6 +8,7 @@ import llua.Convert;
 #end
 
 import flixel.FlxG;
+import flixel.FlxSprite;
 import flixel.tweens.FlxTween;
 import flixel.text.FlxText;
 import flixel.group.FlxGroup.FlxTypedGroup;
