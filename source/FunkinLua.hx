@@ -32,6 +32,7 @@ import flixel.addons.display.FlxBackdrop;
 import flixel.addons.transition.FlxTransitionableState;
 import openfl.display.BitmapData;
 import haxe.Json;
+import shaders.ColorSwap;
 
 #if (!flash && sys)
 import flixel.addons.display.FlxRuntimeShader;
