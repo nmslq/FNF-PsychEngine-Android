@@ -49,7 +49,7 @@ class MusicBeatSubstate extends FlxSubState
 	public function removeVirtualPad()
 	{
 		if (trackedinputsUI.length > 0)
-			controls.removeAControlsInput(trackedinputsUI);
+			controls.removeVirtualControlsInput(trackedinputsUI);
 
 		if (virtualPad != null)
 			remove(virtualPad);
@@ -71,7 +71,7 @@ class MusicBeatSubstate extends FlxSubState
 	{
 		#if android
 		if (trackedinputsUI.length > 0)
-			controls.removeAControlsInput(trackedinputsUI);
+			controls.removeVirtualControlsInput(trackedinputsUI);
 		#end
 
 		super.destroy();
