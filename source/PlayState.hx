@@ -1671,7 +1671,7 @@ class PlayState extends MusicBeatState
 		senpaiEvil.updateHitbox();
 		senpaiEvil.screenCenter();
 		senpaiEvil.x += 300;
-;
+
 		if (songName == 'roses' || songName == 'thorns')
 		{
 			remove(black);
