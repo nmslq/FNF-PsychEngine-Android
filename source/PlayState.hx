@@ -64,6 +64,7 @@ import StageData;
 import psychlua.FunkinLua;
 import DialogueBoxPsych;
 import Conductor.Rating;
+import cutscenes.CutsceneHandler;
 
 #if LUA_ALLOWED
 import llua.Lua;
@@ -1856,7 +1857,7 @@ class PlayState extends MusicBeatState
 
 	function tankIntro()
 	{
-		var cutsceneHandler:handlers.CutsceneHandler = new handlers.CutsceneHandler();
+		var cutsceneHandler:handlers.CutsceneHandler = new CutsceneHandler();
 
 		var songName:String = Paths.formatToSongPath(SONG.song);
 		dadGroup.alpha = 0.00001;
