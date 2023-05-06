@@ -65,6 +65,11 @@ class Character extends FlxSprite
 
 	public var hasMissAnimations:Bool = false;
 
+	public var deathChar:String = 'bf-dead';
+	public var deathSound:String = 'fnf_loss_sfx';
+	public var deathConfirm:String = 'gameOverEnd';
+	public var deathMusic:String = 'gameOver';
+
 	// Used on Character Editor
 	public var imageFile:String = '';
 	public var jsonScale:Float = 1;
@@ -84,7 +89,7 @@ class Character extends FlxSprite
 		#end
 		curCharacter = character;
 		this.isPlayer = isPlayer;
-		antialiasing = ClientPrefs.globalAntialiasing;
+		antialiasing = ClientPrefs.data.antialiasing;
 		var library:String = null;
 		switch (curCharacter)
 		{
@@ -201,7 +206,7 @@ class Character extends FlxSprite
 					healthColorArray = json.healthbar_colors;
 
 				antialiasing = !noAntialiasing;
-				if (!ClientPrefs.globalAntialiasing)
+				if (!ClientPrefs.data.antialiasing)
 					antialiasing = false;
 
 				animationsArray = json.animations;
