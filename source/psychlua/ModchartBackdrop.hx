@@ -12,7 +12,7 @@ class ModchartBackdrop extends FlxBackdrop
 		super(null, 1, 1, repeatX, repeatY);
 		this.x = x;
 		this.y = y;
-		antialiasing = ClientPrefs.globalAntialiasing;
+		antialiasing = ClientPrefs.data.antialiasing;
 		lowestCamZoom = PlayState.instance.defaultCamZoom;
 	}
 }
