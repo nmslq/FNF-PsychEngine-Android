@@ -917,13 +917,22 @@ class FunkinLua {
 			luaTrace("removeLuaScript: Script doesn't exist!", false, false, FlxColor.RED);
 		});
 
-		Lua_helper.add_callback(lua, "runHaxeCode", function(codeToRun:String) {
+		Lua_helper.add_callback(lua, "runHaxeCode", function(codeToRun:String, ?varsToBring:Any = null) {
 			var retVal:Dynamic = null;
 
 			#if hscript
 			HScript.initHaxeModule();
 
 			try {
+				if(varsToBring != null)
+				{
+					for (key in Reflect.fields(varsToBring))
+					{
+						//trace('Key $key: ' + Reflect.field(varsToBring, key));
+						hscript.interp.variables.set(key, Reflect.field(varsToBring, key));
+					}
+				}
+
 				retVal = hscript.execute(codeToRun);
 			}
 			catch (e:Dynamic) {
