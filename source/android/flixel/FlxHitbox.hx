@@ -52,7 +52,7 @@ class FlxHitbox extends FlxSpriteGroup
 	private function createHintGraphic(Width:Int, Height:Int, Color:Int = 0xFFFFFF):BitmapData
 	{
 		var shape:Shape = new Shape();
-		if (ClientPrefs.gradientHitboxes)
+		if (ClientPrefs.data.gradientHitboxes)
 		{
 			shape.graphics.beginFill(Color);
 			shape.graphics.lineStyle(3, Color, 1);
@@ -88,7 +88,7 @@ class FlxHitbox extends FlxSpriteGroup
 		hint.alpha = 0.00001;
 		hint.onDown.callback = hint.onOver.callback = function()
 		{
-			if (hint.alpha != (ClientPrefs.gradientHitboxes ? 0.5 : 0.2))
+			if (hint.alpha != (ClientPrefs.data.gradientHitboxes ? 0.5 : 0.2))
 				hint.alpha = (ClientPrefs.gradientHitboxes ? 0.5 : 0.2);
 		}
 		hint.onUp.callback = hint.onOut.callback = function()
