@@ -36,9 +36,9 @@ class HScript
 		interp.variables.set('FlxG', flixel.FlxG);
 		interp.variables.set('FlxSprite', flixel.FlxSprite);
 		interp.variables.set('FlxCamera', flixel.FlxCamera);
-		interp.variables.set('FlxTimer', flixel.FlxTimer);
-		interp.variables.set('FlxTween', flixel.FlxTween);
-		interp.variables.set('FlxEase', flixel.FlxEase);
+		interp.variables.set('FlxTimer', flixel.util.FlxTimer);
+		interp.variables.set('FlxTween', flixel.tweens.FlxTween);
+		interp.variables.set('FlxEase', flixel.tweens.FlxEase);
 		interp.variables.set('PlayState', PlayState);
 		interp.variables.set('game', PlayState.instance);
 		interp.variables.set('Paths', Paths);
