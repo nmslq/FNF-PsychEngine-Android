@@ -65,11 +65,6 @@ class Character extends FlxSprite
 
 	public var hasMissAnimations:Bool = false;
 
-	public var deathChar:String = 'bf-dead';
-	public var deathSound:String = 'fnf_loss_sfx';
-	public var deathConfirm:String = 'gameOverEnd';
-	public var deathMusic:String = 'gameOver';
-
 	// Used on Character Editor
 	public var imageFile:String = '';
 	public var jsonScale:Float = 1;
