@@ -153,13 +153,13 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 
 	function onChangeHitsoundVolume()
 	{
-		FlxG.sound.play(Paths.sound('hitsound'), ClientPrefs.hitsoundVolume);
+		FlxG.sound.play(Paths.sound('hitsound'), ClientPrefs.data.hitsoundVolume);
 	}
 
 	#if android
 	function onChangeGameOverVibration()
 	{
-		if(ClientPrefs.vibration)
+		if(ClientPrefs.data.vibration)
 		{
 			Tools.vibrate(500);
 		}
