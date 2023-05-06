@@ -872,7 +872,7 @@ class PlayState extends MusicBeatState
 					if(instance != null) { 
 						Achievements.unlockAchievement(name);
 						instance.startAchievement(name);
-						ClientPrefs.data.saveSettings();
+						ClientPrefs.saveSettings();
 						return "Unlocked achievement " + name + "!";
 					}
 					else return "Instance is null.";
