@@ -89,7 +89,7 @@ class FlxHitbox extends FlxSpriteGroup
 		hint.onDown.callback = hint.onOver.callback = function()
 		{
 			if (hint.alpha != (ClientPrefs.data.gradientHitboxes ? 0.5 : 0.2))
-				hint.alpha = (ClientPrefs.gradientHitboxes ? 0.5 : 0.2);
+				hint.alpha = (ClientPrefs.data.gradientHitboxes ? 0.5 : 0.2);
 		}
 		hint.onUp.callback = hint.onOut.callback = function()
 		{
