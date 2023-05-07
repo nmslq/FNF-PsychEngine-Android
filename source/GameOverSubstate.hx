@@ -7,9 +7,13 @@ import flixel.math.FlxPoint;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import flixel.tweens.FlxTween;
+
 #if android
 import android.Tools;
 #end
+
+import menus.StoryMenuState;
+import menus.FreeplayState;
 
 class GameOverSubstate extends MusicBeatSubstate
 {
