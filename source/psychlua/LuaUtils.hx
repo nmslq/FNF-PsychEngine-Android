@@ -219,7 +219,6 @@ class LuaUtils
 		}
 	}
 
-
 	public static function resetTextTag(tag:String) {
 		if(!PlayState.instance.modchartTexts.exists(tag)) {
 			return;
