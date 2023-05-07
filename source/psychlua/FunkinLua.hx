@@ -42,6 +42,10 @@ import sys.io.File;
 import Type.ValueType;
 import cutscenes.DialogueBoxPsych;
 
+import menus.MainMenuState;
+import menus.StoryMenuState;
+import menus.FreeplayState;
+
 import psychlua.HScript;
 import psychlua.DebugLuaText;
 import psychlua.ModchartSprite;
