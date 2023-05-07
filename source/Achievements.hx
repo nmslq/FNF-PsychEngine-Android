@@ -105,7 +105,7 @@ class Achievements {
 		],
 		[
 			"Roadkill Enthusiast",
-			"Watch the Henchmen die over 100 times.",
+			"Watch the Henchmen die over 50 times.",
 			'roadkill_enthusiast',
 			false
 		],
