@@ -5,23 +5,13 @@ import Discord.DiscordClient;
 #end
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.addons.display.FlxGridOverlay;
-import flixel.addons.transition.FlxTransitionableState;
-import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
-#if (flixel >= "5.3.0")
-import flixel.sound.FlxSound;
-#else
-import flixel.system.FlxSound;
-#end
-import flixel.addons.ui.FlxInputText;
-import flixel.addons.ui.FlxUI9SliceSprite;
 import flixel.addons.ui.FlxUI;
 import flixel.addons.ui.FlxUICheckBox;
 import flixel.addons.ui.FlxUIInputText;
 import flixel.addons.ui.FlxUINumericStepper;
+import flixel.addons.ui.FlxUIDropDownMenu;
 import flixel.addons.ui.FlxUITabMenu;
 #if android
 import android.flixel.FlxButton;
@@ -34,6 +24,7 @@ import openfl.events.IOErrorEvent;
 import flash.net.FileFilter;
 import haxe.Json;
 import cutscenes.DialogueBoxPsych;
+import cutscenes.DialogueCharacter;
 import flixel.FlxCamera;
 import flixel.group.FlxSpriteGroup;
 import lime.system.Clipboard;
@@ -259,7 +250,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 
 	var curSelectedAnim:String;
 	var animationArray:Array<String> = [];
-	var animationDropDown:FlxUIDropDownMenuCustom;
+	var animationDropDown:FlxUIDropDownMenu;
 	var animationInputText:FlxUIInputText;
 	var loopInputText:FlxUIInputText;
 	var idleInputText:FlxUIInputText;
@@ -267,7 +258,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 		var tab_group = new FlxUI(null, UI_mainbox);
 		tab_group.name = "Animations";
 
-		animationDropDown = new FlxUIDropDownMenuCustom(10, 30, FlxUIDropDownMenuCustom.makeStrIdLabelArray([''], true), function(animation:String) {
+		animationDropDown = new FlxUIDropDownMenu(10, 30, FlxUIDropDownMenu.makeStrIdLabelArray([''], true), function(animation:String) {
 			var anim:String = animationArray[Std.parseInt(animation)];
 			if(character.dialogueAnimations.exists(anim)) {
 				ghostLoop.playAnim(anim);
@@ -380,7 +371,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 		}
 
 		if(animationArray.length < 1) animationArray = [''];
-		animationDropDown.setData(FlxUIDropDownMenuCustom.makeStrIdLabelArray(animationArray, true));
+		animationDropDown.setData(FlxUIDropDownMenu.makeStrIdLabelArray(animationArray, true));
 	}
 
 	var imageInputText:FlxUIInputText;

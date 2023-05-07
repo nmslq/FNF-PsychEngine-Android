@@ -23,7 +23,7 @@ import openfl.events.IOErrorEvent;
 import flash.net.FileFilter;
 import haxe.Json;
 import cutscenes.DialogueBoxPsych;
-import lime.system.Clipboard;
+import cutscenes.DialogueCharacter;
 #if sys
 import sys.io.File;
 #end
