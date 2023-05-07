@@ -44,6 +44,7 @@ import shaders.ColorSwap;
 import menus.StoryMenuState;
 import menus.OutdatedState;
 import menus.MainMenuState;
+import menus.FreeplayState;
 
 using StringTools;
 typedef TitleData =
