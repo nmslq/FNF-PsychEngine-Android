@@ -16,6 +16,21 @@ import sys.io.File;
 
 using StringTools;
 
+// Gonna try to kind of make it compatible to Forever Engine,
+// love u Shubs no homo :flushedh4:
+typedef DialogueFile = {
+	var dialogue:Array<DialogueLine>;
+}
+
+typedef DialogueLine = {
+	var portrait:Null<String>;
+	var expression:Null<String>;
+	var text:Null<String>;
+	var boxState:Null<String>;
+	var speed:Null<Float>;
+	var sound:Null<String>;
+}
+
 // TO DO: Clean code? Maybe? idk
 class DialogueBoxPsych extends FlxSpriteGroup
 {
