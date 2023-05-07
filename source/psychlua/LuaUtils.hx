@@ -197,7 +197,7 @@ class LuaUtils
 	{
 		return PlayState.instance.isDead ? GameOverSubstate.instance : PlayState.instance;
 	}
-	
+
 	public static function loadFrames(spr:FlxSprite, image:String, spriteType:String)
 	{
 		switch(spriteType.toLowerCase().trim())
@@ -211,10 +211,14 @@ class LuaUtils
 			case "packer" | "packeratlas" | "pac":
 				spr.frames = Paths.getPackerAtlas(image);
 
+			case "i8" | "jsoni8" | "json": 
+				spr.frames = Paths.getJsonAtlas(image);
+
 			default:
 				spr.frames = Paths.getSparrowAtlas(image);
 		}
 	}
+
 
 	public static function resetTextTag(tag:String) {
 		if(!PlayState.instance.modchartTexts.exists(tag)) {
@@ -396,6 +400,7 @@ class LuaUtils
 		switch(cam.toLowerCase()) {
 			case 'camhud' | 'hud': return PlayState.instance.camHUD;
 			case 'camother' | 'other': return PlayState.instance.camOther;
+			case 'cambars' | 'bars': return PlayState.instance.camBars;
 		}
 		return PlayState.instance.camGame;
 	}
