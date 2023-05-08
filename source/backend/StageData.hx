@@ -1,4 +1,4 @@
-package;
+package backend;
 
 #if MODS_ALLOWED
 import sys.io.File;
@@ -7,7 +7,7 @@ import sys.FileSystem;
 import openfl.utils.Assets;
 #end
 import haxe.Json;
-import Song;
+import backend.Song;
 
 using StringTools;
 
