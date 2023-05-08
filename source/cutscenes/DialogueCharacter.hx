@@ -1,7 +1,5 @@
 package cutscenes;
 
-import flixel.FlxG;
-import flixel.FlxSprite;
 import haxe.Json;
 import haxe.format.JsonParser;
 #if sys
