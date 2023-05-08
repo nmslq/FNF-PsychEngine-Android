@@ -1,4 +1,4 @@
-package;
+package backend;
 
 import Section.SwagSection;
 import haxe.Json;
@@ -7,6 +7,8 @@ import haxe.Json;
 import sys.io.File;
 import sys.FileSystem;
 #end
+
+import backend.Section;
 
 using StringTools;
 
