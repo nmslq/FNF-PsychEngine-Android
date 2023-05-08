@@ -1,6 +1,4 @@
-package;
-
-import flixel.FlxG;
+package backend;
 
 using StringTools;
 
