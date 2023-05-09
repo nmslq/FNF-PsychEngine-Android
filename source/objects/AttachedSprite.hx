@@ -1,6 +1,4 @@
-package;
-
-import flixel.FlxSprite;
+package objects;
 
 using StringTools;
 
