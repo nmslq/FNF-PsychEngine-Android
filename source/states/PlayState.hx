@@ -150,7 +150,6 @@ class PlayState extends MusicBeatState
 	public var vocals:FlxSound;
 
 	public var lane:FlxSprite;
-	public var lanea:FlxSprite;
 
 	public var dad:Character = null;
 	public var gf:Character = null;
@@ -1024,23 +1023,16 @@ class PlayState extends MusicBeatState
 		if(ClientPrefs.data.downScroll) strumLine.y = FlxG.height - 150;
 		strumLine.scrollFactor.set();
 
-		if (ClientPrefs.data.middleScroll) {
-			if (ClientPrefs.data.laneUnderlay > 0) {
-				lanea = new FlxSprite(42 + 50 + (FlxG.width/2) - 10, 0).makeGraphic(Std.int(42 + Note.swagWidth * 3 + 90), FlxG.height);
-				lanea.color = FlxColor.BLACK;
-				lanea.alpha = ClientPrefs.data.laneUnderlay;
-				add(lanea);
-				lanea.screenCenter(X);
-				lanea.cameras = [camHUD];
-			}
-		} else {
-			if (ClientPrefs.data.laneUnderlay > 0) {
-				for (i in 0...2) {
-					lane = new FlxSprite(42 + 50 + (FlxG.width/2 * i) - 10, 0).makeGraphic(Std.int(42 + Note.swagWidth * 3 + 90), FlxG.height);
-					lane.color = FlxColor.BLACK;
-					lane.alpha = ClientPrefs.data.laneUnderlay;
-					add(lane);
-					lane.cameras = [camHUD];
+		if (ClientPrefs.data.laneUnderlay > 0) {
+			for (i in 0...2) {
+				lane = new FlxSprite(42 + 50 + (FlxG.width/2 * i) - 10, 0).makeGraphic(Std.int(42 + Note.swagWidth * 3 + 90), FlxG.height);
+				lane.color = FlxColor.BLACK;
+				lane.alpha = ClientPrefs.data.laneUnderlay;
+				add(lane);
+				lane.cameras = [camHUD];
+
+				if (ClientPrefs.data.middleScroll) {
+					lane.screenCenter(X);
 				}
 			}
 		}
