@@ -1,5 +1,7 @@
 package substates;
 
+import backend.WeekData;
+
 import flixel.FlxObject;
 import flixel.math.FlxPoint;
 
