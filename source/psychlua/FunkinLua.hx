@@ -2581,24 +2581,22 @@ class FunkinLua {
 
 	#if (!flash && sys)
 	public var runtimeShaders:Map<String, Array<String>> = new Map<String, Array<String>>();
-	public function createRuntimeShader(name:String):FlxRuntimeShader
+	public function getShader(obj:String):FlxRuntimeShader
 	{
-		if(!ClientPrefs.data.shaders) return new FlxRuntimeShader();
-
-		#if (!flash && MODS_ALLOWED && sys)
-		if(!runtimeShaders.exists(name) && !initLuaShader(name))
-		{
-			FlxG.log.warn('Shader $name is missing!');
-			return new FlxRuntimeShader();
+		var splitObj:Array<String> = obj.split('.');
+		var target:FlxSprite = LuaUtils.getObjectDirectly(splitObj[0]);
+		if(splitObj.length > 1) {
+			target = LuaUtils.getVarInArray(LuaUtils.getPropertyLoop(splitObj), splitObj[splitObj.length-1]);
 		}
 
-		var arr:Array<String> = runtimeShaders.get(name);
-		return new FlxRuntimeShader(arr[0], arr[1]);
-		#else
-		FlxG.log.warn("Platform unsupported for Runtime Shaders!");
+		if(target != null) {
+			var shader:Dynamic = target.shader;
+			var shader:FlxRuntimeShader = shader;
+			return shader;
+		}
 		return null;
-		#end
 	}
+	#end
 
 	public function initLuaShader(name:String)
 	{
@@ -2649,23 +2647,6 @@ class FunkinLua {
 		FlxG.log.warn('Missing shader $name .frag AND .vert files!');
 		return false;
 	}
-
-	public function getShader(obj:String):FlxRuntimeShader
-	{
-		var splitObj:Array<String> = obj.split('.');
-		var target:FlxSprite = LuaUtils.getObjectDirectly(splitObj[0]);
-		if(splitObj.length > 1) {
-			target = LuaUtils.getVarInArray(LuaUtils.getPropertyLoop(splitObj), splitObj[splitObj.length-1]);
-		}
-
-		if(target != null) {
-			var shader:Dynamic = target.shader;
-			var shader:FlxRuntimeShader = shader;
-			return shader;
-		}
-		return null;
-	}
-	#end
 
 	var lastCalledFunction:String = '';
 	public function call(func:String, args:Array<Dynamic>):Dynamic {
@@ -2741,6 +2722,7 @@ class FunkinLua {
 
 	function oldTweenFunction(tag:String, vars:String, tweenValue:Any, duration:Float, ease:String, funcName:String)
 	{
+		#if LUA_ALLOWED
 		var target:Dynamic = LuaUtils.tweenPrepare(tag, vars);
 		if(target != null) {
 			PlayState.instance.modchartTweens.set(tag, FlxTween.tween(target, tweenValue, duration, {ease: LuaUtils.getTweenEaseByString(ease),
@@ -2752,6 +2734,7 @@ class FunkinLua {
 		} else {
 			luaTrace('$funcName: Couldnt find object: $vars', false, false, FlxColor.RED);
 		}
+		#end
 	}
 
 	public function luaTrace(text:String, ignoreCheck:Bool = false, deprecated:Bool = false, color:FlxColor = FlxColor.WHITE) {
