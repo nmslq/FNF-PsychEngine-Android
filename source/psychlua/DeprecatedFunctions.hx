@@ -7,9 +7,6 @@ import llua.State;
 import llua.Convert;
 #end
 
-import flixel.FlxSprite;
-import flixel.FlxG;
-
 using StringTools;
 
 //

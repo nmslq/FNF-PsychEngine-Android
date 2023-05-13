@@ -1,7 +1,5 @@
 package psychlua;
 
-import flixel.FlxG;
-
 class CustomSubstate extends MusicBeatSubstate
 {
 	public static var name:String = 'unnamed';

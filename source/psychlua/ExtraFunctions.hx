@@ -15,8 +15,6 @@ import sys.io.File;
 import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.util.FlxSave;
-import flixel.util.FlxColor;
-import flixel.math.FlxMath;
 import openfl.utils.Assets;
 
 #if android
