@@ -1,6 +1,5 @@
 package objects;
 
-import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 #if MODS_ALLOWED
 import sys.io.File;
