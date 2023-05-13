@@ -8,6 +8,7 @@ import openfl.display.Sprite;
 import openfl.events.Event;
 import openfl.display.StageScaleMode;
 import lime.app.Application;
+import states.TitleState;
 
 //crash handler stuff
 #if CRASH_HANDLER
