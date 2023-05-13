@@ -2,7 +2,7 @@ package objects;
 
 import backend.Achievements;
 
-class AchievementObject extends FlxSpriteGroup
+class AchievementPopup extends FlxSpriteGroup
 {
 	public var onFinish:Void->Void = null;
 
