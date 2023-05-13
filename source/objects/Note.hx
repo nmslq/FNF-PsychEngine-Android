@@ -1,8 +1,8 @@
-package;
+package objects;
 
 import flixel.FlxSprite;
 import flixel.math.FlxRect;
-import editors.ChartingState;
+import states.editors.ChartingState;
 import shaders.ColorSwap;
 
 using StringTools;
