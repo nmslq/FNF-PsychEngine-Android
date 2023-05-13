@@ -1,6 +1,5 @@
 package backend;
 
-import Section.SwagSection;
 import haxe.Json;
 
 #if MODS_ALLOWED
