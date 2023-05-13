@@ -1,4 +1,4 @@
-package;
+package backend;
 
 #if desktop
 import Sys.sleep;
