@@ -1,7 +1,5 @@
 package psychlua;
 
-import flixel.FlxSprite;
-
 class ModchartSprite extends FlxSprite
 {
 	public var wasAdded:Bool = false;
