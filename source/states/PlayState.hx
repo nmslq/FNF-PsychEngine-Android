@@ -1043,6 +1043,7 @@ class PlayState extends MusicBeatState
 
 				if (ClientPrefs.data.middleScroll) {
 					lane.screenCenter(X);
+					lane.alpha = ClientPrefs.data.laneUnderlay / 2;
 				}
 			}
 		}
@@ -2558,6 +2559,7 @@ class PlayState extends MusicBeatState
 				add(dadbattleLight);
 
 				dadbattleFog = new DadBattleFog();
+				dadbattleFog.visible = false;
 				add(dadbattleFog);
 
 			case 'Philly Glow':
