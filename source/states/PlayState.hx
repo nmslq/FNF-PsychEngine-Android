@@ -102,7 +102,7 @@ class PlayState extends MusicBeatState
 	public var dadMap:Map<String, Character> = new Map();
 	public var gfMap:Map<String, Character> = new Map();
 	public var variables:Map<String, Dynamic> = new Map();
-	#if LUA_ALLOWED
+		#if LUA_ALLOWED
 		public var modchartTweens:Map<String, FlxTween> = new Map<String, FlxTween>();
 		public var modchartSprites:Map<String, ModchartSprite> = new Map<String, ModchartSprite>();
 		public var modchartTimers:Map<String, FlxTimer> = new Map<String, FlxTimer>();
@@ -116,7 +116,7 @@ class PlayState extends MusicBeatState
 	public var dadMap:Map<String, Character> = new Map<String, Character>();
 	public var gfMap:Map<String, Character> = new Map<String, Character>();
 	public var variables:Map<String, Dynamic> = new Map<String, Dynamic>();
-	#if LUA_ALLOWED
+		#if LUA_ALLOWED
 		public var modchartTweens:Map<String, FlxTween> = new Map();
 		public var modchartSprites:Map<String, ModchartSprite> = new Map();
 		public var modchartTimers:Map<String, FlxTimer> = new Map();
@@ -2681,14 +2681,12 @@ class PlayState extends MusicBeatState
 				}
 			}
 
-			#if LUA_ALLOWED
 			for (tween in modchartTweens) {
 				tween.active = false;
 			}
 			for (timer in modchartTimers) {
 				timer.active = false;
 			}
-			#end
 		}
 
 		super.openSubState(SubState);
@@ -2718,15 +2716,13 @@ class PlayState extends MusicBeatState
 					char.colorTween.active = true;
 				}
 			}
-			
-			#if LUA_ALLOWED
+
 			for (tween in modchartTweens) {
 				tween.active = true;
 			}
 			for (timer in modchartTimers) {
 				timer.active = true;
 			}
-			#end
 			paused = false;
 			callOnLuas('onResume', []);
 
@@ -3320,14 +3316,12 @@ class PlayState extends MusicBeatState
 
 				persistentUpdate = false;
 				persistentDraw = false;
-				#if LUA_ALLOWED
 				for (tween in modchartTweens) {
 					tween.active = true;
 				}
 				for (timer in modchartTimers) {
 					timer.active = true;
 				}
-				#end
 				openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x - boyfriend.positionArray[0], boyfriend.getScreenPosition().y - boyfriend.positionArray[1], camFollowPos.x, camFollowPos.y));
 
 				// MusicBeatState.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));

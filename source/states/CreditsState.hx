@@ -95,6 +95,8 @@ class CreditsState extends MusicBeatState
 				'https://twitter.com/RiverOaken',
 				'B42F71'
 			],
+			[''],
+			['Former Engine Members'],
 			[
 				'shubs',
 				'shubs',
@@ -102,8 +104,6 @@ class CreditsState extends MusicBeatState
 				'https://twitter.com/yoshubs',
 				'5E99DF'
 			],
-			[''],
-			['Former Engine Members'],
 			[
 				'bb-panzu',
 				'bb',
@@ -156,11 +156,11 @@ class CreditsState extends MusicBeatState
 				'D2D2D2'
 			],
 			[
-				'Nebula the Zorua',
-				'nebula',
-				'LUA JIT Fork and some Lua reworks',
-				'https://twitter.com/Nebula_Zorua',
-				'7D40B2'
+				'superpowers04',
+				'superpowers04,
+				'LUA JIT Fork',
+				'https://twitter.com/superpowers04',
+				'B957ED'
 			],
 			[
 				'Smokey',
