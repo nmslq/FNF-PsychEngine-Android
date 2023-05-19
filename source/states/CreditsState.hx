@@ -157,7 +157,7 @@ class CreditsState extends MusicBeatState
 			],
 			[
 				'superpowers04',
-				'superpowers04,
+				'superpowers04',
 				'LUA JIT Fork',
 				'https://twitter.com/superpowers04',
 				'B957ED'
