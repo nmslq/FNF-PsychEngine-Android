@@ -216,7 +216,7 @@ class ChartingState extends MusicBeatState
 			_song = PlayState.SONG;
 		else
 		{
-			CoolUtil.difficulties = CoolUtil.defaultDifficulties.copy();
+			Difficulty.resetList();
 
 			_song = {
 				song: 'Test',
@@ -605,9 +605,9 @@ class ChartingState extends MusicBeatState
 		stageDropDown.selectedLabel = _song.stage;
 		blockPressWhileScrolling.push(stageDropDown);
 		
-		if (CoolUtil.difficulties[PlayState.storyDifficulty] != CoolUtil.defaultDifficulty && CoolUtil.difficulties[PlayState.storyDifficulty] != null)
+		if (Difficulty.getString() != Difficulty.getDefault() && Difficulty.getString() != null)
 		{
-			postfix = '-' + CoolUtil.difficulties[PlayState.storyDifficulty].toLowerCase();
+			postfix = '-' + Difficulty.getString().toLowerCase();
 		}
 
 		var skin = PlayState.SONG.arrowSkin;
@@ -3009,11 +3009,11 @@ class ChartingState extends MusicBeatState
 	function loadJson(song:String):Void
 	{
 		//make it look sexier if possible
-		if (CoolUtil.difficulties[PlayState.storyDifficulty] != CoolUtil.defaultDifficulty) {
-			if(CoolUtil.difficulties[PlayState.storyDifficulty] == null){
+		if (Difficulty.getString() != Difficulty.getDefault()) {
+			if(Difficulty.getString() == null){
 				PlayState.SONG = Song.loadFromJson(song.toLowerCase(), song.toLowerCase());
 			}else{
-				PlayState.SONG = Song.loadFromJson(song.toLowerCase() + "-" + CoolUtil.difficulties[PlayState.storyDifficulty], song.toLowerCase());
+				PlayState.SONG = Song.loadFromJson(song.toLowerCase() + "-" + Difficulty.getString(), song.toLowerCase());
 			}
 			
 		}else{
