@@ -9,8 +9,6 @@ import llua.Convert;
 
 import Type.ValueType;
 
-using StringTools;
-
 class EditorLua {
 	public static var Function_Stop = 1;
 	public static var Function_Continue = 0;

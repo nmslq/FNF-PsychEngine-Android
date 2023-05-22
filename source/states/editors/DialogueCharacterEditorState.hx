@@ -28,8 +28,6 @@ import sys.io.File;
 
 import objects.TypedAlphabet;
 
-using StringTools;
-
 class DialogueCharacterEditorState extends MusicBeatState
 {
 	var box:FlxSprite;

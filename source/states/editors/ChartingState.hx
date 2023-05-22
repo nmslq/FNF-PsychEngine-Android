@@ -50,8 +50,6 @@ import objects.AttachedSprite;
 import objects.Character;
 import substates.Prompt;
 
-using StringTools;
-
 #if sys
 import flash.media.Sound;
 import sys.io.File;

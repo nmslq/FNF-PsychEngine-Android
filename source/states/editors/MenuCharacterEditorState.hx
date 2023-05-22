@@ -24,8 +24,6 @@ import sys.io.File;
 
 import objects.MenuCharacter;
 
-using StringTools;
-
 class MenuCharacterEditorState extends MusicBeatState
 {
 	var grpWeekCharacters:FlxTypedGroup<MenuCharacter>;

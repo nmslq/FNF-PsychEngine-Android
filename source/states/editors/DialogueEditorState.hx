@@ -26,8 +26,6 @@ import sys.io.File;
 
 import objects.TypedAlphabet;
 
-using StringTools;
-
 class DialogueEditorState extends MusicBeatState
 {
 	var character:DialogueCharacter;
