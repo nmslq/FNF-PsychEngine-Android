@@ -6,8 +6,6 @@ import sys.FileSystem;
 #end
 import haxe.Json;
 
-using StringTools;
-
 typedef WeekFile =
 {
 	// JSON variables
