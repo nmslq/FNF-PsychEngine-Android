@@ -22,8 +22,6 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
-using StringTools;
-
 class Main extends Sprite
 {
 	var game = {
