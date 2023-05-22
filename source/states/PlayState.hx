@@ -3258,17 +3258,6 @@ class PlayState extends MusicBeatState
 
 	function openPauseMenu()
 	{
-		FlxTimer.globalManager.forEach(function(tmr:FlxTimer)
-		{
-			if (!tmr.finished)
-				tmr.active = false;
-		});
-
-		FlxTween.globalManager.forEach(function(twn:FlxTween)
-		{
-			if (!twn.finished)
-				twn.active = false;
-		});
 		persistentUpdate = false;
 		persistentDraw = true;
 		paused = true;
