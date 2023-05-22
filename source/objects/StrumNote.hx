@@ -1,10 +1,6 @@
 package objects;
 
-import flixel.FlxG;
-import flixel.FlxSprite;
 import shaders.ColorSwap;
-
-using StringTools;
 
 class StrumNote extends FlxSprite
 {

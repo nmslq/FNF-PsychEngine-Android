@@ -10,9 +10,7 @@ import openfl.utils.Assets;
 import haxe.Json;
 import backend.Song;
 import backend.Section;
-import states.stages.objects.TankmenBG;
-
-using StringTools;
+import stages.stages.objects.TankmenBG;
 
 typedef CharacterFile = {
 	var animations:Array<AnimArray>;

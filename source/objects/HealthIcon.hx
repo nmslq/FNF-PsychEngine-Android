@@ -1,9 +1,5 @@
 package objects;
 
-import flixel.FlxSprite;
-
-using StringTools;
-
 class HealthIcon extends FlxSprite
 {
 	public var sprTracker:FlxSprite;
