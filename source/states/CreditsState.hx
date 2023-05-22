@@ -66,7 +66,7 @@ class CreditsState extends MusicBeatState
 		}
 		#end
 
-		var pisspoop:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
+		var defaultList:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
 			#if android
 			['Android Support'],
 			[
@@ -199,7 +199,7 @@ class CreditsState extends MusicBeatState
 			]
 		];
 		
-		for (i in pisspoop)
+		for (i in defaultList)
 		{
 			creditsStuff.push(i);
 		}
@@ -221,7 +221,9 @@ class CreditsState extends MusicBeatState
 					Paths.currentModDirectory = creditsStuff[i][5];
 				}
 
-				var icon:AttachedSprite = new AttachedSprite('credits/' + creditsStuff[i][1]);
+				var str:String = 'credits/missing_icon';
+				if (Paths.image('credits/' + creditsStuff[i][1]) != null) str = 'credits/' + creditsStuff[i][1];
+				var icon:AttachedSprite = new AttachedSprite(str);
 				icon.xAdd = optionText.width + 10;
 				icon.sprTracker = optionText;
 	
