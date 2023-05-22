@@ -1,8 +1,6 @@
 package cutscenes;
 
-import cutscenes.DialogueCharacter;
 import haxe.Json;
-import haxe.format.JsonParser;
 import openfl.utils.Assets;
 import objects.TypedAlphabet;
 
@@ -11,7 +9,7 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
-using StringTools;
+import cutscenes.DialogueCharacter;
 
 // Gonna try to kind of make it compatible to Forever Engine,
 // love u Shubs no homo :flushedh4:
