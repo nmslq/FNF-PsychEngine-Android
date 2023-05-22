@@ -19,8 +19,6 @@ import openfl.display.BitmapData;
 
 import flash.media.Sound;
 
-using StringTools;
-
 class Paths
 {
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;

@@ -1,15 +1,12 @@
 package;
 
 import flixel.util.FlxSave;
-import flixel.FlxG;
 #if MODS_ALLOWED
 import sys.io.File;
 import sys.FileSystem;
 #else
 import openfl.utils.Assets;
 #end
-
-using StringTools;
 
 class CoolUtil
 {
