@@ -12,8 +12,6 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
-import flixel.FlxSprite;
-import flixel.FlxG;
 import flixel.util.FlxSave;
 import openfl.utils.Assets;
 
@@ -21,8 +19,6 @@ import openfl.utils.Assets;
 import android.widget.Toast;
 import android.Tools;
 #end
-
-using StringTools;
 
 //
 // Things to trivialize some dumb stuff like splitting strings on older Lua
