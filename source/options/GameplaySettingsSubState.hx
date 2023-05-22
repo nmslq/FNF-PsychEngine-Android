@@ -1,7 +1,5 @@
 package options;
 
-import flixel.FlxG;
-import flixel.FlxSprite;
 #if android
 import android.Tools;
 #end
