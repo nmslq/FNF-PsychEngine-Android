@@ -75,8 +75,6 @@ import states.editors.CharacterEditorState;
 import substates.PauseSubState;
 import substates.GameOverSubstate;
 
-using StringTools;
-
 class PlayState extends MusicBeatState
 {
 	public static var STRUM_X = 42;
