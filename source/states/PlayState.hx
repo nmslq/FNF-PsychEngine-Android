@@ -154,6 +154,7 @@ class PlayState extends MusicBeatState
 	public var spawnTime:Float = 2000;
 
 	public var vocals:FlxSound;
+	public var inst:FlxSound;
 
 	public var lane:FlxSprite;
 
@@ -2314,7 +2315,8 @@ class PlayState extends MusicBeatState
 		previousFrameTime = FlxG.game.ticks;
 		lastReportedPlayheadPosition = 0;
 
-		FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 1, false);
+		@:privateAccess
+		FlxG.sound.playMusic(inst._sound, 1, false);
 		FlxG.sound.music.pitch = playbackRate;
 		FlxG.sound.music.onComplete = finishSong.bind();
 		vocals.play();
@@ -2382,7 +2384,9 @@ class PlayState extends MusicBeatState
 
 		vocals.pitch = playbackRate;
 		FlxG.sound.list.add(vocals);
-		FlxG.sound.list.add(new FlxSound().loadEmbedded(Paths.inst(PlayState.SONG.song)));
+
+		inst = new FlxSound().loadEmbedded(Paths.inst(PlayState.SONG.song));
+		FlxG.sound.list.add(inst);
 
 		notes = new FlxTypedGroup<Note>();
 		add(notes);
