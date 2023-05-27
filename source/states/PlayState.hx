@@ -2679,12 +2679,14 @@ class PlayState extends MusicBeatState
 				}
 			}
 
+			#if LUA_ALLOWED
 			for (tween in modchartTweens) {
 				tween.active = false;
 			}
 			for (timer in modchartTimers) {
 				timer.active = false;
 			}
+			#end
 		}
 
 		super.openSubState(SubState);
@@ -2714,13 +2716,15 @@ class PlayState extends MusicBeatState
 					char.colorTween.active = true;
 				}
 			}
-
+			
+			#if LUA_ALLOWED
 			for (tween in modchartTweens) {
 				tween.active = true;
 			}
 			for (timer in modchartTimers) {
 				timer.active = true;
 			}
+			#end
 			paused = false;
 			callOnLuas('onResume', []);
 
@@ -3303,12 +3307,14 @@ class PlayState extends MusicBeatState
 
 				persistentUpdate = false;
 				persistentDraw = false;
+				#if LUA_ALLOWED
 				for (tween in modchartTweens) {
 					tween.active = true;
 				}
 				for (timer in modchartTimers) {
 					timer.active = true;
 				}
+				#end
 				openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x - boyfriend.positionArray[0], boyfriend.getScreenPosition().y - boyfriend.positionArray[1], camFollowPos.x, camFollowPos.y));
 
 				// MusicBeatState.switchState(new GameOverState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
