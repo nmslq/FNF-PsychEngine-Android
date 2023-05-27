@@ -110,18 +110,40 @@ class Character extends FlxSprite
 				#end
 
 				var json:CharacterFile = cast Json.parse(rawJson);
-				var useAtlas:Bool = false;
-				var useJsonAtlas = false;
+				var spriteType = "sparrow";
+				// sparrow
+				// packer
+				// texture
+				// I8
+				#if MODS_ALLOWED
+				var modTxtToFind:String = Paths.modsTxt(json.image);
+				var txtToFind:String = Paths.getPath('images/' + json.image + '.txt', TEXT);
+
+				// var modTextureToFind:String = Paths.modFolders("images/"+json.image);
+				// var textureToFind:String = Paths.getPath('images/' + json.image, new AssetType();
+
+				if (FileSystem.exists(modTxtToFind) || FileSystem.exists(SUtil.getStorageDirectory() + txtToFind) || Assets.exists(txtToFind))
+				#else
+				if (Assets.exists(Paths.getPath('images/' + json.image + '.txt', TEXT)))
+				#end
+				{
+					spriteType = "packer";
+				}
 
 				#if MODS_ALLOWED
 				var modAnimToFind:String = Paths.modFolders('images/' + json.image + '/Animation.json');
 				var animToFind:String = Paths.getPath('images/' + json.image + '/Animation.json', TEXT);
-
+				
+				// var modTextureToFind:String = Paths.modFolders("images/"+json.image);
+				// var textureToFind:String = Paths.getPath('images/' + json.image, new AssetType();
+				
 				if (FileSystem.exists(modAnimToFind) || FileSystem.exists(SUtil.getStorageDirectory() + animToFind) || Assets.exists(animToFind))
 				#else
 				if (Assets.exists(Paths.getPath('images/' + json.image + '/Animation.json', TEXT)))
 				#end
-					useAtlas = true;
+				{
+					spriteType = "texture";
+				}
 
 				#if MODS_ALLOWED
 				var modI8ToFind:String = Paths.modFolders('images/' + json.image + '.json');
@@ -131,14 +153,24 @@ class Character extends FlxSprite
 				#else
 				if (Assets.exists(Paths.getPath('images/' + json.image + '.json', TEXT)))
 				#end
-					useJsonAtlas = true;
+				{
+					spriteType = "I8";
+				}
 
-				if(!useAtlas)
-					frames = Paths.getAtlas(json.image);
-				else if (useJsonAtlas)
-					frames = Paths.getJsonAtlas(json.image);
-				else
-					frames = AtlasFrameMaker.construct(json.image);
+				switch (spriteType)
+				{
+					case "packer":
+						frames = Paths.getPackerAtlas(json.image);
+
+					case "sparrow":
+						frames = Paths.getSparrowAtlas(json.image);
+
+					case "texture":
+						frames = AtlasFrameMaker.construct(json.image);
+
+					case "I8":
+						frames = Paths.getJsonAtlas(json.image);
+				}
 
 				imageFile = json.image;
 
