@@ -653,6 +653,8 @@ class PlayState extends MusicBeatState
 		camFollow = new FlxPoint();
 		camFollowPos = new FlxObject(0, 0, 1, 1);
 
+		snapCamFollowToPos(camPos.x, camPos.y);
+
 		if (prevCamFollow != null)
 		{
 			camFollow = prevCamFollow;
