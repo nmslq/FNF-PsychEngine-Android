@@ -94,11 +94,11 @@ class FunkinLua {
 
 			var resultStr:String = Lua.tostring(lua, result);
 			if(resultStr != null && result != 0) {
-				trace('Error on lua script! ' + resultStr);
+				trace(resultStr);
 				#if (windows || android)
 				lime.app.Application.current.window.alert(resultStr, 'Error on lua script!');
 				#else
-				luaTrace('Error loading lua script: "$script"\n' + resultStr, true, false, FlxColor.RED);
+				luaTrace('$script\n$resultStr', true, false, FlxColor.RED);
 				#end
 				lua = null;
 				return;
@@ -114,7 +114,7 @@ class FunkinLua {
 			this.scriptCode = scriptCode;
 
 		scriptName = script;
-		HScript.initHaxeModule();
+		#if hscript HScript.initHaxeModule(); #end
 
 		trace('lua file loaded succesfully:' + script);
 
@@ -915,51 +915,6 @@ class FunkinLua {
 				return;
 			}
 			luaTrace("removeLuaScript: Script doesn't exist!", false, false, FlxColor.RED);
-		});
-
-		Lua_helper.add_callback(lua, "runHaxeCode", function(codeToRun:String, ?varsToBring:Any = null) {
-			var retVal:Dynamic = null;
-
-			#if hscript
-			HScript.initHaxeModule();
-
-			try {
-				if(varsToBring != null)
-				{
-					for (key in Reflect.fields(varsToBring))
-					{
-						//trace('Key $key: ' + Reflect.field(varsToBring, key));
-						hscript.interp.variables.set(key, Reflect.field(varsToBring, key));
-					}
-				}
-
-				retVal = hscript.execute(codeToRun);
-			}
-			catch (e:Dynamic) {
-				luaTrace(scriptName + ":" + lastCalledFunction + " - " + e, false, false, FlxColor.RED);
-			}
-			#else
-			luaTrace("runHaxeCode: HScript isn't supported on this platform!", false, false, FlxColor.RED);
-			#end
-
-			if(retVal != null && !LuaUtils.isOfTypes(retVal, [Bool, Int, Float, String, Array])) retVal = null;
-			return retVal;
-		});
-
-		Lua_helper.add_callback(lua, "addHaxeLibrary", function(libName:String, ?libPackage:String = '') {
-			#if hscript
-			HScript.initHaxeModule();
-			try {
-				var str:String = '';
-				if(libPackage.length > 0)
-					str = libPackage + '.';
-
-				hscript.variables.set(libName, Type.resolveClass(str + libName));
-			}
-			catch (e:Dynamic) {
-				luaTrace(scriptName.replace(SUtil.getStorageDirectory(), "") + ":" + lastCalledFunction + " - " + e, false, false, FlxColor.RED);
-			}
-			#end
 		});
 
 		Lua_helper.add_callback(lua, "loadSong", function(?name:String = null, ?difficultyNum:Int = -1) {
@@ -2571,6 +2526,7 @@ class FunkinLua {
 
 		psychlua.DeprecatedFunctions.implement(this);
 		psychlua.ExtraFunctions.implement(this);
+		#if hscript HScript.implement(this); #end
 		
 		call('onCreate', []);
 		#end
@@ -2645,7 +2601,7 @@ class FunkinLua {
 		return false;
 	}
 
-	var lastCalledFunction:String = '';
+	public var lastCalledFunction:String = '';
 	public function call(func:String, args:Array<Dynamic>):Dynamic {
 		#if LUA_ALLOWED
 		if(closed) return Function_Continue;
