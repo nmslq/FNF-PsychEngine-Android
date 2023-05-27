@@ -94,7 +94,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		PlayState.instance.callOnLuas('onUpdate', [elapsed]);
 		if(updateCamera) {
-			var lerpVal:Float = FlxMath.bound(elapsed * 0.6, 0, 1);
+			var lerpVal:Float = CoolUtil.boundTo(elapsed * 0.6, 0, 1);
 			camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
 		}
 
@@ -154,7 +154,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			}
 		}
 
-		if(updateCamera) FlxG.camera.followLerp = FlxMath.bound(elapsed * 0.6, 0, 1);
+		if(updateCamera) FlxG.camera.followLerp = CoolUtil.boundTo(elapsed * 0.6, 0, 1);
 		else FlxG.camera.followLerp = 0;
 
 		if (FlxG.sound.music.playing)
