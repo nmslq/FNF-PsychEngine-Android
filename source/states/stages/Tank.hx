@@ -1,7 +1,13 @@
 package states.stages;
 
 import flixel.math.FlxPoint;
+
+#if (flixel >= "5.3.0")
+import flixel.sound.FlxSound;
+#else
 import flixel.system.FlxSound;
+#end
+
 import animateatlas.AtlasFrameMaker;
 
 import states.stages.objects.*;
