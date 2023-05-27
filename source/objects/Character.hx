@@ -135,7 +135,7 @@ class Character extends FlxSprite
 
 				if(!useAtlas)
 					frames = Paths.getAtlas(json.image);
-				elseif (useJsonAtlas)
+				else if (useJsonAtlas)
 					frames = Paths.getJsonAtlas(json.image);
 				else
 					frames = AtlasFrameMaker.construct(json.image);
