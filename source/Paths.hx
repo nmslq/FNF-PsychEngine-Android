@@ -293,19 +293,6 @@ class Paths
 		return false;
 	}
 
-	static public function getAtlas(key:String, ?library:String):FlxAtlasFrames
-	{
-		#if MODS_ALLOWED
-		if(FileSystem.exists(modsXml(key)) || OpenFlAssets.exists(file('images/$key.xml', library), TEXT))
-		#else
-		if(OpenFlAssets.exists(file('images/$key.xml', library)))
-		#end
-		{
-			return getSparrowAtlas(key, library);
-		}
-		return getPackerAtlas(key, library);
-	}
-
 	inline static public function getSparrowAtlas(key:String, ?library:String):FlxAtlasFrames
 	{
 		#if MODS_ALLOWED
