@@ -3,6 +3,7 @@ package states.stages;
 import flixel.FlxBasic;
 import flixel.FlxObject;
 import flixel.FlxSubState;
+import flixel.math.FlxPoint;
 import backend.MusicBeatState;
 
 import objects.Note.EventNote;
@@ -44,6 +45,7 @@ class BaseStage extends FlxBasic
 	public var camOther(get, never):FlxCamera;
 
 	public var defaultCamZoom(get, set):Float;
+	public var camFollow(get, never):FlxPoint;
 	public var camFollowPos(get, never):FlxObject;
 
 	public function new()
@@ -142,6 +144,7 @@ class BaseStage extends FlxBasic
 	// overrides
 	function startCountdown() if(onPlayState) return PlayState.instance.startCountdown(); else return false;
 	function endSong() if(onPlayState)return PlayState.instance.endSong(); else return false;
+	function snapCamFollowToPos(x:Float, y:Float) if(onPlayState) PlayState.instance.snapCamFollowToPos(x, y);
 	function moveCameraSection() if(onPlayState) moveCameraSection();
 	function moveCamera(isDad:Bool) if(onPlayState) moveCamera(isDad);
 	inline private function get_paused() return game.paused;
@@ -186,5 +189,6 @@ class BaseStage extends FlxBasic
 		game.defaultCamZoom = value;
 		return game.defaultCamZoom;
 	}
-	inline private function get_camFollow():FlxObject return game.camFollowPos;
+	inline private function get_camFollow():FlxPoint return game.camFollow;
+	inline private function get_camFollowPos():FlxObject return game.camFollowPos;
 }
