@@ -1,6 +1,6 @@
 package states.stages;
 
-import flixel.math.FlxPoint;
+import states.stages.BaseStage;
 
 class Spooky extends BaseStage
 {
@@ -90,7 +90,7 @@ class Spooky extends BaseStage
 		inCutscene = true;
 		camHUD.visible = false;
 
-		FlxG.camera.focusOn(new FlxPoint(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100));
+		snapCamFollowToPos(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
 
 		// character anims
 		FlxG.sound.play(Paths.soundRandom('thunder_', 1, 2));
