@@ -2410,8 +2410,6 @@ class PlayState extends MusicBeatState
 		if(sec == null) sec = curSection;
 		if(sec < 0) sec = 0;
 
-		trace(SONG.notes[sec]);
-
 		if(SONG.notes[sec] == null) return;
 
 		if (gf != null && SONG.notes[sec].gfSection)
@@ -2429,7 +2427,6 @@ class PlayState extends MusicBeatState
 			callOnLuas('onMoveCamera', ['dad']);
 		else
 			callOnLuas('onMoveCamera', ['boyfriend']);
-		trace('moved camera succesfully');
 	}
 
 	var cameraTwn:FlxTween;
