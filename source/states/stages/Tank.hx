@@ -201,7 +201,7 @@ class Tank extends BaseStage
 			gf.animation.finishCallback = null;
 			gf.dance();
 		};
-		camFollow.setPosition(dad.x + 280, dad.y + 170);
+		camFollow.set(dad.x + 280, dad.y + 170);
 	}
 
 	function ughIntro()
