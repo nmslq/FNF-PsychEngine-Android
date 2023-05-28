@@ -2651,29 +2651,21 @@ class PlayState extends MusicBeatState
 				vocals.pause();
 			}
 
-			if (startTimer != null && !startTimer.finished)
-				startTimer.active = false;
-			if (finishTimer != null && !finishTimer.finished)
-				finishTimer.active = false;
-			if (songSpeedTween != null)
-				songSpeedTween.active = false;
+			if (startTimer != null && !startTimer.finished) startTimer.active = false;
+			if (finishTimer != null && !finishTimer.finished) finishTimer.active = false;
+			if (songSpeedTween != null) songSpeedTween.active = false;
 
 			if(carTimer != null) carTimer.active = false;
 
 			var chars:Array<Character> = [boyfriend, gf, dad];
 			for (char in chars) {
-				if(char != null && char.colorTween != null) {
+				if(char != null && char.colorTween != null)
 					char.colorTween.active = false;
-				}
 			}
 
 			#if LUA_ALLOWED
-			for (tween in modchartTweens) {
-				tween.active = false;
-			}
-			for (timer in modchartTimers) {
-				timer.active = false;
-			}
+			for (tween in modchartTweens) tween.active = false;
+			for (timer in modchartTimers) timer.active = false;
 			#end
 		}
 
@@ -2689,43 +2681,25 @@ class PlayState extends MusicBeatState
 				resyncVocals();
 			}
 
-			if (startTimer != null && !startTimer.finished)
-				startTimer.active = true;
-			if (finishTimer != null && !finishTimer.finished)
-				finishTimer.active = true;
-			if (songSpeedTween != null)
-				songSpeedTween.active = true;
+			if (startTimer != null && !startTimer.finished) startTimer.active = true;
+			if (finishTimer != null && !finishTimer.finished) finishTimer.active = true;
+			if (songSpeedTween != null) songSpeedTween.active = true;
 
 			if(carTimer != null) carTimer.active = true;
 
 			var chars:Array<Character> = [boyfriend, gf, dad];
-			for (char in chars) {
-				if(char != null && char.colorTween != null) {
+			for (char in chars)
+				if(char != null && char.colorTween != null)
 					char.colorTween.active = true;
-				}
-			}
 			
 			#if LUA_ALLOWED
-			for (tween in modchartTweens) {
-				tween.active = true;
-			}
-			for (timer in modchartTimers) {
-				timer.active = true;
-			}
+			for (tween in modchartTweens) tween.active = true;
+			for (timer in modchartTimers) timer.active = true;
 			#end
 			paused = false;
 			callOnLuas('onResume', []);
 
-			#if desktop
-			if (startTimer != null && startTimer.finished)
-			{
-				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter(), true, songLength - Conductor.songPosition - ClientPrefs.data.noteOffset);
-			}
-			else
-			{
-				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
-			}
-			#end
+			resetRPC(startTimer != null && startTimer.finished);
 		}
 
 		super.closeSubState();
@@ -2733,19 +2707,7 @@ class PlayState extends MusicBeatState
 
 	override public function onFocus():Void
 	{
-		#if desktop
-		if (health > 0 && !paused)
-		{
-			if (Conductor.songPosition > 0.0)
-			{
-				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter(), true, songLength - Conductor.songPosition - ClientPrefs.data.noteOffset);
-			}
-			else
-			{
-				DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
-			}
-		}
-		#end
+		if (health > 0 && !paused) resetRPC(Conductor.songPosition > 0.0);
 
 		super.onFocus();
 	}
@@ -2753,13 +2715,20 @@ class PlayState extends MusicBeatState
 	override public function onFocusLost():Void
 	{
 		#if desktop
-		if (health > 0 && !paused)
-		{
-			DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
-		}
+		if (health > 0 && !paused) DiscordClient.changePresence(detailsPausedText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
 		#end
 
 		super.onFocusLost();
+	}
+
+	function resetRPC(?cond:Bool = false)
+	{
+		#if desktop
+		if (cond)
+			DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter(), true, songLength - Conductor.songPosition - ClientPrefs.data.noteOffset);
+		else
+			DiscordClient.changePresence(detailsText, SONG.song + " (" + storyDifficultyText + ")", iconP2.getCharacter());
+		#end
 	}
 
 	function resyncVocals():Void
@@ -2926,7 +2895,7 @@ class PlayState extends MusicBeatState
 		setOnLuas('curDecStep', curDecStep);
 		setOnLuas('curDecBeat', curDecBeat);
 
-		if(botplayTxt.visible) {
+		if(botplayTxt != null && botplayTxt.visible) {
 			botplaySine += 180 * elapsed;
 			botplayTxt.alpha = 1 - Math.sin((Math.PI * botplaySine) / 180);
 		}
@@ -2940,12 +2909,7 @@ class PlayState extends MusicBeatState
 		}
 
 		if (FlxG.keys.anyJustPressed(debugKeysChart) && !endingSong && !inCutscene)
-		{
 			openChartEditor();
-		}
-
-		// FlxG.watch.addQuick('VOL', vocals.amplitudeLeft);
-		// FlxG.watch.addQuick('VOLRight', vocals.amplitudeRight);
 
 		var mult:Float = FlxMath.lerp(1, iconP1.scale.x, CoolUtil.boundTo(1 - (elapsed * 9 * playbackRate), 0, 1));
 		iconP1.scale.set(mult, mult);
@@ -2974,10 +2938,7 @@ class PlayState extends MusicBeatState
 			else
 				iconP1.animation.curAnim.curFrame = 0;
 		} else {
-			if (healthBar.percent < 20)
-				iconP1.animation.curAnim.curFrame = 1;
-			else
-				iconP1.animation.curAnim.curFrame = 0;
+			iconP1.animation.curAnim.curFrame = (healthBar.percent < 20) ? 1 : 0;
 		}
 
 		if (iconP2.animation.frames == 3) {
@@ -2988,10 +2949,7 @@ class PlayState extends MusicBeatState
 			else 
 				iconP2.animation.curAnim.curFrame = 0;
 		} else {
-			if (healthBar.percent > 80)
-				iconP2.animation.curAnim.curFrame = 1;
-			else 
-				iconP2.animation.curAnim.curFrame = 0;
+			iconP2.animation.curAnim.curFrame = (healthBar.percent > 80) ? 1 : 0;
 		}
 
 		if (FlxG.keys.anyJustPressed(debugKeysCharacter) && !endingSong && !inCutscene) {
@@ -3002,9 +2960,7 @@ class PlayState extends MusicBeatState
 		}
 
 		if (startedCountdown)
-		{
 			Conductor.songPosition += FlxG.elapsed * 1000 * playbackRate;
-		}
 
 		if (startingSong)
 		{
@@ -3296,12 +3252,8 @@ class PlayState extends MusicBeatState
 				persistentUpdate = false;
 				persistentDraw = false;
 				#if LUA_ALLOWED
-				for (tween in modchartTweens) {
-					tween.active = true;
-				}
-				for (timer in modchartTimers) {
-					timer.active = true;
-				}
+				for (tween in modchartTweens) tween.active = true;
+				for (timer in modchartTimers) timer.active = true;
 				#end
 				openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x - boyfriend.positionArray[0], boyfriend.getScreenPosition().y - boyfriend.positionArray[1], camFollowPos.x, camFollowPos.y));
 
@@ -3853,9 +3805,8 @@ class PlayState extends MusicBeatState
 		if(achievementObj != null) {
 			return;
 		} else {
-			var achieve:String = checkForAchievement(['week1_nomiss', 'week2_nomiss', 'week3_nomiss', 'week4_nomiss',
-				'week5_nomiss', 'week6_nomiss', 'week7_nomiss', 'ur_bad',
-				'ur_good', 'hype', 'two_keys', 'toastie', 'debugger']);
+			var noMissWeek:String = WeekData.getWeekFileName() + '_nomiss';
+			var achieve:String = checkForAchievement([noMissWeek, 'r_ubad', 'ur_good', 'hype', 'two_keys', 'toastie', 'debugger']);
 			var customAchieve:String = checkForAchievement(achievementWeeks);
 
 			if(achieve != null || customAchieve != null) {
