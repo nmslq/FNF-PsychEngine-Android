@@ -2183,7 +2183,7 @@ class PlayState extends MusicBeatState
 	{
 		insert(members.indexOf(boyfriendGroup), obj);
 	}
-	public function addBehindDad (obj:FlxObject)
+	public function addBehindDad(obj:FlxObject)
 	{
 		insert(members.indexOf(dadGroup), obj);
 	}
@@ -2225,19 +2225,29 @@ class PlayState extends MusicBeatState
 
 	public var tempScore:String = "";
 	public var scoreSeparator:String = ' | ';
-	public var displayRatings:Bool = true;
+	public var scoreDisplays = {
+		misses: true,
+		ratingPercent: true,
+		ratingName: true,
+		ratingFC: true
+	};
 
 	public function updateScore(miss:Bool = false)
 	{
 		tempScore = "Score: " + songScore;
 
-		if (displayRatings)
-		{
+		if (scoreDisplays.misses)
 			tempScore += scoreSeparator + "Misses: " + songMisses;
+
+		if (scoreDisplays.ratingName)
 			tempScore += scoreSeparator + "Rating: " + ratingName;
+
+		if (scoreDisplays.ratingPercent)
 			tempScore += (ratingName != '?' ? ' (${Highscore.floorDecimal(ratingPercent * 100, 2)}%)' : '');
+
+		if (scoreDisplays.ratingFC)
 			tempScore += (ratingFC != null && ratingFC != '' ? ' - $ratingFC' : '');
-		}
+
 		tempScore += '\n';
 
 		scoreTxt.text = tempScore;
