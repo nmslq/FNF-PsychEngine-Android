@@ -2404,17 +2404,7 @@ class PlayState extends MusicBeatState
 			for (event in eventsData) //Event Notes
 			{
 				for (i in 0...event[1].length)
-				{
-					var newEventNote:Array<Dynamic> = [event[0], event[1][i][0], event[1][i][1], event[1][i][2]];
-					var subEvent:EventNote = {
-						strumTime: newEventNote[0] + ClientPrefs.data.noteOffset,
-						event: newEventNote[1],
-						value1: newEventNote[2],
-						value2: newEventNote[3]
-					};
-					eventNotes.push(subEvent);
-					eventPushed(subEvent);
-				}
+					makeEvent(event, i);
 			}
 		}
 
@@ -2504,17 +2494,7 @@ class PlayState extends MusicBeatState
 		for (event in songData.events) //Event Notes
 		{
 			for (i in 0...event[1].length)
-			{
-				var newEventNote:Array<Dynamic> = [event[0], event[1][i][0], event[1][i][1], event[1][i][2]];
-				var subEvent:EventNote = {
-					strumTime: newEventNote[0] + ClientPrefs.data.noteOffset,
-					event: newEventNote[1],
-					value1: newEventNote[2],
-					value2: newEventNote[3]
-				};
-				eventNotes.push(subEvent);
-				eventPushed(subEvent);
-			}
+				makeEvent(event, i);
 		}
 
 		// trace(unspawnNotes.length);
@@ -2604,6 +2584,19 @@ class PlayState extends MusicBeatState
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.strumTime, Obj2.strumTime);
 	}
 
+	function makeEvent(event:Array<Dynamic>, i:Int)
+	{
+		var var newEventNote:Array<Dynamic> = [event[0], event[1][i][0], event[1][i][1], event[1][i][2]];
+		var subEvent:EventNote = {
+			strumTime: newEventNote[0] + ClientPrefs.data.noteOffset,
+			event: event[1][i][0],
+			value1: event[1][i][1],
+			value2: event[1][i][2]
+		};
+		eventNotes.push(subEvent);
+		eventPushed(subEvent);
+	}
+
 	public var skipArrowStartTween:Bool = false; //for lua
 	private function generateStaticArrows(player:Int):Void
 	{
@@ -2661,22 +2654,7 @@ class PlayState extends MusicBeatState
 				vocals.pause();
 			}
 
-			if (startTimer != null && !startTimer.finished) startTimer.active = false;
-			if (finishTimer != null && !finishTimer.finished) finishTimer.active = false;
-			if (songSpeedTween != null) songSpeedTween.active = false;
-
-			if(carTimer != null) carTimer.active = false;
-
-			var chars:Array<Character> = [boyfriend, gf, dad];
-			for (char in chars) {
-				if(char != null && char.colorTween != null)
-					char.colorTween.active = false;
-			}
-
-			#if LUA_ALLOWED
-			for (tween in modchartTweens) tween.active = false;
-			for (timer in modchartTimers) timer.active = false;
-			#end
+			setPauseTweens(false);
 		}
 
 		super.openSubState(SubState);
@@ -2691,21 +2669,8 @@ class PlayState extends MusicBeatState
 				resyncVocals();
 			}
 
-			if (startTimer != null && !startTimer.finished) startTimer.active = true;
-			if (finishTimer != null && !finishTimer.finished) finishTimer.active = true;
-			if (songSpeedTween != null) songSpeedTween.active = true;
+			setPauseTweens(true);
 
-			if(carTimer != null) carTimer.active = true;
-
-			var chars:Array<Character> = [boyfriend, gf, dad];
-			for (char in chars)
-				if(char != null && char.colorTween != null)
-					char.colorTween.active = true;
-			
-			#if LUA_ALLOWED
-			for (tween in modchartTweens) tween.active = true;
-			for (timer in modchartTimers) timer.active = true;
-			#end
 			paused = false;
 			callOnLuas('onResume', []);
 
@@ -2713,6 +2678,26 @@ class PlayState extends MusicBeatState
 		}
 
 		super.closeSubState();
+	}
+	
+	function setPauseTweens(isPause:Bool)
+	{
+		if (startTimer != null && !startTimer.finished) startTimer.active = isPause;
+		if (finishTimer != null && !finishTimer.finished) finishTimer.active = isPause;
+		if (songSpeedTween != null) songSpeedTween.active = isPause;
+
+		if(carTimer != null) carTimer.active = isPause;
+
+		var chars:Array<Character> = [boyfriend, gf, dad];
+		for (char in chars) {
+			if(char != null && char.colorTween != null)
+				char.colorTween.active = isPause;
+		}
+
+		#if LUA_ALLOWED
+		for (tween in modchartTweens) tween.active = isPause;
+		for (timer in modchartTimers) timer.active = isPause;
+		#end
 	}
 
 	override public function onFocus():Void
