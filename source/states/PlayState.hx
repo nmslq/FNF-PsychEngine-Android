@@ -2586,7 +2586,7 @@ class PlayState extends MusicBeatState
 
 	function makeEvent(event:Array<Dynamic>, i:Int)
 	{
-		var var newEventNote:Array<Dynamic> = [event[0], event[1][i][0], event[1][i][1], event[1][i][2]];
+		var newEventNote:Array<Dynamic> = [event[0], event[1][i][0], event[1][i][1], event[1][i][2]];
 		var subEvent:EventNote = {
 			strumTime: newEventNote[0] + ClientPrefs.data.noteOffset,
 			event: event[1][i][0],
