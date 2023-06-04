@@ -9,11 +9,6 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.frames.FlxFrame;
 import flixel.group.FlxGroup;
 import flixel.input.gamepad.FlxGamepad;
-#if (flixel >= "5.3.0")
-import flixel.sound.FlxSound;
-#else
-import flixel.system.FlxSound;
-#end
 import haxe.Json;
 
 import openfl.Assets;

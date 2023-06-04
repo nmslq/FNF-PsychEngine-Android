@@ -14,13 +14,6 @@ import flixel.addons.effects.FlxTrail;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-
-#if (flixel >= "5.3.0")
-import flixel.sound.FlxSound;
-#else
-import flixel.system.FlxSound;
-#end
-
 import flixel.ui.FlxBar;
 import flixel.util.FlxSort;
 import flixel.util.FlxStringUtil;
@@ -244,7 +237,7 @@ class PlayState extends MusicBeatState
 	var fastCar:BGSprite;
 
 	var upperBoppers:BGSprite;
-	var bottomBoppers:BGSprite;
+	var bottomBoppers:MallCrowd;
 	var santa:BGSprite;
 	var heyTimer:Float;
 
@@ -592,10 +585,7 @@ class PlayState extends MusicBeatState
 				var tree:BGSprite = new BGSprite('christmas/christmasTree', 370, -250, 0.40, 0.40);
 				add(tree);
 
-				bottomBoppers = new BGSprite('christmas/bottomBop', -300, 140, 0.9, 0.9, ['Bottom Level Boppers Idle']);
-				bottomBoppers.animation.addByPrefix('hey', 'Bottom Level Boppers HEY', 24, false);
-				bottomBoppers.setGraphicSize(Std.int(bottomBoppers.width * 1));
-				bottomBoppers.updateHitbox();
+				bottomBoppers = new MallCrowd(-300, 140);
 				add(bottomBoppers);
 
 				var fgSnow:BGSprite = new BGSprite('christmas/fgSnow', -600, 700);
@@ -4766,6 +4756,10 @@ class PlayState extends MusicBeatState
 		}
 		FlxAnimationController.globalSpeed = 1;
 		FlxG.sound.music.pitch = 1;
+
+		#if desktop
+		DiscordClient.resetID();
+		#end
 
 		super.destroy();
 	}
