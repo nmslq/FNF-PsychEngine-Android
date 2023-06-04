@@ -93,12 +93,7 @@ class Main extends Sprite
 		#end
 
 		#if desktop
-		if (!DiscordClient.isInitialized) {
-			DiscordClient.initialize();
-			Application.current.window.onClose.add(function() {
-				DiscordClient.shutdown();
-			});
-		}
+		DiscordClient.start();
 		#end
 	}
 
