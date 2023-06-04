@@ -17,12 +17,6 @@ import flixel.addons.ui.FlxUITabMenu;
 import flixel.group.FlxGroup;
 import flixel.math.FlxPoint;
 
-#if (flixel >= "5.3.0")
-import flixel.sound.FlxSound;
-#else
-import flixel.system.FlxSound;
-#end
-
 #if android
 import android.flixel.FlxButton;
 #else
@@ -56,11 +50,7 @@ import sys.io.File;
 import sys.FileSystem;
 #end
 
-#if (flixel >= "5.3.0")
 @:access(flixel.sound.FlxSound._sound)
-#else
-@:access(flixel.system.FlxSound._sound)
-#end
 @:access(openfl.media.Sound.__buffer)
 
 class ChartingState extends MusicBeatState

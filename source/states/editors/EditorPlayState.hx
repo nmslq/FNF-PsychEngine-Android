@@ -8,12 +8,6 @@ import backend.Rating;
 
 import flixel.math.FlxRect;
 
-#if (flixel >= "5.3.0")
-import flixel.sound.FlxSound;
-#else
-import flixel.system.FlxSound;
-#end
-
 import flixel.util.FlxSort;
 import flixel.input.keyboard.FlxKey;
 import openfl.events.KeyboardEvent;
