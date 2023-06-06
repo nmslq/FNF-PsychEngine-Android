@@ -17,7 +17,6 @@ import sys.FileSystem;
 import flixel.graphics.FlxGraphic;
 import openfl.display.BitmapData;
 
-import backend.GithubLoad;
 import haxe.io.Bytes;
 
 import flash.media.Sound;
@@ -138,35 +137,6 @@ class Paths
 		return getPreloadPath(file);
 	}
 
-	public static function gitGetPath(path:String, branch:String = 'main')
-	{
-		trace('path: https://${GithubLoad.personalAccessToken}@raw.githubusercontent.com/${GithubLoad.repoHolder}/${GithubLoad.repoName}/$branch/assets/$path');
-		var http = new haxe.Http('https://raw.githubusercontent.com/${GithubLoad.repoHolder}/${GithubLoad.repoName}/$branch/assets/$path');
-		var contents:String = '';
-		http.onData = function(data:String) {
-			//trace(data);
-			contents = data;
-		}
-		http.onError = function(error) {
-			trace('error: $error');
-		}
-		http.request();
-		return contents;
-	}
-	public static function gitImage(path:String, branch:String) {
-		var http = new haxe.Http('https://raw.githubusercontent.com/${GithubLoad.repoHolder}/${GithubLoad.repoName}/$branch/assets/$path');
-		var spr:FlxSprite = new FlxSprite();
-		http.onBytes = function(bytes:Bytes) {
-			var bmp:BitmapData = BitmapData.fromBytes(bytes);
-			spr.pixels = bmp;
-		}
-		http.onError = function(error) {
-			trace('error: $error');
-		}
-		http.request();
-
-		return spr;
-	}
 	public static function loadGraphicFromURL(url:String, sprite:FlxSprite):FlxSprite
 	{
 		var http = new haxe.Http(url);
