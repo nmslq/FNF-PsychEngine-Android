@@ -1,13 +1,9 @@
 package android.flixel;
 
-import flixel.FlxG;
-import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.group.FlxSpriteGroup;
 import flixel.input.touch.FlxTouch;
 import flixel.math.FlxAngle;
-import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.util.FlxDestroyUtil;
