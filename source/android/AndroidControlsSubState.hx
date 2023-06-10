@@ -1,14 +1,9 @@
 package android;
 
-import flixel.FlxG;
-import flixel.FlxSprite;
 import flixel.FlxSubState;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.group.FlxSpriteGroup;
 import flixel.input.touch.FlxTouch;
-import flixel.text.FlxText;
-import flixel.util.FlxColor;
 import flixel.util.FlxSave;
 import android.flixel.FlxButton;
 import android.flixel.FlxHitbox;
