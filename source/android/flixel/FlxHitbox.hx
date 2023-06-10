@@ -62,8 +62,8 @@ class FlxHitbox extends FlxSpriteGroup
 		hint.alpha = 0.00001;
 		hint.onDown.callback = hint.onOver.callback = function()
 		{
-			if (hint.alpha != 0.2)
-				hint.alpha = 0.2;
+			if (hint.alpha != (ClientPrefs.data.gradientHitboxes ? 0.5 : 0.2))
+				hint.alpha = (ClientPrefs.data.gradientHitboxes ? 0.5 : 0.2);
 		}
 		hint.onUp.callback = hint.onOut.callback = function()
 		{
@@ -79,10 +79,25 @@ class FlxHitbox extends FlxSpriteGroup
 	private function createHintGraphic(Width:Int, Height:Int, Color:Int = 0xFFFFFF):BitmapData
 	{
 		var shape:Shape = new Shape();
-		shape.graphics.beginFill(Color);
-		shape.graphics.lineStyle(10, Color, 1);
-		shape.graphics.drawRect(0, 0, Width, Height);
-		shape.graphics.endFill();
+		if (ClientPrefs.data.gradientHitboxes)
+		{
+			shape.graphics.beginFill(Color);
+			shape.graphics.lineStyle(3, Color, 1);
+			shape.graphics.drawRect(0, 0, Width, Height);
+			shape.graphics.lineStyle(0, 0, 0);
+			shape.graphics.drawRect(3, 3, Width - 6, Height - 6);
+			shape.graphics.endFill();
+			shape.graphics.beginGradientFill(RADIAL, [Color, FlxColor.TRANSPARENT], [0.6, 0], [0, 255], null, null, null, 0.5);
+			shape.graphics.drawRect(3, 3, Width - 6, Height - 6);
+			shape.graphics.endFill();
+		}
+		else
+		{
+			shape.graphics.beginFill(Color);
+			shape.graphics.lineStyle(10, Color, 1);
+			shape.graphics.drawRect(0, 0, Width, Height);
+			shape.graphics.endFill();
+		}
 
 		var bitmap:BitmapData = new BitmapData(Width, Height, true, 0);
 		bitmap.draw(shape, true);
