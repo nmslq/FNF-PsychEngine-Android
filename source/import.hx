@@ -1,12 +1,11 @@
-//Discord
+//Discord API
 #if desktop
-import backend.DiscordClient;
+import backend.Discord;
 #end
 
 //Psych
-#if !macro
-import Paths;
-#end
+#if !macro import Paths; #end
+#if MODS_ALLOWED import backend.Mods; #end
 
 import backend.MusicBeatState;
 import backend.MusicBeatSubstate;
