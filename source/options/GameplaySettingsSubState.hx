@@ -157,7 +157,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 	{
 		if(ClientPrefs.data.vibration)
 		{
-			Haptic.vibrate(500);
+			Haptic.vibrate(0, 500);
 		}
 	}
 	#end
