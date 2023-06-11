@@ -7,7 +7,7 @@ import flixel.FlxObject;
 import flixel.math.FlxPoint;
 
 #if android
-import android.Tools;
+import lime.ui.Haptic;
 #end
 
 import states.StoryMenuState;
@@ -67,7 +67,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		#if android
 		if(ClientPrefs.data.vibration)
 		{
-			Tools.vibrate(vibrationTime);
+			Haptic.vibrate(vibrationTime);
 		}
 		#end
 
