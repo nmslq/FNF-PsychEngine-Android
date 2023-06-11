@@ -1,6 +1,6 @@
 //Discord API
 #if desktop
-import backend.Discord.DiscordClient;
+import backend.DiscordClient;
 #end
 
 //Psych
