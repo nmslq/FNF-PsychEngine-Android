@@ -305,9 +305,9 @@ class ExtraFunctions
 		});
 
 		//android functions
-		Lua_helper.add_callback(lua, "vibration", function(milliseconds:Int) {
+		Lua_helper.add_callback(lua, "vibration", function(period:Int, milliseconds:Int) {
 			#if android
-			Haptic.vibrate(milliseconds);
+			Haptic.vibrate(period, milliseconds);
 			#end
 		});
 		Lua_helper.add_callback(lua, "browserLoad", function(url:String) {
