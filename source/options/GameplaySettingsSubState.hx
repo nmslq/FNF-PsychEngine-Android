@@ -1,10 +1,8 @@
 package options;
 
 #if android
-import android.Tools;
+import lime.ui.Haptic;
 #end
-
-using StringTools;
 
 class GameplaySettingsSubState extends BaseOptionsMenu
 {
@@ -159,7 +157,7 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 	{
 		if(ClientPrefs.data.vibration)
 		{
-			Tools.vibrate(500);
+			Haptic.vibrate(500);
 		}
 	}
 	#end
