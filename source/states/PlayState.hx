@@ -3746,7 +3746,7 @@ class PlayState extends MusicBeatState
 
 		#if ACHIEVEMENTS_ALLOWED
 		if(achievementObj != null) {
-			return;
+			return false;
 		} else {
 			var noMissWeek:String = WeekData.getWeekFileName() + '_nomiss';
 			var achieve:String = checkForAchievement([noMissWeek, 'r_ubad', 'ur_good', 'hype', 'two_keys', 'toastie', 'debugger']);
@@ -3754,7 +3754,7 @@ class PlayState extends MusicBeatState
 
 			if(achieve != null || customAchieve != null) {
 				startAchievement(customAchieve != null ? customAchieve : achieve);
-				return;
+				return false;
 			}
 		}
 		#end
