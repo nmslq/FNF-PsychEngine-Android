@@ -1,6 +1,5 @@
 package substates;
 
-import backend.WeekData;
 import backend.Highscore;
 import backend.Song;
 
@@ -268,9 +267,10 @@ class PauseSubState extends MusicBeatSubstate
 					MusicBeatState.switchState(new states.editors.CharacterEditorState());
 					PlayState.chartingMode = true;
 				case "Exit to menu":
+					#if desktop DiscordClient.resetClientID(); #end
 					PlayState.deathCounter = 0;
 					PlayState.seenCutscene = false;
-					WeekData.loadTheFirstEnabledMod();
+					Mods.loadTheFirstEnabledMod();
 					if(PlayState.isStoryMode) {
 						MusicBeatState.switchState(new StoryMenuState());
 					} else {
