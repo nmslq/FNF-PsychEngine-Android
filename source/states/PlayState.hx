@@ -8,6 +8,7 @@ import backend.Song;
 import backend.Section;
 import backend.Rating;
 
+import flixel.FlxBasic;
 import flixel.FlxObject;
 import flixel.FlxSubState;
 import flixel.addons.effects.FlxTrail;
