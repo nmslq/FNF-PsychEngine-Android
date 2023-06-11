@@ -16,8 +16,6 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
-using StringTools;
-
 enum StorageType
 {
 	DATA;
