@@ -18,12 +18,11 @@ class FlxHitbox extends FlxSpriteGroup
 	/**
 	 * Create the zone.
 	 * 
-	 * @param ammo The ammount of hints you want to create.
 	 * @param perHintWidth The width that the hints will use.
 	 * @param perHintHeight The height that the hints will use.
 	 * @param colors The color per hint.
 	 */
-	public function new(ammo:UInt, perHintWidth:Int, perHintHeight:Int, colors:Array<FlxColor>):Void
+	public function new(perHintWidth:Int, perHintHeight:Int, colors:Array<FlxColor>):Void
 	{
 		super();
 
@@ -32,7 +31,7 @@ class FlxHitbox extends FlxSpriteGroup
 		if (colors == null || (colors != null && colors.length < ammo))
 			colors = [0xFFFFFF, 0xFFFFFF, 0xFFFFFF, 0xFFFFFF];
 
-		for (i in 0...ammo)
+		for (i in 0...3)
 			add(hints[i] = createHint(i * perHintWidth, 0, perHintWidth, perHintHeight, colors[i]));
 
 		scrollFactor.set();
