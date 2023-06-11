@@ -12,7 +12,6 @@ class AttachedAchievement extends FlxSprite
 		super(x, y);
 
 		changeAchievement(name);
-		antialiasing = ClientPrefs.data.antialiasing;
 	}
 
 	public function changeAchievement(tag:String)
