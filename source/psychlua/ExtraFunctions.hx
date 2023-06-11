@@ -17,7 +17,7 @@ import openfl.utils.Assets;
 
 #if android
 import android.widget.Toast;
-import android.Tools;
+import lime.ui.Haptic;
 #end
 
 //
@@ -307,7 +307,7 @@ class ExtraFunctions
 		//android functions
 		Lua_helper.add_callback(lua, "vibration", function(milliseconds:Int) {
 			#if android
-			Tools.vibrate(milliseconds);
+			Haptic.vibrate(milliseconds);
 			#end
 		});
 		Lua_helper.add_callback(lua, "browserLoad", function(url:String) {
@@ -325,10 +325,10 @@ class ExtraFunctions
 		Lua_helper.add_callback(lua, "exitGame", function(code:Int = 0) {
 			Sys.exit(code);
 		});
-		#if android
 		Lua_helper.add_callback(lua, "toast", function(text:String, code:Int = 0) {
+			#if android
 			Toast.makeText(text, code);
+			#end
 		});
-		#end
 	}
 }

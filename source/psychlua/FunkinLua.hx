@@ -67,8 +67,9 @@ class FunkinLua {
 	public static var hscript:HScript = null;
 	#end
 
+	public var scriptCode:String;
 
-	public function new(scriptName:String) {
+	public function new(scriptName:String, ?scriptCode:String) {
 		#if LUA_ALLOWED
 		lua = LuaL.newstate();
 		LuaL.openlibs(lua);
@@ -82,7 +83,11 @@ class FunkinLua {
 		this.scriptName = scriptName;
 		try
 		{
-			var result = LuaL.dofile(lua, scriptCode);
+			var result;
+			if(scriptCode != null) 
+				result = LuaL.dostring(lua, scriptCode);
+			else
+				result = LuaL.dofile(lua, scriptName);
 
 			var resultStr:String = Lua.tostring(lua, result);
 			if(resultStr != null && result != 0) {
@@ -101,7 +106,7 @@ class FunkinLua {
 			trace(e);
 			return;
 		}
-
+		if (scriptCode != null) this.scriptCode = scriptCode;
 		#if hscript HScript.initHaxeModule(this); #end
 
 		trace('lua file loaded succesfully:' + scriptName);
@@ -2006,8 +2011,8 @@ class FunkinLua {
 		});
 
 		Lua_helper.add_callback(lua, "setHealthBarColors", function(leftHex:String, rightHex:String) {
-			var left:Null<FlxColor> = FlxColor.fromString(leftColor);
-			var right:Null<FlxColor> = FlxColor.fromString(rightColor);
+			var left:Null<FlxColor> = FlxColor.fromString(leftHex);
+			var right:Null<FlxColor> = FlxColor.fromString(rightHex);
 
 			if (leftHex == null || leftHex == '') {
 				left = FlxColor.fromRGB(PlayState.instance.dad.healthColorArray[0], PlayState.instance.dad.healthColorArray[1], PlayState.instance.dad.healthColorArray[2]);
