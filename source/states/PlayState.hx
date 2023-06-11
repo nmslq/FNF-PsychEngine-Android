@@ -3258,8 +3258,8 @@ class PlayState extends MusicBeatState
 
 		switch(eventName) {
 			case 'Dadbattle Spotlight':
+				if(flValue1 == null) flValue1 = 0;
 				var val:Int = Math.round(flValue1);
-				if(val == null) val = 0;
 
 				switch(val)
 				{
