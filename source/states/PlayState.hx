@@ -1059,7 +1059,7 @@ class PlayState extends MusicBeatState
 		// add(strumLine);
 
 		camFollow = new FlxObject(0, 0, 1, 1);
-		camFollow.set(camPos.x, camPos.y);
+		camFollow.setPosition(camPos.x, camPos.y);
 		if (prevCamFollow != null)
 		{
 			camFollow = prevCamFollow;
@@ -1677,7 +1677,7 @@ class PlayState extends MusicBeatState
 			gf.dance();
 		};
 
-		camFollow.set(dad.x + 280, dad.y + 170);
+		camFollow.setPosition(dad.x + 280, dad.y + 170);
 		switch(songName)
 		{
 			case 'ugh':
@@ -1764,7 +1764,7 @@ class PlayState extends MusicBeatState
 				tankman.y -= 14;
 				gfGroup.alpha = 0.00001;
 				boyfriendGroup.alpha = 0.00001;
-				camFollow.set(dad.x + 400, dad.y + 170);
+				camFollow.setPosition(dad.x + 400, dad.y + 170);
 				FlxTween.tween(FlxG.camera, {zoom: 0.9 * 1.2}, 1, {ease: FlxEase.quadInOut});
 				foregroundSprites.forEach(function(spr:BGSprite)
 				{
@@ -1816,8 +1816,8 @@ class PlayState extends MusicBeatState
 				{
 					var camPosX:Float = 630;
 					var camPosY:Float = 425;
-					camFollow.set(camPosX, camPosY);
-					camFollow.set(camPosX, camPosY);
+					camFollow.setPosition(camPosX, camPosY);
+					camFollow.setPosition(camPosX, camPosY);
 					FlxG.camera.zoom = 0.8;
 					cameraSpeed = 1;
 
@@ -1895,7 +1895,7 @@ class PlayState extends MusicBeatState
 
 				cutsceneHandler.timer(20, function()
 				{
-					camFollow.set(dad.x + 500, dad.y + 170);
+					camFollow.setPosition(dad.x + 500, dad.y + 170);
 				});
 
 				cutsceneHandler.timer(31.2, function()
@@ -1910,7 +1910,7 @@ class PlayState extends MusicBeatState
 						}
 					};
 
-					camFollow.set(boyfriend.x + 280, boyfriend.y + 200);
+					camFollow.setPosition(boyfriend.x + 280, boyfriend.y + 200);
 					cameraSpeed = 12;
 					FlxTween.tween(FlxG.camera, {zoom: 0.9 * 1.2 * 1.2}, 0.25, {ease: FlxEase.elasticOut});
 				});
@@ -3585,7 +3585,7 @@ class PlayState extends MusicBeatState
 
 		if (gf != null && SONG.notes[sec].gfSection)
 		{
-			camFollow.set(gf.getMidpoint().x, gf.getMidpoint().y);
+			camFollow.setPosition(gf.getMidpoint().x, gf.getMidpoint().y);
 			camFollow.x += gf.cameraPosition[0] + girlfriendCameraOffset[0];
 			camFollow.y += gf.cameraPosition[1] + girlfriendCameraOffset[1];
 			tweenCamIn();
@@ -3603,14 +3603,14 @@ class PlayState extends MusicBeatState
 	{
 		if(isDad)
 		{
-			camFollow.set(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
+			camFollow.setPosition(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
 			camFollow.x += dad.cameraPosition[0] + opponentCameraOffset[0];
 			camFollow.y += dad.cameraPosition[1] + opponentCameraOffset[1];
 			tweenCamIn();
 		}
 		else
 		{
-			camFollow.set(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
+			camFollow.setPosition(boyfriend.getMidpoint().x - 100, boyfriend.getMidpoint().y - 100);
 			camFollow.x -= boyfriend.cameraPosition[0] - boyfriendCameraOffset[0];
 			camFollow.y += boyfriend.cameraPosition[1] + boyfriendCameraOffset[1];
 
