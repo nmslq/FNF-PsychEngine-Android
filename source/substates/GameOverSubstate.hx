@@ -16,8 +16,7 @@ import states.FreeplayState;
 class GameOverSubstate extends MusicBeatSubstate
 {
 	public var boyfriend:Character;
-	var camFollow:FlxPoint;
-	var camFollowPos:FlxObject;
+	var camFollow:FlxObject;
 	var updateCamera:Bool = false;
 	var playingDeathSound:Bool = false;
 
@@ -60,8 +59,6 @@ class GameOverSubstate extends MusicBeatSubstate
 		boyfriend.y += boyfriend.positionArray[1];
 		add(boyfriend);
 
-		camFollow = new FlxPoint(boyfriend.getGraphicMidpoint().x, boyfriend.getGraphicMidpoint().y);
-
 		FlxG.sound.play(Paths.sound(deathSoundName));
 
 		#if android
@@ -76,9 +73,10 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		boyfriend.playAnim('firstDeath');
 
-		camFollowPos = new FlxObject(0, 0, 1, 1);
-		camFollowPos.setPosition(FlxG.camera.scroll.x + (FlxG.camera.width / 2), FlxG.camera.scroll.y + (FlxG.camera.height / 2));
-		add(camFollowPos);
+		camFollow = new FlxObject(0, 0, 1, 1);
+		camFollow.setPosition(boyfriend.getGraphicMidpoint().x, boyfriend.getGraphicMidpoint().y);
+		FlxG.camera.focusOn(new FlxPoint(FlxG.camera.scroll.x + (FlxG.camera.width / 2), FlxG.camera.scroll.y + (FlxG.camera.height / 2)));
+		add(camFollow);
 
 		#if android
 		addVirtualPad(NONE, A_B);
@@ -93,10 +91,6 @@ class GameOverSubstate extends MusicBeatSubstate
 		super.update(elapsed);
 
 		PlayState.instance.callOnLuas('onUpdate', [elapsed]);
-		if(updateCamera) {
-			var lerpVal:Float = CoolUtil.boundTo(elapsed * 0.6, 0, 1);
-			camFollowPos.setPosition(FlxMath.lerp(camFollowPos.x, camFollow.x, lerpVal), FlxMath.lerp(camFollowPos.y, camFollow.y, lerpVal));
-		}
 
 		if (controls.ACCEPT)
 		{
@@ -133,7 +127,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			{
 				if(boyfriend.animation.curAnim.curFrame >= 12 && !isFollowingAlready)
 				{
-					FlxG.camera.follow(camFollowPos, LOCKON, 1);
+					FlxG.camera.follow(camFollow, LOCKON, 0);
 					updateCamera = true;
 					isFollowingAlready = true;
 				}
@@ -161,7 +155,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			}
 		}
 
-		if(updateCamera) FlxG.camera.followLerp = CoolUtil.boundTo(elapsed * 0.6, 0, 1);
+		if(updateCamera) FlxG.camera.followLerp = FlxMath.bound(elapsed * 0.6 / (FlxG.updateFramerate / 60), 0, 1);
 		else FlxG.camera.followLerp = 0;
 
 		if (FlxG.sound.music.playing)
