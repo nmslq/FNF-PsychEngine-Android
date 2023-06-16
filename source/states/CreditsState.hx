@@ -17,7 +17,7 @@ class CreditsState extends MusicBeatState
 
 	var bg:FlxSprite;
 	var descText:FlxText;
-	var intendedColor:Int;
+	var intendedColor:FlxColor;
 	var colorTween:FlxTween;
 	var descBox:AttachedSprite;
 
@@ -229,7 +229,7 @@ class CreditsState extends MusicBeatState
 		descBox.sprTracker = descText;
 		add(descText);
 
-		bg.color = getCurrentBGColor();
+		bg.color = CoolUtil.colorFromString(creditsStuff[curSelected][4]);
 		intendedColor = bg.color;
 
 		changeSelection();
@@ -336,7 +336,7 @@ class CreditsState extends MusicBeatState
 		}
 		while(unselectableCheck(curSelected));
 
-		var newColor:Int =  getCurrentBGColor();
+		var newColor:FlxColor = CoolUtil.colorFromString(creditsStuff[curSelected][4]);
 		if (newColor != intendedColor)
 		{
 			if (colorTween != null)
@@ -403,16 +403,6 @@ class CreditsState extends MusicBeatState
 		}
 	}
 	#end
-
-	function getCurrentBGColor()
-	{
-		var bgColor:String = creditsStuff[curSelected][4];
-		if (!bgColor.startsWith('0x'))
-		{
-			bgColor = '0xFF' + bgColor;
-		}
-		return Std.parseInt(bgColor);
-	}
 
 	private function unselectableCheck(num:Int):Bool
 	{
