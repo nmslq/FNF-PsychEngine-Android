@@ -198,6 +198,9 @@ class PlayState extends MusicBeatState
 	public var camBars:FlxCamera;
 	public var cameraSpeed:Float = 1;
 
+	var dialogue:Array<String> = ['blah blah blah', 'coolswag'];
+	var dialogueJson:DialogueFile = null;
+
 	var dadbattleBlack:BGSprite;
 	var dadbattleLight:BGSprite;
 	var dadbattleFog:DadBattleFog;
