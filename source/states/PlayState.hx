@@ -32,6 +32,7 @@ import haxe.Json;
 import objects.Note.EventNote;
 import objects.*;
 import states.stages.objects.*;
+
 #if LUA_ALLOWED
 import llua.Lua;
 import llua.LuaL;
@@ -93,13 +94,13 @@ class PlayState extends MusicBeatState
 	public var gfMap:Map<String, Character> = new Map<String, Character>();
 	public var variables:Map<String, Dynamic> = new Map<String, Dynamic>();
 	#if LUA_ALLOWED
-	public var modchartTweens:Map<String, FlxTween> = new Map();
-	public var modchartSprites:Map<String, ModchartSprite> = new Map();
-	public var modchartTimers:Map<String, FlxTimer> = new Map();
-	public var modchartSounds:Map<String, FlxSound> = new Map();
-	public var modchartBackdrops:Map<String, ModchartBackdrop> = new Map();
-	public var modchartTexts:Map<String, ModchartText> = new Map();
-	public var modchartSaves:Map<String, FlxSave> = new Map();
+	public var modchartTweens:Map<String, FlxTween> = new Map<String, FlxTween>();
+	public var modchartSprites:Map<String, ModchartSprite> = new Map<String, ModchartSprite>();
+	public var modchartTimers:Map<String, FlxTimer> = new Map<String, FlxTimer>();
+	public var modchartSounds:Map<String, FlxSound> = new Map<String, FlxSound>();
+	public var modchartTexts:Map<String, FlxText> = new Map<String, FlxText>();
+	public var modchartBackdrops:Map<String, ModchartBackdrop> = new Map<String, ModchartBackdrop>();
+	public var modchartSaves:Map<String, FlxSave> = new Map<String, FlxSave>();
 	#end
 
 	public var BF_X:Float = 770;
@@ -1950,6 +1951,7 @@ class PlayState extends MusicBeatState
 			return false;
 		}
 
+		seenCutscene = true;
 		inCutscene = false;
 		var ret:Dynamic = callOnLuas('onStartCountdown', null, true);
 		if(ret != FunkinLua.Function_Stop) {
@@ -2459,6 +2461,10 @@ class PlayState extends MusicBeatState
 				phillyGlowParticles = new FlxTypedGroup<PhillyGlowParticle>();
 				phillyGlowParticles.visible = false;
 				insert(members.indexOf(phillyGlowGradient) + 1, phillyGlowParticles);
+
+			case 'Play Sound':
+				precacheList.set(event.value1, 'sound');
+				Paths.sound(event.value1);
 		}
 
 		eventsPushed.push(event.event);
@@ -3568,6 +3574,10 @@ class PlayState extends MusicBeatState
 				} else {
 					LuaUtils.setVarInArray(this, value1, value2);
 				}
+
+			case 'Play Sound':
+				if(flValue2 == null) flValue2 = 1;
+				FlxG.sound.play(Paths.sound(value1), flValue2);
 		}
 		callOnLuas('onEvent', [eventName, value1, value2, strumTime]);
 	}
