@@ -1,11 +1,9 @@
 package backend;
 
 import flixel.FlxSubState;
-import flixel.FlxG;
 #if android
 import android.flixel.FlxVirtualPad;
 import flixel.input.actions.FlxActionInput;
-import flixel.FlxCamera;
 import flixel.util.FlxDestroyUtil;
 #end
 
