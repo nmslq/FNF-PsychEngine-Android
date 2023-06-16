@@ -1842,6 +1842,7 @@ class FunkinLua {
 							position = PlayState.instance.members.indexOf(PlayState.instance.boyfriendGroup);
 						else if(PlayState.instance.members.indexOf(PlayState.instance.dadGroup) < position)
 							position = PlayState.instance.members.indexOf(PlayState.instance.dadGroup);
+						}
 
 						PlayState.instance.insert(position, shit);
 					}
