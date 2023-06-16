@@ -228,34 +228,6 @@ class FunkinLua {
 		set('buildTarget', 'unknown');
 		#end
 
-		Lua_helper.add_callback(lua, "parseJson", function(jsonStr:String, varName:String) {
-			var json = Paths.modFolders('data/' + jsonStr + '.json');
-			var foundJson:Bool;
-
-			#if sys
-				if (FileSystem.exists(json)) {
-					foundJson = true;
-				} else {
-					luaTrace('parseJson: Invalid json file path!', false, false, FlxColor.RED);
-					foundJson = false;
-					return;	
-				}
-			#else
-				if (Assets.exists(json)) {
-					foundJson = true;
-				} else {
-					luaTrace('parseJson: Invalid json file path!', false, false, FlxColor.RED);
-					foundJson = false;
-					return;	
-				}
-			#end
-
-			if (foundJson) {
-				var parsedJson = haxe.Json.parse(File.getContent(json));				
-				PlayState.instance.variables.set(varName, parsedJson);
-			}
-		});
-
 		// custom substate
 		Lua_helper.add_callback(lua, "openCustomSubstate", function(name:String, pauseGame:Bool = false) {
 			if(pauseGame)
@@ -1080,31 +1052,22 @@ class FunkinLua {
 				if (!shit.wasAdded)
 				{
 					if (front)
-					{
 						LuaUtils.getTargetInstance().add(shit);
-					}
 					else
 					{
 						if (PlayState.instance.isDead)
-						{
 							GameOverSubstate.instance.insert(GameOverSubstate.instance.members.indexOf(GameOverSubstate.instance.boyfriend), shit);
-						}
 						else
 						{
 							var position:Int = PlayState.instance.members.indexOf(PlayState.instance.gfGroup);
 							if (PlayState.instance.members.indexOf(PlayState.instance.boyfriendGroup) < position)
-							{
 								position = PlayState.instance.members.indexOf(PlayState.instance.boyfriendGroup);
-							}
 							else if (PlayState.instance.members.indexOf(PlayState.instance.dadGroup) < position)
-							{
 								position = PlayState.instance.members.indexOf(PlayState.instance.dadGroup);
-							}
 							PlayState.instance.insert(position, shit);
 						}
 					}
 					shit.wasAdded = true;
-					// trace('added a thing: ' + tag);
 				}
 			}
 		});
@@ -1831,18 +1794,11 @@ class FunkinLua {
 						GameOverSubstate.instance.insert(GameOverSubstate.instance.members.indexOf(GameOverSubstate.instance.boyfriend), shit);
 					else
 					{
-						if(PlayState.instance.isDead)
-						{
-							GameOverSubstate.instance.insert(GameOverSubstate.instance.members.indexOf(GameOverSubstate.instance.boyfriend), shit);
-						}
-						else
-						{
-							var position:Int = PlayState.instance.members.indexOf(PlayState.instance.gfGroup);
+						var position:Int = PlayState.instance.members.indexOf(PlayState.instance.gfGroup);
 						if(PlayState.instance.members.indexOf(PlayState.instance.boyfriendGroup) < position)
 							position = PlayState.instance.members.indexOf(PlayState.instance.boyfriendGroup);
 						else if(PlayState.instance.members.indexOf(PlayState.instance.dadGroup) < position)
 							position = PlayState.instance.members.indexOf(PlayState.instance.dadGroup);
-						}
 
 						PlayState.instance.insert(position, shit);
 					}
