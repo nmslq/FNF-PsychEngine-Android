@@ -52,6 +52,7 @@ class StageWeek1 extends BaseStage
 				add(dadbattleLight);
 
 				dadbattleFog = new DadBattleFog();
+				dadbattleFog.visible = false;
 				add(dadbattleFog);
 		}
 	}
