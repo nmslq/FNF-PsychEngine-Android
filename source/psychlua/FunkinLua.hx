@@ -47,7 +47,6 @@ import substates.GameOverSubstate;
 import psychlua.HScript;
 import psychlua.DebugLuaText;
 import psychlua.ModchartSprite;
-import psychlua.ModchartBackdrop;
 
 class FunkinLua {
 	public static var Function_Stop:Dynamic = "##PSYCHLUA_FUNCTIONSTOP";
@@ -1032,65 +1031,6 @@ class FunkinLua {
 			return true;
 		});
 
-		Lua_helper.add_callback(lua, "makeLuaBackdrop", function(tag:String, image:String, x:Float, y:Float, ?repeatX:Bool = true, ?repeatY:Bool = true) {
-			tag = tag.replace('.', '');
-			LuaUtils.resetBackdropTag(tag);
-			var leSprite:ModchartBackdrop = new ModchartBackdrop(x, y, repeatX, repeatY);
-			if(image != null && image.length > 0)
-			{
-				leSprite.loadGraphic(Paths.image(image));
-				leSprite.antialiasing = ClientPrefs.data.antialiasing;
-			}
-			PlayState.instance.modchartBackdrops.set(tag, leSprite);
-			leSprite.active = true;
-		});
-		Lua_helper.add_callback(lua, "addLuaBackdrop", function(tag:String, front:Bool = false)
-		{
-			if (PlayState.instance.modchartBackdrops.exists(tag))
-			{
-				var shit:ModchartBackdrop = PlayState.instance.modchartBackdrops.get(tag);
-				if (!shit.wasAdded)
-				{
-					if (front)
-						LuaUtils.getTargetInstance().add(shit);
-					else
-					{
-						if (PlayState.instance.isDead)
-							GameOverSubstate.instance.insert(GameOverSubstate.instance.members.indexOf(GameOverSubstate.instance.boyfriend), shit);
-						else
-						{
-							var position:Int = PlayState.instance.members.indexOf(PlayState.instance.gfGroup);
-							if (PlayState.instance.members.indexOf(PlayState.instance.boyfriendGroup) < position)
-								position = PlayState.instance.members.indexOf(PlayState.instance.boyfriendGroup);
-							else if (PlayState.instance.members.indexOf(PlayState.instance.dadGroup) < position)
-								position = PlayState.instance.members.indexOf(PlayState.instance.dadGroup);
-							PlayState.instance.insert(position, shit);
-						}
-					}
-					shit.wasAdded = true;
-				}
-			}
-		});
-		Lua_helper.add_callback(lua, "removeLuaBackdrop", function(tag:String, destroy:Bool = true) {
-			if(!PlayState.instance.modchartBackdrops.exists(tag)) {
-				return;
-			}
-
-			var pee:ModchartBackdrop = PlayState.instance.modchartBackdrops.get(tag);
-			if(destroy) {
-				pee.kill();
-			}
-
-			if(pee.wasAdded) {
-				LuaUtils.getTargetInstance().remove(pee, true);
-				pee.wasAdded = false;
-			}
-
-			if(destroy) {
-				pee.destroy();
-				PlayState.instance.modchartBackdrops.remove(tag);
-			}
-		});
 		//shitass stuff for epic coders like me B)  *image of obama giving himself a medal*
 		Lua_helper.add_callback(lua, "getObjectOrder", function(obj:String) {
 			var killMe:Array<String> = obj.split('.');
