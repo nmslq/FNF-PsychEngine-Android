@@ -10,6 +10,7 @@ import states.stages.StageWeek1 as BackgroundStage;
 
 class NoteOffsetState extends MusicBeatState
 {
+	var stageDirectory:String = 'week1';
 	var boyfriend:Character;
 	var gf:Character;
 
