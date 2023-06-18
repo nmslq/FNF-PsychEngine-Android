@@ -1720,7 +1720,7 @@ class ChartingState extends MusicBeatState
 			if (FlxG.keys.justPressed.ESCAPE #if android || FlxG.android.justReleased.BACK #end)
 			{
 				autosaveSong();
-				LoadingState.loadAndSwitchState(new states.editors.EditorPlayState(sectionStartTime()));
+				//LoadingState.loadAndSwitchState(new states.editors.EditorPlayState(sectionStartTime()));
 			}
 			if (FlxG.keys.justPressed.ENTER #if android || virtualPad.buttonA.justPressed #end)
 			{
