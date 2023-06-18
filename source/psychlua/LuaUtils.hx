@@ -264,22 +264,6 @@ class LuaUtils
 		#end
 	}
 
-	public static function resetBackdropTag(tag:String) {
-		#if LUA_ALLOWED
-		if(!PlayState.instance.modchartBackdrops.exists(tag)) {
-			return;
-		}
-
-		var target:ModchartBackdrop = PlayState.instance.modchartBackdrops.get(tag);
-		target.kill();
-		if(target.wasAdded) {
-			PlayState.instance.remove(target, true);
-		}
-		target.destroy();
-		PlayState.instance.modchartBackdrops.remove(tag);
-		#end
-	}
-
 	public static function cancelTween(tag:String) {
 		#if LUA_ALLOWED
 		if(PlayState.instance.modchartTweens.exists(tag)) {
