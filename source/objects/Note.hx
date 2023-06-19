@@ -2,7 +2,7 @@ package objects;
 
 import flixel.math.FlxRect;
 import states.editors.ChartingState;
-import shaders.RGBPalette;
+import shaders.ColorSwap;
 
 typedef EventNote = {
 	strumTime:Float,
@@ -42,7 +42,7 @@ class Note extends FlxSprite
 	public var eventVal1:String = '';
 	public var eventVal2:String = '';
 
-	public var rgbShader:RGBPalette;
+	public var colorSwap:ColorSwap;
 	public var inEditor:Bool = false;
 
 	public var animSuffix:String = '';
@@ -59,7 +59,9 @@ class Note extends FlxSprite
 	// Lua shit
 	public var noteSplashDisabled:Bool = false;
 	public var noteSplashTexture:String = null;
-	public var noteSplashRGBA:Array<Float> = [1, 1, 1, 0.6];
+	public var noteSplashHue:Float = 0;
+	public var noteSplashSat:Float = 0;
+	public var noteSplashBrt:Float = 0;
 
 	public var offsetX:Float = 0;
 	public var offsetY:Float = 0;
@@ -111,22 +113,14 @@ class Note extends FlxSprite
 		return value;
 	}
 
-	public function defaultRGB()
-	{
-		var arr:Array<FlxColor> = ClientPrefs.data.arrowRGB[noteData];
-		if(PlayState.isPixelStage) arr = ClientPrefs.data.arrowRGBPixel[noteData];
-
-		if (noteData > -1 && noteData <= arr.length)
-		{
-			rgbShader.r = arr[0];
-			rgbShader.g = arr[1];
-			rgbShader.b = arr[2];
-		}
-	}
-
 	private function set_noteType(value:String):String {
 		noteSplashTexture = PlayState.SONG.splashSkin;
-		defaultRGB();
+		if (noteData > -1 && noteData < ClientPrefs.data.arrowHSV.length)
+		{
+			colorSwap.hue = ClientPrefs.data.arrowHSV[noteData][0] / 360;
+			colorSwap.saturation = ClientPrefs.data.arrowHSV[noteData][1] / 100;
+			colorSwap.brightness = ClientPrefs.data.arrowHSV[noteData][2] / 100;
+		}
 
 		if(noteData > -1 && noteType != value) {
 			switch(value) {
@@ -137,7 +131,9 @@ class Note extends FlxSprite
 					if(PlayState.isPixelStage) {
 						noteSplashTexture = 'pixelUI/HURTnoteSplashes';
 					}
-					rgbShader.enabled = false;
+					colorSwap.hue = 0;
+					colorSwap.saturation = 0;
+					colorSwap.brightness = 0;
 					lowPriority = true;
 
 					if(isSustainNote) {
@@ -156,7 +152,9 @@ class Note extends FlxSprite
 			}
 			noteType = value;
 		}
-		noteSplashRGBA = [rgbShader.r, rgbShader.g, rgbShader.b, noteSplashRGBA[3]];
+		noteSplashHue = colorSwap.hue;
+		noteSplashSat = colorSwap.saturation;
+		noteSplashBrt = colorSwap.brightness;
 		return value;
 	}
 
@@ -182,12 +180,11 @@ class Note extends FlxSprite
 
 		if(noteData > -1) {
 			texture = '';
-			rgbShader = new RGBPalette();
-			shader = rgbShader.shader;
-			defaultRGB();
+			colorSwap = new ColorSwap();
+			shader = colorSwap.shader;
 
 			x += swagWidth * (noteData);
-			if(!isSustainNote && noteData < 4) { //Doing this 'if' check to fix the warnings on Senpai songs
+			if(!isSustainNote && noteData > -1 && noteData < 4) { //Doing this 'if' check to fix the warnings on Senpai songs
 				var animToPlay:String = '';
 				animToPlay = colArray[noteData % 4];
 				animation.play(animToPlay + 'Scroll');
@@ -324,9 +321,9 @@ class Note extends FlxSprite
 
 		if (isSustainNote)
 		{
-			animation.addByPrefix('purpleholdend', 'pruple end hold', 24, true); // ?????
-			animation.addByPrefix(colArray[noteData] + 'holdend', colArray[noteData] + ' hold end', 24, true);
-			animation.addByPrefix(colArray[noteData] + 'hold', colArray[noteData] + ' hold piece', 24, true);
+			animation.addByPrefix('purpleholdend', 'pruple end hold'); // ?????
+			animation.addByPrefix(colArray[noteData] + 'holdend', colArray[noteData] + ' hold end');
+			animation.addByPrefix(colArray[noteData] + 'hold', colArray[noteData] + ' hold piece');
 		}
 
 		setGraphicSize(Std.int(width * 0.7));
@@ -335,10 +332,10 @@ class Note extends FlxSprite
 
 	function loadPixelNoteAnims() {
 		if(isSustainNote) {
-			animation.add(colArray[noteData] + 'holdend', [pixelInt[noteData] + 4], 24, true);
-			animation.add(colArray[noteData] + 'hold', [pixelInt[noteData]], 24, true);
+			animation.add(colArray[noteData] + 'holdend', [pixelInt[noteData] + 4]);
+			animation.add(colArray[noteData] + 'hold', [pixelInt[noteData]]);
 		} else {
-			animation.add(colArray[noteData] + 'Scroll', [pixelInt[noteData] + 4], 24, true);
+			animation.add(colArray[noteData] + 'Scroll', [pixelInt[noteData] + 4]);
 		}
 	}
 
