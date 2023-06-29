@@ -126,7 +126,7 @@ class NotesSubState extends MusicBeatSubstate
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.6);
 
 		#if android
-		addVirtualPad(LEFT_FULL, B);
+		addVirtualPad(LEFT_FULL, A_B);
 		addPadCamera();
 		#end
 	}
@@ -182,7 +182,7 @@ class NotesSubState extends MusicBeatSubstate
 			if(FlxG.mouse.justMoved)
 				copyButton.alpha = 1;
 
-			if(FlxG.mouse.justPressed #if android && getTouch() #end)
+			if(FlxG.mouse.justPressed)
 			{
 				if(FlxG.mouse.justPressed) Clipboard.text = getShaderColor().toHexString(false, false);
 				FlxG.sound.play(Paths.sound('scrollMenu'), 0.6);
@@ -193,7 +193,7 @@ class NotesSubState extends MusicBeatSubstate
 			if(FlxG.mouse.justMoved)
 				pasteButton.alpha = 1;
 
-			if(FlxG.mouse.justPressed #if android && getTouch() #end)
+			if(FlxG.mouse.justPressed)
 			{
 				var newColor:Null<FlxColor> = FlxColor.fromString('#${Clipboard.text.trim().toUpperCase().replace('#', '')}');
 				//trace('#${Clipboard.text.trim().toUpperCase()}');
@@ -210,7 +210,7 @@ class NotesSubState extends MusicBeatSubstate
 		}
 
 		// Click
-		if(FlxG.mouse.justPressed #if android && getTouch() #end)
+		if(FlxG.mouse.justPressed)
 		{
 			if (FlxG.mouse.overlaps(modeNotes))
 			{
@@ -267,14 +267,14 @@ class NotesSubState extends MusicBeatSubstate
 		// holding
 		if(holdingOnObj != null)
 		{
-			if (FlxG.mouse.justReleased #if android && getTouch('justReleased') #end)
+			if (FlxG.mouse.justReleased)
 			{
 				holdingOnObj = null;
 				_storedColor = getShaderColor();
 				updateColors();
 				FlxG.sound.play(Paths.sound('scrollMenu'), 0.6);
 			}
-			else if (FlxG.mouse.justPressed #if android && getTouch() #end || FlxG.mouse.justMoved)
+			else if (FlxG.mouse.justPressed || FlxG.mouse.justMoved)
 			{
 				if (holdingOnObj == colorGradient)
 				{
@@ -299,7 +299,7 @@ class NotesSubState extends MusicBeatSubstate
 				}
 			} 
 		}
-		else if(controls.RESET)
+		else if(controls.RESET #if android || virtualPad.buttonA.justPressed #end)
 		{
 			setShaderColor(!onPixel? ClientPrefs.defaultData.arrowRGB[curSelectedNote][curSelectedMode] : ClientPrefs.defaultData.arrowRGBPixel[curSelectedNote][curSelectedMode]);
 			FlxG.sound.play(Paths.sound('cancelMenu'), 0.6);
@@ -478,27 +478,4 @@ class NotesSubState extends MusicBeatSubstate
 	function setShaderColor(value:FlxColor) dataArray[curSelectedNote][curSelectedMode] = value;
 	function getShaderColor() return dataArray[curSelectedNote][curSelectedMode];
 	function getShader() return Note.globalRgbShaders[curSelectedNote];
-
-	function getTouch(type:String = 'justPressed')
-	{
-		#if android
-		var justTouched:Bool = false;
-
-		for (touch in FlxG.touches.list)
-		{
-			if (type == 'justPressed')
-			{
-				if (touch.justPressed)
-					justTouched = true;
-			}
-			else if (type == 'justReleased')
-			{
-				if (touch.justReleased)
-					justTouched = true;
-			}
-		}
-
-		return justTouched;
-		#end
-	}
 }
