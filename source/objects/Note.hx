@@ -2,7 +2,9 @@ package objects;
 
 import flixel.math.FlxRect;
 import states.editors.ChartingState;
-import shaders.ColorSwap;
+
+import shaders.RGBPalette;
+import shaders.RGBPalette.RGBShaderReference;
 
 typedef EventNote = {
 	strumTime:Float,
@@ -42,7 +44,8 @@ class Note extends FlxSprite
 	public var eventVal1:String = '';
 	public var eventVal2:String = '';
 
-	public var colorSwap:ColorSwap;
+	public var rgbShader:RGBShaderReference;
+	public static var globalRgbShaders:Array<RGBPalette> = [];
 	public var inEditor:Bool = false;
 
 	public var animSuffix:String = '';
@@ -52,16 +55,12 @@ class Note extends FlxSprite
 	public var lowPriority:Bool = false;
 
 	public static var swagWidth:Float = 160 * 0.7;
-
-	private var colArray:Array<String> = ['purple', 'blue', 'green', 'red'];
-	private var pixelInt:Array<Int> = [0, 1, 2, 3];
+	public static var colArray:Array<String> = ['purple', 'blue', 'green', 'red'];
 
 	// Lua shit
 	public var noteSplashDisabled:Bool = false;
 	public var noteSplashTexture:String = null;
-	public var noteSplashHue:Float = 0;
-	public var noteSplashSat:Float = 0;
-	public var noteSplashBrt:Float = 0;
+	public var noteSplashRGBA:Array<Float> = [1, 1, 1, 0.6];
 
 	public var offsetX:Float = 0;
 	public var offsetY:Float = 0;
@@ -113,14 +112,22 @@ class Note extends FlxSprite
 		return value;
 	}
 
-	private function set_noteType(value:String):String {
-		noteSplashTexture = PlayState.SONG.splashSkin;
-		if (noteData > -1 && noteData < ClientPrefs.data.arrowHSV.length)
+	public function defaultRGB()
+	{
+		var arr:Array<FlxColor> = ClientPrefs.data.arrowRGB[noteData];
+		if(PlayState.isPixelStage) arr = ClientPrefs.data.arrowRGBPixel[noteData];
+
+		if (noteData > -1 && noteData <= arr.length)
 		{
-			colorSwap.hue = ClientPrefs.data.arrowHSV[noteData][0] / 360;
-			colorSwap.saturation = ClientPrefs.data.arrowHSV[noteData][1] / 100;
-			colorSwap.brightness = ClientPrefs.data.arrowHSV[noteData][2] / 100;
+			rgbShader.r = arr[0];
+			rgbShader.g = arr[1];
+			rgbShader.b = arr[2];
 		}
+	}
+
+	private function set_noteType(value:String):String {
+		noteSplashTexture = PlayState.SONG != null ? PlayState.SONG.splashSkin : 'noteSplashes';
+		defaultRGB();
 
 		if(noteData > -1 && noteType != value) {
 			switch(value) {
@@ -131,9 +138,7 @@ class Note extends FlxSprite
 					if(PlayState.isPixelStage) {
 						noteSplashTexture = 'pixelUI/HURTnoteSplashes';
 					}
-					colorSwap.hue = 0;
-					colorSwap.saturation = 0;
-					colorSwap.brightness = 0;
+					rgbShader.enabled = false;
 					lowPriority = true;
 
 					if(isSustainNote) {
@@ -152,9 +157,7 @@ class Note extends FlxSprite
 			}
 			noteType = value;
 		}
-		noteSplashHue = colorSwap.hue;
-		noteSplashSat = colorSwap.saturation;
-		noteSplashBrt = colorSwap.brightness;
+		noteSplashRGBA = [rgbShader.r, rgbShader.g, rgbShader.b, noteSplashRGBA[3]];
 		return value;
 	}
 
@@ -180,11 +183,10 @@ class Note extends FlxSprite
 
 		if(noteData > -1) {
 			texture = '';
-			colorSwap = new ColorSwap();
-			shader = colorSwap.shader;
+			rgbShader = new RGBShaderReference(this, initializeGlobalRGBShader(noteData));
 
 			x += swagWidth * (noteData);
-			if(!isSustainNote && noteData > -1 && noteData < 4) { //Doing this 'if' check to fix the warnings on Senpai songs
+			if(!isSustainNote && noteData < 4) { //Doing this 'if' check to fix the warnings on Senpai songs
 				var animToPlay:String = '';
 				animToPlay = colArray[noteData % 4];
 				animation.play(animToPlay + 'Scroll');
@@ -243,6 +245,24 @@ class Note extends FlxSprite
 		x += offsetX;
 	}
 
+	public static function initializeGlobalRGBShader(noteData:Int)
+	{
+		if(globalRgbShaders[noteData] == null)
+		{
+			var newRGB:RGBPalette = new RGBPalette();
+			globalRgbShaders[noteData] = newRGB;
+
+			var arr:Array<FlxColor> = (!PlayState.isPixelStage) ? ClientPrefs.data.arrowRGB[noteData] : ClientPrefs.data.arrowRGBPixel[noteData];
+			if (noteData > -1 && noteData <= arr.length)
+			{
+				newRGB.r = arr[0];
+				newRGB.g = arr[1];
+				newRGB.b = arr[2];
+			}
+		}
+		return globalRgbShaders[noteData];
+	}
+
 	var lastNoteOffsetXForPixelAutoAdjusting:Float = 0;
 	var lastNoteScaleToo:Float = 1;
 	public var originalHeightForCalcs:Float = 6;
@@ -253,7 +273,7 @@ class Note extends FlxSprite
 
 		var skin:String = texture;
 		if(texture.length < 1) {
-			skin = PlayState.SONG.arrowSkin;
+			skin = PlayState.SONG != null ? PlayState.SONG.arrowSkin : null;
 			if(skin == null || skin.length < 1) {
 				skin = 'NOTE_assets';
 			}
@@ -321,9 +341,9 @@ class Note extends FlxSprite
 
 		if (isSustainNote)
 		{
-			animation.addByPrefix('purpleholdend', 'pruple end hold'); // ?????
-			animation.addByPrefix(colArray[noteData] + 'holdend', colArray[noteData] + ' hold end');
-			animation.addByPrefix(colArray[noteData] + 'hold', colArray[noteData] + ' hold piece');
+			animation.addByPrefix('purpleholdend', 'pruple end hold', 24, true); // ?????
+			animation.addByPrefix(colArray[noteData] + 'holdend', colArray[noteData] + ' hold end', 24, true);
+			animation.addByPrefix(colArray[noteData] + 'hold', colArray[noteData] + ' hold piece', 24, true);
 		}
 
 		setGraphicSize(Std.int(width * 0.7));
@@ -332,10 +352,10 @@ class Note extends FlxSprite
 
 	function loadPixelNoteAnims() {
 		if(isSustainNote) {
-			animation.add(colArray[noteData] + 'holdend', [pixelInt[noteData] + 4]);
-			animation.add(colArray[noteData] + 'hold', [pixelInt[noteData]]);
+			animation.add(colArray[noteData] + 'holdend', [noteData + 4], 24, true);
+			animation.add(colArray[noteData] + 'hold', [noteData], 24, true);
 		} else {
-			animation.add(colArray[noteData] + 'Scroll', [pixelInt[noteData] + 4]);
+			animation.add(colArray[noteData] + 'Scroll', [noteData + 4], 24, true);
 		}
 	}
 
