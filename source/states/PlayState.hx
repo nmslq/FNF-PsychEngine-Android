@@ -3292,7 +3292,7 @@ class PlayState extends MusicBeatState
 		}
 		FlxAnimationController.globalSpeed = 1;
 		FlxG.sound.music.pitch = 1;
-
+		Note.globalRgbShaders = [];
 		super.destroy();
 	}
 
