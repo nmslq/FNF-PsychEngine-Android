@@ -267,7 +267,7 @@ class NotesSubState extends MusicBeatSubstate
 		// holding
 		if(holdingOnObj != null)
 		{
-			if (FlxG.mouse.justReleased #if android && getTouch('touch.justReleased') #end)
+			if (FlxG.mouse.justReleased #if android && getTouch('justReleased') #end)
 			{
 				holdingOnObj = null;
 				_storedColor = getShaderColor();
@@ -479,14 +479,24 @@ class NotesSubState extends MusicBeatSubstate
 	function getShaderColor() return dataArray[curSelectedNote][curSelectedMode];
 	function getShader() return Note.globalRgbShaders[curSelectedNote];
 
-	function getTouch(type:String = 'touch.justPressed')
+	function getTouch(type:String = 'justPressed')
 	{
 		#if android
 		var justTouched:Bool = false;
 
 		for (touch in FlxG.touches.list)
-			if (type)
-				justTouched = true;
+		{
+			if (type == 'justPressed')
+			{
+				if (touch.justPressed)
+					justTouched = true;
+			}
+			else if (type == 'justReleased')
+			{
+				if (touch.justReleased)
+					justTouched = true;
+			}
+		}
 
 		return justTouched;
 		#end
