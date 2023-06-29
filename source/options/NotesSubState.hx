@@ -126,7 +126,7 @@ class NotesSubState extends MusicBeatSubstate
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.6);
 
 		#if android
-		addVirtualPad(LEFT_FULL, A_B);
+		addVirtualPad(LEFT_FULL, A);
 		addPadCamera();
 		#end
 	}
@@ -136,7 +136,7 @@ class NotesSubState extends MusicBeatSubstate
 	var holdingOnObj:FlxSprite;
 
 	override function update(elapsed:Float) {
-		if (controls.BACK) {
+		if (controls.BACK #if android || FlxG.android.justReleased.BACK #end) {
 			FlxG.mouse.visible = false;
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			#if android
