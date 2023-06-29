@@ -124,6 +124,11 @@ class NotesSubState extends MusicBeatSubstate
 		spawnNotes();
 		updateNotes(true);
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.6);
+
+		#if android
+		addVirtualPad(LEFT_FULL, B);
+		addPadCamera();
+		#end
 	}
 
 	var _storedColor:FlxColor;
