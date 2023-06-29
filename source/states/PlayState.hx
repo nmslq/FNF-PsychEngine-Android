@@ -57,7 +57,7 @@ import sys.io.File;
 #end
 
 #if VIDEOS_ALLOWED
-import vlc.MP4Handler;
+import hxcodec.flixel.FlxVideo as VideoHandler;
 #end
 
 import states.StoryMenuState;
@@ -961,13 +961,15 @@ class PlayState extends MusicBeatState
 			return;
 		}
 
-		var video:MP4Handler = new MP4Handler();
-		video.playVideo(filepath);
-		video.finishCallback = function()
+		var video:VideoHandler = new VideoHandler();
+		// Recent versions
+		video.play(filepath);
+		video.onEndReached.add(function()
 		{
+			video.dispose();
 			startAndEnd();
 			return;
-		}
+		}, true);
 		#else
 		FlxG.log.warn('Platform not supported!');
 		startAndEnd();
