@@ -1,6 +1,5 @@
-package;
+package backend;
 
-import Controls;
 import flixel.util.FlxSignal;
 
 class PlayerSettings
