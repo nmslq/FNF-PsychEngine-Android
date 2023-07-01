@@ -2,7 +2,6 @@ package options;
 
 import objects.CheckboxThingie;
 import objects.AttachedText;
-import objects.Character;
 import options.Option;
 
 class BaseOptionsMenu extends MusicBeatSubstate
@@ -87,13 +86,9 @@ class BaseOptionsMenu extends MusicBeatSubstate
 				valueText.copyAlpha = true;
 				valueText.ID = i;
 				grpTexts.add(valueText);
-				optionsArray[i].setChild(valueText);
+				optionsArray[i].child = valueText;
 			}
 
-			if(optionsArray[i].showBoyfriend && boyfriend == null)
-			{
-				reloadBoyfriend();
-			}
 			updateTextFrom(optionsArray[i]);
 		}
 
@@ -226,27 +221,17 @@ class BaseOptionsMenu extends MusicBeatSubstate
 
 			if(controls.RESET #if android || virtualPad.buttonC.justPressed #end)
 			{
-				for (i in 0...optionsArray.length)
+				var leOption:Option = optionsArray[curSelected];
+				leOption.setValue(leOption.defaultValue);
+				if(leOption.type != 'bool')
 				{
-					var leOption:Option = optionsArray[i];
-					leOption.setValue(leOption.defaultValue);
-					if(leOption.type != 'bool')
-					{
-						if(leOption.type == 'string')
-						{
-							leOption.curOption = leOption.options.indexOf(leOption.getValue());
-						}
-						updateTextFrom(leOption);
-					}
-					leOption.change();
+					if(leOption.type == 'string') leOption.curOption = leOption.options.indexOf(leOption.getValue());
+					updateTextFrom(leOption);
 				}
+				leOption.change();
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				reloadCheckboxes();
 			}
-		}
-
-		if(boyfriend != null && boyfriend.animation.curAnim.finished) {
-			boyfriend.dance();
 		}
 
 		if(nextAccept > 0) {
@@ -311,24 +296,6 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		}
 		curOption = optionsArray[curSelected]; //shorter lol
 		FlxG.sound.play(Paths.sound('scrollMenu'));
-	}
-
-	public function reloadBoyfriend()
-	{
-		var wasVisible:Bool = false;
-		if(boyfriend != null) {
-			wasVisible = boyfriend.visible;
-			boyfriend.kill();
-			remove(boyfriend);
-			boyfriend.destroy();
-		}
-
-		boyfriend = new Character(840, 170, 'bf', true);
-		boyfriend.setGraphicSize(Std.int(boyfriend.width * 0.75));
-		boyfriend.updateHitbox();
-		boyfriend.dance();
-		insert(1, boyfriend);
-		boyfriend.visible = wasVisible;
 	}
 
 	function reloadCheckboxes() {

@@ -1,5 +1,6 @@
 package options;
 
+import backend.InputFormatter;
 import flixel.input.keyboard.FlxKey;
 import objects.AttachedText;
 
