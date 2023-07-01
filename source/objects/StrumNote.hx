@@ -24,10 +24,10 @@ class StrumNote extends FlxSprite
 	public function new(x:Float, y:Float, leData:Int, player:Int) {
 		rgbShader = new RGBPalette();
 		shader = rgbShader.shader;
-
+		
 		var arr:Array<FlxColor> = ClientPrefs.data.arrowRGB[leData];
 		if(PlayState.isPixelStage) arr = ClientPrefs.data.arrowRGBPixel[leData];
-
+		
 		if(leData <= arr.length)
 		{
 			rgbShader.r = arr[0];
@@ -35,15 +35,20 @@ class StrumNote extends FlxSprite
 			rgbShader.b = arr[2];
 		}
 		rgbShader.enabled = false;
+
 		noteData = leData;
 		this.player = player;
 		this.noteData = leData;
 		super(x, y);
 
-		var skin:String = 'NOTE_assets';
+		var skin:String = null;
 		if(PlayState.SONG != null && PlayState.SONG.arrowSkin != null && PlayState.SONG.arrowSkin.length > 1) skin = PlayState.SONG.arrowSkin;
-		texture = skin; //Load texture and anims
+		else skin = Note.defaultNoteSkin;
 
+		var customSkin:String = skin + Note.getNoteSkinPostfix();
+		if(Paths.fileExists('images/$customSkin.png', IMAGE)) skin = customSkin;
+
+		texture = skin; //Load texture and anims
 		scrollFactor.set();
 	}
 

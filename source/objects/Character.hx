@@ -2,10 +2,12 @@ package objects;
 
 import animateatlas.AtlasFrameMaker;
 import flixel.util.FlxSort;
+
 #if MODS_ALLOWED
 import sys.io.File;
 import sys.FileSystem;
 #end
+
 import openfl.utils.Assets;
 import haxe.Json;
 import backend.Song;
@@ -287,6 +289,11 @@ class Character extends FlxSprite
 			{
 				specialAnim = false;
 				dance();
+			}
+			else if (animation.curAnim.name.endsWith('miss') && animation.curAnim.finished)
+			{
+				dance();
+				animation.finish();
 			}
 
 			switch (curCharacter)
