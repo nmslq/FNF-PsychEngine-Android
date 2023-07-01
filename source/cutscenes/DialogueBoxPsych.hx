@@ -10,6 +10,7 @@ import sys.io.File;
 #end
 
 import cutscenes.DialogueCharacter;
+import backend.PlayerSettings;
 
 // Gonna try to kind of make it compatible to Forever Engine,
 // love u Shubs no homo :flushedh4:
