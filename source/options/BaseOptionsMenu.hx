@@ -14,7 +14,6 @@ class BaseOptionsMenu extends MusicBeatSubstate
 	private var checkboxGroup:FlxTypedGroup<CheckboxThingie>;
 	private var grpTexts:FlxTypedGroup<AttachedText>;
 
-	private var boyfriend:Character = null;
 	private var descBox:FlxSprite;
 	private var descText:FlxText;
 
