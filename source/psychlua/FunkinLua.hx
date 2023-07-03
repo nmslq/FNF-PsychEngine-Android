@@ -62,7 +62,7 @@ class FunkinLua {
 	public var closed:Bool = false;
 
 	#if hscript
-	public static var hscript:HScript = null;
+	public var hscript:HScript = null;
 	#end
 
 	public var scriptCode:String;
@@ -82,7 +82,7 @@ class FunkinLua {
 		try
 		{
 			var result;
-			if(scriptCode != null) 
+			if(scriptCode != null)
 				result = LuaL.dostring(lua, scriptCode);
 			else
 				result = LuaL.dofile(lua, scriptName);
@@ -2492,6 +2492,9 @@ class FunkinLua {
 
 		Lua.close(lua);
 		lua = null;
+		#if hscript
+		hscript = null;
+		#end
 		#end
 	}
 }
