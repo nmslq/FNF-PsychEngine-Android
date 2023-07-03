@@ -602,9 +602,12 @@ class PlayState extends MusicBeatState
 			timeTxt.y += 3;
 		}
 
-		var splash:NoteSplash = new NoteSplash(100, 100);
-		grpNoteSplashes.add(splash);
-		splash.alpha = 0.000001; //cant make it invisible or it won't allow precaching
+		if(ClientPrefs.data.splashSkin != '(DISABLED)')
+		{
+			var splash:NoteSplash = new NoteSplash(100, 100);
+			grpNoteSplashes.add(splash);
+			splash.alpha = 0.000001; //cant make it invisible or it won't allow precaching
+		}
 
 		opponentStrums = new FlxTypedGroup<StrumNote>();
 		playerStrums = new FlxTypedGroup<StrumNote>();
@@ -2656,7 +2659,7 @@ class PlayState extends MusicBeatState
 		note.rating = daRating.name;
 		score = daRating.score;
 
-		if(daRating.noteSplash && !note.noteSplashDisabled)
+		if(daRating.noteSplash && !note.noteSplashData.disabled)
 			spawnNoteSplashOnNote(note);
 
 		if(!practiceMode && !cpuControlled) {
@@ -3150,7 +3153,7 @@ class PlayState extends MusicBeatState
 
 			if(note.hitCausesMiss) {
 				noteMiss(note);
-				if(!note.noteSplashDisabled && !note.isSustainNote)
+				if(!note.noteSplashData.disabled && !note.isSustainNote)
 					spawnNoteSplashOnNote(note);
 
 				if(!note.noMissAnimation)
@@ -3258,10 +3261,6 @@ class PlayState extends MusicBeatState
 			lua.stop();
 		}
 		luaArray = [];
-
-		#if hscript
-		if(FunkinLua.hscript != null) FunkinLua.hscript = null;
-		#end
 
 		if(!ClientPrefs.data.controllerMode)
 		{
