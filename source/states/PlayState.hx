@@ -3245,7 +3245,7 @@ class PlayState extends MusicBeatState
 		if(ClientPrefs.data.splashSkin != '(DISABLED)' && note != null) {
 			var strum:StrumNote = playerStrums.members[note.noteData];
 			if(strum != null)
-				spawnNoteSplash(strum.x + 50, strum.y + 50, note.noteData, note);
+				spawnNoteSplash(strum.x, strum.y, note.noteData, note);
 		}
 	}
 
