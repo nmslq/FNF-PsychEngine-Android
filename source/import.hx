@@ -5,6 +5,7 @@ import backend.Discord;
 
 //Psych
 #if MODS_ALLOWED import backend.Mods; #end
+#if android import android.SUtil; #end
 
 import backend.Paths;
 import backend.Controls;
