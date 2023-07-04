@@ -1,4 +1,4 @@
-package android;
+package android.options;
 
 import flixel.FlxSubState;
 import flixel.addons.transition.FlxTransitionableState;
