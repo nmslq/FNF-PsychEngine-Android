@@ -1,5 +1,7 @@
 package backend;
 
+import backend.ClientPrefs;
+
 class Rating
 {
 	public var name:String = '';
@@ -15,11 +17,14 @@ class Rating
 		this.name = name;
 		this.image = name;
 		this.counter = name + 's';
-		this.hitWindow = Reflect.field(ClientPrefs.data, name + 'Window');
-		if (hitWindow == null)
+		this.hitWindow = 0;
+
+		var window:String = name + 'Window';
+		try
 		{
-			hitWindow = 0;
+			this.hitWindow = Reflect.field(ClientPrefs.data, window);
 		}
+		catch(e) FlxG.log.error(e);
 	}
 
 	public static function loadDefault():Array<Rating>

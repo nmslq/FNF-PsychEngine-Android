@@ -12,7 +12,8 @@ import sys.FileSystem;
 
 class CoolUtil
 {
-	inline public static function quantize(f:Float, snap:Float){
+	inline public static function quantize(f:Float, snap:Float)
+	{
 		// changed so this actually works lol
 		var m:Float = Math.fround(f * snap);
 		trace(snap);
@@ -27,7 +28,7 @@ class CoolUtil
 		var daList:String = null;
 		#if (sys && MODS_ALLOWED)
 		var formatted:Array<String> = path.split(':'); //prevent "shared:", "preload:" and other library names on file path
-		path = formatted[formatted.length-1];
+		path = SUtil.getStorageDirectory() + formatted[formatted.length-1];
 		if(FileSystem.exists(path)) daList = File.getContent(path);
 		#else
 		if(Assets.exists(path)) daList = Assets.getText(path);
@@ -39,7 +40,7 @@ class CoolUtil
 	{
 		var hideChars = ~/[\t\n\r]/;
 		var color:String = hideChars.split(color).join('').trim();
-		if(color.startsWith('0x')) color = color.substr(4);
+		if(color.startsWith('0x')) color = color.substring(color.length - 6);
 
 		var colorNum:Null<FlxColor> = FlxColor.fromString(color);
 		if(colorNum == null) colorNum = FlxColor.fromString('#$color');
@@ -56,7 +57,20 @@ class CoolUtil
 
 		return daList;
 	}
-	
+
+	public static function floorDecimal(value:Float, decimals:Int):Float
+	{
+		if(decimals < 1)
+			return Math.floor(value);
+
+		var tempMult:Float = 1;
+		for (i in 0...decimals)
+			tempMult *= 10;
+
+		var newValue:Float = Math.floor(value * tempMult);
+		return newValue / tempMult;
+	}
+
 	inline public static function dominantColor(sprite:flixel.FlxSprite):Int
 	{
 		var countByColor:Map<Int, Int> = [];
@@ -94,13 +108,11 @@ class CoolUtil
 	}
 
 	//uhhhh does this even work at all? i'm starting to doubt
-	inline public static function precacheSound(sound:String, ?library:String = null):Void {
+	inline public static function precacheSound(sound:String, ?library:String = null):Void
 		Paths.sound(sound, library);
-	}
 
-	inline public static function precacheMusic(sound:String, ?library:String = null):Void {
+	inline public static function precacheMusic(sound:String, ?library:String = null):Void
 		Paths.music(sound, library);
-	}
 
 	inline public static function browserLoad(site:String) {
 		#if linux
