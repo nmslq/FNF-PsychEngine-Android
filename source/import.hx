@@ -7,6 +7,11 @@ import backend.Discord;
 #if MODS_ALLOWED import backend.Mods; #end
 #if android import android.SUtil; #end
 
+#if LUA_ALLOWED
+import llua.*;
+import llua.Lua;
+#end
+
 import backend.Paths;
 import backend.Controls;
 import backend.CoolUtil;
@@ -15,6 +20,7 @@ import backend.MusicBeatSubstate;
 import backend.CustomFadeTransition;
 import backend.ClientPrefs;
 import backend.Conductor;
+import backend.BaseStage;
 import backend.Difficulty;
 
 import objects.Alphabet;
