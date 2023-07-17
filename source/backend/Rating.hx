@@ -11,6 +11,7 @@ class Rating
 	public var ratingMod:Float = 1;
 	public var score:Int = 350;
 	public var noteSplash:Bool = true;
+	public var hits:Int = 0;
 
 	public function new(name:String)
 	{
@@ -52,7 +53,5 @@ class Rating
 	}
 
 	public function increase(blah:Int = 1)
-	{
 		Reflect.setField(PlayState.instance, counter, Reflect.field(PlayState.instance, counter) + blah);
-	}
 }
