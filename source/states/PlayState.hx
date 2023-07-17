@@ -401,10 +401,7 @@ class PlayState extends MusicBeatState
 			case 'schoolEvil': new states.stages.SchoolEvil(); //Week 6 - Thorns
 			case 'tank': new states.stages.Tank(); //Week 7 - Ugh, Guns, Stress
 		}
-
-		if(isPixelStage) {
-			introSoundsSuffix = '-pixel';
-		}
+		if(isPixelStage) introSoundsSuffix = '-pixel';
 
 		add(gfGroup);
 		add(dadGroup);
@@ -478,9 +475,8 @@ class PlayState extends MusicBeatState
 					addAbilityToUnlockAchievements(lua);
 					achievementsArray.push(lua);
 				}
-				if(i.week_nomiss != null) {
+				if(i.week_nomiss != null)
 					achievementWeeks.push(i.week_nomiss + '_nomiss');
-				}
 			}
 		}
 		#end
@@ -722,11 +718,10 @@ class PlayState extends MusicBeatState
 		precacheList.set('missnote2', 'sound');
 		precacheList.set('missnote3', 'sound');
 
-		if (PauseSubState.songName != null) {
+		if (PauseSubState.songName != null)
 			precacheList.set(PauseSubState.songName, 'music');
-		} else if(ClientPrefs.data.pauseMusic != 'None') {
+		else if(ClientPrefs.data.pauseMusic != 'None')
 			precacheList.set(Paths.formatToSongPath(ClientPrefs.data.pauseMusic), 'music');
-		}
 
 		precacheList.set('alphabet', 'image');
 
@@ -873,9 +868,8 @@ class PlayState extends MusicBeatState
 		if(doPush)
 		{
 			for (script in luaArray)
-			{
 				if(script.scriptName == luaFile) return;
-			}
+
 			new FunkinLua(luaFile);
 		}
 		#end
@@ -1120,7 +1114,7 @@ class PlayState extends MusicBeatState
 		spr.screenCenter();
 		spr.antialiasing = antialias;
 		insert(members.indexOf(notes), spr);
-		FlxTween.tween(spr, {/*y: spr.y + 100,*/ alpha: 0}, Conductor.crochet / 1000, {
+		FlxTween.tween(spr, {alpha: 0}, Conductor.crochet / 1000, {
 			ease: FlxEase.cubeInOut,
 			onComplete: function(twn:FlxTween)
 			{
@@ -1789,7 +1783,7 @@ class PlayState extends MusicBeatState
 			if(!inCutscene)
 			{
 				if(!cpuControlled) {
-					keyCheck();
+					keysCheck();
 				} else if(boyfriend.animation.curAnim != null && boyfriend.holdTimer > Conductor.stepCrochet * (0.0011 / FlxG.sound.music.pitch) * boyfriend.singDuration && boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss')) {
 					boyfriend.dance();
 					//boyfriend.animation.curAnim.finish();
@@ -2742,7 +2736,7 @@ class PlayState extends MusicBeatState
 	}
 
 	// Hold notes
-	private function keyCheck():Void
+	private function keysCheck():Void
 	{
 		// HOLDING
 		var parsedHoldArray:Array<Bool> = parseKeys();
