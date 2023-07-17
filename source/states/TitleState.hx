@@ -92,21 +92,6 @@ class TitleState extends MusicBeatState
 
 		//trace(path, FileSystem.exists(path));
 
-		/*#if (polymod && !html5)
-		if (sys.FileSystem.exists('mods/')) {
-			var folders:Array<String> = [];
-			for (file in sys.FileSystem.readDirectory('mods/')) {
-				var path = haxe.io.Path.join(['mods/', file]);
-				if (sys.FileSystem.isDirectory(path)) {
-					folders.push(file);
-				}
-			}
-			if(folders.length > 0) {
-				polymod.Polymod.init({modRoot: "mods", dirs: folders});
-			}
-		}
-		#end*/
-
 		FlxG.game.focusLostFramerate = 60;
 		FlxG.sound.muteKeys = muteKeys;
 		FlxG.sound.volumeDownKeys = volumeDownKeys;
@@ -119,7 +104,6 @@ class TitleState extends MusicBeatState
 
 		// DEBUG BULLSHIT
 
-		swagShader = new ColorSwap();
 		super.create();
 
 		FlxG.save.bind('funkin', CoolUtil.getSavePath());
@@ -185,9 +169,7 @@ class TitleState extends MusicBeatState
 		}
 
 		if (FlxG.save.data.weekCompleted != null)
-		{
 			StoryMenuState.weekCompleted = FlxG.save.data.weekCompleted;
-		}
 
 		FlxG.mouse.visible = false;
 		#if FREEPLAY
@@ -222,22 +204,18 @@ class TitleState extends MusicBeatState
 	function startIntro()
 	{
 		if (!initialized)
-		{
-			if(FlxG.sound.music == null) {
+			if(FlxG.sound.music == null)
 				FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
-			}
-		}
 
 		Conductor.changeBPM(titleJSON.bpm);
 		persistentUpdate = true;
 
 		var bg:FlxSprite = new FlxSprite();
 
-		if (titleJSON.backgroundSprite != null && titleJSON.backgroundSprite.length > 0 && titleJSON.backgroundSprite != "none"){
+		if (titleJSON.backgroundSprite != null && titleJSON.backgroundSprite.length > 0 && titleJSON.backgroundSprite != "none")
 			bg.loadGraphic(Paths.image(titleJSON.backgroundSprite));
-		}else{
+		else
 			bg.makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);
-		}
 
 		// bg.setGraphicSize(Std.int(bg.width * 0.6));
 		// bg.updateHitbox();
@@ -252,7 +230,7 @@ class TitleState extends MusicBeatState
 		// logoBl.screenCenter();
 		// logoBl.color = FlxColor.BLACK;
 
-		swagShader = new ColorSwap();
+		if(ClientPrefs.data.shaders) swagShader = new ColorSwap();
 		gfDance = new FlxSprite(titleJSON.gfx, titleJSON.gfy);
 
 		var easterEgg:String = FlxG.save.data.psychDevsEasterEgg;
@@ -289,9 +267,12 @@ class TitleState extends MusicBeatState
 		}
 
 		add(gfDance);
-		gfDance.shader = swagShader.shader;
 		add(logoBl);
-		logoBl.shader = swagShader.shader;
+		if(swagShader != null)
+		{
+			gfDance.shader = swagShader.shader;
+			logoBl.shader = swagShader.shader;
+		}
 
 		titleText = new FlxSprite(titleJSON.startx, titleJSON.starty);
 		titleText.frames = Paths.getSparrowAtlas('titleEnter');
@@ -349,25 +330,24 @@ class TitleState extends MusicBeatState
 
 		FlxTween.tween(credTextShit, {y: credTextShit.y + 20}, 2.9, {ease: FlxEase.quadInOut, type: PINGPONG});
 
-		if (initialized)
-			skipIntro();
-		else
-			initialized = true;
+		if (initialized) skipIntro();
+		else initialized = true;
 
 		// credGroup.add(credTextShit);
 	}
 
 	function getIntroTextShit():Array<Array<String>>
 	{
+		#if MODS_ALLOWED
+		var firstArray:Array<String> = Mods.mergeAllTextsNamed('data/introText.txt', Paths.getPreloadPath());
+		#else
 		var fullText:String = Assets.getText(Paths.txt('introText'));
-
+		#end
 		var firstArray:Array<String> = fullText.split('\n');
 		var swagGoodArray:Array<Array<String>> = [];
 
 		for (i in firstArray)
-		{
 			swagGoodArray.push(i.split('--'));
-		}
 
 		return swagGoodArray;
 	}
@@ -388,12 +368,8 @@ class TitleState extends MusicBeatState
 
 		#if android
 		for (touch in FlxG.touches.list)
-		{
 			if (touch.justPressed)
-			{
 				pressedEnter = true;
-			}
-		}
 		#end
 
 		var gamepad:FlxGamepad = FlxG.gamepads.lastActive;
@@ -451,11 +427,11 @@ class TitleState extends MusicBeatState
 
 				new FlxTimer().start(1, function(tmr:FlxTimer)
 				{
-					if (mustUpdate) {
+					if (mustUpdate)
 						MusicBeatState.switchState(new OutdatedState());
-					} else {
+					else
 						MusicBeatState.switchState(new MainMenuState());
-					}
+
 					closedState = true;
 				});
 				// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
@@ -477,9 +453,7 @@ class TitleState extends MusicBeatState
 		}
 
 		if (initialized && pressedEnter && !skippedIntro)
-		{
 			skipIntro();
-		}
 
 		if(swagShader != null)
 		{

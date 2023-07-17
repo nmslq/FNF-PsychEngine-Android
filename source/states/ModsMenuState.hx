@@ -7,11 +7,12 @@ import android.flixel.FlxButton;
 #else
 import flixel.ui.FlxButton;
 #end
+
 import flixel.FlxBasic;
 import openfl.display.BitmapData;
 import flash.geom.Rectangle;
 import lime.utils.Assets;
-import haxe.Json;
+import tjson.TJSON as Json;
 
 #if sys
 import sys.io.File;
@@ -139,14 +140,9 @@ class ModsMenuState extends MusicBeatState
 		buttonTop = new FlxButton(startX, 0, "TOP", function() {
 			var doRestart:Bool = (mods[0].restart || mods[curSelected].restart);
 			for (i in 0...curSelected) //so it shifts to the top instead of replacing the top one
-			{
 				moveMod(-1, true);
-			}
 
-			if(doRestart)
-			{
-				needaReset = true;
-			}
+			if(doRestart) needaReset = true;
 			FlxG.sound.play(Paths.sound('scrollMenu'), 0.6);
 		});
 		buttonTop.setGraphicSize(80, 50);
@@ -160,10 +156,7 @@ class ModsMenuState extends MusicBeatState
 
 		startX -= 190;
 		buttonDisableAll = new FlxButton(startX, 0, "DISABLE ALL", function() {
-			for (i in modsList)
-			{
-				i[1] = false;
-			}
+			for (i in modsList) i[1] = false;
 			for (mod in mods)
 			{
 				if (mod.restart)
@@ -186,10 +179,7 @@ class ModsMenuState extends MusicBeatState
 
 		startX -= 190;
 		buttonEnableAll = new FlxButton(startX, 0, "ENABLE ALL", function() {
-			for (i in modsList)
-			{
-				i[1] = true;
-			}
+			for (i in modsList) i[1] = true;
 			for (mod in mods)
 			{
 				if (mod.restart)
@@ -235,8 +225,7 @@ class ModsMenuState extends MusicBeatState
 
 			newMod.alphabet = new Alphabet(0, 0, mods[i].name, true);
 			var scale:Float = Math.min(840 / newMod.alphabet.width, 1);
-			newMod.alphabet.scaleX = scale;
-			newMod.alphabet.scaleY = scale;
+			newMod.alphabet.setScale(scale);
 			newMod.alphabet.y = i * 150;
 			newMod.alphabet.x = 310;
 			add(newMod.alphabet);

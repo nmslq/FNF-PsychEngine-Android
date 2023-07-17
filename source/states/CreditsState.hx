@@ -125,7 +125,7 @@ class CreditsState extends MusicBeatState
 			[
 				'Keoiki',
 				'keoiki',
-				'Note Splash Animations',
+				'Note Splash Animations and Latin Alphabet',
 				'https://twitter.com/Keoiki_',
 				'D2D2D2'
 			],
