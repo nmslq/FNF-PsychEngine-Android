@@ -1,10 +1,16 @@
 package objects;
 
-import states.editors.ChartingState;
-import objects.StrumNote;
+// If you want to make a custom note type, you should search for:
+// "function set_noteType"
 
+import backend.NoteTypesConfig;
 import shaders.RGBPalette;
 import shaders.RGBPalette.RGBShaderReference;
+import objects.StrumNote;
+
+import flixel.math.FlxRect;
+
+using StringTools;
 
 typedef EventNote = {
 	strumTime:Float,
@@ -17,6 +23,7 @@ typedef NoteSplashData = {
 	disabled:Bool,
 	texture:String,
 	useGlobalShader:Bool, //breaks r/g/b/a but makes it copy default colors for your custom note
+	antialiasing:Bool,
 	r:FlxColor,
 	g:FlxColor,
 	b:FlxColor,
@@ -25,7 +32,7 @@ typedef NoteSplashData = {
 
 class Note extends FlxSprite
 {
-	public var extraData:Map<String,Dynamic> = [];
+	public var extraData:Map<String, Dynamic> = new Map<String, Dynamic>();
 
 	public var strumTime:Float = 0;
 	public var mustPress:Bool = false;
@@ -60,17 +67,16 @@ class Note extends FlxSprite
 
 	public var animSuffix:String = '';
 	public var gfNote:Bool = false;
-	public var earlyHitMult:Float = 0.5;
+	public var earlyHitMult:Float = 1;
 	public var lateHitMult:Float = 1;
 	public var lowPriority:Bool = false;
 
 	public static var SUSTAIN_SIZE:Int = 44;
 	public static var swagWidth:Float = 160 * 0.7;
 	public static var colArray:Array<String> = ['purple', 'blue', 'green', 'red'];
-	public static var defaultNoteSkin:String = 'noteSkins/NOTE_assets';
+	public static var defaultNoteSkin(default, never):String = 'noteSkins/NOTE_assets';
 
-	public var noteSplashData:NoteSplashData = {disabled: false, texture: null, useGlobalShader: false, r: -1, g: -1, b: -1, a: 0.6};
-
+	public var noteSplashData:NoteSplashData = {disabled: false, texture: null, antialiasing: !PlayState.isPixelStage, useGlobalShader: false, r: -1, g: -1, b: -1, a: 0.6};
 	public var offsetX:Float = 0;
 	public var offsetY:Float = 0;
 	public var offsetAngle:Float = 0;
@@ -96,6 +102,8 @@ class Note extends FlxSprite
 	public var distance:Float = 2000; //plan on doing scroll directions soon -bb
 
 	public var hitsoundDisabled:Bool = false;
+	public var hitsoundChartEditor:Bool = true;
+	public var hitsound:String = 'hitsound';
 
 	private function set_multSpeed(value:Float):Float {
 		resizeByRatio(value / multSpeed);
@@ -144,6 +152,7 @@ class Note extends FlxSprite
 					//reloadNote('HURTNOTE_assets');
 					//this used to change the note texture to HURTNOTE_assets.png,
 					//but i've changed it to something more optimized with the implementation of RGBPalette:
+
 					// note colors
 					rgbShader.r = 0xFF101010;
 					rgbShader.g = 0xFFFF0000;
@@ -153,10 +162,13 @@ class Note extends FlxSprite
 					noteSplashData.r = 0xFFFF0000;
 					noteSplashData.g = 0xFF101010;
 					noteSplashData.texture = 'noteSplashes/noteSplashes-electric';
-					lowPriority = true;
 
+					// gameplay data
+					lowPriority = true;
 					missHealth = isSustainNote ? 0.25 : 0.1;
 					hitCausesMiss = true;
+					hitsound = 'cancelMenu';
+					hitsoundChartEditor = false;
 				case 'Alt Animation':
 					animSuffix = '-alt';
 				case 'No Animation':
@@ -165,14 +177,18 @@ class Note extends FlxSprite
 				case 'GF Sing':
 					gfNote = true;
 			}
+			if (value != null && value.length > 1) NoteTypesConfig.applyNoteTypeData(this, value);
+			if (hitsound != 'hitsound' && ClientPrefs.data.hitsoundVolume > 0) Paths.sound(hitsound); //precache new sound for being idiot-proof
 			noteType = value;
 		}
 		return value;
 	}
 
-	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inEditor:Bool = false)
+	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?inEditor:Bool = false, ?createdFrom:Dynamic = null)
 	{
 		super();
+
+		if(createdFrom == null) createdFrom = PlayState.instance;
 
 		if (prevNote == null)
 			prevNote = this;
@@ -231,10 +247,7 @@ class Note extends FlxSprite
 				prevNote.animation.play(colArray[prevNote.noteData % colArray.length] + 'hold');
 
 				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.05;
-				if(PlayState.instance != null)
-				{
-					prevNote.scale.y *= PlayState.instance.songSpeed;
-				}
+				if(createdFrom != null && createdFrom.songSpeed != null) prevNote.scale.y *= createdFrom.songSpeed;
 
 				if(PlayState.isPixelStage) {
 					prevNote.scale.y *= 1.19;
@@ -244,12 +257,15 @@ class Note extends FlxSprite
 				// prevNote.setGraphicSize();
 			}
 
-			if(PlayState.isPixelStage) {
+			if(PlayState.isPixelStage)
+			{
 				scale.y *= PlayState.daPixelZoom;
 				updateHitbox();
 			}
-		} else if(!isSustainNote) {
-			earlyHitMult = 1;
+			earlyHitMult = 0;
+		}
+		else if(!isSustainNote)
+		{
 			centerOffsets();
 			centerOrigin();
 		}
@@ -277,6 +293,7 @@ class Note extends FlxSprite
 	var _lastNoteOffX:Float = 0;
 	static var _lastValidChecked:String; //optimization
 	public var originalHeight:Float = 6;
+	public var correctionOffset:Float = 0; //dont mess with this
 	public function reloadNote(texture:String = '', postfix:String = '') {
 		if(texture == null) texture = '';
 		if(postfix == null) postfix = '';
@@ -307,16 +324,12 @@ class Note extends FlxSprite
 
 		if(PlayState.isPixelStage) {
 			if(isSustainNote) {
-				loadGraphic(Paths.image('pixelUI/' + skinPixel + 'ENDS' + skinPostfix));
-				width /= 4;
-				height /= 2;
-				originalHeight = height;
-				loadGraphic(Paths.image('pixelUI/' + skinPixel + 'ENDS' + skinPostfix), true, Math.floor(width), Math.floor(height));
+				var graphic = Paths.image('pixelUI/' + skinPixel + 'ENDS' + skinPostfix);
+				loadGraphic(graphic, true, Math.floor(graphic.width / 4), Math.floor(graphic.height / 2));
+				originalHeight = graphic.height / 2;
 			} else {
-				loadGraphic(Paths.image('pixelUI/' + skinPixel + skinPostfix));
-				width /= 4;
-				height /= 5;
-				loadGraphic(Paths.image('pixelUI/' + skinPixel + skinPostfix), true, Math.floor(width), Math.floor(height));
+				var graphic = Paths.image('pixelUI/' + skinPixel + skinPostfix);
+				loadGraphic(graphic, true, Math.floor(graphic.width / 4), Math.floor(graphic.height / 5));
 			}
 			setGraphicSize(Std.int(width * PlayState.daPixelZoom));
 			loadPixelNoteAnims();
@@ -381,12 +394,8 @@ class Note extends FlxSprite
 
 		if (mustPress)
 		{
-			// ok river
-			if (strumTime > Conductor.songPosition - (Conductor.safeZoneOffset * lateHitMult)
-				&& strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * earlyHitMult))
-				canBeHit = true;
-			else
-				canBeHit = false;
+			canBeHit = (strumTime > Conductor.songPosition - (Conductor.safeZoneOffset * lateHitMult) &&
+						strumTime < Conductor.songPosition + (Conductor.safeZoneOffset * earlyHitMult));
 
 			if (strumTime < Conductor.songPosition - Conductor.safeZoneOffset && !wasGoodHit)
 				tooLate = true;
@@ -406,6 +415,75 @@ class Note extends FlxSprite
 		{
 			if (alpha > 0.3)
 				alpha = 0.3;
+		}
+	}
+
+	override public function destroy()
+	{
+		super.destroy();
+		_lastValidChecked = '';
+	}
+
+	public function followStrumNote(myStrum:StrumNote, fakeCrochet:Float, songSpeed:Float = 1)
+	{
+		var strumX:Float = myStrum.x;
+		var strumY:Float = myStrum.y;
+		var strumAngle:Float = myStrum.angle;
+		var strumAlpha:Float = myStrum.alpha;
+		var strumDirection:Float = myStrum.direction;
+
+		distance = (0.45 * (Conductor.songPosition - strumTime) * songSpeed * multSpeed);
+		if (!myStrum.downScroll) distance *= -1;
+
+		var angleDir = strumDirection * Math.PI / 180;
+		if (copyAngle)
+			angle = strumDirection - 90 + strumAngle + offsetAngle;
+
+		if(copyAlpha)
+			alpha = strumAlpha * multAlpha;
+
+		if(copyX)
+			x = strumX + offsetX + Math.cos(angleDir) * distance;
+
+		if(copyY)
+		{
+			y = strumY + offsetY + correctionOffset + Math.sin(angleDir) * distance;
+			if(myStrum.downScroll && isSustainNote)
+			{
+				if(PlayState.isPixelStage)
+				{
+					y -= PlayState.daPixelZoom * 9.5;
+				}
+				y -= (frameHeight * scale.y) - (Note.swagWidth / 2);
+			}
+		}
+	}
+
+	public function clipToStrumNote(myStrum:StrumNote)
+	{
+		var center:Float = myStrum.y + offsetY + Note.swagWidth / 2;
+		if(isSustainNote && (mustPress || !ignoreNote) &&
+			(!mustPress || (wasGoodHit || (prevNote.wasGoodHit && !canBeHit))))
+		{
+			var swagRect:FlxRect = clipRect;
+			if(swagRect == null) swagRect = new FlxRect(0, 0, frameWidth, frameHeight);
+
+			if (myStrum.downScroll)
+			{
+				if(y - offset.y * scale.y + height >= center)
+				{
+					swagRect.width = frameWidth;
+					swagRect.height = (center - y) / scale.y;
+					swagRect.y = frameHeight - swagRect.height;
+				}
+			}
+			else if (y + offset.y * scale.y <= center)
+			{
+				swagRect.y = (center - y) / scale.y;
+				swagRect.width = width / scale.x;
+				swagRect.height = (height / scale.y) - swagRect.y;
+			}
+			clipRect = swagRect;
 		}
 	}
 }
