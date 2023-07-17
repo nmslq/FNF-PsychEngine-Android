@@ -1,12 +1,5 @@
 package psychlua;
 
-#if LUA_ALLOWED
-import llua.Lua;
-import llua.LuaL;
-import llua.State;
-import llua.Convert;
-#end
-
 #if sys
 import sys.FileSystem;
 import sys.io.File;
@@ -331,7 +324,7 @@ class ExtraFunctions
 			return FlxG.random.bool(chance);
 		});
 
-		//android functions
+		// other functions
 		Lua_helper.add_callback(lua, "vibration", function(period:Int, milliseconds:Int) {
 			#if android
 			Haptic.vibrate(period, milliseconds);
@@ -348,9 +341,6 @@ class ExtraFunctions
 		});
 		Lua_helper.add_callback(lua, "setKeyboard", function(open:Bool = false) {
 			FlxG.stage.window.textInputEnabled = open;
-		});
-		Lua_helper.add_callback(lua, "exitGame", function(code:Int = 0) {
-			Sys.exit(code);
 		});
 		Lua_helper.add_callback(lua, "toast", function(text:String, code:Int = 0) {
 			#if android
