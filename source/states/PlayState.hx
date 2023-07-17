@@ -1,6 +1,6 @@
 package states;
 
- If you want to add your stage to the game, copy states/stages/Template.hx,
+// If you want to add your stage to the game, copy states/stages/Template.hx,
 // and put your stage code there, then, on PlayState, search for
 // "switch (curStage)", and add your stage to that list.
 
