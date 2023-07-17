@@ -2133,19 +2133,16 @@ class PlayState extends MusicBeatState
 
 					case 1:
 						if(dad.curCharacter != value2) {
-							if(!dadMap.exists(value2)) {
+							if(!dadMap.exists(value2))
 								addCharacterToList(value2, charType);
-							}
 
 							var wasGf:Bool = dad.curCharacter.startsWith('gf-') || dad.curCharacter == 'gf';
 							var lastAlpha:Float = dad.alpha;
 							dad.alpha = 0.00001;
 							dad = dadMap.get(value2);
 							if(!dad.curCharacter.startsWith('gf-') && dad.curCharacter != 'gf') {
-								if(wasGf && gf != null)
-								{
-									gf.visible = true;
-								}
+								if(wasGf && gf != null) gf.visible = true;
+							}
 							else if(gf != null) gf.visible = false;
 							dad.alpha = lastAlpha;
 							iconP2.changeIcon(dad.healthIcon);
