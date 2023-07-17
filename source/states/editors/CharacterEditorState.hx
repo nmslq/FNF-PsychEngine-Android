@@ -13,16 +13,11 @@ import flixel.addons.ui.FlxUIInputText;
 import flixel.addons.ui.FlxUINumericStepper;
 import flixel.addons.ui.FlxUIDropDownMenu;
 import flixel.addons.ui.FlxUITabMenu;
-#if android
-import android.flixel.FlxButton;
-#else
-import flixel.ui.FlxButton;
-#end
 import openfl.net.FileReference;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import lime.system.Clipboard;
-import haxe.Json;
+import tjson.TJSON as Json;
 
 import objects.Character;
 import objects.HealthIcon;
@@ -30,6 +25,12 @@ import objects.HealthBar;
 
 #if MODS_ALLOWED
 import sys.FileSystem;
+#end
+
+#if android
+import android.flixel.FlxButton;
+#else
+import flixel.ui.FlxButton;
 #end
 
 class CharacterEditorState extends MusicBeatState
@@ -1286,7 +1287,7 @@ class CharacterEditorState extends MusicBeatState
 			"healthbar_colors": char.healthColorArray
 		};
 
-		var data:String = Json.stringify(json, "\t");
+		var data:String = haxe.Json.stringify(json, "\t");
 
 		if (data.length > 0)
 		{

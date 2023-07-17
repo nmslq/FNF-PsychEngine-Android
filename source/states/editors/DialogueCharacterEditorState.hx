@@ -6,21 +6,20 @@ import flixel.addons.ui.FlxUIInputText;
 import flixel.addons.ui.FlxUINumericStepper;
 import flixel.addons.ui.FlxUIDropDownMenu;
 import flixel.addons.ui.FlxUITabMenu;
+import openfl.net.FileReference;
+import openfl.events.Event;
+import openfl.events.IOErrorEvent;
+import flash.net.FileFilter;
+import tjson.TJSON as Json;
+import cutscenes.DialogueBoxPsych;
+import cutscenes.DialogueCharacter;
+import lime.system.Clipboard;
 
 #if android
 import android.flixel.FlxButton;
 #else
 import flixel.ui.FlxButton;
 #end
-
-import openfl.net.FileReference;
-import openfl.events.Event;
-import openfl.events.IOErrorEvent;
-import flash.net.FileFilter;
-import haxe.Json;
-import cutscenes.DialogueBoxPsych;
-import cutscenes.DialogueCharacter;
-import lime.system.Clipboard;
 
 #if sys
 import sys.io.File;
@@ -156,8 +155,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 		updateTextBox();
 
 		daText = new TypedAlphabet(DialogueBoxPsych.DEFAULT_TEXT_X, DialogueBoxPsych.DEFAULT_TEXT_Y, '', 0.05, false);
-		daText.scaleX = 0.7;
-		daText.scaleY = 0.7;
+		daText.setScale(0.7);
 		daText.text = DEFAULT_TEXT;
 		hudGroup.add(daText);
 
@@ -824,7 +822,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 	}
 
 	function saveCharacter() {
-		var data:String = Json.stringify(character.jsonFile, "\t");
+		var data:String = haxe.Json.stringify(character.jsonFile, "\t");
 		if (data.length > 0)
 		{
 			var splittedImage:Array<String> = imageInputText.text.trim().split('_');

@@ -5,18 +5,17 @@ import flixel.addons.ui.FlxUICheckBox;
 import flixel.addons.ui.FlxUIInputText;
 import flixel.addons.ui.FlxUINumericStepper;
 import flixel.addons.ui.FlxUITabMenu;
+import openfl.net.FileReference;
+import openfl.events.Event;
+import openfl.events.IOErrorEvent;
+import flash.net.FileFilter;
+import tjson.TJSON as Json;
 
 #if android
 import android.flixel.FlxButton;
 #else
 import flixel.ui.FlxButton;
 #end
-
-import openfl.net.FileReference;
-import openfl.events.Event;
-import openfl.events.IOErrorEvent;
-import flash.net.FileFilter;
-import haxe.Json;
 
 #if sys
 import sys.io.File;
@@ -412,7 +411,7 @@ class MenuCharacterEditorState extends MusicBeatState
 	}
 
 	function saveCharacter() {
-		var data:String = Json.stringify(characterFile, "\t");
+		var data:String = haxe.Json.stringify(characterFile, "\t");
 		if (data.length > 0)
 		{
 			var splittedImage:Array<String> = imageInputText.text.trim().split('_');

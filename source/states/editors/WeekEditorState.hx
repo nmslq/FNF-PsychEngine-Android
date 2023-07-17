@@ -11,19 +11,18 @@ import flixel.addons.ui.FlxUIInputText;
 import flixel.addons.ui.FlxUINumericStepper;
 import flixel.addons.ui.FlxUITabMenu;
 import flixel.addons.transition.FlxTransitionableState;
+import openfl.net.FileReference;
+import openfl.events.Event;
+import openfl.events.IOErrorEvent;
+import flash.net.FileFilter;
+import lime.system.Clipboard;
+import tjson.TJSON as Json;
 
 #if android
 import android.flixel.FlxButton;
 #else
 import flixel.ui.FlxButton;
 #end
-
-import openfl.net.FileReference;
-import openfl.events.Event;
-import openfl.events.IOErrorEvent;
-import flash.net.FileFilter;
-import lime.system.Clipboard;
-import haxe.Json;
 
 #if sys
 import sys.io.File;
@@ -199,7 +198,6 @@ class WeekEditorState extends MusicBeatState
 		backgroundInputText = new FlxUIInputText(10, opponentInputText.y + 40, 120, '', 8);
 		backgroundInputText.focusGained = () -> FlxG.stage.window.textInputEnabled = true;
 		blockPressWhileTypingOn.push(backgroundInputText);
-		
 
 		displayNameInputText = new FlxUIInputText(10, backgroundInputText.y + 60, 200, '', 8);
 		displayNameInputText.focusGained = () -> FlxG.stage.window.textInputEnabled = true;
@@ -355,9 +353,7 @@ class WeekEditorState extends MusicBeatState
 			}
 		}
 
-		if(isMissing) {
-			bgSprite.visible = false;
-		}
+		if(isMissing) bgSprite.visible = false;
 	}
 
 	function reloadWeekThing() {
@@ -550,7 +546,7 @@ class WeekEditorState extends MusicBeatState
 	}
 
 	public static function saveWeek(weekFile:WeekFile) {
-		var data:String = Json.stringify(weekFile, "\t");
+		var data:String = haxe.Json.stringify(weekFile, "\t");
 		if (data.length > 0)
 		{
 			#if android
@@ -629,6 +625,8 @@ class WeekEditorFreeplayState extends MusicBeatState
 			songText.isMenuItem = true;
 			songText.targetY = i;
 			grpSongs.add(songText);
+			songText.scaleX = Math.min(1, 980 / songText.width);
+			songText.snapToPosition();
 
 			var icon:HealthIcon = new HealthIcon(weekFile.songs[i][1]);
 			icon.sprTracker = songText;

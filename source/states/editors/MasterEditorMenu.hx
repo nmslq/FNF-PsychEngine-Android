@@ -14,12 +14,13 @@ import states.FreeplayState;
 class MasterEditorMenu extends MusicBeatState
 {
 	var options:Array<String> = [
+		'Chart Editor',
+		'Character Editor',
 		'Week Editor',
 		'Menu Character Editor',
 		'Dialogue Editor',
 		'Dialogue Portrait Editor',
-		'Character Editor',
-		'Chart Editor'
+		'Note Splash Debug'
 	];
 	private var grpTexts:FlxTypedGroup<Alphabet>;
 	private var directories:Array<String> = [null];
@@ -64,9 +65,7 @@ class MasterEditorMenu extends MusicBeatState
 		add(directoryTxt);
 		
 		for (folder in Mods.getModDirectories())
-		{
 			directories.push(folder);
-		}
 
 		var found:Int = directories.indexOf(Mods.currentModDirectory);
 		if(found > -1) curDirectory = found;
@@ -106,25 +105,25 @@ class MasterEditorMenu extends MusicBeatState
 		#end
 
 		if (controls.BACK)
-		{
 			MusicBeatState.switchState(new MainMenuState());
-		}
 
 		if (controls.ACCEPT)
 		{
 			switch(options[curSelected]) {
+				case 'Chart Editor'://felt it would be cool maybe
+					LoadingState.loadAndSwitchState(new ChartingState(), false);
 				case 'Character Editor':
 					LoadingState.loadAndSwitchState(new CharacterEditorState(Character.DEFAULT_CHARACTER, false));
 				case 'Week Editor':
 					MusicBeatState.switchState(new WeekEditorState());
 				case 'Menu Character Editor':
 					MusicBeatState.switchState(new MenuCharacterEditorState());
-				case 'Dialogue Portrait Editor':
-					LoadingState.loadAndSwitchState(new DialogueCharacterEditorState(), false);
 				case 'Dialogue Editor':
 					LoadingState.loadAndSwitchState(new DialogueEditorState(), false);
-				case 'Chart Editor'://felt it would be cool maybe
-					LoadingState.loadAndSwitchState(new ChartingState(), false);
+				case 'Dialogue Portrait Editor':
+					LoadingState.loadAndSwitchState(new DialogueCharacterEditorState(), false);
+				case 'Note Splash Debug':
+					LoadingState.loadAndSwitchState(new NoteSplashDebugState());
 			}
 			FlxG.sound.music.volume = 0;
 			#if PRELOAD_ALL
