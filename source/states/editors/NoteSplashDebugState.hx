@@ -125,7 +125,7 @@ class NoteSplashDebugState extends MusicBeatState
 		FlxG.mouse.visible = true;
 
 		#if android
-		addVirtualPad(LEFT_FULL, A_B_C_D_V);
+		addVirtualPad(LEFT_FULL, A_B_C_X_Y);
 		#end
 	}
 
@@ -148,7 +148,7 @@ class NoteSplashDebugState extends MusicBeatState
 		if(!notTyping) return;
 		
 		if (FlxG.keys.justPressed.A #if android || virtualPad.buttonLeft.justPressed #end) changeSelection(-1);
-		else if (FlxG.keys.justPressed.D #if android || virtualPad.buttonRight.justPressed #end) changeSelection(1);
+		else if (FlxG.keys.justPressed.X #if android || virtualPad.buttonRight.justPressed #end) changeSelection(1);
 
 		if(maxAnims < 1) return;
 
@@ -187,7 +187,7 @@ class NoteSplashDebugState extends MusicBeatState
 				copiedArray[0] = arr[0];
 				copiedArray[1] = arr[1];
 			}
-			else if(FlxG.keys.justPressed.V #if android || virtualPad.buttonV.justPressed #end && copiedArray != null)
+			else if(FlxG.keys.justPressed.Y #if android || virtualPad.buttonV.justPressed #end && copiedArray != null)
 			{
 				var offs:Array<Float> = selectedArray();
 				offs[0] = copiedArray[0];
@@ -290,7 +290,7 @@ class NoteSplashDebugState extends MusicBeatState
 		for (offGroup in config.offsets)
 			strToSave += '\n' + offGroup[0] + ' ' + offGroup[1];
 
-		var path:String = Paths.getPath('images/$texturePath.png', IMAGE, true).split('.png')[0] + '.txt';
+		var path:String = SUtil.getStorageDirectory() +  Paths.getPath('images/$texturePath.png', IMAGE, true).split('.png')[0] + '.txt';
 		savedText.text = 'Saved to: $path';
 		sys.io.File.saveContent(path, strToSave);
 
