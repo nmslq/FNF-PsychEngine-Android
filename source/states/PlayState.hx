@@ -1466,7 +1466,7 @@ class PlayState extends MusicBeatState
 		return 0;
 	}
 
-	function sortByTime(Obj1:Dynamic, Obj2:Dynamic):Int
+	public static function sortByTime(Obj1:Dynamic, Obj2:Dynamic):Int
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.strumTime, Obj2.strumTime);
 
 	function makeEvent(event:Array<Dynamic>, i:Int)
@@ -2724,7 +2724,7 @@ class PlayState extends MusicBeatState
 		//trace('released: ' + controlArray);
 	}
 
-	public static function getKeyFromEvent(key:FlxKey):Int
+	public function getKeyFromEvent(key:FlxKey):Int
 	{
 		if(key != NONE)
 			for (i in 0...keysArray.length)
@@ -2759,7 +2759,7 @@ class PlayState extends MusicBeatState
 				notes.forEachAlive(function(daNote:Note)
 				{
 					// hold note functions
-					if (strumsBlocked[daNote.noteData] != true && daNote.isSustainNote && holdArray[daNote.noteData] && daNote.canBeHit
+					if (strumsBlocked[daNote.noteData] != true && daNote.isSustainNote && parsedHoldArray[daNote.noteData] && daNote.canBeHit
 					&& daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit && !daNote.blockHit)
 						goodNoteHit(daNote);
 				});
