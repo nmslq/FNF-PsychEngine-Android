@@ -14,7 +14,7 @@ import flixel.animation.FlxAnimationController;
 import flixel.input.keyboard.FlxKey;
 import openfl.events.KeyboardEvent;
 
-class EditorPlayState extends MusicBeatSubstate
+class EditorPlayState extends MusicBeatState
 {
 	// Borrowed from original PlayState
 	var finishTimer:FlxTimer = null;
@@ -409,7 +409,6 @@ class EditorPlayState extends MusicBeatSubstate
 				}
 			}
 		}
-
 		unspawnNotes.sort(PlayState.sortByTime);
 	}
 	
@@ -623,9 +622,7 @@ class EditorPlayState extends MusicBeatSubstate
 		FlxTween.tween(comboSpr, {alpha: 0}, 0.2 / playbackRate, {
 			onComplete: function(tween:FlxTween)
 			{
-				coolText.destroy();
 				comboSpr.destroy();
-
 				rating.destroy();
 			},
 			startDelay: Conductor.crochet * 0.002 / playbackRate
@@ -635,7 +632,7 @@ class EditorPlayState extends MusicBeatSubstate
 	private function onKeyPress(event:KeyboardEvent):Void
 	{
 		var eventKey:FlxKey = event.keyCode;
-		var key:Int = PlayState.getKeyFromEvent(keysArray, eventKey);
+		var key:Int = PlayState.getKeyFromEvent(eventKey);
 		//trace('Pressed: ' + eventKey);
 
 		if (!controls.controllerMode && FlxG.keys.checkStatus(eventKey, JUST_PRESSED)) keyPressed(key);
@@ -700,7 +697,7 @@ class EditorPlayState extends MusicBeatSubstate
 	private function onKeyRelease(event:KeyboardEvent):Void
 	{
 		var eventKey:FlxKey = event.keyCode;
-		var key:Int = PlayState.getKeyFromEvent(keysArray, eventKey);
+		var key:Int = PlayState.getKeyFromEvent(eventKey);
 		//trace('Pressed: ' + eventKey);
 
 		if(!controls.controllerMode && key > -1) keyReleased(key);
@@ -720,21 +717,17 @@ class EditorPlayState extends MusicBeatSubstate
 	private function keysCheck():Void
 	{
 		// HOLDING
-		var holdArray:Array<Bool> = [];
-		var pressArray:Array<Bool> = [];
-		var releaseArray:Array<Bool> = [];
-		for (key in keysArray)
-		{
-			holdArray.push(controls.pressed(key));
-			pressArray.push(controls.justPressed(key));
-			releaseArray.push(controls.justReleased(key));
-		}
+		var parsedHoldArray:Array<Bool> = parseKeys();
 
 		// TO DO: Find a better way to handle controller inputs, this should work for now
-		if(controls.controllerMode && pressArray.contains(true))
-			for (i in 0...pressArray.length)
-				if(pressArray[i])
-					keyPressed(i);
+		if(ClientPrefs.data.controllerMode)
+		{
+			var parsedArray:Array<Bool> = parseKeys('_P');
+			if(parsedArray.contains(true))
+				for (i in 0...parsedArray.length)
+					if(parsedArray[i] && strumsBlocked[i] != true)
+						onKeyPress(new KeyboardEvent(KeyboardEvent.KEY_DOWN, true, true, -1, keysArray[i][0]));
+		}
 
 		// rewritten inputs???
 		notes.forEachAlive(function(daNote:Note)
@@ -746,10 +739,14 @@ class EditorPlayState extends MusicBeatSubstate
 		});
 
 		// TO DO: Find a better way to handle controller inputs, this should work for now
-		if(controls.controllerMode && releaseArray.contains(true))
-			for (i in 0...releaseArray.length)
-				if(releaseArray[i])
-					keyReleased(i);
+		if(ClientPrefs.data.controllerMode || strumsBlocked.contains(true))
+		{
+			var parsedArray:Array<Bool> = parseKeys('_R');
+			if(parsedArray.contains(true))
+				for (i in 0...parsedArray.length)
+					if(parsedArray[i] || strumsBlocked[i] == true)
+						onKeyRelease(new KeyboardEvent(KeyboardEvent.KEY_UP, true, true, -1, keysArray[i][0]));
+		}
 	}
 
 	
