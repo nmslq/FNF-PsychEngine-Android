@@ -14,7 +14,7 @@ import flixel.animation.FlxAnimationController;
 import flixel.input.keyboard.FlxKey;
 import openfl.events.KeyboardEvent;
 
-class EditorPlayState extends MusicBeatState
+class EditorPlayState extends MusicBeatSubstate
 {
 	// Borrowed from original PlayState
 	var finishTimer:FlxTimer = null;
@@ -150,7 +150,7 @@ class EditorPlayState extends MusicBeatState
 		RecalculateRating();
 
 		#if android
-		addAndroidControls();
+		MusicBeatState.addAndroidControls();
 		androidControls.visible = true;
 		#end
 	}
@@ -469,7 +469,12 @@ class EditorPlayState extends MusicBeatState
 			finishTimer.cancel();
 			finishTimer.destroy();
 		}
+		#if android
+		flixel.addons.transition.FlxTransitionableState.skipNextTransOut = true;
+		FlxG.resetState();
+		#else
 		close();
+		#end
 	}
 
 	private function cachePopUpScore()
@@ -629,13 +634,14 @@ class EditorPlayState extends MusicBeatState
 		});
 	}
 
+	public var strumsBlocked:Array<Bool> = [];
 	private function onKeyPress(event:KeyboardEvent):Void
 	{
 		var eventKey:FlxKey = event.keyCode;
 		var key:Int = PlayState.getKeyFromEvent(eventKey);
 		//trace('Pressed: ' + eventKey);
 
-		if (!controls.controllerMode && FlxG.keys.checkStatus(eventKey, JUST_PRESSED)) keyPressed(key);
+		if (!ClientPrefs.data.controllerMode && FlxG.keys.checkStatus(eventKey, JUST_PRESSED)) keyPressed(key);
 	}
 
 	private function keyPressed(key:Int)
@@ -700,7 +706,7 @@ class EditorPlayState extends MusicBeatState
 		var key:Int = PlayState.getKeyFromEvent(eventKey);
 		//trace('Pressed: ' + eventKey);
 
-		if(!controls.controllerMode && key > -1) keyReleased(key);
+		if(!ClientPrefs.data.controllerMode && key > -1) keyReleased(key);
 	}
 
 	private function keyReleased(key:Int)
@@ -712,7 +718,6 @@ class EditorPlayState extends MusicBeatState
 			spr.resetAnim = 0;
 		}
 	}
-	
 	// Hold notes
 	private function keysCheck():Void
 	{
@@ -749,6 +754,14 @@ class EditorPlayState extends MusicBeatState
 		}
 	}
 
+	private function parseKeys(?suffix:String = ''):Array<Bool>
+	{
+		var ret:Array<Bool> = [];
+		for (i in 0...controlArray.length)
+			ret[i] = Reflect.getProperty(controls, controlArray[i] + suffix);
+
+		return ret;
+	}
 	
 	function opponentNoteHit(note:Note):Void
 	{
