@@ -386,7 +386,6 @@ class FunkinLua {
 							trace('Closing script ' + luaInstance.scriptName);
 							return true;
 						}
-				return;
 			}
 			luaTrace('removeLuaScript: Script $luaFile isn\'t running!', false, false, FlxColor.RED);
 			return false;
@@ -1614,11 +1613,10 @@ class FunkinLua {
 		#if LUA_ALLOWED
 		var target:Dynamic = LuaUtils.tweenPrepare(tag, vars);
 		if(target != null) {
-			game.modchartTweens.set(tag, FlxTween.tween(target, tweenValue, duration, {ease: LuaUtils.getTweenEaseByString(ease),
+			PlayState.instance.modchartTweens.set(tag, FlxTween.tween(target, tweenValue, duration, {ease: LuaUtils.getTweenEaseByString(ease),
 				onComplete: function(twn:FlxTween) {
-
-					game.modchartTweens.remove(tag);
-					game.callOnLuas('onTweenCompleted', [tag, vars]);
+					PlayState.instance.modchartTweens.remove(tag);
+					PlayState.instance.callOnLuas('onTweenCompleted', [tag, vars]);
 				}
 			}));
 		} else {
@@ -1633,7 +1631,7 @@ class FunkinLua {
 			if(deprecated && !getBool('luaDeprecatedWarnings')) {
 				return;
 			}
-			game.addTextToDebug(text, color);
+			PlayState.instance.addTextToDebug(text, color);
 			trace(text);
 		}
 		#end
