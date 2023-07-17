@@ -88,7 +88,7 @@ class TitleState extends MusicBeatState
 		Mods.pushGlobalMods();
 		#end
 		// Just to load a mod on start up if ya got one. For mods that change the menu music and bg
-		Mods.loadTheFirstEnabledMod();
+		Mods.loadTopMod();
 
 		//trace(path, FileSystem.exists(path));
 
@@ -342,8 +342,8 @@ class TitleState extends MusicBeatState
 		var firstArray:Array<String> = Mods.mergeAllTextsNamed('data/introText.txt', Paths.getPreloadPath());
 		#else
 		var fullText:String = Assets.getText(Paths.txt('introText'));
-		#end
 		var firstArray:Array<String> = fullText.split('\n');
+		#end
 		var swagGoodArray:Array<Array<String>> = [];
 
 		for (i in firstArray)

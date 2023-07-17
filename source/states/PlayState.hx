@@ -2617,9 +2617,7 @@ class PlayState extends MusicBeatState
 		FlxTween.tween(comboSpr, {alpha: 0}, 0.2 / playbackRate, {
 			onComplete: function(tween:FlxTween)
 			{
-				coolText.destroy();
 				comboSpr.destroy();
-
 				rating.destroy();
 			},
 			startDelay: Conductor.crochet * 0.002 / playbackRate
@@ -3169,7 +3167,7 @@ class PlayState extends MusicBeatState
 			if(myValue != null && !excludeValues.contains(myValue))
 				returnVal = myValue;
 		}
-		for (i in achievementsArray) i.call(event, args);
+		for (i in achievementsArray) i.call(funcToCall, args);
 		#end
 		return returnVal;
 	}
