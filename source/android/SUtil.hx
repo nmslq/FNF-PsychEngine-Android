@@ -4,6 +4,12 @@ package android;
 import android.content.Context;
 import android.widget.Toast;
 #end
+
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+#end
+
 import haxe.CallStack;
 import haxe.io.Path;
 import lime.system.System as LimeSystem;
@@ -11,16 +17,6 @@ import lime.utils.Assets as LimeAssets;
 import lime.utils.Log as LimeLogger;
 import openfl.Lib;
 import openfl.events.UncaughtErrorEvent;
-#if sys
-import sys.FileSystem;
-import sys.io.File;
-#end
-
-enum StorageType
-{
-	DATA;
-	EXTERNAL_DATA;
-}
 
 /**
  * ...
@@ -31,23 +27,13 @@ class SUtil
 	/**
 	 * This returns the external storage path that the game will use by the type.
 	 */
-	public static function getStorageDirectory(type:StorageType = EXTERNAL_DATA):String
+	public static function getStorageDirectory():String
 	{
-		var daPath:String = '';
-
 		#if android
-		switch (type)
-		{
-			case DATA:
-				daPath = Context.getFilesDir() + '/';
-			case EXTERNAL_DATA:
-				daPath = Context.getExternalFilesDir(null) + '/';
-		}
+		return Context.getExternalFilesDir(null) + '/';
 		#elseif ios
-		daPath = LimeSystem.applicationStorageDirectory;
+		return LimeSystem.applicationStorageDirectory;
 		#end
-
-		return daPath;
 	}
 
 	/**
