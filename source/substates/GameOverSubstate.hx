@@ -63,9 +63,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		#if android
 		if(ClientPrefs.data.vibration)
-		{
 			Haptic.vibrate(0, vibrationTime);
-		}
 		#end
 
 		FlxG.camera.scroll.set();
@@ -93,9 +91,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		PlayState.instance.callOnLuas('onUpdate', [elapsed]);
 
 		if (controls.ACCEPT)
-		{
 			endBullshit();
-		}
 
 		if (controls.BACK)
 		{
@@ -105,7 +101,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			PlayState.seenCutscene = false;
 			PlayState.chartingMode = false;
 
-			Mods.loadTheFirstEnabledMod();
+			Mods.loadTopMod();
 			if (PlayState.isStoryMode)
 				MusicBeatState.switchState(new StoryMenuState());
 			else
@@ -142,9 +138,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 						FlxG.sound.play(Paths.sound('jeffGameover/jeffGameover-' + FlxG.random.int(1, 25, exclude)), 1, false, null, true, function() {
 							if(!isEnding)
-							{
 								FlxG.sound.music.fadeIn(0.2, 1, 4);
-							}
 						});
 					}
 					else coolStartDeath();
@@ -165,9 +159,7 @@ class GameOverSubstate extends MusicBeatSubstate
 	var isEnding:Bool = false;
 
 	function coolStartDeath(?volume:Float = 1):Void
-	{
 		FlxG.sound.playMusic(Paths.music(loopSoundName), volume);
-	}
 
 	function endBullshit():Void
 	{
@@ -189,5 +181,11 @@ class GameOverSubstate extends MusicBeatSubstate
 			});
 			PlayState.instance.callOnLuas('onGameOverConfirm', [true]);
 		}
+	}
+
+	override function destroy()
+	{
+		instance = null;
+		super.destroy();
 	}
 }
