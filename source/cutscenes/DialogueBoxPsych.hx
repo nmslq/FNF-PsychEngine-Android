@@ -146,7 +146,6 @@ class DialogueBoxPsych extends FlxSpriteGroup
 		}
 	}
 
-	var scrollSpeed = 4000;
 	var daText:TypedAlphabet = null;
 	var ignoreThisFrame:Bool = true; //First frame is reserved for loading dialogue images
 
