@@ -6,9 +6,11 @@ import flixel.addons.display.shapes.FlxShapeCircle;
 import flixel.math.FlxPoint;
 import lime.system.Clipboard;
 import flixel.util.FlxGradient;
-import shaders.RGBPalette;
 import objects.StrumNote;
 import objects.Note;
+
+import shaders.RGBPalette;
+import shaders.RGBPalette.RGBShaderReference;
 
 class NotesSubState extends MusicBeatSubstate
 {
@@ -73,11 +75,8 @@ class NotesSubState extends MusicBeatSubstate
 		bg.alpha = 0.25;
 		add(bg);
 		
-		var text:Alphabet = new Alphabet(84, 20, '', false);
+		var text:Alphabet = new Alphabet(50, 86, 'CTRL', false);
 		text.alignment = CENTERED;
-		text.scaleX = 0.4;
-		text.scaleY = 0.4;
-		text.text = "CTRL";
 		add(text);
 
 		copyButton = new FlxSprite(760, 50).loadGraphic(Paths.image('noteColorMenu/copy'));
@@ -112,13 +111,15 @@ class NotesSubState extends MusicBeatSubstate
 		colorWheelSelector.alpha = 0.6;
 		add(colorWheelSelector);
 
-		alphabetR = makeColorAlphabet(900, 60);
+		var txtX = 980;
+		var txtY = 90;
+		alphabetR = makeColorAlphabet(txtX - 100, txtY);
 		add(alphabetR);
-		alphabetG = makeColorAlphabet(1000, 60);
+		alphabetG = makeColorAlphabet(txtX, txtY);
 		add(alphabetG);
-		alphabetB = makeColorAlphabet(1100, 60);
+		alphabetB = makeColorAlphabet(txtX + 100, txtY);
 		add(alphabetB);
-		alphabetHex = makeColorAlphabet(1000, 5);
+		alphabetHex = makeColorAlphabet(txtX, txtY - 55);
 		add(alphabetHex);
 
 		spawnNotes();
@@ -181,7 +182,7 @@ class NotesSubState extends MusicBeatSubstate
 		{
 			if(FlxG.mouse.justMoved)
 				copyButton.alpha = 1;
-
+			
 			if(FlxG.mouse.justPressed)
 			{
 				if(FlxG.mouse.justPressed) Clipboard.text = getShaderColor().toHexString(false, false);
@@ -301,7 +302,26 @@ class NotesSubState extends MusicBeatSubstate
 		}
 		else if(controls.RESET #if android || virtualPad.buttonA.justPressed #end)
 		{
-			setShaderColor(!onPixel? ClientPrefs.defaultData.arrowRGB[curSelectedNote][curSelectedMode] : ClientPrefs.defaultData.arrowRGBPixel[curSelectedNote][curSelectedMode]);
+			if(FlxG.keys.pressed.SHIFT)
+			{
+				for (i in 0...3)
+				{
+					var strumRGB:RGBShaderReference = myNotes.members[curSelectedNote].rgbShader;
+					var color:FlxColor = !onPixel ? ClientPrefs.defaultData.arrowRGB[curSelectedNote][i] :
+													ClientPrefs.defaultData.arrowRGBPixel[curSelectedNote][i];
+					switch(i)
+					{
+						case 0:
+							getShader().r = strumRGB.r = color;
+						case 1:
+							getShader().g = strumRGB.g = color;
+						case 2:
+							getShader().b = strumRGB.b = color;
+					}
+					dataArray[curSelectedNote][i] = color;
+				}
+			}
+			setShaderColor(!onPixel ? ClientPrefs.defaultData.arrowRGB[curSelectedNote][curSelectedMode] : ClientPrefs.defaultData.arrowRGBPixel[curSelectedNote][curSelectedMode]);
 			FlxG.sound.play(Paths.sound('cancelMenu'), 0.6);
 			updateColors();
 		}
@@ -341,8 +361,7 @@ class NotesSubState extends MusicBeatSubstate
 	{
 		var text:Alphabet = new Alphabet(x, y, '', true);
 		text.alignment = CENTERED;
-		text.scaleX = 0.6;
-		text.scaleY = 0.6;
+		text.setScale(0.6);
 		add(text);
 		return text;
 	}
@@ -418,6 +437,8 @@ class NotesSubState extends MusicBeatSubstate
 		bigNote.setPosition(250, 325);
 		bigNote.setGraphicSize(250);
 		bigNote.updateHitbox();
+		bigNote.rgbShader.parent = Note.globalRgbShaders[curSelectedNote];
+		bigNote.shader = Note.globalRgbShaders[curSelectedNote].shader;
 		for (i in 0...Note.colArray.length)
 		{
 			if(!onPixel) bigNote.animation.addByPrefix('note$i', Note.colArray[i] + '0', 24, true);
@@ -425,6 +446,7 @@ class NotesSubState extends MusicBeatSubstate
 		}
 		insert(members.indexOf(myNotes) + 1, bigNote);
 		_storedColor = getShaderColor();
+		PlayState.isPixelStage = false;
 	}
 
 	function updateNotes(?instant:Bool = false)
@@ -463,7 +485,7 @@ class NotesSubState extends MusicBeatSubstate
 		}
 		colorGradientSelector.y = colorGradient.y + colorGradient.height * (1 - color.brightness);
 
-		var strumRGB:RGBPalette = myNotes.members[curSelectedNote].rgbShader;
+		var strumRGB:RGBShaderReference = myNotes.members[curSelectedNote].rgbShader;
 		switch(curSelectedMode)
 		{
 			case 0:

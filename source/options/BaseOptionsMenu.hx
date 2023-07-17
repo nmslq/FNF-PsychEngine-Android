@@ -50,9 +50,8 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		descBox.alpha = 0.6;
 		add(descBox);
 
-		var titleText:Alphabet = new Alphabet(75, 10, title, true);
-		titleText.scaleX = 0.6;
-		titleText.scaleY = 0.6;
+		var titleText:Alphabet = new Alphabet(75, 45, title, true);
+		titleText.setScale(0.6);
 		titleText.alpha = 0.4;
 		add(titleText);
 
@@ -80,7 +79,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 				optionText.x -= 80;
 				optionText.startPosition.x -= 80;
 				//optionText.xAdd -= 80;
-				var valueText:AttachedText = new AttachedText('' + optionsArray[i].getValue(), optionText.width + 80);
+				var valueText:AttachedText = new AttachedText('' + optionsArray[i].getValue(), optionText.width + 60);
 				valueText.sprTracker = optionText;
 				valueText.copyAlpha = true;
 				valueText.ID = i;
@@ -110,14 +109,8 @@ class BaseOptionsMenu extends MusicBeatSubstate
 	var holdValue:Float = 0;
 	override function update(elapsed:Float)
 	{
-		if (controls.UI_UP_P)
-		{
-			changeSelection(-1);
-		}
-		if (controls.UI_DOWN_P)
-		{
-			changeSelection(1);
-		}
+		if (controls.UI_UP_P) changeSelection(-1);
+		if (controls.UI_DOWN_P) changeSelection(1);
 
 		if (controls.BACK) {
 			#if android
@@ -132,10 +125,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 		if(nextAccept <= 0)
 		{
 			var usesCheckbox = true;
-			if(curOption.type != 'bool')
-			{
-				usesCheckbox = false;
-			}
+			if(curOption.type != 'bool') usesCheckbox = false;
 
 			if(usesCheckbox)
 			{
@@ -152,9 +142,8 @@ class BaseOptionsMenu extends MusicBeatSubstate
 					if(holdTime > 0.5 || pressed) {
 						if(pressed) {
 							var add:Dynamic = null;
-							if(curOption.type != 'string') {
+							if(curOption.type != 'string')
 								add = controls.UI_LEFT ? -curOption.changeValue : curOption.changeValue;
-							}
 
 							switch(curOption.type)
 							{
@@ -179,11 +168,10 @@ class BaseOptionsMenu extends MusicBeatSubstate
 									if(controls.UI_LEFT_P) --num;
 									else num++;
 
-									if(num < 0) {
+									if(num < 0)
 										num = curOption.options.length - 1;
-									} else if(num >= curOption.options.length) {
+									else if(num >= curOption.options.length)
 										num = 0;
-									}
 
 									curOption.curOption = num;
 									curOption.setValue(curOption.options[num]); //lol
@@ -233,9 +221,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 			}
 		}
 
-		if(nextAccept > 0) {
-			nextAccept -= 1;
-		}
+		if(nextAccept > 0) nextAccept -= 1;
 		super.update(elapsed);
 	}
 
@@ -249,9 +235,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 
 	function clearHold()
 	{
-		if(holdTime > 0.5) {
-			FlxG.sound.play(Paths.sound('scrollMenu'));
-		}
+		if(holdTime > 0.5) FlxG.sound.play(Paths.sound('scrollMenu'));
 		holdTime = 0;
 	}
 	
@@ -274,15 +258,11 @@ class BaseOptionsMenu extends MusicBeatSubstate
 			bullShit++;
 
 			item.alpha = 0.6;
-			if (item.targetY == 0) {
-				item.alpha = 1;
-			}
+			if (item.targetY == 0) item.alpha = 1;
 		}
 		for (text in grpTexts) {
 			text.alpha = 0.6;
-			if(text.ID == curSelected) {
-				text.alpha = 1;
-			}
+			if(text.ID == curSelected) text.alpha = 1;
 		}
 
 		descBox.setPosition(descText.x - 10, descText.y - 10);
@@ -294,8 +274,7 @@ class BaseOptionsMenu extends MusicBeatSubstate
 	}
 
 	function reloadCheckboxes() {
-		for (checkbox in checkboxGroup) {
+		for (checkbox in checkboxGroup)
 			checkbox.daValue = (optionsArray[checkbox.ID].getValue() == true);
-		}
 	}
 }

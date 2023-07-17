@@ -87,9 +87,7 @@ class NoteOffsetState extends MusicBeatState
 
 		var seperatedScore:Array<Int> = [];
 		for (i in 0...3)
-		{
 			seperatedScore.push(FlxG.random.int(0, 9));
-		}
 
 		var daLoop:Int = 0;
 		for (i in seperatedScore)
@@ -112,8 +110,7 @@ class NoteOffsetState extends MusicBeatState
 		// Note delay stuff
 		
 		beatText = new Alphabet(0, 0, 'Beat Hit!', true);
-		beatText.scaleX = 0.6;
-		beatText.scaleY = 0.6;
+		beatText.setScale(0.6, 0.6);
 		beatText.x += 260;
 		beatText.alpha = 0;
 		beatText.acceleration.y = 250;
@@ -321,7 +318,14 @@ class NoteOffsetState extends MusicBeatState
 			persistentUpdate = false;
 			CustomFadeTransition.nextCamera = camOther;
 			MusicBeatState.switchState(new options.OptionsState());
-			FlxG.sound.playMusic(Paths.music('freakyMenu'), 1, true);
+			if(OptionsState.onPlayState)
+			{
+				if(ClientPrefs.data.pauseMusic != 'None')
+					FlxG.sound.playMusic(Paths.music(Paths.formatToSongPath(ClientPrefs.data.pauseMusic)));
+				else
+					FlxG.sound.music.volume = 0;
+			}
+			else FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			FlxG.mouse.visible = false;
 		}
 
@@ -395,9 +399,7 @@ class NoteOffsetState extends MusicBeatState
 			text.cameras = [camHUD];
 
 			if(i > 1)
-			{
 				text.y += 24;
-			}
 		}
 	}
 
