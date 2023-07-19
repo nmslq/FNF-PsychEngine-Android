@@ -14,6 +14,11 @@ import flixel.animation.FlxAnimationController;
 import flixel.input.keyboard.FlxKey;
 import openfl.events.KeyboardEvent;
 
+#if android
+import android.AndroidControls;
+import android.flixel.FlxVirtualPad;
+#end
+
 class EditorPlayState extends MusicBeatSubstate
 {
 	// Borrowed from original PlayState
@@ -67,6 +72,14 @@ class EditorPlayState extends MusicBeatSubstate
 
 	var scoreTxt:FlxText;
 	var dataTxt:FlxText;
+
+	// Android
+	#if android
+	var androidControls:AndroidControls;
+	var virtualPad:FlxVirtualPad;
+	var trackedinputsUI:Array<FlxActionInput> = [];
+	var trackedinputsNOTES:Array<FlxActionInput> = [];
+	#end
 
 	public function new(playbackRate:Float)
 	{
@@ -150,8 +163,7 @@ class EditorPlayState extends MusicBeatSubstate
 		RecalculateRating();
 
 		#if android
-		MusicBeatState.addAndroidControls();
-		androidControls.visible = true;
+		addAndroidControls();
 		#end
 	}
 
@@ -283,8 +295,9 @@ class EditorPlayState extends MusicBeatSubstate
 		vocals.volume = 1;
 		vocals.time = startPos;
 		vocals.play();
+
 		#if android
-		androidControls.visible = false;
+		removeAndroidControls();
 		#end
 
 		// Song duration in a float, useful for the time left feature
@@ -638,7 +651,7 @@ class EditorPlayState extends MusicBeatSubstate
 	private function onKeyPress(event:KeyboardEvent):Void
 	{
 		var eventKey:FlxKey = event.keyCode;
-		var key:Int = PlayState.getKeyFromEvent(eventKey);
+		var key:Int = getKeyFromEvent(eventKey);
 		//trace('Pressed: ' + eventKey);
 
 		if (!ClientPrefs.data.controllerMode && FlxG.keys.checkStatus(eventKey, JUST_PRESSED)) keyPressed(key);
@@ -700,10 +713,21 @@ class EditorPlayState extends MusicBeatSubstate
 		}
 	}
 
+	private function getKeyFromEvent(key:FlxKey):Int
+	{
+		if(key != NONE)
+			for (i in 0...keysArray.length)
+				for (j in 0...keysArray[i].length)
+					if(key == keysArray[i][j])
+						return i;
+
+		return -1;
+	}
+
 	private function onKeyRelease(event:KeyboardEvent):Void
 	{
 		var eventKey:FlxKey = event.keyCode;
-		var key:Int = PlayState.getKeyFromEvent(eventKey);
+		var key:Int = getKeyFromEvent(eventKey);
 		//trace('Pressed: ' + eventKey);
 
 		if(!ClientPrefs.data.controllerMode && key > -1) keyReleased(key);
@@ -909,5 +933,43 @@ class EditorPlayState extends MusicBeatSubstate
 		}
 		else if (songMisses < 10)
 			ratingFC = 'SDCB';
+	}
+
+	function addAndroidControls()
+	{
+		if (androidControls != null)
+			removeAndroidControls();
+
+		androidControls = new AndroidControls();
+
+		switch (AndroidControls.mode)
+		{
+			case 'Pad-Right' | 'Pad-Left' | 'Pad-Custom':
+				controls.setVirtualPadNOTES(androidControls.virtualPad, RIGHT_FULL, NONE);
+			case 'Pad-Duo':
+				controls.setVirtualPadNOTES(androidControls.virtualPad, BOTH_FULL, NONE);
+			case 'Hitbox':
+				controls.setHitBox(androidControls.hitbox);
+			case 'Keyboard':
+		}
+
+		trackedinputsNOTES = controls.trackedinputsNOTES;
+		controls.trackedinputsNOTES = [];
+
+		var camControls:FlxCamera = new FlxCamera();
+		FlxG.cameras.add(camControls, DefaultDrawTarget);
+		camControls.bgColor.alpha = 0;
+
+		androidControls.cameras = [camControls];
+		add(androidControls);
+	}
+	
+	function removeAndroidControls()
+	{
+		if (trackedinputsNOTES != [])
+			controls.removeVirtualControlsInput(trackedinputsNOTES);
+
+		if (androidControls != null)
+			remove(androidControls);
 	}
 }
