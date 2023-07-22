@@ -267,6 +267,9 @@ class PlayState extends MusicBeatState
 	public var startCallback:Void->Void = null;
 	public var endCallback:Void->Void = null;
 
+	// display
+	public var songDisplay:SongDisplay;
+
 	override public function create()
 	{
 		Paths.clearStoredMemory();
@@ -664,6 +667,9 @@ class PlayState extends MusicBeatState
 				botplayTxt.y = botplayTxt.y + 78;
 		}
 
+		songDisplay = new SongDisplay(-1000, 200);
+		add(songDisplay);
+
 		strumLineNotes.cameras = [camHUD];
 		grpNoteSplashes.cameras = [camHUD];
 		notes.cameras = [camHUD];
@@ -677,6 +683,8 @@ class PlayState extends MusicBeatState
 		botplayTxt.cameras = [camHUD];
 		timeBar.cameras = [camHUD];
 		timeTxt.cameras = [camHUD];
+
+		songDisplay.cameras = [camOther];
 
 		#if android
 		addAndroidControls();
@@ -736,6 +744,15 @@ class PlayState extends MusicBeatState
 			FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 		}
 		callOnLuas('onCreatePost');
+
+		var tween1 = FlxTween.tween(songDisplay, {x: 0}, 1, {ease: FlxEase.cubeOut});
+		var tween2 = FlxTween.tween(songDisplay, {x: -1000}, 1, {ease: FlxEase.cubeIn});
+
+		FlxTween.sequence(tween1, tween2).startDelay(3).onComplete(function(twn:FlxTween)
+			{
+				remove(songDisplay);
+				songDisplay.destroy();
+			});
 
 		cacheCountdown();
 		cachePopUpScore();
@@ -1334,9 +1351,7 @@ class PlayState extends MusicBeatState
 				var gottaHitNote:Bool = section.mustHitSection;
 
 				if (songNotes[1] > 3)
-				{
 					gottaHitNote = !section.mustHitSection;
-				}
 
 				var oldNote:Note;
 				if (unspawnNotes.length > 0)
@@ -2724,7 +2739,7 @@ class PlayState extends MusicBeatState
 		//trace('released: ' + controlArray);
 	}
 
-	public function getKeyFromEvent(key:FlxKey):Int
+	private function getKeyFromEvent(key:FlxKey):Int
 	{
 		if(key != NONE)
 			for (i in 0...keysArray.length)
