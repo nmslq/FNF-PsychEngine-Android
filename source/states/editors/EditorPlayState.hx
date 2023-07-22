@@ -14,12 +14,7 @@ import flixel.animation.FlxAnimationController;
 import flixel.input.keyboard.FlxKey;
 import openfl.events.KeyboardEvent;
 
-#if android
-import android.AndroidControls;
-import android.flixel.FlxVirtualPad;
-#end
-
-class EditorPlayState extends MusicBeatSubstate
+class EditorPlayState extends MusicBeatState
 {
 	// Borrowed from original PlayState
 	var finishTimer:FlxTimer = null;
@@ -72,14 +67,6 @@ class EditorPlayState extends MusicBeatSubstate
 
 	var scoreTxt:FlxText;
 	var dataTxt:FlxText;
-
-	// Android
-	#if android
-	var androidControls:AndroidControls;
-	var virtualPad:FlxVirtualPad;
-	var trackedinputsUI:Array<FlxActionInput> = [];
-	var trackedinputsNOTES:Array<FlxActionInput> = [];
-	#end
 
 	public function new(playbackRate:Float)
 	{
@@ -161,7 +148,7 @@ class EditorPlayState extends MusicBeatSubstate
 		DiscordClient.changePresence('Playtesting on Chart Editor', PlayState.SONG.song, null, true, songLength);
 		#end
 		RecalculateRating();
-
+		
 		#if android
 		addAndroidControls();
 		#end
@@ -933,43 +920,5 @@ class EditorPlayState extends MusicBeatSubstate
 		}
 		else if (songMisses < 10)
 			ratingFC = 'SDCB';
-	}
-
-	function addAndroidControls()
-	{
-		if (androidControls != null)
-			removeAndroidControls();
-
-		androidControls = new AndroidControls();
-
-		switch (AndroidControls.mode)
-		{
-			case 'Pad-Right' | 'Pad-Left' | 'Pad-Custom':
-				controls.setVirtualPadNOTES(androidControls.virtualPad, RIGHT_FULL, NONE);
-			case 'Pad-Duo':
-				controls.setVirtualPadNOTES(androidControls.virtualPad, BOTH_FULL, NONE);
-			case 'Hitbox':
-				controls.setHitBox(androidControls.hitbox);
-			case 'Keyboard':
-		}
-
-		trackedinputsNOTES = controls.trackedinputsNOTES;
-		controls.trackedinputsNOTES = [];
-
-		var camControls:FlxCamera = new FlxCamera();
-		FlxG.cameras.add(camControls, DefaultDrawTarget);
-		camControls.bgColor.alpha = 0;
-
-		androidControls.cameras = [camControls];
-		add(androidControls);
-	}
-	
-	function removeAndroidControls()
-	{
-		if (trackedinputsNOTES != [])
-			controls.removeVirtualControlsInput(trackedinputsNOTES);
-
-		if (androidControls != null)
-			remove(androidControls);
 	}
 }

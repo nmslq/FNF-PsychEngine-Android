@@ -1709,7 +1709,7 @@ class ChartingState extends MusicBeatState
 				playtesting = true;
 				playtestingTime = Conductor.songPosition;
 				playtestingOnComplete = FlxG.sound.music.onComplete;
-				openSubState(new states.editors.EditorPlayState(playbackSpeed));
+				LoadingState.loadAndSwitchState(new states.editors.EditorPlayState(playbackSpeed));
 			}
 			if (FlxG.keys.justPressed.ENTER #if android || virtualPad.buttonA.justPressed #end)
 			{
