@@ -148,7 +148,7 @@ class EditorPlayState extends MusicBeatState
 		DiscordClient.changePresence('Playtesting on Chart Editor', PlayState.SONG.song, null, true, songLength);
 		#end
 		RecalculateRating();
-		
+
 		#if android
 		addAndroidControls();
 		#end
