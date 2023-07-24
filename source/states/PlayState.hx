@@ -267,9 +267,6 @@ class PlayState extends MusicBeatState
 	public var startCallback:Void->Void = null;
 	public var endCallback:Void->Void = null;
 
-	// display
-	public var songDisplay:SongDisplay;
-
 	override public function create()
 	{
 		Paths.clearStoredMemory();
@@ -667,9 +664,6 @@ class PlayState extends MusicBeatState
 				botplayTxt.y = botplayTxt.y + 78;
 		}
 
-		songDisplay = new SongDisplay(-1000, 200);
-		add(songDisplay);
-
 		strumLineNotes.cameras = [camHUD];
 		grpNoteSplashes.cameras = [camHUD];
 		notes.cameras = [camHUD];
@@ -683,8 +677,6 @@ class PlayState extends MusicBeatState
 		botplayTxt.cameras = [camHUD];
 		timeBar.cameras = [camHUD];
 		timeTxt.cameras = [camHUD];
-
-		songDisplay.cameras = [camOther];
 
 		#if android
 		addAndroidControls();
@@ -744,15 +736,6 @@ class PlayState extends MusicBeatState
 			FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 		}
 		callOnLuas('onCreatePost');
-
-		var tween1 = FlxTween.tween(songDisplay, {x: 0}, 1, {ease: FlxEase.cubeOut});
-		var tween2 = FlxTween.tween(songDisplay, {x: -1000}, 1, {ease: FlxEase.cubeIn});
-
-		FlxTween.sequence(tween1, tween2).startDelay(3).onComplete(function(twn:FlxTween)
-			{
-				remove(songDisplay);
-				songDisplay.destroy();
-			});
 
 		cacheCountdown();
 		cachePopUpScore();
