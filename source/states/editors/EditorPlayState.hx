@@ -12,7 +12,6 @@ import flixel.util.FlxSort;
 import flixel.input.keyboard.FlxKey;
 import openfl.events.KeyboardEvent;
 
-import states.editors.EditorLua;
 import states.editors.ChartingState;
 
 import objects.*;
@@ -47,7 +46,7 @@ class EditorPlayState extends MusicBeatState
 
 	var timerToStart:Float = 0;
 	private var noteTypeMap:Map<String, Bool> = new Map<String, Bool>();
-	
+
 	// Less laggy controls
 	private var keysArray:Array<Dynamic>;
 
@@ -68,9 +67,6 @@ class EditorPlayState extends MusicBeatState
 		bg.scrollFactor.set();
 		bg.color = FlxColor.fromHSB(FlxG.random.int(0, 359), FlxG.random.float(0, 0.8), FlxG.random.float(0.3, 1));
 		add(bg);
-
-		comboGroup = new FlxTypedGroup<FlxSprite>();
-		add(comboGroup);
 
 		strumLineNotes = new FlxTypedGroup<StrumNote>();
 		opponentStrums = new FlxTypedGroup<StrumNote>();
@@ -96,20 +92,6 @@ class EditorPlayState extends MusicBeatState
 			vocals = new FlxSound();
 
 		generateSong(PlayState.SONG.song);
-		#if (LUA_ALLOWED && MODS_ALLOWED)
-		for (notetype in noteTypeMap.keys()) {
-			var luaToLoad:String = Paths.modFolders('custom_notetypes/' + notetype + '.lua');
-			if(sys.FileSystem.exists(luaToLoad)) {
-				var lua:EditorLua = new EditorLua(luaToLoad);
-				new FlxTimer().start(0.1, function (tmr:FlxTimer) {
-					lua.stop();
-					lua = null;
-				});
-			}
-		}
-		#end
-		noteTypeMap.clear();
-		noteTypeMap = null;
 
 		scoreTxt = new FlxText(10, FlxG.height - 50, FlxG.width - 20, "", 20);
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -155,7 +137,7 @@ class EditorPlayState extends MusicBeatState
 
 		go.screenCenter();
 		add(go);
-		FlxTween.tween(go, {y: go.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+		FlxTween.tween(go, {alpha: 0}, Conductor.crochet / 1000, {
 			ease: FlxEase.cubeInOut,
 			onComplete: function(twn:FlxTween)
 			{
@@ -356,6 +338,7 @@ class EditorPlayState extends MusicBeatState
 
 		var time:Float = CoolUtil.floorDecimal((Conductor.songPosition - ClientPrefs.data.noteOffset) / 1000, 1);
 		dataTxt.text = 'Time: $time / ${songLength/1000}\nSection: $curSection\nBeat: $curBeat\nStep: $curStep';
+		scoreTxt.text = 'Hits: ' + songHits + ' | Misses: ' + songMisses;
 		super.update(elapsed);
 	}
 
@@ -664,7 +647,6 @@ class EditorPlayState extends MusicBeatState
 		comboSpr.y -= ClientPrefs.data.comboOffset[1];
 
 		comboSpr.velocity.x += FlxG.random.int(1, 10);
-		comboGroup.add(rating);
 
 		if (!PlayState.isPixelStage)
 		{
@@ -736,6 +718,7 @@ class EditorPlayState extends MusicBeatState
 
 	private function generateStaticArrows(player:Int):Void
 	{
+		var strumLineY:Float = ClientPrefs.data.downScroll ? (FlxG.height - 150) : 50;
 		for (i in 0...4)
 		{
 			// FlxG.log.add(i);
@@ -746,7 +729,7 @@ class EditorPlayState extends MusicBeatState
 				else if(ClientPrefs.data.middleScroll) targetAlpha = 0.35;
 			}
 
-			var babyArrow:StrumNote = new StrumNote(ClientPrefs.data.middleScroll ? PlayState.STRUM_X_MIDDLESCROLL : PlayState.STRUM_X, strumLine.y, i, player);
+			var babyArrow:StrumNote = new StrumNote(ClientPrefs.data.middleScroll ? PlayState.STRUM_X_MIDDLESCROLL : PlayState.STRUM_X, strumLineY, i, player);
 			babyArrow.alpha = targetAlpha;
 
 			if (player == 1)
