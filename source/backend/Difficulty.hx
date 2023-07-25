@@ -15,14 +15,9 @@ class Difficulty
 		if(num == null) num = PlayState.storyDifficulty;
 
 		var fileSuffix:String = list[num];
-		if(fileSuffix != defaultDifficulty)
-		{
-			fileSuffix = '-' + fileSuffix;
-		}
-		else
-		{
-			fileSuffix = '';
-		}
+		if(fileSuffix != defaultDifficulty) fileSuffix = '-' + fileSuffix;
+		else fileSuffix = '';
+
 		return Paths.formatToSongPath(fileSuffix);
 	}
 
@@ -52,22 +47,14 @@ class Difficulty
 	}
 
 	inline public static function resetList()
-	{
 		list = defaultList.copy();
-	}
 
 	inline public static function copyFrom(diffs:Array<String>)
-	{
 		list = diffs.copy();
-	}
 
 	inline public static function getString(num:Null<Int> = null):String
-	{
 		return list[num == null ? PlayState.storyDifficulty : num];
-	}
 
 	inline public static function getDefault():String
-	{
 		return defaultDifficulty;
-	}
 }
