@@ -31,6 +31,8 @@ class EditorPlayState extends MusicBeatState
 
 	var startOffset:Float = 0;
 	var startPos:Float = 0;
+	var songSpeed:Float = 1;
+	var songLength:Float = 0;
 
 	public function new(startPos:Float) {
 		this.startPos = startPos;
@@ -134,11 +136,10 @@ class EditorPlayState extends MusicBeatState
 	{
 		var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image('go'));
 		go.scrollFactor.set();
-
 		go.updateHitbox();
-
 		go.screenCenter();
 		add(go);
+
 		FlxTween.tween(go, {alpha: 0}, Conductor.crochet / 1000, {
 			ease: FlxEase.cubeInOut,
 			onComplete: function(twn:FlxTween)
@@ -161,6 +162,7 @@ class EditorPlayState extends MusicBeatState
 		vocals.volume = 0;
 
 		var songData = PlayState.SONG;
+		songSpeed = PlayState.SONG.speed;
 		Conductor.changeBPM(songData.bpm);
 		
 		notes = new FlxTypedGroup<Note>();
@@ -258,6 +260,8 @@ class EditorPlayState extends MusicBeatState
 		vocals.volume = 1;
 		vocals.time = startPos;
 		vocals.play();
+
+		songLength = FlxG.sound.music.length;
 	}
 
 	function sortByShit(Obj1:Note, Obj2:Note):Int
@@ -326,7 +330,7 @@ class EditorPlayState extends MusicBeatState
 				if (Conductor.songPosition > noteKillOffset + daNote.strumTime)
 				{
 					if (daNote.mustPress && !daNote.ignoreNote && (daNote.tooLate || !daNote.wasGoodHit))
-						noteMiss(daNote);
+						noteMiss();
 
 					daNote.active = false;
 					daNote.visible = false;
@@ -550,7 +554,7 @@ class EditorPlayState extends MusicBeatState
 					noteMiss();
 					--songMisses;
 					if(!note.isSustainNote)
-						if(!note.note.noteSplashData.disabled)
+						if(!note.noteSplashData.disabled)
 							spawnNoteSplashOnNote(note);
 
 					note.wasGoodHit = true;
@@ -751,34 +755,40 @@ class EditorPlayState extends MusicBeatState
 		}
 	}
 
-	// For Opponent's notes glow
-	function StrumPlayAnim(isDad:Bool, id:Int, time:Float) {
-		var spr:StrumNote = null;
-		if(isDad)
-			spr = strumLineNotes.members[id];
-		else
-			spr = playerStrums.members[id];
+	function opponentNoteHit(note:Note):Void
+	{
+		if (PlayState.SONG.needsVoices)
+			vocals.volume = 1;
 
-		if(spr != null) {
-			spr.playAnim('confirm', true);
-			spr.resetAnim = time;
+		var strum:StrumNote = opponentStrums.members[Std.int(Math.abs(note.noteData))];
+		if(strum != null) {
+			strum.playAnim('confirm', true);
+			strum.resetAnim = Conductor.stepCrochet * 1.5 / 1000;
+		}
+		note.hitByOpponent = true;
+
+		if (!note.isSustainNote)
+		{
+			note.kill();
+			notes.remove(note, true);
+			note.destroy();
 		}
 	}
 
 	// Note splash shit, duh
-	function spawnNoteSplashOnNote(note:Note) {
+	function spawnNoteSplashOnNote(note:Note)
+	{
 		if(ClientPrefs.data.splashSkin != 'Disabled' && note != null) {
 			var strum:StrumNote = playerStrums.members[note.noteData];
-			if(strum != null) {
+			if(strum != null)
 				spawnNoteSplash(strum.x, strum.y, note.noteData, note);
-			}
 		}
 	}
 
 	function spawnNoteSplash(x:Float, y:Float, data:Int, ?note:Note = null)
 	{
 		var splash:NoteSplash = grpNoteSplashes.recycle(NoteSplash);
-		splash.setupNoteSplash(x, y, data, skin, hue, sat, brt);
+		splash.setupNoteSplash(x, y, data, note);
 		grpNoteSplashes.add(splash);
 	}
 	
