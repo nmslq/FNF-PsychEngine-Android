@@ -1,30 +1,20 @@
+local item = {'bg, songText', 'difficultyText'};
+
 function onCreate()
-    makeLuaSprite('whitebg', nil, -1000, 200);
-    makeGraphic('whitebg', 400, 100, 'FFFFFF');
-    setObjectCamera('whitebg', 'other');
-    setProperty('whitebg.alpha', 0.7);
-    addLuaSprite('whitebg', true);
+    makeLuaSprite('bg', nil, -1000, 200);
+    makeGraphic('bg', 400, 100, 'FFFFFF');
+    setObjectCamera('bg', 'other');
+    setProperty('bg.alpha', 0.7);
+    addLuaSprite('bg', true);
 
-    makeLuaText('songtext', songName, 400, 0, 200);
-    setTextSize('songtext', 30);
-    setObjectCamera('songtext', 'other');
-    setTextAlignment('songtext', 'center');
-    addLuaText('songtext', true);
-
-    makeLuaText('authortext', difficultyName, 400, 0, 260);
-    setTextSize('authortext', 30);
-    setObjectCamera('authortext', 'other');
-    setTextAlignment('authortext', 'center');
-    addLuaText('authortext', true);
+    text('songText', songName, 200);
+    text('difficultyText', difficultyName, 260);
 end
 
 function onCreatePost()
-    doTweenX('songTweenIn' ,'whitebg', 0, 1, 'cubeOut');
-end
-
-function onUpdate()
-    setProperty('songtext.x',getProperty('whitebg.x'));
-    setProperty('authortext.x',getProperty('whitebg.x')) 
+    for i = 1, 3 do
+        doTweenX('tween' .. i, item[i], 0, 1, 'cubeOut');
+    end
 end
 
 function onTweenCompleted(tag)
@@ -34,12 +24,22 @@ function onTweenCompleted(tag)
     if tag == 'songTweenOut' then
         removeLuaText('authortext', true);
         removeLuaText('songtext', true);
-        removeLuaSprite('whitebg', true);
+        removeLuaSprite('bg', true);
     end
 end
 
 function onTimerCompleted(tag)
     if tag == 'tweenTimer' then
-        doTweenX('songTweenOut', 'whitebg', -1000, 1, 'cubeIn');
+        for i = 1, 3 do
+            doTweenX('tween' .. i, item[i], -1000, 1, 'cubeIn');
+        end
     end
+end
+
+function text(tag, txt, y)
+    makeLuaText(tag, txt, 400, -1000, y);
+    setTextSize(tag, 30);
+    setObjectCamera(tag, 'other');
+    setTextAlignment(tag, 'center');
+    addLuaText(tag, true);
 end
