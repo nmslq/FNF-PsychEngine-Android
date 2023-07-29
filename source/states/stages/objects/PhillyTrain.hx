@@ -1,11 +1,5 @@
 package states.stages.objects;
 
-#if (flixel >= "5.3.0")
-import flixel.sound.FlxSound;
-#else
-import flixel.system.FlxSound;
-#end
-
 class PhillyTrain extends BGSprite
 {
 	public var sound:FlxSound;
@@ -13,6 +7,7 @@ class PhillyTrain extends BGSprite
 	{
 		super(image, x, y);
 		active = true; //Allow update
+		antialiasing = ClientPrefs.data.antialiasing;
 
 		this.sound = new FlxSound().loadEmbedded(Paths.sound(sound));
 		FlxG.sound.list.add(this.sound);
