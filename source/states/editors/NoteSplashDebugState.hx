@@ -50,11 +50,11 @@ class NoteSplashDebugState extends MusicBeatState
 			notes.add(note);
 
 			var splash:FlxSprite = new FlxSprite(x, y);
+			splash.antialiasing = ClientPrefs.data.antialiasing;
 			splash.setPosition(splash.x - Note.swagWidth * 0.95, splash.y - Note.swagWidth);
 			splash.shader = note.rgbShader.parent.shader;
 			splashes.add(splash);
 		}
-
 
 		//
 		var txtx = 60;
@@ -76,7 +76,6 @@ class NoteSplashDebugState extends MusicBeatState
 					curAnim = 1;
 					reloadAnims();
 			}
-
 		};
 		add(nameInputText);
 		
@@ -104,12 +103,20 @@ class NoteSplashDebugState extends MusicBeatState
 		curAnimText.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		curAnimText.scrollFactor.set();
 		add(curAnimText);
-
+		
+		#if android
+		var text:FlxText = new FlxText(0, 520, FlxG.width,
+			"Press B to Reset animation\n
+			Press A twice to save to the loaded Note Splash PNG's folder\n
+			Left/Right change selected note - Arrow Keys to change offset (Hold shift for 10x)\n
+			Z + C/V - Copy & Paste", 16);
+		#else
 		var text:FlxText = new FlxText(0, 520, FlxG.width,
 			"Press SPACE to Reset animation\n
 			Press ENTER twice to save to the loaded Note Splash PNG's folder\n
 			A/D change selected note - Arrow Keys to change offset (Hold shift for 10x)\n
-			Ctrl + C/V - Copy & Paste", 16);
+			Ctrl + C/Y - Copy & Paste", 16);
+		#end
 		text.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		text.scrollFactor.set();
 		add(text);
@@ -125,7 +132,7 @@ class NoteSplashDebugState extends MusicBeatState
 		FlxG.mouse.visible = true;
 
 		#if android
-		addVirtualPad(LEFT_FULL, A_B_C_X_Y);
+		addVirtualPad(LEFT_FULL, A_B_C_X_Y_Z);
 		#end
 	}
 
@@ -141,6 +148,7 @@ class NoteSplashDebugState extends MusicBeatState
 		if(controls.BACK #if android || FlxG.android.justReleased.BACK #end && notTyping)
 		{
 			MusicBeatState.switchState(new MasterEditorMenu());
+			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			FlxG.mouse.visible = false;
 		}
 		super.update(elapsed);
@@ -178,7 +186,7 @@ class NoteSplashDebugState extends MusicBeatState
 		}
 
 		// Copy & Paste
-		if(FlxG.keys.pressed.CONTROL)
+		if(FlxG.keys.pressed.CONTROL #if android || virtualPad.buttonZ.justPressed #end)
 		{
 			if(FlxG.keys.justPressed.C #if android || virtualPad.buttonC.justPressed #end)
 			{
@@ -258,7 +266,7 @@ class NoteSplashDebugState extends MusicBeatState
 	var copiedArray:Array<Float> = null;
 	function loadFrames()
 	{
-		texturePath = ClientPrefs.data.splashSkin != 'Disabled' ? NoteSplash.getSplashSkin() : NoteSplash.defaultNoteSplash;
+		texturePath = NoteSplash.defaultNoteSplash + NoteSplash.getSplashSkinPostfix();
 		splashes.forEachAlive(function(spr:FlxSprite) {
 			spr.frames = Paths.getSparrowAtlas(texturePath);
 		});
@@ -290,7 +298,8 @@ class NoteSplashDebugState extends MusicBeatState
 		for (offGroup in config.offsets)
 			strToSave += '\n' + offGroup[0] + ' ' + offGroup[1];
 
-		var path:String = SUtil.getStorageDirectory() +  Paths.getPath('images/$texturePath.png', IMAGE, true).split('.png')[0] + '.txt';
+		var pathSplit:Array<String> = (Paths.getPath('images/$texturePath.png', IMAGE, true).split('.png')[0] + '.txt').split(':');
+		var path:String = pathSplit[pathSplit.length-1].trim();
 		savedText.text = 'Saved to: $path';
 		sys.io.File.saveContent(path, strToSave);
 

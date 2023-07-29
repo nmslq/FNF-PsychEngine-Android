@@ -54,7 +54,8 @@ class WeekEditorState extends MusicBeatState
 		else weekFileName = 'week1';
 	}
 
-	override function create() {
+	override function create()
+	{
 		txtWeekTitle = new FlxText(FlxG.width * 0.7, 10, 0, "", 32);
 		txtWeekTitle.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, RIGHT);
 		txtWeekTitle.alpha = 0.7;
@@ -62,8 +63,10 @@ class WeekEditorState extends MusicBeatState
 		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
 		var bgYellow:FlxSprite = new FlxSprite(0, 56).makeGraphic(FlxG.width, 386, 0xFFF9CF51);
 		bgSprite = new FlxSprite(0, 56);
+		bgSprite.antialiasing = ClientPrefs.data.antialiasing;
 
 		weekThing = new MenuItem(0, bgSprite.y + 396, weekFileName);
+		weekThing.antialiasing = ClientPrefs.data.antialiasing;
 		weekThing.y += weekThing.height + 20;
 		add(weekThing);
 
@@ -73,6 +76,7 @@ class WeekEditorState extends MusicBeatState
 		grpWeekCharacters = new FlxTypedGroup<MenuCharacter>();
 		
 		lock = new FlxSprite();
+		lock.antialiasing = ClientPrefs.data.antialiasing;
 		lock.frames = ui_tex;
 		lock.animation.addByPrefix('lock', 'lock');
 		lock.animation.play('lock');
@@ -97,6 +101,7 @@ class WeekEditorState extends MusicBeatState
 		add(grpWeekCharacters);
 
 		var tracksSprite:FlxSprite = new FlxSprite(FlxG.width * 0.07, bgSprite.y + 435).loadGraphic(Paths.image('Menu_Tracks'));
+		tracksSprite.antialiasing = ClientPrefs.data.antialiasing;
 		add(tracksSprite);
 
 		txtTracklist = new FlxText(FlxG.width * 0.05, tracksSprite.y + 60, 0, "", 32);
@@ -316,20 +321,16 @@ class WeekEditorState extends MusicBeatState
 
 	function updateText()
 	{
-		for (i in 0...grpWeekCharacters.length) {
+		for (i in 0...grpWeekCharacters.length)
 			grpWeekCharacters.members[i].changeCharacter(weekFile.weekCharacters[i]);
-		}
 
 		var stringThing:Array<String> = [];
-		for (i in 0...weekFile.songs.length) {
+		for (i in 0...weekFile.songs.length)
 			stringThing.push(weekFile.songs[i][0]);
-		}
 
 		txtTracklist.text = '';
 		for (i in 0...stringThing.length)
-		{
 			txtTracklist.text += stringThing[i] + '\n';
-		}
 
 		txtTracklist.text = txtTracklist.text.toUpperCase();
 
@@ -403,9 +404,8 @@ class WeekEditorState extends MusicBeatState
 				weekFile.weekName = weekNameInputText.text.trim();
 			} else if(sender == songsInputText) {
 				var splittedText:Array<String> = songsInputText.text.trim().split(',');
-				for (i in 0...splittedText.length) {
+				for (i in 0...splittedText.length)
 					splittedText[i] = splittedText[i].trim();
-				}
 
 				while(splittedText.length < weekFile.songs.length) {
 					weekFile.songs.pop();
@@ -612,7 +612,7 @@ class WeekEditorFreeplayState extends MusicBeatState
 
 	override function create() {
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-
+		bg.antialiasing = ClientPrefs.data.antialiasing;
 		bg.color = FlxColor.WHITE;
 		add(bg);
 

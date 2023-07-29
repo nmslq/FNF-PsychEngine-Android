@@ -71,6 +71,7 @@ class CharacterEditorState extends MusicBeatState
 	override function create()
 	{
 		//FlxG.sound.playMusic(Paths.music('breakfast'), 0.5);
+		if(ClientPrefs.data.cacheOnGPU) Paths.clearStoredMemory();
 
 		camEditor = new FlxCamera();
 		camHUD = new FlxCamera();
@@ -109,7 +110,9 @@ class CharacterEditorState extends MusicBeatState
 		add(healthBar);
 		healthBar.cameras = [camHUD];
 
-		leHealthIcon = new HealthIcon(char.healthIcon, false);
+		if(ClientPrefs.data.cacheOnGPU) Paths.clearUnusedMemory();
+
+		leHealthIcon = new HealthIcon(char.healthIcon, false, false);
 		leHealthIcon.y = FlxG.height - 150;
 		add(leHealthIcon);
 		leHealthIcon.cameras = [camHUD];
@@ -208,6 +211,7 @@ class CharacterEditorState extends MusicBeatState
 		var playerXDifference = 0;
 		if(char.isPlayer) playerXDifference = 670;
 
+		var lastLevel:String = Paths.currentLevel;
 		if(onPixelBG) {
 			var playerYDifference:Float = 0;
 			if(char.isPlayer) {
@@ -260,6 +264,7 @@ class CharacterEditorState extends MusicBeatState
 			bgLayer.add(stageFront);
 			changeBGbutton.text = "Pixel BG";
 		}
+		Paths.setCurrentLevel(lastLevel);
 	}
 
 	/*var animationInputText:FlxUIInputText;
@@ -752,7 +757,7 @@ class CharacterEditorState extends MusicBeatState
 	override function getEvent(id:String, sender:Dynamic, data:Dynamic, ?params:Array<Dynamic>) {
 		if(id == FlxUIInputText.CHANGE_EVENT && (sender is FlxUIInputText)) {
 			if(sender == healthIconInputText) {
-				leHealthIcon.changeIcon(healthIconInputText.text);
+				leHealthIcon.changeIcon(healthIconInputText.text, false);
 				char.healthIcon = healthIconInputText.text;
 				updatePresence();
 			}
@@ -834,12 +839,6 @@ class CharacterEditorState extends MusicBeatState
 		} else {
 			char.frames = Paths.getSparrowAtlas(char.imageFile);
 		}
-
-
-
-
-
-
 
 		if(char.animationsArray != null && char.animationsArray.length > 0) {
 			for (anim in char.animationsArray) {
@@ -982,7 +981,7 @@ class CharacterEditorState extends MusicBeatState
 			flipXCheckBox.checked = char.originalFlipX;
 			noAntialiasingCheckBox.checked = char.noAntialiasing;
 			resetHealthBarColor();
-			leHealthIcon.changeIcon(healthIconInputText.text);
+			leHealthIcon.changeIcon(healthIconInputText.text, false);
 			positionXStepper.value = char.positionArray[0];
 			positionYStepper.value = char.positionArray[1];
 			positionCameraXStepper.value = char.cameraPosition[0];

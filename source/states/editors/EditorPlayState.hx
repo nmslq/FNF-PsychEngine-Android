@@ -18,13 +18,17 @@ import objects.*;
 
 class EditorPlayState extends MusicBeatState
 {
-	public var strumLineNotes:FlxTypedGroup<StrumNote>;
-	public var opponentStrums:FlxTypedGroup<StrumNote>;
-	public var playerStrums:FlxTypedGroup<StrumNote>;
-	public var grpNoteSplashes:FlxTypedGroup<NoteSplash>;
+	var strumLineNotes:FlxTypedGroup<StrumNote>;
+	var opponentStrums:FlxTypedGroup<StrumNote>;
+	var playerStrums:FlxTypedGroup<StrumNote>;
+	var grpNoteSplashes:FlxTypedGroup<NoteSplash>;
 
-	public var notes:FlxTypedGroup<Note>;
-	public var unspawnNotes:Array<Note> = [];
+	var notes:FlxTypedGroup<Note>;
+	var unspawnNotes:Array<Note> = [];
+
+	var playbackRate:Float = 1;
+	var noteKillOffset:Float = 350;
+	var spawnTime:Float = 2000;
 
 	var generatedMusic:Bool = false;
 	var vocals:FlxSound;
@@ -34,9 +38,10 @@ class EditorPlayState extends MusicBeatState
 	var songSpeed:Float = 1;
 	var songLength:Float = 0;
 
-	public function new(startPos:Float) {
-		this.startPos = startPos;
-		Conductor.songPosition = startPos - startOffset;
+	public function new(playbackRate:Float) {
+		this.playbackRate = playbackRate;
+		this.startPos = Conductor.songPosition;
+		Conductor.songPosition -= startOffset;
 
 		startOffset = Conductor.crochet;
 		timerToStart = startOffset;
@@ -66,6 +71,7 @@ class EditorPlayState extends MusicBeatState
 		];
 
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		bg.antialiasing = ClientPrefs.data.antialiasing;
 		bg.scrollFactor.set();
 		bg.color = FlxColor.fromHSB(FlxG.random.int(0, 359), FlxG.random.float(0, 0.8), FlxG.random.float(0.3, 1));
 		add(bg);
@@ -81,12 +87,9 @@ class EditorPlayState extends MusicBeatState
 		grpNoteSplashes = new FlxTypedGroup<NoteSplash>();
 		add(grpNoteSplashes);
 
-		if(ClientPrefs.data.splashSkin != 'Disabled')
-		{
-			var splash:NoteSplash = new NoteSplash(100, 100);
-			grpNoteSplashes.add(splash);
-			splash.alpha = 0.000001; //cant make it invisible or it won't allow precaching
-		}
+		var splash:NoteSplash = new NoteSplash(100, 100);
+		grpNoteSplashes.add(splash);
+		splash.alpha = 0.000001; //cant make it invisible or it won't allow precaching
 
 		if (PlayState.SONG.needsVoices)
 			vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
@@ -117,7 +120,6 @@ class EditorPlayState extends MusicBeatState
 		add(tipText);
 		FlxG.mouse.visible = false;
 
-		//sayGo();
 		if(!ClientPrefs.data.controllerMode)
 		{
 			FlxG.stage.addEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
@@ -129,25 +131,9 @@ class EditorPlayState extends MusicBeatState
 		androidControls.visible = true;
 		#end
 
+		noteKillOffset = Math.max(Conductor.stepCrochet, 350 / songSpeed * playbackRate);
+
 		super.create();
-	}
-
-	function sayGo()
-	{
-		var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image('go'));
-		go.scrollFactor.set();
-		go.updateHitbox();
-		go.screenCenter();
-		add(go);
-
-		FlxTween.tween(go, {alpha: 0}, Conductor.crochet / 1000, {
-			ease: FlxEase.cubeInOut,
-			onComplete: function(twn:FlxTween)
-			{
-				go.destroy();
-			}
-		});
-		FlxG.sound.play(Paths.sound('introGo'), 0.6);
 	}
 
 	var songHits:Int = 0;
@@ -278,8 +264,6 @@ class EditorPlayState extends MusicBeatState
 		#end
 	}
 
-	public var noteKillOffset:Float = 350;
-	public var spawnTime:Float = 2000;
 	override function update(elapsed:Float) {
 		if (FlxG.keys.justPressed.ESCAPE #if android || FlxG.android.justReleased.BACK #end)
 			endSong();
@@ -294,7 +278,7 @@ class EditorPlayState extends MusicBeatState
 
 		if (unspawnNotes[0] != null)
 		{
-			var time:Float = spawnTime;
+			var time:Float = spawnTime * playbackRate;
 			if(PlayState.SONG.speed < 1) time /= PlayState.SONG.speed;
 			if(unspawnNotes[0].multSpeed < 1) time /= unspawnNotes[0].multSpeed;
 
@@ -319,7 +303,7 @@ class EditorPlayState extends MusicBeatState
 				if(!daNote.mustPress) strumGroup = opponentStrums;
 
 				var strum:StrumNote = strumGroup.members[daNote.noteData];
-				daNote.followStrumNote(strum, fakeCrochet, songSpeed);
+				daNote.followStrumNote(strum, fakeCrochet, songSpeed / playbackRate);
 
 				if (!daNote.mustPress && daNote.wasGoodHit && !daNote.hitByOpponent && !daNote.ignoreNote)
 					opponentNoteHit(daNote);
@@ -327,7 +311,7 @@ class EditorPlayState extends MusicBeatState
 				if(daNote.isSustainNote && strum.sustainReduce) daNote.clipToStrumNote(strum);
 
 				// Kill extremely late notes and cause misses
-				if (Conductor.songPosition > noteKillOffset + daNote.strumTime)
+				if (Conductor.songPosition - daNote.strumTime > noteKillOffset)
 				{
 					if (daNote.mustPress && !daNote.ignoreNote && (daNote.tooLate || !daNote.wasGoodHit))
 						noteMiss();
@@ -623,16 +607,16 @@ class EditorPlayState extends MusicBeatState
 		if(daRating == 'sick' && !note.noteSplashData.disabled)
 			spawnNoteSplashOnNote(note);
 
-		var pixelShitPart1:String = "";
-		var pixelShitPart2:String = '';
+		var pixelPart1:String = "";
+		var pixelPart2:String = '';
 
 		if (PlayState.isPixelStage)
 		{
-			pixelShitPart1 = 'pixelUI/';
-			pixelShitPart2 = '-pixel';
+			pixelPart1 = 'pixelUI/';
+			pixelPart2 = '-pixel';
 		}
 
-		rating.loadGraphic(Paths.image(pixelShitPart1 + daRating + pixelShitPart2));
+		rating.loadGraphic(Paths.image(pixelPart1 + daRating + pixelPart2));
 		rating.screenCenter();
 		rating.x = placement - 40;
 		rating.y -= 60;
@@ -643,7 +627,7 @@ class EditorPlayState extends MusicBeatState
 		rating.x += ClientPrefs.data.comboOffset[0];
 		rating.y -= ClientPrefs.data.comboOffset[1];
 
-		var comboSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'combo' + pixelShitPart2));
+		var comboSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelPart1 + 'combo' + pixelPart2));
 		comboSpr.screenCenter();
 		comboSpr.x = placement;
 		comboSpr.acceleration.y = 600;
@@ -653,6 +637,7 @@ class EditorPlayState extends MusicBeatState
 		comboSpr.y -= ClientPrefs.data.comboOffset[1];
 
 		comboSpr.velocity.x += FlxG.random.int(1, 10);
+		insert(members.indexOf(strumLineNotes), rating);
 
 		if (!PlayState.isPixelStage)
 		{
@@ -678,7 +663,7 @@ class EditorPlayState extends MusicBeatState
 		var daLoop:Int = 0;
 		for (i in seperatedScore)
 		{
-			var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'num' + Std.int(i) + pixelShitPart2));
+			var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelPart1 + 'num' + Std.int(i) + pixelPart2));
 			numScore.screenCenter();
 			numScore.x = placement + (43 * daLoop) - 90;
 			numScore.y += 80;
@@ -778,7 +763,7 @@ class EditorPlayState extends MusicBeatState
 	// Note splash shit, duh
 	function spawnNoteSplashOnNote(note:Note)
 	{
-		if(ClientPrefs.data.splashSkin != 'Disabled' && note != null) {
+		if(note != null) {
 			var strum:StrumNote = playerStrums.members[note.noteData];
 			if(strum != null)
 				spawnNoteSplash(strum.x, strum.y, note.noteData, note);
