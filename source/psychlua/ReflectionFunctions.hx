@@ -19,7 +19,6 @@ class ReflectionFunctions
 			var split:Array<String> = variable.split('.');
 			if(split.length > 1)
 				return LuaUtils.getVarInArray(LuaUtils.getPropertyLoop(split, true, true, allowMaps), split[split.length-1], allowMaps);
-
 			return LuaUtils.getVarInArray(LuaUtils.getTargetInstance(), variable, allowMaps);
 		});
 		Lua_helper.add_callback(lua, "setProperty", function(variable:String, value:Dynamic, allowMaps:Bool = false) {
@@ -35,7 +34,7 @@ class ReflectionFunctions
 			var myClass:Dynamic = Type.resolveClass(classVar);
 			if(myClass == null)
 			{
-				funk.luaTrace('getPropertyFromClass: Class $classVar not found', false, false, FlxColor.RED);
+				FunkinLua.luaTrace('getPropertyFromClass: Class $classVar not found', false, false, FlxColor.RED);
 				return null;
 			}
 
@@ -53,7 +52,7 @@ class ReflectionFunctions
 			var myClass:Dynamic = Type.resolveClass(classVar);
 			if(myClass == null)
 			{
-				funk.luaTrace('getPropertyFromClass: Class $classVar not found', false, false, FlxColor.RED);
+				FunkinLua.luaTrace('getPropertyFromClass: Class $classVar not found', false, false, FlxColor.RED);
 				return null;
 			}
 
@@ -92,19 +91,19 @@ class ReflectionFunctions
 					result = LuaUtils.getGroupStuff(leArray, variable, allowMaps);
 				return result;
 			}
-			funk.luaTrace("getPropertyFromGroup: Object #" + index + " from group: " + obj + " doesn't exist!", false, false, FlxColor.RED);
+			FunkinLua.luaTrace("getPropertyFromGroup: Object #" + index + " from group: " + obj + " doesn't exist!", false, false, FlxColor.RED);
 			return null;
 		});
-		Lua_helper.add_callback(lua, "setPropertyFromGroup", function(obj:String, index:Int, variable:Dynamic, value:Dynamic) {
+		Lua_helper.add_callback(lua, "setPropertyFromGroup", function(obj:String, index:Int, variable:Dynamic, value:Dynamic, ?allowMaps:Bool = false) {
 			var split:Array<String> = obj.split('.');
 			var realObject:Dynamic = null;
 			if(split.length > 1)
-				realObject = LuaUtils.getPropertyLoop(split, true, false);
+				realObject = LuaUtils.getPropertyLoop(split, true, false, allowMaps);
 			else
 				realObject = Reflect.getProperty(LuaUtils.getTargetInstance(), obj);
 
 			if(Std.isOfType(realObject, FlxTypedGroup)) {
-				LuaUtils.setGroupStuff(realObject.members[index], variable, value);
+				LuaUtils.setGroupStuff(realObject.members[index], variable, value, allowMaps);
 				return value;
 			}
 
@@ -114,7 +113,7 @@ class ReflectionFunctions
 					leArray[variable] = value;
 					return value;
 				}
-				LuaUtils.setGroupStuff(leArray, variable, value);
+				LuaUtils.setGroupStuff(leArray, variable, value, allowMaps);
 			}
 			return value;
 		});
@@ -149,7 +148,7 @@ class ReflectionFunctions
 		
 				if(myType == null)
 				{
-					funk.luaTrace('createInstance: Variable $variableToSave is already being used and cannot be replaced!', false, false, FlxColor.RED);
+					FunkinLua.luaTrace('createInstance: Variable $variableToSave is already being used and cannot be replaced!', false, false, FlxColor.RED);
 					return false;
 				}
 
@@ -157,11 +156,11 @@ class ReflectionFunctions
 				if(obj != null)
 					PlayState.instance.variables.set(variableToSave, obj);
 				else
-					funk.luaTrace('createInstance: Failed to create $variableToSave, arguments are possibly wrong.', false, false, FlxColor.RED);
+					FunkinLua.luaTrace('createInstance: Failed to create $variableToSave, arguments are possibly wrong.', false, false, FlxColor.RED);
 
 				return (obj != null);
 			}
-			else funk.luaTrace('createInstance: Variable $variableToSave is already being used and cannot be replaced!', false, false, FlxColor.RED);
+			else FunkinLua.luaTrace('createInstance: Variable $variableToSave is already being used and cannot be replaced!', false, false, FlxColor.RED);
 			return false;
 		});
 		Lua_helper.add_callback(lua, "addInstance", function(objectName:String, ?inFront:Bool = false) {
@@ -178,7 +177,7 @@ class ReflectionFunctions
 						GameOverSubstate.instance.insert(GameOverSubstate.instance.members.indexOf(GameOverSubstate.instance.boyfriend), obj);
 				}
 			}
-			else funk.luaTrace('addInstance: Can\'t add what doesn\'t exist~ ($objectName)', false, false, FlxColor.RED);
+			else FunkinLua.luaTrace('addInstance: Can\'t add what doesn\'t exist~ ($objectName)', false, false, FlxColor.RED);
 		});
 	}
 
@@ -190,7 +189,10 @@ class ReflectionFunctions
 		var funcToRun:Function = null;
 		var obj:Dynamic = classObj;
 		//trace('start: $obj');
-		if(obj == null) return null;
+		if(obj == null)
+		{
+			return null;
+		}
 
 		for (i in 0...split.length)
 		{
