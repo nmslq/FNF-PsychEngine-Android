@@ -1,6 +1,7 @@
 package options;
 
 import states.MainMenuState;
+import backend.StageData;
 
 class OptionsState extends MusicBeatState
 {
@@ -28,7 +29,7 @@ class OptionsState extends MusicBeatState
 			    removeControls();
 				openSubState(new options.GameplaySettingsSubState());
 			case 'Adjust Delay and Combo':
-				LoadingState.loadAndSwitchState(new options.NoteOffsetState());
+				MusicBeatState.switchState(new options.NoteOffsetState());
  			case 'Android Controls':
 				#if android
 				removeVirtualPad();
@@ -87,17 +88,14 @@ class OptionsState extends MusicBeatState
 	override function update(elapsed:Float) {
 		super.update(elapsed);
 
-		if (controls.UI_UP_P) {
-			changeSelection(-1);
-		}
-		if (controls.UI_DOWN_P) {
-			changeSelection(1);
-		}
+		if (controls.UI_UP_P) changeSelection(-1);
+		if (controls.UI_DOWN_P) changeSelection(1);
 
 		if (controls.BACK) {
 			if(onPlayState)
 			{
-				MusicBeatState.switchState(new PlayState());
+				StageData.loadDirectory(PlayState.SONG);
+				LoadingState.loadAndSwitchState(new PlayState());
 				FlxG.sound.music.volume = 0;
 			}
 			else MusicBeatState.switchState(new MainMenuState());
