@@ -2,32 +2,44 @@ package android.options;
 
 import flixel.FlxSubState;
 import flixel.addons.transition.FlxTransitionableState;
+
 import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.input.touch.FlxTouch;
+import flixel.addons.display.FlxBackdrop;
+import flixel.addons.display.FlxGridOverlay;
+
 import flixel.util.FlxSave;
+
 import android.flixel.FlxButton;
 import android.flixel.FlxHitbox;
 import android.flixel.FlxVirtualPad;
+import flixel.input.touch.FlxTouch;
+
 import openfl.utils.Assets;
 
-class AndroidControlsSubState extends FlxSubState
+class AndroidControlsSubState extends MusicBeatSubstate
 {
 	private final controlsItems:Array<String> = ['Pad-Right', 'Pad-Left', 'Pad-Custom', 'Pad-Duo', 'Hitbox', 'Keyboard'];
 
 	private var virtualPad:FlxVirtualPad;
 	private var hitbox:FlxHitbox;
+
 	private var upPosition:FlxText;
 	private var downPosition:FlxText;
 	private var leftPosition:FlxText;
 	private var rightPosition:FlxText;
 	private var grpControls:FlxText;
 	private var funitext:FlxText;
+
 	private var leftArrow:FlxSprite;
 	private var rightArrow:FlxSprite;
+
 	private var curSelected:Int = 0;
 	private var buttonBinded:Bool = false;
+
 	private var bindButton:FlxButton;
 	private var resetButton:FlxButton;
+
+	var bg:FlxSprite;
 
 	override function create()
 	{
@@ -35,10 +47,17 @@ class AndroidControlsSubState extends FlxSubState
 			if (controlsItems[i] == AndroidControls.mode)
 				curSelected = i;
 
-		var bg:FlxSprite = new FlxSprite(0, 0).makeGraphic(FlxG.width, FlxG.height, FlxColor.fromRGB(FlxG.random.int(0, 255), FlxG.random.int(0, 255), FlxG.random.int(0, 255)));
-		bg.scrollFactor.set();
-		bg.alpha = 0.4;
+		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		bg.color = 0xFF7DD47D;
+		bg.antialiasing = ClientPrefs.data.antialiasing;
+		bg.screenCenter();
 		add(bg);
+		
+		var grid:FlxBackdrop = new FlxBackdrop(FlxGridOverlay.createGrid(80, 80, 160, 160, true, 0x33FFFFFF, 0x0));
+		grid.velocity.set(40, 40);
+		grid.alpha = 0;
+		FlxTween.tween(grid, {alpha: 1}, 0.5, {ease: FlxEase.quadOut});
+		add(grid);
 
 		var exitButton:FlxButton = new FlxButton(FlxG.width - 200, 50, 'Exit', function()
 		{
@@ -100,37 +119,31 @@ class AndroidControlsSubState extends FlxSubState
 		rightArrow.animation.play('idle');
 		add(rightArrow);
 
-		rightPosition = new FlxText(10, FlxG.height - 24, 0, '', 16);
-		rightPosition.setFormat(Assets.getFont('assets/fonts/vcr.ttf').fontName, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
-			FlxColor.BLACK, true);
-		rightPosition.borderSize = 3;
-		rightPosition.borderQuality = 1;
+		rightPosition = createText(24);
 		add(rightPosition);
 
-		leftPosition = new FlxText(10, FlxG.height - 44, 0, '', 16);
-		leftPosition.setFormat(Assets.getFont('assets/fonts/vcr.ttf').fontName, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
-			FlxColor.BLACK, true);
-		leftPosition.borderSize = 3;
-		leftPosition.borderQuality = 1;
+		leftPosition = createText(44);
 		add(leftPosition);
 
-		downPosition = new FlxText(10, FlxG.height - 64, 0, '', 16);
-		downPosition.setFormat(Assets.getFont('assets/fonts/vcr.ttf').fontName, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
-			FlxColor.BLACK, true);
-		downPosition.borderSize = 3;
-		downPosition.borderQuality = 1;
+		downPosition = createText(64);
 		add(downPosition);
 
-		upPosition = new FlxText(10, FlxG.height - 84, 0, '', 16);
-		upPosition.setFormat(Assets.getFont('assets/fonts/vcr.ttf').fontName, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
-			FlxColor.BLACK, true);
-		upPosition.borderSize = 3;
-		upPosition.borderQuality = 1;
+		upPosition = createText(84);
 		add(upPosition);
 
 		changeSelection();
 
 		super.create();
+	}
+
+	function createText(y:Int):FlxText
+	{
+		var text:FlxText = new FlxText(10, FlxG.height - y, 0, '', 16);
+		text.setFormat(Assets.getFont('assets/fonts/vcr.ttf').fontName, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
+			FlxColor.BLACK, true);
+		text.borderSize = 3;
+		text.borderQuality = 1;
+		return text;
 	}
 
 	override function update(elapsed:Float)
