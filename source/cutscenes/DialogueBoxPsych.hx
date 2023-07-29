@@ -74,6 +74,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 		spawnCharacters();
 
 		box = new FlxSprite(70, 370);
+		box.antialiasing = ClientPrefs.data.antialiasing;
 		box.frames = Paths.getSparrowAtlas('speech_bubble');
 		box.scrollFactor.set();
 		box.animation.addByPrefix('normal', 'speech bubble normal', 24);
@@ -363,6 +364,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 		lastBoxType = boxType;
 
 		daText.text = curDialogue.text;
+		daText.delay = curDialogue.speed;
 		daText.sound = curDialogue.sound;
 		if(daText.sound == null || daText.sound.trim() == '') daText.sound = 'dialogue';
 

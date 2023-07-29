@@ -51,6 +51,7 @@ class DialogueCharacter extends FlxSprite
 		frames = Paths.getSparrowAtlas('dialogue/' + jsonFile.image);
 		reloadAnimations();
 
+		antialiasing = ClientPrefs.data.antialiasing;
 		if(jsonFile.no_antialiasing == true) antialiasing = false;
 	}
 
@@ -60,13 +61,12 @@ class DialogueCharacter extends FlxSprite
 
 		#if MODS_ALLOWED
 		var path:String = Paths.modFolders(characterPath);
-		if (!FileSystem.exists(path)) {
+		if (!FileSystem.exists(path))
 			path = SUtil.getStorageDirectory() + Paths.getPreloadPath(characterPath);
-		}
 
-		if(!FileSystem.exists(path)) {
+		if(!FileSystem.exists(path))
 			path = SUtil.getStorageDirectory() + Paths.getPreloadPath('images/dialogue/' + DEFAULT_CHARACTER + '.json');
-		}
+
 		rawJson = File.getContent(path);
 
 		#else
@@ -123,7 +123,8 @@ class DialogueCharacter extends FlxSprite
 		}
 	}
 
-	public function animationIsLoop():Bool {
+	public function animationIsLoop():Bool
+	{
 		if(animation.curAnim == null) return false;
 		return !animation.curAnim.name.endsWith(IDLE_SUFFIX);
 	}
