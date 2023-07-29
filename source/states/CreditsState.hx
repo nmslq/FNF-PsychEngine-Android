@@ -32,6 +32,7 @@ class CreditsState extends MusicBeatState
 
 		persistentUpdate = true;
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);
 		bg.screenCenter();
 
@@ -174,11 +175,9 @@ class CreditsState extends MusicBeatState
 				'378FC7'
 			]
 		];
-		
+
 		for (i in defaultList)
-		{
 			creditsStuff.push(i);
-		}
 	
 		for (i in 0...creditsStuff.length)
 		{
@@ -193,9 +192,7 @@ class CreditsState extends MusicBeatState
 			if (isSelectable)
 			{
 				if (creditsStuff[i][5] != null)
-				{
 					Mods.currentModDirectory = creditsStuff[i][5];
-				}
 
 				var str:String = 'credits/missing_icon';
 				if (Paths.image('credits/' + creditsStuff[i][1]) != null) str = 'credits/' + creditsStuff[i][1];
@@ -247,9 +244,7 @@ class CreditsState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		if (FlxG.sound.music.volume < 0.7)
-		{
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
-		}
 
 		if (!quitting)
 		{
@@ -287,15 +282,11 @@ class CreditsState extends MusicBeatState
 			}
 
 			if (controls.ACCEPT && (creditsStuff[curSelected][3] == null || creditsStuff[curSelected][3].length > 4))
-			{
 				CoolUtil.browserLoad(creditsStuff[curSelected][3]);
-			}
+
 			if (controls.BACK)
 			{
-				if (colorTween != null)
-				{
-					colorTween.cancel();
-				}
+				if (colorTween != null)	colorTween.cancel();
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				MusicBeatState.switchState(new MainMenuState());
 				quitting = true;
