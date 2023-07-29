@@ -51,6 +51,7 @@ class ControlsSubState extends MusicBeatSubstate {
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = 0xFFea71fd;
 		bg.screenCenter();
+		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);
 
 		grpOptions = new FlxTypedGroup<Alphabet>();
@@ -62,9 +63,8 @@ class ControlsSubState extends MusicBeatSubstate {
 		for (i in 0...optionShit.length) {
 			var isCentered:Bool = false;
 			var isDefaultKey:Bool = (optionShit[i][0] == defaultKey);
-			if(unselectableCheck(i, true)) {
+			if(unselectableCheck(i, true))
 				isCentered = true;
-			}
 
 			var optionText:Alphabet = new Alphabet(200, 300, optionShit[i][0], (!isCentered || isDefaultKey));
 			optionText.isMenuItem = true;
@@ -96,15 +96,9 @@ class ControlsSubState extends MusicBeatSubstate {
 	var bindingTime:Float = 0;
 	override function update(elapsed:Float) {
 		if(!rebindingKey) {
-			if (controls.UI_UP_P) {
-				changeSelection(-1);
-			}
-			if (controls.UI_DOWN_P) {
-				changeSelection(1);
-			}
-			if (controls.UI_LEFT_P || controls.UI_RIGHT_P) {
-				changeAlt();
-			}
+			if (controls.UI_UP_P) changeSelection(-1);
+			if (controls.UI_DOWN_P) changeSelection(1);
+			if (controls.UI_LEFT_P || controls.UI_RIGHT_P) changeAlt();
 
 			if (controls.BACK) {
 				ClientPrefs.reloadControls();

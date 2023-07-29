@@ -48,6 +48,13 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 			'bool');
 		addOption(option);
 
+		var option:Option = new Option('Auto Pause',
+			"If checked, the game automatically pauses if the screen isn't on focus.",
+			'autoPause',
+			'bool');
+		addOption(option);
+		option.onChange = onChangeAutoPause;
+
 		#if android
 		var option:Option = new Option('GameOver Vibration',
 			'If unchecked, will make the game to vibrate when you die.',
@@ -134,17 +141,16 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 	}
 
 	function onChangeHitsoundVolume()
-	{
 		FlxG.sound.play(Paths.sound('hitsound'), ClientPrefs.data.hitsoundVolume);
-	}
 
 	#if android
 	function onChangeGameOverVibration()
 	{
 		if(ClientPrefs.data.vibration)
-		{
 			Haptic.vibrate(0, 500);
-		}
 	}
 	#end
+
+	function onChangeAutoPause()
+		FlxG.autoPause = ClientPrefs.data.autoPause;
 }
