@@ -150,7 +150,7 @@ class Character extends FlxSprite
 				var modI8ToFind:String = Paths.modFolders('images/' + json.image + '.json');
 				var I8ToFind:String = Paths.getPath('images/' + json.image + '.json', TEXT);
 
-				if (FileSystem.exists(modI8ToFind) || FileSystem.exists(I8ToFind) || Assets.exists(I8ToFind))
+				if (FileSystem.exists(modI8ToFind) || FileSystem.exists(SUtil.getStorageDirectory() + I8ToFind) || Assets.exists(I8ToFind))
 				#else
 				if (Assets.exists(Paths.getPath('images/' + json.image + '.json', TEXT)))
 				#end
