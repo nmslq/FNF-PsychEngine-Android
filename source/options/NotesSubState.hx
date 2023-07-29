@@ -79,6 +79,7 @@ class NotesSubState extends MusicBeatSubstate
 		
 		var text:Alphabet = new Alphabet(50, 86, 'CTRL', false);
 		text.alignment = CENTERED;
+		text.setScale(0.4);
 		add(text);
 
 		copyButton = new FlxSprite(760, 50).loadGraphic(Paths.image('noteColorMenu/copy'));
