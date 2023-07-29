@@ -15,14 +15,6 @@ import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxFramesCollection;
 import flixel.graphics.frames.FlxFrame;
 
-#if (desktop && android)
-import sys.FileSystem;
-import sys.io.File;
-#else
-import js.html.FileSystem;
-import js.html.File;
-#end
-
 class AtlasFrameMaker extends FlxFramesCollection
 {
 	//public static var widthoffset:Int = 0;
@@ -88,7 +80,7 @@ class AtlasFrameMaker extends FlxFramesCollection
 
 		#if MODS_ALLOWED
 		file = Paths.modsImages(key);
-		if (FileSystem.exists(file))
+		if (sys.FileSystem.exists(file))
 			bitmap = BitmapData.fromFile(file);
 		else
 		#end
