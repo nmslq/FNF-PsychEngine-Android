@@ -16,28 +16,28 @@ import flixel.input.touch.FlxTouch;
 
 import openfl.utils.Assets;
 
-class AndroidControlsSubState extends MusicBeatSubstate
+class AndroidControlsSubState extends FlxSubState
 {
 	private final controlsItems:Array<String> = ['Pad-Right', 'Pad-Left', 'Pad-Custom', 'Pad-Duo', 'Hitbox', 'Keyboard'];
 
-	private var virtualPad:FlxVirtualPad;
-	private var hitbox:FlxHitbox;
+	var virtualPad:FlxVirtualPad;
+	var hitbox:FlxHitbox;
 
-	private var upPosition:FlxText;
-	private var downPosition:FlxText;
-	private var leftPosition:FlxText;
-	private var rightPosition:FlxText;
-	private var grpControls:FlxText;
-	private var funitext:FlxText;
+	var upPosition:FlxText;
+	var downPosition:FlxText;
+	var leftPosition:FlxText;
+	var rightPosition:FlxText;
+	var grpControls:FlxText;
+	var funitext:FlxText;
 
-	private var leftArrow:FlxSprite;
-	private var rightArrow:FlxSprite;
+	var leftArrow:FlxSprite;
+	var rightArrow:FlxSprite;
 
-	private var curSelected:Int = 0;
-	private var buttonBinded:Bool = false;
+	var curSelected:Int = 0;
+	var buttonBinded:Bool = false;
 
-	private var bindButton:FlxButton;
-	private var resetButton:FlxButton;
+	var bindButton:FlxButton;
+	var resetButton:FlxButton;
 
 	var bg:FlxSprite;
 
