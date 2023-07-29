@@ -191,19 +191,6 @@ class Paths
 		return text;
 	}
 
-	static public function getAtlas(key:String, ?library:String = null):FlxAtlasFrames
-	{
-		#if MODS_ALLOWED
-		if(FileSystem.exists(modsXml(key)) || OpenFlAssets.exists(SUtil.getStorageDirectory() + getPath('images/$key.xml', library), TEXT))
-		#else
-		if(OpenFlAssets.exists(SUtil.getStorageDirectory() + getPath('images/$key.xml', library)))
-		#end
-		{
-			return getSparrowAtlas(key, library);
-		}
-		return getPackerAtlas(key, library);
-	}
-
 	static public function getLibraryPath(file:String, library = "preload")
 	{
 		return if (library == "preload" || library == "default") getPreloadPath(file); else getLibraryPathForce(file, library);
