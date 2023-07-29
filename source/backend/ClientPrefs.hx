@@ -12,18 +12,18 @@ class SaveVariables {
 	public var opponentStrums:Bool = true;
 	public var showFPS:Bool = true;
 	public var flashing:Bool = true;
+	public var autoPause:Bool = true;
 	public var antialiasing:Bool = true;
 	public var noteSkin:String = 'Default';
 	public var splashSkin:String = 'Psych';
+	public var splashAlpha:Float = 0.6;
 	public var lowQuality:Bool = false;
 	public var shaders:Bool = true;
+	public var cacheOnGPU:Bool = #if !switch false #else true #end; //From Stilic
 	public var framerate:Int = 60;
-	public var cursing:Bool = true;
-	public var violence:Bool = true;
 	public var camZooms:Bool = true;
 	public var hideHud:Bool = false;
 	public var noteOffset:Int = 0;
-	public var arrowHSV:Array<Array<Int>> = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
 	public var arrowRGB:Array<Array<FlxColor>> = [
 		[0xFFC24B99, 0xFFFFFFFF, 0xFF3C1F56],
 		[0xFF00FFFF, 0xFFFFFFFF, 0xFF1542B7],
@@ -135,17 +135,23 @@ class ClientPrefs {
 		FlxG.log.add("Settings saved!");
 	}
 
-	public static function loadPrefs() {
+	public static function loadPrefs()
+	{
 		if(data == null) data = new SaveVariables();
 		if(defaultData == null) defaultData = new SaveVariables();
 
-		for (key in Reflect.fields(data)) {
+		for (key in Reflect.fields(data))
+		{
 			if (key != 'gameplaySettings' && Reflect.hasField(FlxG.save.data, key))
 				Reflect.setField(data, key, Reflect.field(FlxG.save.data, key));
 		}
 
 		if(Main.fpsVar != null)
 			Main.fpsVar.visible = data.showFPS;
+
+		#if (!html5 && !switch)
+		FlxG.autoPause = ClientPrefs.data.autoPause;
+		#end
 
 		if(data.framerate > FlxG.drawFramerate) {
 			FlxG.updateFramerate = data.framerate;
@@ -167,8 +173,6 @@ class ClientPrefs {
 		if (FlxG.save.data.mute != null)
 			FlxG.sound.muted = FlxG.save.data.mute;
 
-		FlxSprite.defaultAntialiasing = data.antialiasing;
-
 		#if desktop
 		DiscordClient.check();
 		#end
@@ -178,9 +182,8 @@ class ClientPrefs {
 		save.bind('controls_v2', CoolUtil.getSavePath());
 		if (save != null && save.data.customControls != null) {
 			var loadedControls:Map<String, Array<FlxKey>> = save.data.customControls;
-			for (control => keys in loadedControls) {
-				keyBinds.set(control, keys);
-			}
+			for (control => keys in loadedControls) keyBinds.set(control, keys);
+
 			reloadControls();
 		}
 	}

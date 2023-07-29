@@ -1,24 +1,28 @@
 package backend;
 
-import tjson.TJSON as Json;
-import flixel.system.FlxAssets.FlxGraphicAsset;
+import animateatlas.AtlasFrameMaker;
+
+import flixel.graphics.frames.FlxFrame.FlxFrameAngle;
+import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.graphics.FlxGraphic;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-import openfl.system.System;
-import flixel.graphics.frames.FlxAtlasFrames;
+
+import openfl.display.BitmapData;
+import openfl.display3D.textures.RectangleTexture;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
+import openfl.system.System;
+import openfl.geom.Rectangle;
+
 import lime.utils.Assets;
+import flash.media.Sound;
 
 #if sys
 import sys.io.File;
 import sys.FileSystem;
 #end
-
-import flixel.graphics.FlxGraphic;
-import openfl.display.BitmapData;
-
-import flash.media.Sound;
+import tjson.TJSON as Json;
 import haxe.io.Bytes;
 
 #if MODS_ALLOWED
@@ -127,7 +131,6 @@ class Paths
 			if (OpenFlAssets.exists(levelPath, type))
 				return levelPath;
 		}
-
 		return getPreloadPath(file);
 	}
 
@@ -186,6 +189,19 @@ class Paths
 		}
 		http.request();
 		return text;
+	}
+
+	static public function getAtlas(key:String, ?library:String = null):FlxAtlasFrames
+	{
+		#if MODS_ALLOWED
+		if(FileSystem.exists(modsXml(key)) || OpenFlAssets.exists(SUtil.getStorageDirectory() + getPath('images/$key.xml', library), TEXT))
+		#else
+		if(OpenFlAssets.exists(SUtil.getStorageDirectory() + getPath('images/$key.xml', library)))
+		#end
+		{
+			return getSparrowAtlas(key, library);
+		}
+		return getPackerAtlas(key, library);
 	}
 
 	static public function getLibraryPath(file:String, library = "preload")
@@ -267,11 +283,55 @@ class Paths
 		#end
 	}
 
-	inline static public function image(key:String, ?library:String):FlxGraphic
+	public static var currentTrackedAssets:Map<String, FlxGraphic> = [];
+	static public function image(key:String, ?library:String = null, ?allowGPU:Bool = true):FlxGraphic
 	{
-		// streamlined the assets process more
-		var returnAsset:FlxGraphic = returnGraphic(key, library);
-		return returnAsset;
+		var bitmap:BitmapData = null;
+		var file:String = null;
+
+		#if MODS_ALLOWED
+		file = modsImages(key);
+		if (currentTrackedAssets.exists(file))
+		{
+			localTrackedAssets.push(file);
+			return currentTrackedAssets.get(file);
+		}
+		else if (FileSystem.exists(file))
+			bitmap = BitmapData.fromFile(file);
+		else
+		#end
+		{
+			file = getPath('images/$key.png', IMAGE, library);
+			if (currentTrackedAssets.exists(file))
+			{
+				localTrackedAssets.push(file);
+				return currentTrackedAssets.get(file);
+			}
+			else if (OpenFlAssets.exists(file, IMAGE))
+				bitmap = OpenFlAssets.getBitmapData(file);
+		}
+
+		if (bitmap != null)
+		{
+			localTrackedAssets.push(file);
+			if (allowGPU && ClientPrefs.data.cacheOnGPU)
+			{
+				var texture:RectangleTexture = FlxG.stage.context3D.createRectangleTexture(bitmap.width, bitmap.height, BGRA, true);
+				texture.uploadFromBitmapData(bitmap);
+				bitmap.image.data = null;
+				bitmap.dispose();
+				bitmap.disposeImage();
+				bitmap = BitmapData.fromTexture(texture);
+			}
+			var newGraphic:FlxGraphic = FlxGraphic.fromBitmapData(bitmap, false, file);
+			newGraphic.persist = true;
+			newGraphic.destroyOnNoUse = false;
+			currentTrackedAssets.set(file, newGraphic);
+			return newGraphic;
+		}
+
+		trace('oh no its returning null NOOOO ($file)');
+		return null;
 	}
 	
 	static public function getTextFromFile(key:String, ?ignoreMods:Bool = false):String
@@ -333,45 +393,45 @@ class Paths
 		return false;
 	}
 
-	inline static public function getSparrowAtlas(key:String, ?library:String):FlxAtlasFrames
+	inline static public function getSparrowAtlas(key:String, ?library:String = null, ?allowGPU:Bool = true):FlxAtlasFrames
 	{
 		#if MODS_ALLOWED
-		var imageLoaded:FlxGraphic = returnGraphic(key);
+		var imageLoaded:FlxGraphic = image(key, allowGPU);
 		var xmlExists:Bool = false;
 		var xml:String = modsXml(key);
 		if(FileSystem.exists(xml)) xmlExists = true;
 
-		return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : image(key, library)), (xmlExists ? File.getContent(xml) : getPath('images/$key.xml', library)));
+		return FlxAtlasFrames.fromSparrow((imageLoaded != null ? imageLoaded : image(key, library, allowGPU)), (xmlExists ? File.getContent(xml) : getPath('images/$key.xml', library)));
 		#else
-		return FlxAtlasFrames.fromSparrow(image(key, library), getPath('images/$key.xml', library));
+		return FlxAtlasFrames.fromSparrow(image(key, library, allowGPU), getPath('images/$key.xml', library));
 		#end
 	}
 
-	inline static public function getPackerAtlas(key:String, ?library:String):FlxAtlasFrames
+	inline static public function getPackerAtlas(key:String, ?library:String = null, ?allowGPU:Bool = true):FlxAtlasFrames
 	{
 		#if MODS_ALLOWED
-		var imageLoaded:FlxGraphic = returnGraphic(key);
+		var imageLoaded:FlxGraphic = image(key, allowGPU);
 		var txtExists:Bool = false;
 		var txt:String = modsTxt(key);
 		if(FileSystem.exists(txt)) txtExists = true;
 
-		return FlxAtlasFrames.fromSpriteSheetPacker((imageLoaded != null ? imageLoaded : image(key, library)), (txtExists ? File.getContent(txt) : getPath('images/$key.txt', library)));
+		return FlxAtlasFrames.fromSpriteSheetPacker((imageLoaded != null ? imageLoaded : image(key, library, allowGPU)), (txtExists ? File.getContent(txt) : getPath('images/$key.txt', library)));
 		#else
-		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library), getPath('images/$key.txt', library));
+		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library, allowGPU), getPath('images/$key.txt', library));
 		#end
 	}
 
-	inline static public function getJsonAtlas(key:String, ?library:String):FlxAtlasFrames
+	inline static public function getJsonAtlas(key:String, ?library:String = null, ?allowGPU:Bool = true):FlxAtlasFrames
 	{
 		#if MODS_ALLOWED
-		var imageLoaded:FlxGraphic = returnGraphic(key);
+		var imageLoaded:FlxGraphic = image(key, allowGPU);
 		var jsonExists:Bool = false;
 		var json:String = modsAtlasJson(key);
 		if(FileSystem.exists(json)) jsonExists = true;
 
-		return FlxAtlasFrames.fromTexturePackerJson((imageLoaded != null ? imageLoaded : image(key, library)), (jsonExists ? File.getContent(json) : getPath('images/$key.json', library)));
+		return FlxAtlasFrames.fromTexturePackerJson((imageLoaded != null ? imageLoaded : image(key, library, allowGPU)), (jsonExists ? File.getContent(json) : getPath('images/$key.json', library)));
 		#else
-		return FlxAtlasFrames.fromTexturePackerJson(image(key, library), getPath('images/$key.json', library));
+		return FlxAtlasFrames.fromTexturePackerJson(image(key, library, allowGPU), getPath('images/$key.json', library));
 		#end
 	}
 
@@ -381,39 +441,6 @@ class Paths
 
 		var path = invalidChars.split(path.replace(' ', '-')).join("-");
 		return hideChars.split(path).join("").toLowerCase();
-	}
-
-	// completely rewritten asset loading? fuck!
-	public static var currentTrackedAssets:Map<String, FlxGraphic> = [];
-	public static function returnGraphic(key:String, ?library:String) {
-		#if MODS_ALLOWED
-		var modKey:String = modsImages(key);
-		if(FileSystem.exists(modKey)) {
-			if(!currentTrackedAssets.exists(modKey)) {
-				var newBitmap:BitmapData = BitmapData.fromFile(modKey);
-				var newGraphic:FlxGraphic = FlxGraphic.fromBitmapData(newBitmap, false, modKey);
-				newGraphic.persist = true;
-				newGraphic.destroyOnNoUse = false;
-				currentTrackedAssets.set(modKey, newGraphic);
-			}
-			localTrackedAssets.push(modKey);
-			return currentTrackedAssets.get(modKey);
-		}
-		#end
-
-		var path = getPath('images/$key.png', IMAGE, library);
-		if (OpenFlAssets.exists(path, IMAGE)) {
-			if(!currentTrackedAssets.exists(path)) {
-				var newGraphic:FlxGraphic = FlxG.bitmap.add(path, false, path);
-				newGraphic.persist = true;
-				newGraphic.destroyOnNoUse = false;
-				currentTrackedAssets.set(path, newGraphic);
-			}
-			localTrackedAssets.push(path);
-			return currentTrackedAssets.get(path);
-		}
-		trace('returnGraphic returned null: $key');
-		return null;
 	}
 
 	public static var currentTrackedSounds:Map<String, Sound> = [];

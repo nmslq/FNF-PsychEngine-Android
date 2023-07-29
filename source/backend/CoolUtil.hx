@@ -23,12 +23,16 @@ class CoolUtil
 	inline public static function capitalize(text:String)
 		return text.charAt(0).toUpperCase() + text.substr(1).toLowerCase();
 
-	inline public static function coolTextFile(path:String):Array<String>
+	inline public static function coolTextFile(path:String, ?android:Bool = true):Array<String>
 	{
 		var daList:String = null;
 		#if (sys && MODS_ALLOWED)
 		var formatted:Array<String> = path.split(':'); //prevent "shared:", "preload:" and other library names on file path
-		path = SUtil.getStorageDirectory() + formatted[formatted.length-1];
+		if (android)
+			path = SUtil.getStorageDirectory() + formatted[formatted.length-1];
+		else
+			path = formatted[formatted.length-1];
+
 		if(FileSystem.exists(path)) daList = File.getContent(path);
 		#else
 		if(Assets.exists(path)) daList = Assets.getText(path);
@@ -106,13 +110,6 @@ class CoolUtil
 
 		return dumbArray;
 	}
-
-	//uhhhh does this even work at all? i'm starting to doubt
-	inline public static function precacheSound(sound:String, ?library:String = null):Void
-		Paths.sound(sound, library);
-
-	inline public static function precacheMusic(sound:String, ?library:String = null):Void
-		Paths.music(sound, library);
 
 	inline public static function browserLoad(site:String) {
 		#if linux
