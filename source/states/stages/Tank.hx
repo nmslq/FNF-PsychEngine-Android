@@ -74,11 +74,7 @@ class Tank extends BaseStage
 		if(!ClientPrefs.data.lowQuality) foregroundSprites.add(new BGSprite('tank3', 1300, 1200, 3.5, 2.5, ['fg']));
 
 		// Default GFs
-		if(songName == 'stress')
-		{
-			GameOverSubstate.characterName = 'bf-holding-gf-dead';
-			setDefaultGF('pico-speaker');
-		}
+		if(songName == 'stress') setDefaultGF('pico-speaker');
 		else setDefaultGF('gf-tankmen');
 		
 		if (isStoryMode && !seenCutscene)
@@ -154,16 +150,22 @@ class Tank extends BaseStage
 		//inCutscene = true; //this would stop the camera movement, oops
 
 		tankman = new FlxSprite(-20, 320);
+		tankman.antialiasing = ClientPrefs.data.antialiasing;
 		tankman.frames = Paths.getSparrowAtlas('cutscenes/' + songName);
 		addBehindDad(tankman);
 
 		tankman2 = new FlxSprite(16, 312);
+		tankman2.antialiasing = ClientPrefs.data.antialiasing;
 		tankman2.alpha = 0.000001;
 
 		gfDance = new FlxSprite(gf.x - 107, gf.y + 140);
+		gfDance.antialiasing = ClientPrefs.data.antialiasing;
 		gfCutscene = new FlxSprite(gf.x - 104, gf.y + 122);
+		gfCutscene.antialiasing = ClientPrefs.data.antialiasing;
 		picoCutscene = new FlxSprite(gf.x - 849, gf.y - 264);
+		picoCutscene.antialiasing = ClientPrefs.data.antialiasing;
 		boyfriendCutscene = new FlxSprite(boyfriend.x + 5, boyfriend.y + 20);
+		boyfriendCutscene.antialiasing = ClientPrefs.data.antialiasing;
 
 		cutsceneHandler.push(tankman);
 		cutsceneHandler.push(tankman2);
