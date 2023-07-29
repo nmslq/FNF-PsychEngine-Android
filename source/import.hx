@@ -4,7 +4,6 @@ import backend.Discord;
 #end
 
 //Psych
-#if MODS_ALLOWED import backend.Mods; #end
 #if android import android.SUtil; #end
 
 #if LUA_ALLOWED
@@ -22,6 +21,7 @@ import backend.ClientPrefs;
 import backend.Conductor;
 import backend.BaseStage;
 import backend.Difficulty;
+import backend.Mods;
 
 import objects.Alphabet;
 import objects.BGSprite;
