@@ -15,6 +15,14 @@ import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxFramesCollection;
 import flixel.graphics.frames.FlxFrame;
 
+#if (desktop && android)
+import sys.FileSystem;
+import sys.io.File;
+#else
+import js.html.FileSystem;
+import js.html.File;
+#end
+
 class AtlasFrameMaker extends FlxFramesCollection
 {
 	//public static var widthoffset:Int = 0;
