@@ -186,7 +186,6 @@ class Alphabet extends FlxSpriteGroup
 	}
 
 	private static var Y_PER_ROW:Float = 85;
-
 	private function createLetters(newText:String)
 	{
 		var consecutiveSpaces:Int = 0;
@@ -345,6 +344,7 @@ class AlphaCharacter extends FlxSprite
 	{
 		super(x, y);
 		image = 'alphabet';
+		antialiasing = ClientPrefs.data.antialiasing;
 	}
 
 	public var curLetter:Letter = null;

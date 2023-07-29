@@ -11,6 +11,7 @@ class AttachedAchievement extends FlxSprite
 	{
 		super(x, y);
 
+		antialiasing = ClientPrefs.data.antialiasing;
 		changeAchievement(name);
 	}
 
@@ -23,13 +24,10 @@ class AttachedAchievement extends FlxSprite
 	public function reloadAchievementImage()
 	{
 		if (Achievements.isAchievementUnlocked(tag))
-		{
 			loadGraphic(Paths.image('achievements/' + tag));
-		}
 		else
-		{
 			loadGraphic(Paths.image('achievements/lockedachievement'));
-		}
+
 		scale.set(0.7, 0.7);
 		updateHitbox();
 	}

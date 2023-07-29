@@ -111,67 +111,33 @@ class Character extends FlxSprite
 				#end
 
 				var json:CharacterFile = cast Json.parse(rawJson);
-				var spriteType = "sparrow";
-				// sparrow
-				// packer
-				// texture
-				// I8
-				#if MODS_ALLOWED
-				var modTxtToFind:String = Paths.modsTxt(json.image);
-				var txtToFind:String = Paths.getPath('images/' + json.image + '.txt', TEXT);
-
-				// var modTextureToFind:String = Paths.modFolders("images/"+json.image);
-				// var textureToFind:String = Paths.getPath('images/' + json.image, new AssetType();
-
-				if (FileSystem.exists(modTxtToFind) || FileSystem.exists(SUtil.getStorageDirectory() + txtToFind) || Assets.exists(txtToFind))
-				#else
-				if (Assets.exists(Paths.getPath('images/' + json.image + '.txt', TEXT)))
-				#end
-				{
-					spriteType = "packer";
-				}
+				var useAtlas:Int = 0;
 
 				#if MODS_ALLOWED
 				var modAnimToFind:String = Paths.modFolders('images/' + json.image + '/Animation.json');
 				var animToFind:String = Paths.getPath('images/' + json.image + '/Animation.json', TEXT);
-				
-				// var modTextureToFind:String = Paths.modFolders("images/"+json.image);
-				// var textureToFind:String = Paths.getPath('images/' + json.image, new AssetType();
-				
 				if (FileSystem.exists(modAnimToFind) || FileSystem.exists(SUtil.getStorageDirectory() + animToFind) || Assets.exists(animToFind))
 				#else
 				if (Assets.exists(Paths.getPath('images/' + json.image + '/Animation.json', TEXT)))
 				#end
-				{
-					spriteType = "texture";
-				}
+					useAtlas = 1;
 
 				#if MODS_ALLOWED
 				var modI8ToFind:String = Paths.modFolders('images/' + json.image + '.json');
 				var I8ToFind:String = Paths.getPath('images/' + json.image + '.json', TEXT);
 
-				if (FileSystem.exists(modI8ToFind) || FileSystem.exists(I8ToFind) || Assets.exists(I8ToFind))
+				if (FileSystem.exists(modI8ToFind) || FileSystem.exists(SUtil.getStorageDirectory() + I8ToFind) || Assets.exists(I8ToFind))
 				#else
 				if (Assets.exists(Paths.getPath('images/' + json.image + '.json', TEXT)))
 				#end
-				{
-					spriteType = "I8";
-				}
+					useAtlas = 2;
 
-				switch (spriteType)
-				{
-					case "packer":
-						frames = Paths.getPackerAtlas(json.image);
-
-					case "sparrow":
-						frames = Paths.getSparrowAtlas(json.image);
-
-					case "texture":
-						frames = AtlasFrameMaker.construct(json.image);
-
-					case "I8":
-						frames = Paths.getJsonAtlas(json.image);
-				}
+				if(useAtlas == 0)
+					frames = Paths.getAtlas(json.image);
+				else if(useAtlas == 1)
+					frames = AtlasFrameMaker.construct(json.image);
+				else if(useAtlas == 2)
+					frames = Paths.getJsonAtlas(json.image);
 
 				imageFile = json.image;
 
@@ -186,16 +152,13 @@ class Character extends FlxSprite
 
 				healthIcon = json.healthicon;
 				singDuration = json.sing_duration;
-				flipX = !!json.flip_x;
-				if (json.no_antialiasing) {
-					antialiasing = false;
-					noAntialiasing = true;
-				}
+				flipX = (json.flip_x == true);
 
 				if (json.healthbar_colors != null && json.healthbar_colors.length > 2)
 					healthColorArray = json.healthbar_colors;
 
-				if(ClientPrefs.data.antialiasing) antialiasing = !noAntialiasing;
+				noAntialiasing = (json.no_antialiasing == true);
+				antialiasing = ClientPrefs.data.antialiasing ? !noAntialiasing : false;
 
 				animationsArray = json.animations;
 				if (animationsArray != null && animationsArray.length > 0)
@@ -208,23 +171,17 @@ class Character extends FlxSprite
 						var animLoop:Bool = !!anim.loop; // Bruh
 						var animIndices:Array<Int> = anim.indices;
 						if (animIndices != null && animIndices.length > 0)
-						{
 							animation.addByIndices(animAnim, animName, animIndices, "", animFps, animLoop);
-						}
 						else
-						{
 							animation.addByPrefix(animAnim, animName, animFps, animLoop);
-						}
 
-						if (anim.offsets != null && anim.offsets.length > 1) {
+						if (anim.offsets != null && anim.offsets.length > 1)
 							addOffset(anim.anim, anim.offsets[0], anim.offsets[1]);
-						}
 					}
 				}
 				else
-				{
 					quickAnimAdd('idle', 'BF idle dance');
-				}
+
 				// trace('Loaded file to character ' + curCharacter);
 		}
 		originalFlipX = flipX;
