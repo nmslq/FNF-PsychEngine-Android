@@ -238,30 +238,26 @@ class AndroidControlsSubState extends MusicBeatSubstate
 
 	private function reloadAndroidControls(daChoice:String):Void
 	{
+		removeControls();
+
 		switch (daChoice)
 		{
 			case 'Pad-Right':
-				removeControls();
 				virtualPad = new FlxVirtualPad(RIGHT_FULL, NONE);
 				add(virtualPad);
 			case 'Pad-Left':
-				removeControls();
 				virtualPad = new FlxVirtualPad(LEFT_FULL, NONE);
 				add(virtualPad);
 			case 'Pad-Custom':
-				removeControls();
 				virtualPad = AndroidControls.customVirtualPad;
 				add(virtualPad);
 			case 'Pad-Duo':
-				removeControls();
 				virtualPad = new FlxVirtualPad(BOTH_FULL, NONE);
 				add(virtualPad);
 			case 'Hitbox':
-				removeControls();
 				hitbox = new FlxHitbox(4, Std.int(FlxG.width / 4), FlxG.height, [0xFF00FF, 0x00FFFF, 0x00FF00, 0xFF0000]);
 				add(hitbox);
 			default:
-				removeControls();
 		}
 
 		if (virtualPad != null)
