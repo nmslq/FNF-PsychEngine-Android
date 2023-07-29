@@ -41,9 +41,11 @@ class NotesSubState extends MusicBeatSubstate
 		super();
 		
 		FlxG.mouse.visible = true;
+
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = 0xFFEA71FD;
 		bg.screenCenter();
+		bg.antialiasing = ClientPrefs.data.antialiasing;
 		add(bg);
 
 		var grid:FlxBackdrop = new FlxBackdrop(FlxGridOverlay.createGrid(80, 80, 160, 160, true, 0x33FFFFFF, 0x0));
@@ -95,7 +97,7 @@ class NotesSubState extends MusicBeatSubstate
 		colorGradientSelector.offset.y = 5;
 		add(colorGradientSelector);
 
-		colorPalette = new FlxSprite(820, 580).loadGraphic(Paths.image('noteColorMenu/palette'));
+		colorPalette = new FlxSprite(820, 580).loadGraphic(Paths.image('noteColorMenu/palette', false));
 		colorPalette.scale.set(20, 20);
 		colorPalette.updateHitbox();
 		colorPalette.antialiasing = false;
@@ -374,7 +376,7 @@ class NotesSubState extends MusicBeatSubstate
 	public function spawnNotes()
 	{
 		dataArray = !onPixel ? ClientPrefs.data.arrowRGB : ClientPrefs.data.arrowRGBPixel;
-		PlayState.isPixelStage = onPixel;
+		if (onPixel) PlayState.stageUI = "pixel";
 
 		// clear groups
 		modeNotes.forEachAlive(function(note:FlxSprite) {
@@ -402,6 +404,7 @@ class NotesSubState extends MusicBeatSubstate
 		// respawn stuff
 		var res:Int = onPixel ? 160 : 17;
 		skinNote = new FlxSprite(48, 24).loadGraphic(Paths.image('noteColorMenu/' + (onPixel ? 'note' : 'notePixel')), true, res, res);
+		skinNote.antialiasing = ClientPrefs.data.antialiasing;
 		skinNote.setGraphicSize(68);
 		skinNote.updateHitbox();
 		skinNote.animation.add('anim', [0], 24, true);
@@ -413,6 +416,7 @@ class NotesSubState extends MusicBeatSubstate
 		for (i in 0...3)
 		{
 			var newNote:FlxSprite = new FlxSprite(230 + (100 * i), 100).loadGraphic(Paths.image('noteColorMenu/' + (!onPixel ? 'note' : 'notePixel')), true, res, res);
+			newNote.antialiasing = ClientPrefs.data.antialiasing;
 			newNote.setGraphicSize(85);
 			newNote.updateHitbox();
 			newNote.animation.add('anim', [i], 24, true);
@@ -427,6 +431,7 @@ class NotesSubState extends MusicBeatSubstate
 		{
 			Note.initializeGlobalRGBShader(i);
 			var newNote:StrumNote = new StrumNote(150 + (480 / dataArray.length * i), 200, i, 0);
+			newNote.useRGBShader = true;
 			newNote.setGraphicSize(102);
 			newNote.updateHitbox();
 			newNote.ID = i;
@@ -446,7 +451,7 @@ class NotesSubState extends MusicBeatSubstate
 		}
 		insert(members.indexOf(myNotes) + 1, bigNote);
 		_storedColor = getShaderColor();
-		PlayState.isPixelStage = false;
+		PlayState.stageUI = "normal";
 	}
 
 	function updateNotes(?instant:Bool = false)
