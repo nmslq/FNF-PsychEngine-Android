@@ -167,7 +167,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 		#if android
 		addVirtualPad(LEFT_FULL, A_B_C_X_Y);
 		addPadCamera();
-		virtualPad.y = -300;
+		MusicBeatState.virtualPad.y = -300;
 		#end
 
 		super.create();
@@ -553,7 +553,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 			FlxG.sound.muteKeys = TitleState.muteKeys;
 			FlxG.sound.volumeDownKeys = TitleState.volumeDownKeys;
 			FlxG.sound.volumeUpKeys = TitleState.volumeUpKeys;
-			if(#if !android FlxG.keys.justPressed.SPACE #else virtualPad.buttonA.justPressed #end && UI_mainbox.selected_tab_id == 'Character') {
+			if(#if !android FlxG.keys.justPressed.SPACE #else MusicBeatState.virtualPad.buttonA.justPressed #end && UI_mainbox.selected_tab_id == 'Character') {
 				character.playAnim(character.jsonFile.animations[curAnim].anim);
 				daText.resetDialogue();
 				updateTextBox();
@@ -562,7 +562,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 			//lots of Ifs lol get trolled
 			var offsetAdd:Int = 1;
 			var speed:Float = 300;
-			if(#if !android FlxG.keys.pressed.SHIFT #else virtualPad.buttonB.pressed #end) {
+			if(#if !android FlxG.keys.pressed.SHIFT #else MusicBeatState.virtualPad.buttonB.pressed #end) {
 				speed = 1200;
 				offsetAdd = 10;
 			}
@@ -582,11 +582,11 @@ class DialogueCharacterEditorState extends MusicBeatState
 			if(UI_mainbox.selected_tab_id == 'Animations' && curSelectedAnim != null && character.dialogueAnimations.exists(curSelectedAnim)) {
 				var moved:Bool = false;
 				var animShit:DialogueAnimArray = character.dialogueAnimations.get(curSelectedAnim);
-				var controlArrayLoop:Array<Bool> = [#if !android FlxG.keys.justPressed.A #else virtualPad.buttonLeft.justPressed #end, #if !android FlxG.keys.justPressed.W #else virtualPad.buttonUp.justPressed #end, #if !android FlxG.keys.justPressed.D #else virtualPad.buttonRight.justPressed #end, #if !android FlxG.keys.justPressed.S #else virtualPad.buttonDown.justPressed #end];
-				var controlArrayIdle:Array<Bool> = [#if !android FlxG.keys.justPressed.LEFT #else virtualPad.buttonLeft.justPressed #end, #if !android FlxG.keys.justPressed.UP #else virtualPad.buttonUp.justPressed #end, #if !android FlxG.keys.justPressed.RIGHT #else virtualPad.buttonRight.justPressed #end, #if !android FlxG.keys.justPressed.DOWN #else virtualPad.buttonDown.justPressed #end];
+				var controlArrayLoop:Array<Bool> = [#if !android FlxG.keys.justPressed.A #else MusicBeatState.virtualPad.buttonLeft.justPressed #end, #if !android FlxG.keys.justPressed.W #else MusicBeatState.virtualPad.buttonUp.justPressed #end, #if !android FlxG.keys.justPressed.D #else MusicBeatState.virtualPad.buttonRight.justPressed #end, #if !android FlxG.keys.justPressed.S #else MusicBeatState.virtualPad.buttonDown.justPressed #end];
+				var controlArrayIdle:Array<Bool> = [#if !android FlxG.keys.justPressed.LEFT #else MusicBeatState.virtualPad.buttonLeft.justPressed #end, #if !android FlxG.keys.justPressed.UP #else MusicBeatState.virtualPad.buttonUp.justPressed #end, #if !android FlxG.keys.justPressed.RIGHT #else MusicBeatState.virtualPad.buttonRight.justPressed #end, #if !android FlxG.keys.justPressed.DOWN #else MusicBeatState.virtualPad.buttonDown.justPressed #end];
 
 				#if android
-				if (virtualPad.buttonY.pressed)
+				if (MusicBeatState.virtualPad.buttonY.pressed)
 				{
 					for (i in 0...controlArrayLoop.length) {
 						if(controlArrayLoop[i]) {
@@ -651,7 +651,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 				camGame.zoom += elapsed * camGame.zoom;
 				if(camGame.zoom > 1) camGame.zoom = 1;
 			}
-			if(#if !android FlxG.keys.justPressed.H #else virtualPad.buttonX.justPressed #end) {
+			if(#if !android FlxG.keys.justPressed.H #else MusicBeatState.virtualPad.buttonX.justPressed #end) {
 				if(UI_mainbox.selected_tab_id == 'Animations') {
 					currentGhosts++;
 					if(currentGhosts > 2) currentGhosts = 0;
@@ -710,7 +710,7 @@ class DialogueCharacterEditorState extends MusicBeatState
 			if(UI_mainbox.selected_tab_id == 'Character')
 			{
 				var negaMult:Array<Int> = [1, -1];
-				var controlAnim:Array<Bool> = [#if !android FlxG.keys.justPressed.W #else virtualPad.buttonUp.justPressed #end, #if !android FlxG.keys.justPressed.S #else virtualPad.buttonDown.justPressed #end];
+				var controlAnim:Array<Bool> = [#if !android FlxG.keys.justPressed.W #else MusicBeatState.virtualPad.buttonUp.justPressed #end, #if !android FlxG.keys.justPressed.S #else MusicBeatState.virtualPad.buttonDown.justPressed #end];
 
 				if(controlAnim.contains(true))
 				{
