@@ -7,7 +7,6 @@ import flixel.FlxState;
 #if android
 import android.AndroidControls;
 import android.flixel.FlxVirtualPad;
-import flixel.input.actions.FlxActionInput;
 import flixel.util.FlxDestroyUtil;
 #end
 
@@ -25,14 +24,12 @@ class MusicBeatState extends FlxUIState
 
 	public static var camBeat:FlxCamera;
 
-	inline function get_controls():Controls
-		return PlayerSettings.player1.controls;
+	inline function get_controls()
+		return Controls.instance;
 
 	#if android
 	var androidControls:AndroidControls;
 	var virtualPad:FlxVirtualPad;
-	var trackedinputsUI:Array<FlxActionInput> = [];
-	var trackedinputsNOTES:Array<FlxActionInput> = [];
 
 	public function addVirtualPad(DPad:FlxDPadMode, Action:FlxActionMode)
 	{
@@ -41,17 +38,10 @@ class MusicBeatState extends FlxUIState
 
 		virtualPad = new FlxVirtualPad(DPad, Action);
 		add(virtualPad);
-
-		controls.setVirtualPadUI(virtualPad, DPad, Action);
-		trackedinputsUI = controls.trackedinputsUI;
-		controls.trackedinputsUI = [];
 	}
 
 	public function removeVirtualPad()
 	{
-		if (trackedinputsUI.length > 0)
-			controls.removeVirtualControlsInput(trackedinputsUI);
-
 		if (virtualPad != null)
 			remove(virtualPad);
 	}
@@ -62,20 +52,6 @@ class MusicBeatState extends FlxUIState
 			removeAndroidControls();
 
 		androidControls = new AndroidControls();
-
-		switch (AndroidControls.mode)
-		{
-			case 'Pad-Right' | 'Pad-Left' | 'Pad-Custom':
-				controls.setVirtualPadNOTES(androidControls.virtualPad, RIGHT_FULL, NONE);
-			case 'Pad-Duo':
-				controls.setVirtualPadNOTES(androidControls.virtualPad, BOTH_FULL, NONE);
-			case 'Hitbox':
-				controls.setHitBox(androidControls.hitbox);
-			case 'Keyboard':
-		}
-
-		trackedinputsNOTES = controls.trackedinputsNOTES;
-		controls.trackedinputsNOTES = [];
 
 		var camControls:FlxCamera = new FlxCamera();
 		FlxG.cameras.add(camControls, DefaultDrawTarget);
@@ -88,9 +64,6 @@ class MusicBeatState extends FlxUIState
 
 	public function removeAndroidControls()
 	{
-		if (trackedinputsNOTES != [])
-			controls.removeVirtualControlsInput(trackedinputsNOTES);
-
 		if (androidControls != null)
 			remove(androidControls);
 	}
@@ -109,14 +82,6 @@ class MusicBeatState extends FlxUIState
 
 	override function destroy()
 	{
-		#if android
-		if (trackedinputsNOTES != [])
-			controls.removeVirtualControlsInput(trackedinputsNOTES);
-
-		if (trackedinputsUI.length > 0)
-			controls.removeVirtualControlsInput(trackedinputsUI);
-		#end
-
 		super.destroy();
 
 		#if android
