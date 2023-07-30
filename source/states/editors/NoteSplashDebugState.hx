@@ -77,6 +77,7 @@ class NoteSplashDebugState extends MusicBeatState
 					reloadAnims();
 			}
 		};
+		nameInputText.focusGained = () -> FlxG.stage.window.textInputEnabled = true;
 		add(nameInputText);
 		
 		add(new FlxText(txtx, txty - 84, 0, 'Min/Max Framerate:', 16));
