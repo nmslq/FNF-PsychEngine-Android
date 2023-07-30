@@ -78,6 +78,7 @@ class TitleState extends MusicBeatState
 	{
 		#if android
 		FlxG.android.preventDefaultKeys = [BACK];
+		Controls.checkKeys = false;
 		#end
 
 		Paths.clearStoredMemory();
@@ -366,7 +367,7 @@ class TitleState extends MusicBeatState
 			Conductor.songPosition = FlxG.sound.music.time;
 		// FlxG.watch.addQuick('amp', FlxG.sound.music.amplitude);
 
-		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER #if desktop || controls.ACCEPT #end;
+		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.ACCEPT;
 
 		#if android
 		for (touch in FlxG.touches.list)
@@ -459,8 +460,10 @@ class TitleState extends MusicBeatState
 
 		if(swagShader != null)
 		{
+			#if !android
 			if(controls.UI_LEFT) swagShader.hue -= elapsed * 0.1;
 			if(controls.UI_RIGHT) swagShader.hue += elapsed * 0.1;
+			#end
 		}
 
 		super.update(elapsed);
