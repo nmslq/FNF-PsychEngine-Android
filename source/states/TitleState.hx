@@ -205,7 +205,7 @@ class TitleState extends MusicBeatState
 			if(FlxG.sound.music == null)
 				FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 
-		Conductor.changeBPM(titleJSON.bpm);
+		Conductor.bpm = titleJSON.bpm;
 		persistentUpdate = true;
 
 		var bg:FlxSprite = new FlxSprite();
