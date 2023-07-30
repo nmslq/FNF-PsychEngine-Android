@@ -238,7 +238,7 @@ class Paths
 		var sound:Sound = returnSound('sounds', key, library);
 		return sound;
 	}
-	
+
 	inline static public function soundRandom(key:String, min:Int, max:Int, ?library:String)
 		return sound(key + FlxG.random.int(min, max), library);
 
