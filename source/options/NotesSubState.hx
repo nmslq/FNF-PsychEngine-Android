@@ -303,7 +303,7 @@ class NotesSubState extends MusicBeatSubstate
 				}
 			} 
 		}
-		else if(controls.RESET #if android || virtualPad.buttonA.justPressed #end)
+		else if(controls.RESET #if android || MusicBeatState.virtualPad.buttonA.justPressed #end)
 		{
 			if(FlxG.keys.pressed.SHIFT)
 			{
