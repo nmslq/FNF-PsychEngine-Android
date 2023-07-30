@@ -20,16 +20,15 @@ class MusicBeatState extends FlxUIState
 
 	private var curDecStep:Float = 0;
 	private var curDecBeat:Float = 0;
-	private var controls(get, never):Controls;
+	public var controls(get, never):Controls;
+	private function get_controls()
+		return Controls.instance;
 
 	public static var camBeat:FlxCamera;
 
-	inline function get_controls()
-		return Controls.instance;
-
 	#if android
-	var androidControls:AndroidControls;
-	var virtualPad:FlxVirtualPad;
+	public static var androidControls:AndroidControls;
+	public static var virtualPad:FlxVirtualPad;
 
 	public function addVirtualPad(DPad:FlxDPadMode, Action:FlxActionMode)
 	{

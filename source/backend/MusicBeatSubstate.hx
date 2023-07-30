@@ -26,9 +26,8 @@ class MusicBeatSubstate extends FlxSubState
 
 	private var curDecStep:Float = 0;
 	private var curDecBeat:Float = 0;
-	private var controls(get, never):Controls;
-
-	inline function get_controls()
+	public var controls(get, never):Controls;
+	private function get_controls()
 		return Controls.instance;
 
 	#if android
