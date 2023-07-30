@@ -62,7 +62,7 @@ class FlashingState extends MusicBeatState
 					FlxG.sound.play(Paths.sound('confirmMenu'));
 					FlxFlicker.flicker(warnText, 1, 0.1, false, true, function(flk:FlxFlicker) {
 						#if android
-						virtualPad.alpha = 0;
+						MusicBeatState.virtualPad.alpha = 0;
 						#end
 						new FlxTimer().start(0.5, function (tmr:FlxTimer) {
 							MusicBeatState.switchState(new TitleState());
@@ -73,7 +73,7 @@ class FlashingState extends MusicBeatState
 				{
 					FlxG.sound.play(Paths.sound('cancelMenu'));
 					#if android
-					FlxTween.tween(virtualPad, {alpha: 0}, 1);
+					FlxTween.tween(MusicBeatState.virtualPad, {alpha: 0}, 1);
 					#end
 					FlxTween.tween(warnText, {alpha: 0}, 1, {
 						onComplete: function (twn:FlxTween) {

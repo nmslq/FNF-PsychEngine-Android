@@ -33,7 +33,6 @@ class MainMenuState extends MusicBeatState
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
-	var debugKeys:Array<FlxKey>;
 
 	override function create()
 	{
@@ -46,7 +45,6 @@ class MainMenuState extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end
-		debugKeys = ClientPrefs.copyKey(ClientPrefs.keyBinds.get('debug_1'));
 
 		camGame = new FlxCamera();
 		camAchievement = new FlxCamera();
@@ -144,7 +142,7 @@ class MainMenuState extends MusicBeatState
 
 		#if android
 		addVirtualPad(UP_DOWN, A_B_E);
-		virtualPad.y = -44;
+		MusicBeatState.virtualPad.y = -44;
 		#end
 
 		super.create();
@@ -252,7 +250,7 @@ class MainMenuState extends MusicBeatState
 				}
 			}
 			#if (desktop || android)
-			else if (FlxG.keys.anyJustPressed(debugKeys) #if android || virtualPad.buttonE.justPressed #end)
+			else if (controls.justPressed('debug_1') #if android || MusicBeatState.virtualPad.buttonE.justPressed #end)
 			{
 				selectedSomethin = true;
 				MusicBeatState.switchState(new MasterEditorMenu());

@@ -258,13 +258,8 @@ class PlayState extends MusicBeatState
 	#end
 	public var introSoundsSuffix:String = '';
 
-	// Debug buttons
-	private var debugKeysChart:Array<FlxKey>;
-	private var debugKeysCharacter:Array<FlxKey>;
-
 	// Less laggy controls
 	private var keysArray:Array<Dynamic>;
-	private var controlArray:Array<String>;
 
 	public var precacheList:Map<String, String> = new Map<String, String>();
 	public var songName:String;
@@ -283,23 +278,14 @@ class PlayState extends MusicBeatState
 		// for lua
 		instance = this;
 
-		debugKeysChart = ClientPrefs.copyKey(ClientPrefs.keyBinds.get('debug_1'));
-		debugKeysCharacter = ClientPrefs.copyKey(ClientPrefs.keyBinds.get('debug_2'));
 		PauseSubState.songName = null; //Reset to default
 		playbackRate = ClientPrefs.getGameplaySetting('songspeed');
 
 		keysArray = [
-			ClientPrefs.copyKey(ClientPrefs.keyBinds.get('note_left')),
-			ClientPrefs.copyKey(ClientPrefs.keyBinds.get('note_down')),
-			ClientPrefs.copyKey(ClientPrefs.keyBinds.get('note_up')),
-			ClientPrefs.copyKey(ClientPrefs.keyBinds.get('note_right'))
-		];
-
-		controlArray = [
-			'NOTE_LEFT',
-			'NOTE_DOWN',
-			'NOTE_UP',
-			'NOTE_RIGHT'
+			'note_left',
+			'note_down',
+			'note_up',
+			'note_right'
 		];
 
 		// For the "Just the Two of Us" achievement
@@ -1079,7 +1065,7 @@ class PlayState extends MusicBeatState
 		if(ret != FunkinLua.Function_Stop) {
 			if (skipCountdown || startOnTime > 0) skipArrowStartTween = true;
 			#if android
-			androidControls.visible = true;
+			MusicBeatState.androidControls.visible = true;
 			#end
 			generateStaticArrows(0);
 			generateStaticArrows(1);
@@ -2371,7 +2357,7 @@ class PlayState extends MusicBeatState
 		}
 
 		#if android
-		androidControls.visible = false;
+		MusicBeatState.androidControls.visible = false;
 		#end
 		timeBar.visible = false;
 		timeTxt.visible = false;
@@ -2794,11 +2780,109 @@ class PlayState extends MusicBeatState
 		return FlxSort.byValues(FlxSort.ASCENDING, a.strumTime, b.strumTime);
 	}
 
+	public var strumsBlocked:Array<Bool> = [];
+	private function onKeyPress(event:KeyboardEvent):Void
+	{
+		var eventKey:FlxKey = event.keyCode;
+		var key:Int = getKeyFromEvent(keysArray, eventKey);
+		if (!controls.controllerMode && FlxG.keys.checkStatus(eventKey, JUST_PRESSED)) keyPressed(key);
+	}
+
+	private function keyPressed(key:Int)
+	{
+		if (!cpuControlled && startedCountdown && !paused && key > -1)
+		{
+			if(notes.length > 0 && !boyfriend.stunned && generatedMusic && !endingSong)
+			{
+				//more accurate hit time for the ratings?
+				var lastTime:Float = Conductor.songPosition;
+				if(Conductor.songPosition >= 0) Conductor.songPosition = FlxG.sound.music.time;
+
+				var canMiss:Bool = !ClientPrefs.data.ghostTapping;
+
+				// heavily based on my own code LOL if it aint broke dont fix it
+				var pressNotes:Array<Note> = [];
+				var notesStopped:Bool = false;
+				var sortedNotesList:Array<Note> = [];
+				notes.forEachAlive(function(daNote:Note)
+				{
+					if (strumsBlocked[daNote.noteData] != true && daNote.canBeHit && daNote.mustPress &&
+						!daNote.tooLate && !daNote.wasGoodHit && !daNote.isSustainNote && !daNote.blockHit)
+					{
+						if(daNote.noteData == key) sortedNotesList.push(daNote);
+						canMiss = true;
+					}
+				});
+				sortedNotesList.sort(sortHitNotes);
+
+				if (sortedNotesList.length > 0) {
+					for (epicNote in sortedNotesList)
+					{
+						for (doubleNote in pressNotes) {
+							if (Math.abs(doubleNote.strumTime - epicNote.strumTime) < 1) {
+								doubleNote.kill();
+								notes.remove(doubleNote, true);
+								doubleNote.destroy();
+							} else
+								notesStopped = true;
+						}
+
+						// eee jack detection before was not super good
+						if (!notesStopped) {
+							goodNoteHit(epicNote);
+							pressNotes.push(epicNote);
+						}
+
+					}
+				}
+				else {
+					callOnScripts('onGhostTap', [key]);
+					if (canMiss && !boyfriend.stunned) noteMissPress(key);
+				}
+
+				// I dunno what you need this for but here you go
+				//									- Shubs
+
+				// Shubs, this is for the "Just the Two of Us" achievement lol
+				//									- Shadow Mario
+				if(!keysPressed.contains(key)) keysPressed.push(key);
+
+				//more accurate hit time for the ratings? part 2 (Now that the calculations are done, go back to the time it was before for not causing a note stutter)
+				Conductor.songPosition = lastTime;
+			}
+
+			var spr:StrumNote = playerStrums.members[key];
+			if(strumsBlocked[key] != true && spr != null && spr.animation.curAnim.name != 'confirm')
+			{
+				spr.playAnim('pressed');
+				spr.resetAnim = 0;
+			}
+			callOnScripts('onKeyPress', [key]);
+		}
+	}
+
+	public static function sortHitNotes(a:Note, b:Note):Int
+	{
+		if (a.lowPriority && !b.lowPriority)
+			return 1;
+		else if (!a.lowPriority && b.lowPriority)
+			return -1;
+
+		return FlxSort.byValues(FlxSort.ASCENDING, a.strumTime, b.strumTime);
+	}
+
 	private function onKeyRelease(event:KeyboardEvent):Void
 	{
 		var eventKey:FlxKey = event.keyCode;
-		var key:Int = getKeyFromEvent(eventKey);
-		if(!cpuControlled && startedCountdown && !paused && key > -1)
+		var key:Int = getKeyFromEvent(keysArray, eventKey);
+		//trace('Pressed: ' + eventKey);
+
+		if(!controls.controllerMode && key > -1) keyReleased(key);
+	}
+
+	private function keyReleased(key:Int)
+	{
+		if(!cpuControlled && startedCountdown && !paused)
 		{
 			var spr:StrumNote = playerStrums.members[key];
 			if(spr != null)
@@ -2808,17 +2892,20 @@ class PlayState extends MusicBeatState
 			}
 			callOnScripts('onKeyRelease', [key]);
 		}
-		//trace('released: ' + controlArray);
 	}
 
-	private function getKeyFromEvent(key:FlxKey):Int
+	public static function getKeyFromEvent(arr:Array<String>, key:FlxKey):Int
 	{
 		if(key != NONE)
-			for (i in 0...keysArray.length)
-				for (j in 0...keysArray[i].length)
-					if(key == keysArray[i][j])
+		{
+			for (i in 0...arr.length)
+			{
+				var note:Array<FlxKey> = Controls.instance.keyboardBinds[arr[i]];
+				for (noteKey in note)
+					if(key == noteKey)
 						return i;
-
+			}
+		}
 		return -1;
 	}
 
@@ -2826,17 +2913,21 @@ class PlayState extends MusicBeatState
 	private function keysCheck():Void
 	{
 		// HOLDING
-		var parsedHoldArray:Array<Bool> = parseKeys();
+		var holdArray:Array<Bool> = [];
+		var pressArray:Array<Bool> = [];
+		var releaseArray:Array<Bool> = [];
+		for (key in keysArray)
+		{
+			holdArray.push(controls.pressed(key));
+			pressArray.push(controls.justPressed(key));
+			releaseArray.push(controls.justReleased(key));
+		}
 
 		// TO DO: Find a better way to handle controller inputs, this should work for now
-		if(ClientPrefs.data.controllerMode)
-		{
-			var parsedArray:Array<Bool> = parseKeys('_P');
-			if(parsedArray.contains(true))
-				for (i in 0...parsedArray.length)
-					if(parsedArray[i] && strumsBlocked[i] != true)
-						onKeyPress(new KeyboardEvent(KeyboardEvent.KEY_DOWN, true, true, -1, keysArray[i][0]));
-		}
+		if(controls.controllerMode && pressArray.contains(true))
+			for (i in 0...pressArray.length)
+				if(pressArray[i] && strumsBlocked[i] != true)
+					keyPressed(i);
 
 		if (startedCountdown && !boyfriend.stunned && generatedMusic)
 		{
@@ -2846,17 +2937,19 @@ class PlayState extends MusicBeatState
 				notes.forEachAlive(function(daNote:Note)
 				{
 					// hold note functions
-					if (strumsBlocked[daNote.noteData] != true && daNote.isSustainNote && parsedHoldArray[daNote.noteData] && daNote.canBeHit
-					&& daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit && !daNote.blockHit)
+					if (strumsBlocked[daNote.noteData] != true && daNote.isSustainNote && holdArray[daNote.noteData] && daNote.canBeHit
+					&& daNote.mustPress && !daNote.tooLate && !daNote.wasGoodHit && !daNote.blockHit) {
 						goodNoteHit(daNote);
+					}
 				});
 			}
 
-			if (parsedHoldArray.contains(true) && !endingSong) {
+			if (holdArray.contains(true) && !endingSong) {
 				#if ACHIEVEMENTS_ALLOWED
 				var achieve:String = checkForAchievement(['oversinging']);
-				if (achieve != null)
+				if (achieve != null) {
 					startAchievement(achieve);
+				}
 				#end
 			}
 			else if (boyfriend.animation.curAnim != null && boyfriend.holdTimer > Conductor.stepCrochet * (0.0011 / FlxG.sound.music.pitch) * boyfriend.singDuration && boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss'))
@@ -2867,23 +2960,10 @@ class PlayState extends MusicBeatState
 		}
 
 		// TO DO: Find a better way to handle controller inputs, this should work for now
-		if(ClientPrefs.data.controllerMode || strumsBlocked.contains(true))
-		{
-			var parsedArray:Array<Bool> = parseKeys('_R');
-			if(parsedArray.contains(true))
-				for (i in 0...parsedArray.length)
-					if(parsedArray[i] || strumsBlocked[i] == true)
-						onKeyRelease(new KeyboardEvent(KeyboardEvent.KEY_UP, true, true, -1, keysArray[i][0]));
-		}
-	}
-
-	private function parseKeys(?suffix:String = ''):Array<Bool>
-	{
-		var ret:Array<Bool> = [];
-		for (i in 0...controlArray.length)
-			ret[i] = Reflect.getProperty(controls, controlArray[i] + suffix);
-
-		return ret;
+		if((controls.controllerMode || strumsBlocked.contains(true)) && releaseArray.contains(true))
+			for (i in 0...releaseArray.length)
+				if(releaseArray[i] || strumsBlocked[i] == true)
+					keyReleased(i);
 	}
 
 	function noteMiss(daNote:Note):Void { //You didn't hit the key and let it go offscreen, also used by Hurt Notes
@@ -3532,14 +3612,7 @@ class PlayState extends MusicBeatState
 							if(!boyfriendIdled && !usedPractice)
 								unlock = true;
 						case 'two_keys':
-							if(!usedPractice) {
-								var howManyPresses:Int = 0;
-								for (j in 0...keysPressed.length)
-									if(keysPressed[j]) howManyPresses++;
-
-								if(howManyPresses <= 2)
-									unlock = true;
-							}
+							unlock = (!usedPractice && keysPressed.length <= 2);
 						case 'toastie':
 							if(!ClientPrefs.data.shaders && ClientPrefs.data.lowQuality && !ClientPrefs.data.antialiasing)
 								unlock = true;
