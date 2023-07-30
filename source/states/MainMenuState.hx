@@ -250,7 +250,7 @@ class MainMenuState extends MusicBeatState
 				}
 			}
 			#if (desktop || android)
-			else if (controls.justPressed('debug_1') #if android || virtualPad.buttonE.justPressed #end)
+			else if (controls.justPressed('debug_1') #if android || MusicBeatState.virtualPad.buttonE.justPressed #end)
 			{
 				selectedSomethin = true;
 				MusicBeatState.switchState(new MasterEditorMenu());
