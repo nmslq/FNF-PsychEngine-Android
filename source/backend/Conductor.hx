@@ -14,7 +14,7 @@ typedef BPMChangeEvent =
 
 class Conductor
 {
-	public static var bpm:Float = 100;
+	public static var bpm(default, set):Float = 100;
 	public static var crochet:Float = ((60 / bpm) * 1000); // beats in milliseconds
 	public static var stepCrochet:Float = crochet / 4; // steps in milliseconds
 	public static var songPosition:Float = 0;
@@ -71,10 +71,8 @@ class Conductor
 			stepCrochet: stepCrochet
 		}
 		for (i in 0...Conductor.bpmChangeMap.length)
-		{
 			if (Conductor.bpmChangeMap[i].stepTime<=step)
 				lastChange = Conductor.bpmChangeMap[i];
-		}
 
 		return lastChange;
 	}
@@ -99,14 +97,10 @@ class Conductor
 	}
 
 	public static function getBeat(time:Float)
-	{
 		return getStep(time) / 4;
-	}
 
 	public static function getBeatRounded(time:Float):Int
-	{
 		return Math.floor(getStepRounded(time) / 4);
-	}
 
 	public static function mapBPMChanges(song:SwagSong)
 	{
@@ -145,15 +139,13 @@ class Conductor
 	}
 
 	inline public static function calculateCrochet(bpm:Float)
-	{
 		return (60 / bpm) * 1000;
-	}
 
-	public static function changeBPM(newBpm:Float)
-	{
-		bpm = newBpm;
-
+	public static function set_bpm(newBPM:Float):Float {
+		bpm = newBPM;
 		crochet = calculateCrochet(bpm);
 		stepCrochet = crochet / 4;
+
+		return bpm = newBPM;
 	}
 }
