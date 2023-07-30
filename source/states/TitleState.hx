@@ -460,10 +460,8 @@ class TitleState extends MusicBeatState
 
 		if(swagShader != null)
 		{
-			#if !android
 			if(controls.UI_LEFT) swagShader.hue -= elapsed * 0.1;
 			if(controls.UI_RIGHT) swagShader.hue += elapsed * 0.1;
-			#end
 		}
 
 		super.update(elapsed);
