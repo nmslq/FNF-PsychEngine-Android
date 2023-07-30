@@ -228,6 +228,7 @@ class Controls
 			result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[3].justPressed == true) : (MusicBeatState.androidControls.virtualPad.buttonRight.justPressed == true);
 		}
 		if(result) controllerMode = true;
+		return result;
 	}
 
 	function checkPressed(key:String):Bool
@@ -255,6 +256,7 @@ class Controls
 			result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[3].pressed == true) : (MusicBeatState.androidControls.virtualPad.buttonRight.pressed == true);
 		}
 		if(result) controllerMode = true;
+		return result;
 	}
 
 	function checkJustReleased(key:String):Bool
@@ -282,5 +284,6 @@ class Controls
 			result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[3].justReleased == true) : (MusicBeatState.androidControls.virtualPad.buttonRight.justReleased == true);
 		}
 		if(result) controllerMode = true;
+		return result;
 	}
 }
