@@ -111,11 +111,55 @@ class ClientPrefs {
 		'debug_1'		=> [SEVEN],
 		'debug_2'		=> [EIGHT]
 	];
+	public static var gamepadBinds:Map<String, Array<FlxGamepadInputID>> = [
+		'note_up'		=> [DPAD_UP, Y],
+		'note_left'		=> [DPAD_LEFT, X],
+		'note_down'		=> [DPAD_DOWN, A],
+		'note_right'	=> [DPAD_RIGHT, B],
+		
+		'ui_up'			=> [DPAD_UP, LEFT_STICK_DIGITAL_UP],
+		'ui_left'		=> [DPAD_LEFT, LEFT_STICK_DIGITAL_LEFT],
+		'ui_down'		=> [DPAD_DOWN, LEFT_STICK_DIGITAL_DOWN],
+		'ui_right'		=> [DPAD_RIGHT, LEFT_STICK_DIGITAL_RIGHT],
+		
+		'accept'		=> [A, START],
+		'back'			=> [B],
+		'pause'			=> [START],
+		'reset'			=> [BACK]
+	];
 	public static var defaultKeys:Map<String, Array<FlxKey>> = null;
+	public static var defaultButtons:Map<String, Array<FlxGamepadInputID>> = null;
+
+	public static function resetKeys(controller:Null<Bool> = null) //Null = both, False = Keyboard, True = Controller
+	{
+		if(controller != true)
+		{
+			for (key in keyBinds.keys())
+			{
+				if(defaultKeys.exists(key))
+					keyBinds.set(key, defaultKeys.get(key).copy());
+			}
+		}
+		if(controller != false)
+		{
+			for (button in gamepadBinds.keys())
+			{
+				if(defaultButtons.exists(button))
+					gamepadBinds.set(button, defaultButtons.get(button).copy());
+			}
+		}
+	}
+
+	public static function clearInvalidKeys(key:String) {
+		var keyBind:Array<FlxKey> = keyBinds.get(key);
+		var gamepadBind:Array<FlxGamepadInputID> = gamepadBinds.get(key);
+		while(keyBind != null && keyBind.contains(NONE)) keyBind.remove(NONE);
+		while(gamepadBind != null && gamepadBind.contains(NONE)) gamepadBind.remove(NONE);
+	}
 
 	public static function loadDefaultKeys() {
 		defaultKeys = keyBinds.copy();
-		//trace(defaultKeys);
+		defaultButtons = gamepadBinds.copy();
 	}
 
 	public static function saveSettings() {
@@ -179,12 +223,22 @@ class ClientPrefs {
 
 		// controls on a separate save file
 		var save:FlxSave = new FlxSave();
-		save.bind('controls_v2', CoolUtil.getSavePath());
-		if (save != null && save.data.customControls != null) {
-			var loadedControls:Map<String, Array<FlxKey>> = save.data.customControls;
-			for (control => keys in loadedControls) keyBinds.set(control, keys);
-
-			reloadControls();
+		save.bind('controls_v3', CoolUtil.getSavePath());
+		if(save != null)
+		{
+			if(save.data.keyboard != null) {
+				var loadedControls:Map<String, Array<FlxKey>> = save.data.keyboard;
+				for (control => keys in loadedControls) {
+					if(keyBinds.exists(control)) keyBinds.set(control, keys);
+				}
+			}
+			if(save.data.gamepad != null) {
+				var loadedControls:Map<String, Array<FlxGamepadInputID>> = save.data.gamepad;
+				for (control => keys in loadedControls) {
+					if(gamepadBinds.exists(control)) gamepadBinds.set(control, keys);
+				}
+			}
+			reloadVolumeKeys();
 		}
 	}
 
@@ -193,30 +247,24 @@ class ClientPrefs {
 		return /*PlayState.isStoryMode ? defaultValue : */ (data.gameplaySettings.exists(name) ? data.gameplaySettings.get(name) : defaultValue);
 	}
 
-	public static function reloadControls() {
-		PlayerSettings.player1.controls.setKeyboardScheme(KeyboardScheme.Solo);
-
-		TitleState.muteKeys = copyKey(keyBinds.get('volume_mute'));
-		TitleState.volumeDownKeys = copyKey(keyBinds.get('volume_down'));
-		TitleState.volumeUpKeys = copyKey(keyBinds.get('volume_up'));
-		FlxG.sound.muteKeys = TitleState.muteKeys;
-		FlxG.sound.volumeDownKeys = TitleState.volumeDownKeys;
-		FlxG.sound.volumeUpKeys = TitleState.volumeUpKeys;
+	public static function reloadVolumeKeys() {
+		TitleState.muteKeys = keyBinds.get('volume_mute').copy();
+		TitleState.volumeDownKeys = keyBinds.get('volume_down').copy();
+		TitleState.volumeUpKeys = keyBinds.get('volume_up').copy();
+		toggleVolumeKeys(true);
 	}
-
-	public static function copyKey(arrayToCopy:Array<FlxKey>):Array<FlxKey> {
-		var copiedArray:Array<FlxKey> = arrayToCopy.copy();
-		var i:Int = 0;
-		var len:Int = copiedArray.length;
-
-		while (i < len) {
-			if (copiedArray[i] == NONE) {
-				copiedArray.remove(NONE);
-				--i;
-			}
-			i++;
-			len = copiedArray.length;
+	public static function toggleVolumeKeys(turnOn:Bool) {
+		if(turnOn)
+		{
+			FlxG.sound.muteKeys = TitleState.muteKeys;
+			FlxG.sound.volumeDownKeys = TitleState.volumeDownKeys;
+			FlxG.sound.volumeUpKeys = TitleState.volumeUpKeys;
 		}
-		return copiedArray;
+		else
+		{
+			FlxG.sound.muteKeys = [];
+			FlxG.sound.volumeDownKeys = [];
+			FlxG.sound.volumeUpKeys = [];
+		}
 	}
 }
