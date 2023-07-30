@@ -46,7 +46,6 @@ class SaveVariables {
 	public var vibration:Bool = false;
 	public var gradientHitboxes = false;
 	public var laneUnderlay:Float = 0;
-	public var controllerMode:Bool = #if android true #else false #end;
 	public var gameplaySettings:Map<String, Dynamic> = [
 		'scrollspeed' => 1.0,
 		'scrolltype' => 'multiplicative', 

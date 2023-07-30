@@ -75,7 +75,6 @@ class Controls
 	private function get_NOTE_LEFT_R() return justReleased('note_left');
 	private function get_NOTE_RIGHT_R() return justReleased('note_right');
 
-
 	// Pressed buttons (others)
 	public var ACCEPT(get, never):Bool;
 	public var BACK(get, never):Bool;
@@ -119,6 +118,7 @@ class Controls
 			case 'note_right':
 				result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[3].justPressed == true) : (MusicBeatState.androidControls.virtualPad.buttonRight.justPressed == true);
 		}
+		if(result) controllerMode = true;
 		#end
 
 		return result || _myGamepadJustPressed(gamepadBinds[key]) == true;
@@ -149,6 +149,7 @@ class Controls
 			case 'note_right':
 				result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[3].pressed == true) : (MusicBeatState.androidControls.virtualPad.buttonRight.pressed == true);
 		}
+		if(result) controllerMode = true;
 		#end
 
 		return result || _myGamepadPressed(gamepadBinds[key]) == true;
@@ -179,6 +180,7 @@ class Controls
 			case 'note_right':
 				result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[3].justReleased == true) : (MusicBeatState.androidControls.virtualPad.buttonRight.justReleased == true);
 		}
+		if(result) controllerMode = true;
 		#end
 
 		return result || _myGamepadJustReleased(gamepadBinds[key]) == true;
