@@ -64,6 +64,7 @@ class Main extends Sprite
 
 		SUtil.checkFiles();
 	
+		Controls.instance = new Controls();
 		ClientPrefs.loadDefaultKeys();
 		#if LUA_ALLOWED Lua.set_callbacks_function(cpp.Callable.fromStaticFunction(psychlua.CallbackHandler.call)); #end
 		addChild(new FlxGame(game.width, game.height, game.initialState, game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
