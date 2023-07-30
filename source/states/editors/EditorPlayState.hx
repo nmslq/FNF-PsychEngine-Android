@@ -259,7 +259,7 @@ class EditorPlayState extends MusicBeatState
 		if (PlayState.SONG.notes[curSection] != null)
 		{
 			if (PlayState.SONG.notes[curSection].changeBPM)
-				Conductor.changeBPM(PlayState.SONG.notes[curSection].bpm);
+				Conductor.bpm = PlayState.SONG.notes[curSection].bpm;
 		}
 		super.sectionHit();
 	}
@@ -304,7 +304,7 @@ class EditorPlayState extends MusicBeatState
 		noteKillOffset = Math.max(Conductor.stepCrochet, 350 / songSpeed * playbackRate);
 
 		var songData = PlayState.SONG;
-		Conductor.changeBPM(songData.bpm);
+		Conductor.bpm = songData.bpm;
 
 		vocals = new FlxSound();
 		if (songData.needsVoices) vocals.loadEmbedded(Paths.voices(songData.song));
@@ -777,7 +777,7 @@ class EditorPlayState extends MusicBeatState
 		var strum:StrumNote = opponentStrums.members[Std.int(Math.abs(note.noteData))];
 		if(strum != null) {
 			strum.playAnim('confirm', true);
-			strum.resetAnim = Conductor.stepCrochet * 1.5 / 1000;
+			strum.resetAnim = Conductor.stepCrochet * 1.25 / 1000 / playbackRate;
 		}
 		note.hitByOpponent = true;
 
