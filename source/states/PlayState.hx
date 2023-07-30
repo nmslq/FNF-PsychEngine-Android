@@ -259,7 +259,7 @@ class PlayState extends MusicBeatState
 	public var introSoundsSuffix:String = '';
 
 	// Less laggy controls
-	private var keysArray:Array<Dynamic>;
+	private var keysArray:Array<String>;
 
 	public var precacheList:Map<String, String> = new Map<String, String>();
 	public var songName:String;
