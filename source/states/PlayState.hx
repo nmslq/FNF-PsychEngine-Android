@@ -2831,7 +2831,7 @@ class PlayState extends MusicBeatState
 			releaseArray.push(controls.justReleased(key));
 		}
 		#else
-		for (i in 0..3)
+		for (i in 0...4)
 		{
 			holdArray.push((androidControls.hitbox.hints[i].pressed == true));
 			pressArray.push((androidControls.hitbox.hints[i].justPressed == true));
