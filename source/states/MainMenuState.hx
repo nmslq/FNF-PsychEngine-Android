@@ -170,26 +170,26 @@ class MainMenuState extends MusicBeatState
 
 		if (!selectedSomethin)
 		{
-			if (controls.UI_UP_P #if android || virtualPad.buttonUp.justPressed #end)
+			if (controls.UI_UP_P)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(-1);
 			}
 
-			if (controls.UI_DOWN_P #if android || virtualPad.buttonDown.justPressed #end)
+			if (controls.UI_DOWN_P)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(1);
 			}
 
-			if (controls.BACK #if android || virtualPad.buttonB.justPressed #end)
+			if (controls.BACK)
 			{
 				selectedSomethin = true;
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				MusicBeatState.switchState(new TitleState());
 			}
 
-			if (controls.ACCEPT #if android || virtualPad.buttonA.justPressed #end)
+			if (controls.ACCEPT)
 			{
 				if (optionShit[curSelected] == 'donate')
 				{

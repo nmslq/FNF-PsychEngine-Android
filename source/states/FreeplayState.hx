@@ -189,7 +189,7 @@ class FreeplayState extends MusicBeatState
 
 		#if android
 		addVirtualPad(LEFT_FULL, A_B_C_X_Y_Z);
-		virtualPad.y = -26;
+		MusicBeatState.virtualPad.y = -26;
 		#end
 
 		updateTexts();
@@ -242,14 +242,14 @@ class FreeplayState extends MusicBeatState
 		scoreText.text = 'PERSONAL BEST: ' + lerpScore + ' (' + ratingSplit.join('.') + '%)';
 		positionHighscore();
 
-		var upP = controls.UI_UP_P #if android || virtualPad.buttonUp.pressed #end;
-		var downP = controls.UI_DOWN_P #if android || virtualPad.buttonDown.pressed #end;
-		var accepted = controls.ACCEPT #if android || virtualPad.buttonA.justPressed #end;
-		var space = FlxG.keys.justPressed.SPACE #if android || virtualPad.buttonX.justPressed #end;
-		var ctrl = FlxG.keys.justPressed.CONTROL #if android || virtualPad.buttonC.justPressed #end;
+		var upP = controls.UI_UP_P;
+		var downP = controls.UI_DOWN_P;
+		var accepted = controls.ACCEPT;
+		var space = FlxG.keys.justPressed.SPACE #if android || MusicBeatState.virtualPad.buttonX.justPressed #end;
+		var ctrl = FlxG.keys.justPressed.CONTROL #if android || MusicBeatState.virtualPad.buttonC.justPressed #end;
 
 		var shiftMult:Int = 1;
-		if (FlxG.keys.pressed.SHIFT #if android || virtualPad.buttonZ.pressed #end) shiftMult = 3;
+		if (FlxG.keys.pressed.SHIFT #if android || MusicBeatState.virtualPad.buttonZ.pressed #end) shiftMult = 3;
 
 		if (songs.length > 1)
 		{
@@ -264,7 +264,7 @@ class FreeplayState extends MusicBeatState
 				holdTime = 0;
 			}
 
-			if (controls.UI_DOWN #if android || virtualPad.buttonDown.justPressed #end || controls.UI_UP #if android || virtualPad.buttonUp.justPressed #end)
+			if (controls.UI_DOWN || controls.UI_UP)
 			{
 				var checkLastHold:Int = Math.floor((holdTime - 0.5) * 10);
 				holdTime += elapsed;
@@ -283,18 +283,18 @@ class FreeplayState extends MusicBeatState
 			#end
 		}
 
-		if (controls.UI_LEFT_P #if android || virtualPad.buttonLeft.pressed #end)
+		if (controls.UI_LEFT_P)
 		{
 			changeDiff(-1);
 			_updateSongLastDifficulty();
 		}
-		else if (controls.UI_RIGHT_P #if android || virtualPad.buttonRight.pressed #end)
+		else if (controls.UI_RIGHT_P)
 		{
 			changeDiff(1);
 			_updateSongLastDifficulty();
 		}
 
-		if (controls.BACK #if android || virtualPad.buttonB.justPressed #end)
+		if (controls.BACK)
 		{
 			persistentUpdate = false;
 			if (colorTween != null) colorTween.cancel();
@@ -367,7 +367,7 @@ class FreeplayState extends MusicBeatState
 				return;
 			}
 
-			if (FlxG.keys.pressed.SHIFT #if android || virtualPad.buttonZ.pressed #end)
+			if (FlxG.keys.pressed.SHIFT #if android || MusicBeatState.virtualPad.buttonZ.pressed #end)
 				LoadingState.loadAndSwitchState(new ChartingState());
 			else
 				LoadingState.loadAndSwitchState(new PlayState());
@@ -379,7 +379,7 @@ class FreeplayState extends MusicBeatState
 			DiscordClient.loadModRPC();
 			#end
 		}
-		else if (controls.RESET #if android || virtualPad.buttonY.justPressed #end)
+		else if (controls.RESET #if android || MusicBeatState.virtualPad.buttonY.justPressed #end)
 		{
 			#if android
 			removeVirtualPad();

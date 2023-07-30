@@ -1061,7 +1061,7 @@ class PlayState extends MusicBeatState
 		if(ret != FunkinLua.Function_Stop) {
 			if (skipCountdown || startOnTime > 0) skipArrowStartTween = true;
 			#if android
-			androidControls.visible = true;
+			MusicBeatState.androidControls.visible = true;
 			#end
 			generateStaticArrows(0);
 			generateStaticArrows(1);
@@ -2353,7 +2353,7 @@ class PlayState extends MusicBeatState
 		}
 
 		#if android
-		androidControls.visible = false;
+		MusicBeatState.androidControls.visible = false;
 		#end
 		timeBar.visible = false;
 		timeTxt.visible = false;
@@ -2823,21 +2823,12 @@ class PlayState extends MusicBeatState
 		var holdArray:Array<Bool> = [];
 		var pressArray:Array<Bool> = [];
 		var releaseArray:Array<Bool> = [];
-		#if !android
 		for (key in keysArray)
 		{
 			holdArray.push(controls.pressed(key));
 			pressArray.push(controls.justPressed(key));
 			releaseArray.push(controls.justReleased(key));
 		}
-		#else
-		for (i in 0...4)
-		{
-			holdArray.push((androidControls.hitbox.hints[i].pressed == true));
-			pressArray.push((androidControls.hitbox.hints[i].justPressed == true));
-			releaseArray.push((androidControls.hitbox.hints[i].justReleased == true));
-		}
-		#end
 
 		// TO DO: Find a better way to handle controller inputs, this should work for now
 		if(controls.controllerMode && pressArray.contains(true))
