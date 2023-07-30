@@ -244,7 +244,7 @@ class PlayState extends MusicBeatState
 	#end
 
 	//Achievement shit
-	var keysPressed:Array<Bool> = [];
+	var keysPressed:Array<Int> = [];
 	var boyfriendIdleTime:Float = 0.0;
 	var boyfriendIdled:Bool = false;
 	var achievementsArray:Array<FunkinLua> = [];
@@ -287,10 +287,6 @@ class PlayState extends MusicBeatState
 			'note_up',
 			'note_right'
 		];
-
-		// For the "Just the Two of Us" achievement
-		for (i in 0...keysArray.length)
-			keysPressed.push(false);
 
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
