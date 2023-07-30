@@ -226,7 +226,7 @@ class Controls
 			result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[2].justPressed == true) : (MusicBeatState.androidControls.virtualPad.buttonUp.justPressed == true);
 		if (key == 'note_right')
 			result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[3].justPressed == true) : (MusicBeatState.androidControls.virtualPad.buttonRight.justPressed == true);
-		}
+
 		if(result) controllerMode = true;
 		return result;
 	}
@@ -254,7 +254,7 @@ class Controls
 			result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[2].pressed == true) : (MusicBeatState.androidControls.virtualPad.buttonUp.pressed == true);
 		if (key == 'note_right')
 			result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[3].pressed == true) : (MusicBeatState.androidControls.virtualPad.buttonRight.pressed == true);
-		}
+
 		if(result) controllerMode = true;
 		return result;
 	}
@@ -282,7 +282,7 @@ class Controls
 			result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[2].justReleased == true) : (MusicBeatState.androidControls.virtualPad.buttonUp.justReleased == true);
 		if (key == 'note_right')
 			result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[3].justReleased == true) : (MusicBeatState.androidControls.virtualPad.buttonRight.justReleased == true);
-		}
+
 		if(result) controllerMode = true;
 		return result;
 	}
