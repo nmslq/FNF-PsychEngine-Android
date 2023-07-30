@@ -90,7 +90,7 @@ class Controls
 	public var gamepadBinds:Map<String, Array<FlxGamepadInputID>>;
 
 	#if android
-	public var checkKeys:Bool = true;
+	public static var checkKeys:Bool = true;
 	#end
 	public function justPressed(key:String)
 	{
