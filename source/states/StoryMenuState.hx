@@ -200,8 +200,8 @@ class StoryMenuState extends MusicBeatState
 
 		if (!movedBack && !selectedWeek)
 		{
-			var upP = controls.UI_UP_P;
-			var downP = controls.UI_DOWN_P;
+			var upP = controls.UI_UP_P #if android || virtualPad.buttonUp.justPressed #end;
+			var downP = controls.UI_DOWN_P #if android || virtualPad.buttonDown.justPressed #end;
 			if (upP)
 			{
 				changeWeek(-1);
@@ -214,12 +214,12 @@ class StoryMenuState extends MusicBeatState
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 			}
 
-			if (controls.UI_RIGHT)
+			if (controls.UI_RIGHT #if android || virtualPad.buttonRight.pressed #end)
 				rightArrow.animation.play('press')
 			else
 				rightArrow.animation.play('idle');
 
-			if (controls.UI_LEFT)
+			if (controls.UI_LEFT #if android || virtualPad.buttonLeft.pressed #end)
 				leftArrow.animation.play('press');
 			else
 				leftArrow.animation.play('idle');
@@ -233,14 +233,14 @@ class StoryMenuState extends MusicBeatState
 			}
 			#end
 
-			if (controls.UI_RIGHT_P)
+			if (controls.UI_RIGHT_P #if android || virtualPad.buttonRight.justPressed #end)
 				changeDifficulty(1);
-			else if (controls.UI_LEFT_P)
+			else if (controls.UI_LEFT_P #if android || virtualPad.buttonLeft.justPressed #end)
 				changeDifficulty(-1);
 			else if (upP || downP)
 				changeDifficulty();
 
-			if(FlxG.keys.justPressed.CONTROL #if android || MusicBeatState.virtualPad.buttonX.justPressed #end)
+			if(FlxG.keys.justPressed.CONTROL #if android || virtualPad.buttonX.justPressed #end)
 			{
 				#if android
 				removeVirtualPad();
@@ -248,7 +248,7 @@ class StoryMenuState extends MusicBeatState
 				persistentUpdate = false;
 				openSubState(new GameplayChangersSubstate());
 			}
-			else if(controls.RESET #if android || MusicBeatState.virtualPad.buttonY.justPressed #end)
+			else if(controls.RESET #if android || virtualPad.buttonY.justPressed #end)
 			{
 				#if android
 				removeVirtualPad();
@@ -257,13 +257,11 @@ class StoryMenuState extends MusicBeatState
 				openSubState(new ResetScoreSubState('', curDifficulty, '', curWeek));
 				//FlxG.sound.play(Paths.sound('scrollMenu'));
 			}
-			else if (controls.ACCEPT)
-			{
+			else if (controls.ACCEPT #if android || virtualPad.buttonA.justPressed #end)
 				selectWeek();
-			}
 		}
 
-		if (controls.BACK && !movedBack && !selectedWeek)
+		if (controls.BACK #if android || virtualPad.buttonB.justPressed #end && !movedBack && !selectedWeek)
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			movedBack = true;
