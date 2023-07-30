@@ -101,6 +101,12 @@ class Controls
 		#if android
 		if (checkKeys)
 			result = checkJustPressed(key);
+		#else
+		if (FlxG.keys.anyJustPressed(keyboardBinds[key]))
+		{
+			result = true;
+			controllerMode = false;
+		}
 		#end
 
 		return result || _myGamepadJustPressed(gamepadBinds[key]) == true;
@@ -114,11 +120,11 @@ class Controls
 		if (checkKeys)
 			checkPressed(key);
 		#else
-			if (FlxG.keys.anyPressed(keyboardBinds[key]))
-			{
-				result = true;
-				controllerMode = false;
-			}
+		if (FlxG.keys.anyPressed(keyboardBinds[key]))
+		{
+			result = true;
+			controllerMode = false;
+		}
 		#end
 
 		return result || _myGamepadPressed(gamepadBinds[key]) == true;
@@ -132,11 +138,11 @@ class Controls
 		if (checkKeys)
 			checkJustReleased(key);
 		#else
-			if (FlxG.keys.anyJustReleased(keyboardBinds[key]))
-			{
-				result = true;
-				controllerMode = false;
-			}
+		if (FlxG.keys.anyJustReleased(keyboardBinds[key]))
+		{
+			result = true;
+			controllerMode = false;
+		}
 		#end
 
 		return result || _myGamepadJustReleased(gamepadBinds[key]) == true;
