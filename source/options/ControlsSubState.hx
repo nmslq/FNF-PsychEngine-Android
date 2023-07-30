@@ -288,7 +288,7 @@ class ControlsSubState extends MusicBeatSubstate
 			}
 			if(FlxG.keys.justPressed.CONTROL || FlxG.gamepads.anyJustPressed(LEFT_SHOULDER) || FlxG.gamepads.anyJustPressed(RIGHT_SHOULDER) #if android || MusicBeatState.virtualPad.buttonC.justPressed #end) swapMode();
 
-			if(FlxG.keys.justPressed.LEFT || FlxG.keys.justPressed.RIGHT || #if android || MusicBeatState.virtualPad.buttonLeft.justPressed || MusicBeatState.virtualPad.buttonRight.justPressed #end FlxG.gamepads.anyJustPressed(DPAD_LEFT) || FlxG.gamepads.anyJustPressed(DPAD_RIGHT) ||
+			if(FlxG.keys.justPressed.LEFT || FlxG.keys.justPressed.RIGHT #if android || MusicBeatState.virtualPad.buttonLeft.justPressed || MusicBeatState.virtualPad.buttonRight.justPressed #end || FlxG.gamepads.anyJustPressed(DPAD_LEFT) || FlxG.gamepads.anyJustPressed(DPAD_RIGHT) ||
 				FlxG.gamepads.anyJustPressed(LEFT_STICK_DIGITAL_LEFT) || FlxG.gamepads.anyJustPressed(LEFT_STICK_DIGITAL_RIGHT)) updateAlt(true);
 
 			if(FlxG.keys.justPressed.UP #if android || MusicBeatState.virtualPad.buttonUp.justPressed #end || FlxG.gamepads.anyJustPressed(DPAD_UP) || FlxG.gamepads.anyJustPressed(LEFT_STICK_DIGITAL_UP)) updateText(-1);
