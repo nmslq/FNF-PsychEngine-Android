@@ -20,26 +20,26 @@ class AndroidControlsSubState extends FlxSubState
 {
 	private final controlsItems:Array<String> = ['Pad-Right', 'Pad-Left', 'Pad-Custom', 'Pad-Duo', 'Hitbox', 'Keyboard'];
 
-	var virtualPad:FlxVirtualPad;
-	var hitbox:FlxHitbox;
+	private var virtualPad:FlxVirtualPad;
+	private var hitbox:FlxHitbox;
 
-	var upPosition:FlxText;
-	var downPosition:FlxText;
-	var leftPosition:FlxText;
-	var rightPosition:FlxText;
-	var grpControls:FlxText;
-	var funitext:FlxText;
+	private var upPosition:FlxText;
+	private var downPosition:FlxText;
+	private var leftPosition:FlxText;
+	private var rightPosition:FlxText;
+	private var grpControls:FlxText;
+	private var funitext:FlxText;
 
-	var leftArrow:FlxSprite;
-	var rightArrow:FlxSprite;
+	private var leftArrow:FlxSprite;
+	private var rightArrow:FlxSprite;
 
-	var curSelected:Int = 0;
-	var buttonBinded:Bool = false;
+	private var curSelected:Int = 0;
+	private var buttonBinded:Bool = false;
 
-	var bindButton:FlxButton;
-	var resetButton:FlxButton;
+	private var bindButton:FlxButton;
+	private var resetButton:FlxButton;
 
-	var bg:FlxSprite;
+	private var bg:FlxSprite;
 
 	override function create()
 	{
