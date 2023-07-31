@@ -264,6 +264,7 @@ class Controls
 	{
 		var result:Bool = false;
 		switch (key)
+		{
 			case 'ui_up':
 				result = (checkStates ? MusicBeatState.virtualPad.buttonUp.justReleased == true : MusicBeatSubstate.virtualPad.buttonUp.justReleased == true);
 			case 'ui_down':
