@@ -18,7 +18,7 @@ import openfl.utils.Assets;
 
 class AndroidControlsSubState extends FlxSubState
 {
-	private final controlsItems:Array<String> = ['Pad-Right', 'Pad-Left', 'Pad-Custom', 'Keyboard'];
+	private final controlsItems:Array<String> = ['Pad-Right', 'Pad-Left', 'Pad-Custom', 'Hitbox', 'Keyboard'];
 
 	private var virtualPad:FlxVirtualPad;
 	private var hitbox:FlxHitbox;
