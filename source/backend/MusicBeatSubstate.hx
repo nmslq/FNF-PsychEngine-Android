@@ -13,6 +13,10 @@ class MusicBeatSubstate extends FlxSubState
 	public function new()
 	{
 		super();
+
+		#if android
+		Controls.checkStates = false;
+		#end
 	}
 
 	private var lastBeat:Float = 0;

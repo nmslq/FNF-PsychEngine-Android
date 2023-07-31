@@ -92,6 +92,7 @@ class Controls
 	// code by beihu235
 	#if android
 	public static var checkKeys:Bool = true;
+	public static var checkStates:Bool = true;
 	#end
 
 	public function justPressed(key:String)
@@ -206,27 +207,29 @@ class Controls
 	function checkJustPressed(key:String):Bool
 	{
 		var result:Bool = false;
-		if (key == 'accept')
-			result = (MusicBeatState.androidControls.virtualPad.buttonA.justPressed == true);
-		if (key == 'back')
-			result = (MusicBeatState.androidControls.virtualPad.buttonB.justPressed == true);
-		if (key == 'ui_up')
-			result = (MusicBeatState.androidControls.virtualPad.buttonUp.justPressed == true);
-		if (key == 'ui_down')
-			result = (MusicBeatState.androidControls.virtualPad.buttonDown.justPressed == true);
-		if (key == 'ui_left')
-			result = (MusicBeatState.androidControls.virtualPad.buttonLeft.justPressed == true);
-		if (key == 'ui_right')
-			result = (MusicBeatState.androidControls.virtualPad.buttonRight.justPressed == true);
-		if (key == 'note_left')
-			result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[0].justPressed == true) : (MusicBeatState.androidControls.virtualPad.buttonLeft.justPressed == true);
-		if (key == 'note_down')
-			result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[1].justPressed == true) : (MusicBeatState.androidControls.virtualPad.buttonDown.justPressed == true);
-		if (key == 'note_up')
-			result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[2].justPressed == true) : (MusicBeatState.androidControls.virtualPad.buttonUp.justPressed == true);
-		if (key == 'note_right')
-			result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[3].justPressed == true) : (MusicBeatState.androidControls.virtualPad.buttonRight.justPressed == true);
-
+		switch (key)
+		{
+			case 'accept':
+				result = (checkStates ? MusicBeatState.virtualPad.buttonA.justPressed == true : MusicBeatSubstate.virtualPad.buttonA.justPressed == true);
+			case 'back':
+				result = (checkStates ? MusicBeatState.virtualPad.buttonB.justPressed == true : MusicBeatSubstate.virtualPad.buttonB.justPressed == true);
+			case 'ui_up':
+				result = (checkStates ? MusicBeatState.virtualPad.buttonUp.justPressed == true : MusicBeatSubstate.virtualPad.buttonUp.justPressed == true);
+			case 'ui_down':
+				result = (checkStates ? MusicBeatState.virtualPad.buttonDown.justPressed == true : MusicBeatSubstate.virtualPad.buttonDown.justPressed == true);
+			case 'ui_left':
+				result = (checkStates ? MusicBeatState.virtualPad.buttonLeft.justPressed == true : MusicBeatSubstate.virtualPad.buttonLeft.justPressed == true);
+			case 'ui_right':
+				result = (checkStates ? MusicBeatState.virtualPad.buttonRight.justPressed == true : MusicBeatSubstate.virtualPad.buttonRight.justPressed == true);
+			case 'note_left':
+				result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[0].justPressed == true) : (MusicBeatState.androidControls.virtualPad.buttonLeft.justPressed == true);
+			case 'note_down':
+				result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[1].justPressed == true) : (MusicBeatState.androidControls.virtualPad.buttonDown.justPressed == true);
+			case 'note_up':
+				result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[2].justPressed == true) : (MusicBeatState.androidControls.virtualPad.buttonUp.justPressed == true);
+			case 'note_right':
+				result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[3].justPressed == true) : (MusicBeatState.androidControls.virtualPad.buttonRight.justPressed == true);
+		}
 		if(result) controllerMode = true;
 		return result;
 	}
@@ -234,27 +237,25 @@ class Controls
 	function checkPressed(key:String):Bool
 	{
 		var result:Bool = false;
-		if (key == 'accept')
-			result = (MusicBeatState.androidControls.virtualPad.buttonA.pressed == true);
-		if (key == 'back')
-			result = (MusicBeatState.androidControls.virtualPad.buttonB.pressed == true);
-		if (key == 'ui_up')
-			result = (MusicBeatState.androidControls.virtualPad.buttonUp.pressed == true);
-		if (key == 'ui_down')
-			result = (MusicBeatState.androidControls.virtualPad.buttonDown.pressed == true);
-		if (key == 'ui_left')
-			result = (MusicBeatState.androidControls.virtualPad.buttonLeft.pressed == true);
-		if (key == 'ui_right')
-			result = (MusicBeatState.androidControls.virtualPad.buttonRight.pressed == true);
-		if (key == 'note_left')
-			result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[0].pressed == true) : (MusicBeatState.androidControls.virtualPad.buttonLeft.pressed == true);
-		if (key == 'note_down')
-			result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[1].pressed == true) : (MusicBeatState.androidControls.virtualPad.buttonDown.pressed == true);
-		if (key == 'note_up')
-			result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[2].pressed == true) : (MusicBeatState.androidControls.virtualPad.buttonUp.pressed == true);
-		if (key == 'note_right')
-			result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[3].pressed == true) : (MusicBeatState.androidControls.virtualPad.buttonRight.pressed == true);
-
+		switch (key)
+		{
+			case 'ui_up':
+				result = (checkStates ? MusicBeatState.virtualPad.buttonUp.pressed == true : MusicBeatSubstate.virtualPad.buttonUp.pressed == true);
+			case 'ui_down':
+				result = (checkStates ? MusicBeatState.virtualPad.buttonDown.pressed == true : MusicBeatSubstate.virtualPad.buttonDown.pressed == true);
+			case 'ui_left':
+				result = (checkStates ? MusicBeatState.virtualPad.buttonLeft.pressed == true : MusicBeatSubstate.virtualPad.buttonLeft.pressed == true);
+			case 'ui_right':
+				result = (checkStates ? MusicBeatState.virtualPad.buttonRight.pressed == true : MusicBeatSubstate.virtualPad.buttonRight.pressed == true);
+			case 'note_left':
+				result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[0].pressed == true) : (MusicBeatState.androidControls.virtualPad.buttonLeft.pressed == true);
+			case 'note_down':
+				result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[1].pressed == true) : (MusicBeatState.androidControls.virtualPad.buttonDown.pressed == true);
+			case 'note_up':
+				result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[2].pressed == true) : (MusicBeatState.androidControls.virtualPad.buttonUp.pressed == true);
+			case 'note_right':
+				result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[3].pressed == true) : (MusicBeatState.androidControls.virtualPad.buttonRight.pressed == true);
+		}
 		if(result) controllerMode = true;
 		return result;
 	}
@@ -262,27 +263,24 @@ class Controls
 	function checkJustReleased(key:String):Bool
 	{
 		var result:Bool = false;
-		if (key == 'accept')
-			result = (MusicBeatState.androidControls.virtualPad.buttonA.justReleased == true);
-		if (key == 'back')
-			result = (MusicBeatState.androidControls.virtualPad.buttonB.justReleased == true);
-		if (key == 'ui_up')
-			result = (MusicBeatState.androidControls.virtualPad.buttonUp.justReleased == true);
-		if (key == 'ui_down')
-			result = (MusicBeatState.androidControls.virtualPad.buttonDown.justReleased == true);
-		if (key == 'ui_left')
-			result = (MusicBeatState.androidControls.virtualPad.buttonLeft.justReleased == true);
-		if (key == 'ui_right')
-			result = (MusicBeatState.androidControls.virtualPad.buttonRight.justReleased == true);
-		if (key == 'note_left')
-			result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[0].justReleased == true) : (MusicBeatState.androidControls.virtualPad.buttonLeft.justReleased == true);
-		if (key == 'note_down')
-			result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[1].justReleased == true) : (MusicBeatState.androidControls.virtualPad.buttonDown.justReleased == true);
-		if (key == 'note_up')
-			result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[2].justReleased == true) : (MusicBeatState.androidControls.virtualPad.buttonUp.justReleased == true);
-		if (key == 'note_right')
-			result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[3].justReleased == true) : (MusicBeatState.androidControls.virtualPad.buttonRight.justReleased == true);
-
+		switch (key)
+			case 'ui_up':
+				result = (checkStates ? MusicBeatState.virtualPad.buttonUp.justReleased == true : MusicBeatSubstate.virtualPad.buttonUp.justReleased == true);
+			case 'ui_down':
+				result = (checkStates ? MusicBeatState.virtualPad.buttonDown.justReleased == true : MusicBeatSubstate.virtualPad.buttonDown.justReleased == true);
+			case 'ui_left':
+				result = (checkStates ? MusicBeatState.virtualPad.buttonLeft.justReleased == true : MusicBeatSubstate.virtualPad.buttonLeft.justReleased == true);
+			case 'ui_right':
+				result = (checkStates ? MusicBeatState.virtualPad.buttonRight.justReleased == true : MusicBeatSubstate.virtualPad.buttonRight.justReleased == true);
+			case 'note_left':
+				result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[0].justReleased == true) : (MusicBeatState.androidControls.virtualPad.buttonLeft.justReleased == true);
+			case 'note_down':
+				result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[1].justReleased == true) : (MusicBeatState.androidControls.virtualPad.buttonDown.justReleased == true);
+			case 'note_up':
+				result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[2].justReleased == true) : (MusicBeatState.androidControls.virtualPad.buttonUp.justReleased == true);
+			case 'note_right':
+				result = AndroidControls.mode == 'Hitbox' ? (MusicBeatState.androidControls.hitbox.hints[3].justReleased == true) : (MusicBeatState.androidControls.virtualPad.buttonRight.justReleased == true);
+		}
 		if(result) controllerMode = true;
 		return result;
 	}
