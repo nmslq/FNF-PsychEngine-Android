@@ -39,7 +39,7 @@ class MusicBeatState extends FlxUIState
 		virtualPad = new FlxVirtualPad(DPad, Action);
 		add(virtualPad);
 
-		Controls.checkState = true;
+		Controls.checkStates = true;
 		Controls.checkKeys = true;
 	}
 
@@ -56,7 +56,7 @@ class MusicBeatState extends FlxUIState
 
 		androidControls = new AndroidControls();
 
-		switch (androidControls.mode)
+		switch (AndroidControls.mode)
 		{
 			case 'hitbox':
 				checkHitbox = true;
