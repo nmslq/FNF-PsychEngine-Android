@@ -13,10 +13,6 @@ class MusicBeatSubstate extends FlxSubState
 	public function new()
 	{
 		super();
-
-		#if android
-		Controls.checkStates = false;
-		#end
 	}
 
 	private var lastBeat:Float = 0;
@@ -41,6 +37,8 @@ class MusicBeatSubstate extends FlxSubState
 	{
 		if (virtualPad != null)
 			removeVirtualPad();
+
+		Controls.checkStates = false;
 
 		virtualPad = new FlxVirtualPad(DPad, Action);
 		add(virtualPad);
