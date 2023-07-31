@@ -366,7 +366,7 @@ class Controls
 		{
 			case 'hitbox':
 				controlsType = 0;
-			case 'Pad-Left' || 'Pad-Custom' || 'Pad-Right':
+			case 'Pad-Left' | 'Pad-Custom' | 'Pad-Right':
 				controlsType = 1;
 			default:
 		}
