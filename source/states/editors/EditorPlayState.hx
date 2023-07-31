@@ -14,7 +14,12 @@ import flixel.animation.FlxAnimationController;
 import flixel.input.keyboard.FlxKey;
 import openfl.events.KeyboardEvent;
 
-class EditorPlayState extends MusicBeatState
+#if android
+import android.AndroidControls;
+import flixel.util.FlxDestroyUtil;
+#end
+
+class EditorPlayState extends MusicBeatSubstate
 {
 	// Borrowed from original PlayState
 	var finishTimer:FlxTimer = null;
@@ -67,6 +72,10 @@ class EditorPlayState extends MusicBeatState
 
 	var scoreTxt:FlxText;
 	var dataTxt:FlxText;
+	
+	#if android
+	public static var androidControls:AndroidControls;
+	#end
 
 	public function new(playbackRate:Float)
 	{
@@ -146,7 +155,6 @@ class EditorPlayState extends MusicBeatState
 
 		#if android
 		addAndroidControls();
-		MusicBeatState.androidControls.visible = true;
 		#end
 	}
 
@@ -269,6 +277,14 @@ class EditorPlayState extends MusicBeatState
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_DOWN, onKeyPress);
 		FlxG.stage.removeEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 		FlxG.mouse.visible = true;
+
+		#if android
+		if (androidControls != null)
+		{
+			androidControls = FlxDestroyUtil.destroy(androidControls);
+			androidControls = null;
+		}
+		#end
 		super.destroy();
 	}
 	
@@ -474,10 +490,12 @@ class EditorPlayState extends MusicBeatState
 			finishTimer.cancel();
 			finishTimer.destroy();
 		}
-		LoadingState.loadAndSwitchState(new ChartingState());
-
 		#if android
-		MusicBeatState.androidControls.visible = false;
+		flixel.addons.transition.FlxTransitionableState.skipNextTransOut = true;
+		FlxG.resetState();
+		androidControls.visible = false;
+		#else
+		close();
 		#end
 	}
 
@@ -915,5 +933,22 @@ class EditorPlayState extends MusicBeatState
 		}
 		else if (songMisses < 10)
 			ratingFC = 'SDCB';
+	}
+
+	function addAndroidControls()
+	{
+		if (androidControls != null)
+			removeAndroidControls();
+
+		androidControls = new AndroidControls();
+		androidControls.visible = true;
+
+		var camControls:FlxCamera = new FlxCamera();
+		FlxG.cameras.add(camControls, true);
+		camControls.bgColor.alpha = 0;
+
+		androidControls.cameras = [camControls];
+		androidControls.visible = false;
+		add(androidControls);
 	}
 }
