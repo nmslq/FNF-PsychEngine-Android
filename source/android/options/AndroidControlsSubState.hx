@@ -47,6 +47,8 @@ class AndroidControlsSubState extends FlxSubState
 			if (controlsItems[i] == AndroidControls.mode)
 				curSelected = i;
 
+		Controls.checkKeys = false;
+
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = 0xFF7DD47D;
 		bg.antialiasing = ClientPrefs.data.antialiasing;
@@ -143,6 +145,7 @@ class AndroidControlsSubState extends FlxSubState
 			FlxColor.BLACK, true);
 		text.borderSize = 3;
 		text.borderQuality = 1;
+		add(text);
 		return text;
 	}
 
