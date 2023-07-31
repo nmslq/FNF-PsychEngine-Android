@@ -29,7 +29,6 @@ class MusicBeatState extends FlxUIState
 	#if android
 	public static var androidControls:AndroidControls;
 	public static var virtualPad:FlxVirtualPad;
-	public static var checkHitbox:Bool = false;
 
 	public function addVirtualPad(DPad:FlxDPadMode, Action:FlxActionMode)
 	{
@@ -55,14 +54,6 @@ class MusicBeatState extends FlxUIState
 			removeAndroidControls();
 
 		androidControls = new AndroidControls();
-
-		switch (AndroidControls.mode)
-		{
-			case 'hitbox':
-				checkHitbox = true;
-			default:
-				checkHitbox = false;
-		}
 
 		var camControls:FlxCamera = new FlxCamera();
 		FlxG.cameras.add(camControls, DefaultDrawTarget);
