@@ -951,4 +951,10 @@ class EditorPlayState extends MusicBeatSubstate
 		androidControls.visible = false;
 		add(androidControls);
 	}
+
+	function removeAndroidControls()
+	{
+		if (androidControls != null)
+			remove(androidControls);
+	}
 }
