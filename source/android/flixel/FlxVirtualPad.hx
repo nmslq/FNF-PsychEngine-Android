@@ -15,7 +15,6 @@ enum FlxDPadMode
 	UP_LEFT_RIGHT;
 	LEFT_FULL;
 	RIGHT_FULL;
-	BOTH_FULL;
 	NONE;
 }
 
@@ -46,11 +45,6 @@ class FlxVirtualPad extends FlxSpriteGroup
 	public var buttonUp:FlxButton = new FlxButton(0, 0);
 	public var buttonRight:FlxButton = new FlxButton(0, 0);
 	public var buttonDown:FlxButton = new FlxButton(0, 0);
-
-	public var buttonLeft2:FlxButton = new FlxButton(0, 0);
-	public var buttonUp2:FlxButton = new FlxButton(0, 0);
-	public var buttonRight2:FlxButton = new FlxButton(0, 0);
-	public var buttonDown2:FlxButton = new FlxButton(0, 0);
 
 	public var buttonA:FlxButton = new FlxButton(0, 0);
 	public var buttonB:FlxButton = new FlxButton(0, 0);
@@ -94,15 +88,6 @@ class FlxVirtualPad extends FlxSpriteGroup
 				add(buttonLeft = createButton(FlxG.width - 384, FlxG.height - 309, 'left', 0xFF00FF));
 				add(buttonRight = createButton(FlxG.width - 132, FlxG.height - 309, 'right', 0xFF0000));
 				add(buttonDown = createButton(FlxG.width - 258, FlxG.height - 201, 'down', 0x00FFFF));
-			case BOTH_FULL:
-				add(buttonUp = createButton(105, FlxG.height - 345, 'up', 0x00FF00));
-				add(buttonLeft = createButton(0, FlxG.height - 243, 'left', 0xFF00FF));
-				add(buttonRight = createButton(207, FlxG.height - 243, 'right', 0xFF0000));
-				add(buttonDown = createButton(105, FlxG.height - 135, 'down', 0x00FFFF));
-				add(buttonUp2 = createButton(FlxG.width - 258, FlxG.height - 408, 'up', 0x00FF00));
-				add(buttonLeft2 = createButton(FlxG.width - 384, FlxG.height - 309, 'left', 0xFF00FF));
-				add(buttonRight2 = createButton(FlxG.width - 132, FlxG.height - 309, 'right', 0xFF0000));
-				add(buttonDown2 = createButton(FlxG.width - 258, FlxG.height - 201, 'down', 0x00FFFF));
 			case NONE: // do nothing
 		}
 
@@ -167,6 +152,7 @@ class FlxVirtualPad extends FlxSpriteGroup
 		buttonUp = FlxDestroyUtil.destroy(buttonUp);
 		buttonDown = FlxDestroyUtil.destroy(buttonDown);
 		buttonRight = FlxDestroyUtil.destroy(buttonRight);
+
 		buttonA = FlxDestroyUtil.destroy(buttonA);
 		buttonB = FlxDestroyUtil.destroy(buttonB);
 		buttonC = FlxDestroyUtil.destroy(buttonC);
