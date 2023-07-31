@@ -175,10 +175,6 @@ class Controls
     		result= (MusicBeatState.androidControls.hitbox.hints[3].justPressed == true);
     		if(result) controllerMode = true;
 		    }
-		    if (key == 'space' && ClientPrefs.data.hitboxExtend){
-		    result= (MusicBeatState.androidControls.newhbox.buttonSpace.justPressed == true);
-    		if(result) controllerMode = true;
-		    }
 		}
 		else{		
     		if (key == 'note_up'){
@@ -292,10 +288,6 @@ class Controls
     		result= (MusicBeatState.androidControls.hitbox.hints[3].pressed == true);
     		if(result) controllerMode = true;
 		    }		    		    
-		    if (key == 'space' && ClientPrefs.data.hitboxExtend){
-		    result= (MusicBeatState.androidControls.newhbox.buttonSpace.pressed == true);
-    		if(result) controllerMode = true;
-		    }
 		}
 		else{		
     		if (key == 'note_up'){
@@ -406,10 +398,6 @@ class Controls
     		result= (MusicBeatState.androidControls.hitbox.hints[3].justReleased == true);
     		if(result) controllerMode = true;
 		    }		    		    
-		    if (key == 'space' && ClientPrefs.data.hitboxExtend){
-		    result= (MusicBeatState.androidControls.newhbox.buttonSpace.justReleased == true);
-    		if(result) controllerMode = true;
-		    }
 		}
 		else{		
     		if (key == 'note_up'){
