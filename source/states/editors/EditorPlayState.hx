@@ -152,7 +152,7 @@ class EditorPlayState extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-		if(controls.BACK || FlxG.keys.justPressed.ESCAPE #if android || FlxG.android.justReleased.BACK #end)
+		if(#if android FlxG.android.justReleased.BACK #else controls.BACK #end || FlxG.keys.justPressed.ESCAPE)
 		{
 			endSong();
 			super.update(elapsed);
