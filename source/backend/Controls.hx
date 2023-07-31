@@ -93,7 +93,7 @@ class Controls
 	#if android
 	public static var checkKeys:Bool = true;
 	public static var checkStates:Bool = true;
-	public static var controlsType:Int = -1; // -1 = null, 0 = Hitbox, 1 = Vpad, 2 = TVpad
+	public static var controlsType:Int = -1; // -1 = null, 0 = Hitbox, 1 = Vpad
 	#end
 
 	public function justPressed(key:String)
