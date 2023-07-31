@@ -93,7 +93,7 @@ class Controls
 	#if android
 	public static var checkKeys:Bool = true;
 	public static var checkStates:Bool = true;
-	public static var controlsType:Int = 0; // 0 = Hitbox, 1 = Vpad, 2 = TVpad
+	public static var controlsType:Int = -1; // -1 = null, 0 = Hitbox, 1 = Vpad, 2 = TVpad
 	#end
 
 	public function justPressed(key:String)
@@ -147,7 +147,7 @@ class Controls
 			if (key == 'note_right')
 				result = (MusicBeatState.androidControls.hitbox.hints[3].justPressed == true);
 		}
-		else
+		else if (controlsType == 1)
 		{
 			if (key == 'note_up')
 				result = (MusicBeatState.androidControls.virtualPad.buttonUp.justPressed == true);
@@ -214,7 +214,7 @@ class Controls
 			if (key == 'note_right')
 				result = (MusicBeatState.androidControls.hitbox.hints[3].pressed == true);
 		}
-		else
+		else if (controlsType == 1)
 		{
 			if (key == 'note_up')
 				result = (MusicBeatState.androidControls.virtualPad.buttonUp.pressed == true);
@@ -281,7 +281,7 @@ class Controls
 			if (key == 'note_right')
 				result = (MusicBeatState.androidControls.hitbox.hints[3].justReleased == true);
 		}
-		else
+		else if (controlsType == 1)
 		{
 			if (key == 'note_up')
 				result = (MusicBeatState.androidControls.virtualPad.buttonUp.justReleased == true);
@@ -369,6 +369,7 @@ class Controls
 			case 'Pad-Left' | 'Pad-Custom' | 'Pad-Right':
 				controlsType = 1;
 			default:
+				controlsType = -1;
 		}
 	}
 }
