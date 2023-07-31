@@ -28,13 +28,10 @@ class AndroidControls extends FlxSpriteGroup
 			case 'Pad-Custom':
 				virtualPad = AndroidControls.customVirtualPad;
 				add(virtualPad);
-			case 'Pad-Duo':
-				virtualPad = new FlxVirtualPad(BOTH_FULL, NONE);
-				add(virtualPad);
 			case 'Hitbox':
 				hitbox = new FlxHitbox(4, Std.int(FlxG.width / 4), FlxG.height, [0xFF00FF, 0x00FFFF, 0x00FF00, 0xFF0000]);
 				add(hitbox);
-			case 'Keyboard':
+			default:
 		}
 	}
 
@@ -76,6 +73,7 @@ class AndroidControls extends FlxSpriteGroup
 	private static function get_customVirtualPad():FlxVirtualPad
 	{
 		var virtualPad:FlxVirtualPad = new FlxVirtualPad(RIGHT_FULL, NONE);
+
 		if (FlxG.save.data.buttons == null)
 			return virtualPad;
 
@@ -111,7 +109,6 @@ class AndroidControls extends FlxSpriteGroup
 				tempCount++;
 			}
 		}
-
 		return virtualPad;
 	}
 }
