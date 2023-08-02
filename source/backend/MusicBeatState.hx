@@ -33,7 +33,7 @@ class MusicBeatState extends FlxUIState
 	public function addVirtualPad(DPad:FlxDPadMode, Action:FlxActionMode)
 	{
 		if (virtualPad != null)
-			removeVirtualPad();
+			remove(virtualPad);
 
 		virtualPad = new FlxVirtualPad(DPad, Action);
 		add(virtualPad);
@@ -51,7 +51,7 @@ class MusicBeatState extends FlxUIState
 	public function addAndroidControls(DefaultDrawTarget:Bool = true)
 	{
 		if (androidControls != null)
-			removeAndroidControls();
+			remove(androidControls);
 
 		androidControls = new AndroidControls();
 
@@ -62,12 +62,6 @@ class MusicBeatState extends FlxUIState
 		androidControls.cameras = [camControls];
 		androidControls.visible = false;
 		add(androidControls);
-	}
-
-	public function removeAndroidControls()
-	{
-		if (androidControls != null)
-			remove(androidControls);
 	}
 
 	public function addPadCamera(DefaultDrawTarget:Bool = true)

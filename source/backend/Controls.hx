@@ -135,7 +135,6 @@ class Controls
 		    }
 		}
 
-		getKeys();
 		if (controlsType == 0)
 		{
 			if (key == 'note_left')
@@ -202,7 +201,6 @@ class Controls
 		    }
 		}
 
-		getKeys();
 		if (controlsType == 0)
 		{
 			if (key == 'note_left')
@@ -269,7 +267,6 @@ class Controls
 		    }
 		}
 
-		getKeys();
 		if (controlsType == 0)
 		{
 			if (key == 'note_left')
@@ -360,7 +357,7 @@ class Controls
 		gamepadBinds = ClientPrefs.gamepadBinds;
 	}
 
-	private function getKeys()
+	public function getKeys()
 	{
 		switch (AndroidControls.mode)
 		{
@@ -368,7 +365,7 @@ class Controls
 				controlsType = 0;
 			case 'Pad-Left' | 'Pad-Custom' | 'Pad-Right':
 				controlsType = 1;
-			default:
+			case 'Keyboard':
 				controlsType = -1;
 		}
 	}
