@@ -357,7 +357,7 @@ class Controls
 		gamepadBinds = ClientPrefs.gamepadBinds;
 	}
 
-	public function getKeys()
+	public static function getKeys()
 	{
 		switch (AndroidControls.mode)
 		{
