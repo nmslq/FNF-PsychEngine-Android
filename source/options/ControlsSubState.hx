@@ -276,7 +276,7 @@ class ControlsSubState extends MusicBeatSubstate
 
 		if(!binding)
 		{
-			if(FlxG.keys.justPressed.ESCAPE || FlxG.gamepads.anyJustPressed(B) #if android || MusicBeatState.virtualPad.buttonB.justPressed #end)
+			if(FlxG.keys.justPressed.ESCAPE || FlxG.gamepads.anyJustPressed(B) #if android || MusicBeatSubstate.virtualPad.buttonB.justPressed #end)
 			{
 				#if android
 				flixel.addons.transition.FlxTransitionableState.skipNextTransOut = true;
@@ -286,15 +286,15 @@ class ControlsSubState extends MusicBeatSubstate
 				#end
 				return;
 			}
-			if(FlxG.keys.justPressed.CONTROL || FlxG.gamepads.anyJustPressed(LEFT_SHOULDER) || FlxG.gamepads.anyJustPressed(RIGHT_SHOULDER) #if android || MusicBeatState.virtualPad.buttonC.justPressed #end) swapMode();
+			if(FlxG.keys.justPressed.CONTROL || FlxG.gamepads.anyJustPressed(LEFT_SHOULDER) || FlxG.gamepads.anyJustPressed(RIGHT_SHOULDER) #if android || MusicBeatSubstate.virtualPad.buttonC.justPressed #end) swapMode();
 
-			if(FlxG.keys.justPressed.LEFT || FlxG.keys.justPressed.RIGHT #if android || MusicBeatState.virtualPad.buttonLeft.justPressed || MusicBeatState.virtualPad.buttonRight.justPressed #end || FlxG.gamepads.anyJustPressed(DPAD_LEFT) || FlxG.gamepads.anyJustPressed(DPAD_RIGHT) ||
+			if(FlxG.keys.justPressed.LEFT || FlxG.keys.justPressed.RIGHT #if android || MusicBeatSubstate.virtualPad.buttonLeft.justPressed || MusicBeatSubstate.virtualPad.buttonRight.justPressed #end || FlxG.gamepads.anyJustPressed(DPAD_LEFT) || FlxG.gamepads.anyJustPressed(DPAD_RIGHT) ||
 				FlxG.gamepads.anyJustPressed(LEFT_STICK_DIGITAL_LEFT) || FlxG.gamepads.anyJustPressed(LEFT_STICK_DIGITAL_RIGHT)) updateAlt(true);
 
-			if(FlxG.keys.justPressed.UP #if android || MusicBeatState.virtualPad.buttonUp.justPressed #end || FlxG.gamepads.anyJustPressed(DPAD_UP) || FlxG.gamepads.anyJustPressed(LEFT_STICK_DIGITAL_UP)) updateText(-1);
-			else if(FlxG.keys.justPressed.DOWN #if android || MusicBeatState.virtualPad.buttonDown.justPressed #end || FlxG.gamepads.anyJustPressed(DPAD_DOWN) || FlxG.gamepads.anyJustPressed(LEFT_STICK_DIGITAL_DOWN)) updateText(1);
+			if(FlxG.keys.justPressed.UP #if android || MusicBeatSubstate.virtualPad.buttonUp.justPressed #end || FlxG.gamepads.anyJustPressed(DPAD_UP) || FlxG.gamepads.anyJustPressed(LEFT_STICK_DIGITAL_UP)) updateText(-1);
+			else if(FlxG.keys.justPressed.DOWN #if android || MusicBeatSubstate.virtualPad.buttonDown.justPressed #end || FlxG.gamepads.anyJustPressed(DPAD_DOWN) || FlxG.gamepads.anyJustPressed(LEFT_STICK_DIGITAL_DOWN)) updateText(1);
 
-			if(FlxG.keys.justPressed.ENTER #if android || MusicBeatState.virtualPad.buttonA.justPressed #end || FlxG.gamepads.anyJustPressed(START) || FlxG.gamepads.anyJustPressed(A))
+			if(FlxG.keys.justPressed.ENTER #if android || MusicBeatSubstate.virtualPad.buttonA.justPressed #end || FlxG.gamepads.anyJustPressed(START) || FlxG.gamepads.anyJustPressed(A))
 			{
 				if(options[curOptions[curSelected]][1] != defaultKey)
 				{
@@ -333,7 +333,7 @@ class ControlsSubState extends MusicBeatSubstate
 		{
 			var altNum:Int = curAlt ? 1 : 0;
 			var curOption:Array<Dynamic> = options[curOptions[curSelected]];
-			if(FlxG.keys.pressed.ESCAPE || FlxG.gamepads.anyPressed(B) #if android || MusicBeatState.virtualPad.buttonB.pressed #end)
+			if(FlxG.keys.pressed.ESCAPE || FlxG.gamepads.anyPressed(B) #if android || MusicBeatSubstate.virtualPad.buttonB.pressed #end)
 			{
 				holdingEsc += elapsed;
 				if(holdingEsc > 0.5)
@@ -342,7 +342,7 @@ class ControlsSubState extends MusicBeatSubstate
 					closeBinding();
 				}
 			}
-			else if (FlxG.keys.pressed.BACKSPACE || FlxG.gamepads.anyPressed(BACK) #if android || MusicBeatState.virtualPad.buttonB.pressed #end)
+			else if (FlxG.keys.pressed.BACKSPACE || FlxG.gamepads.anyPressed(BACK) #if android || MusicBeatSubstate.virtualPad.buttonB.pressed #end)
 			{
 				holdingEsc += elapsed;
 				if(holdingEsc > 0.5)
