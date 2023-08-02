@@ -361,7 +361,7 @@ class Controls
 	{
 		switch (AndroidControls.mode)
 		{
-			case 'hitbox':
+			case 'Hitbox':
 				controlsType = 0;
 			case 'Pad-Left' | 'Pad-Custom' | 'Pad-Right':
 				controlsType = 1;
