@@ -241,6 +241,7 @@ class Controls
 		}
 		for (i in 0...keys.length) {
 			if (key == keys[i])
+			{
 				switch (press)
 				{
 					case 'justPressed':
@@ -250,6 +251,7 @@ class Controls
 					case 'justReleased':
 						return buttons[i].justReleased;
 				}
+			}
 		}
 		return false;
 	}
