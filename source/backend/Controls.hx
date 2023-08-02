@@ -211,6 +211,7 @@ class Controls
 		gamepadBinds = ClientPrefs.gamepadBinds;
 	}
 
+	#if android
 	public static function getKeys()
 	{
 		switch (AndroidControls.mode)
@@ -224,7 +225,6 @@ class Controls
 		}
 	}
 
-	#if android
 	function checkAndroidKeys(key:String, press:String):Bool
 	{
 		var virtualPad = checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad;
