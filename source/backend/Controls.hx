@@ -102,7 +102,61 @@ class Controls
 
 		#if android
 		if (checkKeys)
-			result = checkAndroidKeys(key, 'justPressed');
+		{
+			if (checkStates)
+		    {
+				if (key == 'accept')
+					result = (MusicBeatState.virtualPad.buttonA.justPressed == true);
+				if (key == 'back')
+					result = (MusicBeatState.virtualPad.buttonB.justPressed == true);
+				if (key == 'ui_up')
+					result = (MusicBeatState.virtualPad.buttonUp.justPressed == true);
+				if (key == 'ui_down')
+					result = (MusicBeatState.virtualPad.buttonDown.justPressed == true);
+				if (key == 'ui_left')
+					result = (MusicBeatState.virtualPad.buttonLeft.justPressed == true);
+				if (key == 'ui_right')
+					result = (MusicBeatState.virtualPad.buttonRight.justPressed == true);
+		    }		
+		    else
+		    {
+    		    if (key == 'accept')
+					result = (MusicBeatSubstate.virtualPad.buttonA.justPressed == true);
+				if (key == 'back')
+					result = (MusicBeatSubstate.virtualPad.buttonB.justPressed == true);
+				if (key == 'ui_up')
+					result = (MusicBeatSubstate.virtualPad.buttonUp.justPressed == true);
+				if (key == 'ui_down')
+					result = (MusicBeatSubstate.virtualPad.buttonDown.justPressed == true);
+				if (key == 'ui_left')
+					result = (MusicBeatSubstate.virtualPad.buttonLeft.justPressed == true);
+				if (key == 'ui_right')
+					result = (MusicBeatSubstate.virtualPad.buttonRight.justPressed == true);
+		    }
+		}
+
+		if (controlsType == 0)
+		{
+			if (key == 'note_left')
+				result = (MusicBeatState.androidControls.hitbox.hints[0].justPressed == true);
+			if (key == 'note_down')
+				result = (MusicBeatState.androidControls.hitbox.hints[1].justPressed == true);
+			if (key == 'note_up')
+				result = (MusicBeatState.androidControls.hitbox.hints[2].justPressed == true);
+			if (key == 'note_right')
+				result = (MusicBeatState.androidControls.hitbox.hints[3].justPressed == true);
+		}
+		else if (controlsType == 1)
+		{
+			if (key == 'note_up')
+				result = (MusicBeatState.androidControls.virtualPad.buttonUp.justPressed == true);
+			if (key == 'note_down')
+				result = (MusicBeatState.androidControls.virtualPad.buttonDown.justPressed == true);
+			if (key == 'note_left')
+				result = (MusicBeatState.androidControls.virtualPad.buttonLeft.justPressed == true);
+			if (key == 'note_right')
+				result = (MusicBeatState.androidControls.virtualPad.buttonRight.justPressed == true);
+		}
 
 		if(result) controllerMode = true;
 		#end
@@ -122,7 +176,53 @@ class Controls
 
 		#if android
 		if (checkKeys)
-			result = checkAndroidKeys(key, 'pressed');
+		{
+			if (checkStates)
+		    {
+				if (key == 'ui_up')
+					result = (MusicBeatState.virtualPad.buttonUp.pressed == true);
+				if (key == 'ui_down')
+					result = (MusicBeatState.virtualPad.buttonDown.pressed == true);
+				if (key == 'ui_left')
+					result = (MusicBeatState.virtualPad.buttonLeft.pressed == true);
+				if (key == 'ui_right')
+					result = (MusicBeatState.virtualPad.buttonRight.pressed == true);
+		    }		
+		    else
+		    {
+				if (key == 'ui_up')
+					result = (MusicBeatSubstate.virtualPad.buttonUp.pressed == true);
+				if (key == 'ui_down')
+					result = (MusicBeatSubstate.virtualPad.buttonDown.pressed == true);
+				if (key == 'ui_left')
+					result = (MusicBeatSubstate.virtualPad.buttonLeft.pressed == true);
+				if (key == 'ui_right')
+					result = (MusicBeatSubstate.virtualPad.buttonRight.pressed == true);
+		    }
+		}
+
+		if (controlsType == 0)
+		{
+			if (key == 'note_left')
+				result = (MusicBeatState.androidControls.hitbox.hints[0].pressed == true);
+			if (key == 'note_down')
+				result = (MusicBeatState.androidControls.hitbox.hints[1].pressed == true);
+			if (key == 'note_up')
+				result = (MusicBeatState.androidControls.hitbox.hints[2].pressed == true);
+			if (key == 'note_right')
+				result = (MusicBeatState.androidControls.hitbox.hints[3].pressed == true);
+		}
+		else if (controlsType == 1)
+		{
+			if (key == 'note_up')
+				result = (MusicBeatState.androidControls.virtualPad.buttonUp.pressed == true);
+			if (key == 'note_down')
+				result = (MusicBeatState.androidControls.virtualPad.buttonDown.pressed == true);
+			if (key == 'note_left')
+				result = (MusicBeatState.androidControls.virtualPad.buttonLeft.pressed == true);
+			if (key == 'note_right')
+				result = (MusicBeatState.androidControls.virtualPad.buttonRight.pressed == true);
+		}
 
 		if(result) controllerMode = true;
 		#end
@@ -142,7 +242,53 @@ class Controls
 
 		#if android
 		if (checkKeys)
-			result = checkAndroidKeys(key, 'justReleased');
+		{
+			if (checkStates)
+		    {
+				if (key == 'ui_up')
+					result = (MusicBeatState.virtualPad.buttonUp.justReleased == true);
+				if (key == 'ui_down')
+					result = (MusicBeatState.virtualPad.buttonDown.justReleased == true);
+				if (key == 'ui_left')
+					result = (MusicBeatState.virtualPad.buttonLeft.justReleased == true);
+				if (key == 'ui_right')
+					result = (MusicBeatState.virtualPad.buttonRight.justReleased == true);
+		    }		
+		    else
+		    {
+				if (key == 'ui_up')
+					result = (MusicBeatSubstate.virtualPad.buttonUp.justReleased == true);
+				if (key == 'ui_down')
+					result = (MusicBeatSubstate.virtualPad.buttonDown.justReleased == true);
+				if (key == 'ui_left')
+					result = (MusicBeatSubstate.virtualPad.buttonLeft.justReleased == true);
+				if (key == 'ui_right')
+					result = (MusicBeatSubstate.virtualPad.buttonRight.justReleased == true);
+		    }
+		}
+
+		if (controlsType == 0)
+		{
+			if (key == 'note_left')
+				result = (MusicBeatState.androidControls.hitbox.hints[0].justReleased == true);
+			if (key == 'note_down')
+				result = (MusicBeatState.androidControls.hitbox.hints[1].justReleased == true);
+			if (key == 'note_up')
+				result = (MusicBeatState.androidControls.hitbox.hints[2].justReleased == true);
+			if (key == 'note_right')
+				result = (MusicBeatState.androidControls.hitbox.hints[3].justReleased == true);
+		}
+		else if (controlsType == 1)
+		{
+			if (key == 'note_up')
+				result = (MusicBeatState.androidControls.virtualPad.buttonUp.justReleased == true);
+			if (key == 'note_down')
+				result = (MusicBeatState.androidControls.virtualPad.buttonDown.justReleased == true);
+			if (key == 'note_left')
+				result = (MusicBeatState.androidControls.virtualPad.buttonLeft.justReleased == true);
+			if (key == 'note_right')
+				result = (MusicBeatState.androidControls.virtualPad.buttonRight.justReleased == true);
+		}
 
 		if(result) controllerMode = true;
 		#end
@@ -211,7 +357,6 @@ class Controls
 		gamepadBinds = ClientPrefs.gamepadBinds;
 	}
 
-	#if android
 	public static function getKeys()
 	{
 		switch (AndroidControls.mode)
@@ -224,37 +369,4 @@ class Controls
 				controlsType = -1;
 		}
 	}
-
-	function checkAndroidKeys(key:String, press:String):Bool
-	{
-		var virtualPad = checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad;
-		var hitbox = MusicBeatState.androidControls.hitbox;
-		var keys = ["accept", "back", "ui_up", "ui_down", "ui_left", "ui_right", "note_left", "note_down", "note_up", "note_right"];
-		var buttons = [virtualPad.buttonA, virtualPad.buttonB, virtualPad.buttonUp, virtualPad.buttonDown, virtualPad.buttonLeft, virtualPad.buttonRight, hitbox.hints[0], hitbox.hints[1], hitbox.hints[2], hitbox.hints[3]];
-
-		if (controlsType == 1)
-		{
-			buttons[6] = virtualPad.buttonLeft;
-			buttons[7] = virtualPad.buttonDown;
-			buttons[8] = virtualPad.buttonUp;
-			buttons[9] = virtualPad.buttonRight;
-		}
-		for (i in 0...keys.length)
-		{
-			if (key == keys[i])
-			{
-				switch (press)
-				{
-					case 'justPressed':
-						return buttons[i].justPressed;
-					case 'pressed':
-						return buttons[i].pressed;
-					case 'justReleased':
-						return buttons[i].justReleased;
-				}
-			}
-		}
-		return false;
-	}
-	#end
 }
