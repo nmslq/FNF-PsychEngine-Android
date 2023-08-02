@@ -74,7 +74,7 @@ class EditorPlayState extends MusicBeatSubstate
 	var dataTxt:FlxText;
 	
 	#if android
-	public static var androidControls:AndroidControls;
+	var androidControls:AndroidControls;
 	#end
 
 	public function new(playbackRate:Float)
@@ -154,6 +154,7 @@ class EditorPlayState extends MusicBeatSubstate
 		RecalculateRating();
 
 		#if android
+		Controls.getKeys();
 		addAndroidControls();
 		#end
 	}
@@ -938,23 +939,15 @@ class EditorPlayState extends MusicBeatSubstate
 	function addAndroidControls()
 	{
 		if (androidControls != null)
-			removeAndroidControls();
+			remove(androidControls);
 
 		androidControls = new AndroidControls();
-		androidControls.visible = true;
 
 		var camControls:FlxCamera = new FlxCamera();
 		FlxG.cameras.add(camControls, true);
 		camControls.bgColor.alpha = 0;
 
 		androidControls.cameras = [camControls];
-		androidControls.visible = false;
 		add(androidControls);
-	}
-
-	function removeAndroidControls()
-	{
-		if (androidControls != null)
-			remove(androidControls);
 	}
 }
