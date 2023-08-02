@@ -239,7 +239,8 @@ class Controls
 			buttons[8] = virtualPad.buttonUp;
 			buttons[9] = virtualPad.buttonRight;
 		}
-		for (i in 0...keys.length) {
+		for (i in 0...keys.length)
+		{
 			if (key == keys[i])
 			{
 				switch (press)
