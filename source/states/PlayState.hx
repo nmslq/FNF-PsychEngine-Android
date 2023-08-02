@@ -684,6 +684,7 @@ class PlayState extends MusicBeatState
 		timeTxt.cameras = [camHUD];
 
 		#if android
+		Controls.getKeys();
 		addAndroidControls();
 		#end
 
