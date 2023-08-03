@@ -184,10 +184,7 @@ class PlayState extends MusicBeatState
 	var songPercent:Float = 0;
 
 	public var ratingsData:Array<Rating> = Rating.loadDefault();
-	public var sicks:Int = 0;
-	public var goods:Int = 0;
-	public var bads:Int = 0;
-	public var shits:Int = 0;
+	public var fullComboFunction:Void->Void = null;
 
 	private var generatedMusic:Bool = false;
 	public var endingSong:Bool = false;
@@ -284,6 +281,7 @@ class PlayState extends MusicBeatState
 
 		PauseSubState.songName = null; //Reset to default
 		playbackRate = ClientPrefs.getGameplaySetting('songspeed');
+		fullComboFunction = fullComboUpdate;
 
 		keysArray = [
 			'note_left',
@@ -2540,7 +2538,7 @@ class PlayState extends MusicBeatState
 
 		totalNotesHit += daRating.ratingMod;
 		note.ratingMod = daRating.ratingMod;
-		if(!note.ratingDisabled) daRating.increase();
+		if(!note.ratingDisabled) daRating.hits++;
 		note.rating = daRating.name;
 		score = daRating.score;
 
@@ -3469,7 +3467,7 @@ class PlayState extends MusicBeatState
 							break;
 						}
 			}
-			ratingFC = fullComboUpdate();
+			fullComboFunction();
 		}
 		updateScore(badHit);
 		setOnScripts('rating', ratingPercent);
@@ -3477,16 +3475,22 @@ class PlayState extends MusicBeatState
 		setOnScripts('ratingFC', ratingFC);
 	}
 	
-	function fullComboUpdate():String
+	function fullComboUpdate()
 	{
-		// Rating FC
-		ratingFC = "";
-		if (sicks > 0) ratingFC = "SFC";
-		if (goods > 0) ratingFC = "GFC";
-		if (bads > 0 || shits > 0) ratingFC = "FC";
-		if (songMisses > 0 && songMisses < 10) ratingFC = "SDCB";
-		else if (songMisses >= 10) ratingFC = "Clear";
-		return ratingFC;
+		var sicks:Int = ratingsData[0].hits;
+		var goods:Int = ratingsData[1].hits;
+		var bads:Int = ratingsData[2].hits;
+		var shits:Int = ratingsData[3].hits;
+
+		ratingFC = 'Clear';
+		if(songMisses < 1)
+		{
+			if (bads > 0 || shits > 0) ratingFC = 'FC';
+			else if (goods > 0) ratingFC = 'GFC';
+			else if (sicks > 0) ratingFC = 'SFC';
+		}
+		else if (songMisses < 10)
+			ratingFC = 'SDCB';
 	}
 
 	#if ACHIEVEMENTS_ALLOWED
@@ -3510,28 +3514,28 @@ class PlayState extends MusicBeatState
 					switch(achievementName)
 					{
 						case 'ur_bad':
-							if(ratingPercent < 0.2 && !practiceMode)
-								unlock = true;
+							unlock = (ratingPercent < 0.2 && !practiceMode);
+
 						case 'ur_good':
-							if(ratingPercent >= 1 && !usedPractice)
-								unlock = true;
+							unlock = (ratingPercent >= 1 && !usedPractice);
+
 						case 'roadkill_enthusiast':
-							if(Achievements.henchmenDeath >= 50)
-								unlock = true;
+							unlock = (Achievements.henchmenDeath >= 50);
+
 						case 'oversinging':
-							if(boyfriend.holdTimer >= 10 && !usedPractice)
-								unlock = true;
+							unlock = (boyfriend.holdTimer >= 10 && !usedPractice);
+
 						case 'hype':
-							if(!boyfriendIdled && !usedPractice)
-								unlock = true;
+							unlock = (!boyfriendIdled && !usedPractice);
+
 						case 'two_keys':
 							unlock = (!usedPractice && keysPressed.length <= 2);
+
 						case 'toastie':
-							if(!ClientPrefs.data.shaders && ClientPrefs.data.lowQuality && !ClientPrefs.data.antialiasing)
-								unlock = true;
+							unlock = (/*ClientPrefs.data.framerate <= 60 &&*/ !ClientPrefs.data.shaders && ClientPrefs.data.lowQuality && !ClientPrefs.data.antialiasing);
+
 						case 'debugger':
-							if(Paths.formatToSongPath(SONG.song) == 'test' && !usedPractice)
-								unlock = true;
+							unlock = (Paths.formatToSongPath(SONG.song) == 'test' && !usedPractice);
 					}
 				}
 
