@@ -102,12 +102,7 @@ class Controls
 
 		#if android
 		var virtualPad = checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad;
-		var androidControls = null;
-
-		if (controlsType == 1)
-			androidControls = MusicBeatState.androidControls.virtualPad;
-		else if (controlsType == 0)
-			androidControls = MusicBeatState.androidControls.hitbox;
+		var androidControls = MusicBeatState.androidControls;
 
 		if (checkKeys)
 		{
@@ -128,24 +123,24 @@ class Controls
 		if (controlsType == 0)
 		{
 			if (key == 'note_left')
-				result = (androidControls.hints[0].justPressed == true);
+				result = (androidControls.hitbox.hints[0].justPressed == true);
 			if (key == 'note_down')
-				result = (androidControls.hints[1].justPressed == true);
+				result = (androidControls.hitbox.hints[1].justPressed == true);
 			if (key == 'note_up')
-				result = (androidControls.hints[2].justPressed == true);
+				result = (androidControls.hitbox.hints[2].justPressed == true);
 			if (key == 'note_right')
-				result = (androidControls.hints[3].justPressed == true);
+				result = (androidControls.hitbox.hints[3].justPressed == true);
 		}
 		else if (controlsType == 1)
 		{
 			if (key == 'note_up')
-				result = (androidControls.buttonUp.justPressed == true);
+				result = (androidControls.virtualPad.buttonUp.justPressed == true);
 			if (key == 'note_down')
-				result = (androidControls.buttonDown.justPressed == true);
+				result = (androidControls.virtualPad.buttonDown.justPressed == true);
 			if (key == 'note_left')
-				result = (androidControls.buttonLeft.justPressed == true);
+				result = (androidControls.virtualPad.buttonLeft.justPressed == true);
 			if (key == 'note_right')
-				result = (androidControls.buttonRight.justPressed == true);
+				result = (androidControls.virtualPad.buttonRight.justPressed == true);
 		}
 		if(result) controllerMode = true;
 		#end
@@ -186,24 +181,24 @@ class Controls
 		if (controlsType == 0)
 		{
 			if (key == 'note_left')
-				result = (androidControls.hints[0].pressed == true);
+				result = (androidControls.hitbox.hints[0].pressed == true);
 			if (key == 'note_down')
-				result = (androidControls.hints[1].pressed == true);
+				result = (androidControls.hitbox.hints[1].pressed == true);
 			if (key == 'note_up')
-				result = (androidControls.hints[2].pressed == true);
+				result = (androidControls.hitbox.hints[2].pressed == true);
 			if (key == 'note_right')
-				result = (androidControls.hints[3].pressed == true);
+				result = (androidControls.hitbox.hints[3].pressed == true);
 		}
 		else if (controlsType == 1)
 		{
 			if (key == 'note_up')
-				result = (androidControls.buttonUp.pressed == true);
+				result = (androidControls.virtualPad.buttonUp.pressed == true);
 			if (key == 'note_down')
-				result = (androidControls.buttonDown.pressed == true);
+				result = (androidControls.virtualPad.buttonDown.pressed == true);
 			if (key == 'note_left')
-				result = (androidControls.buttonLeft.pressed == true);
+				result = (androidControls.virtualPad.buttonLeft.pressed == true);
 			if (key == 'note_right')
-				result = (androidControls.buttonRight.pressed == true);
+				result = (androidControls.virtualPad.buttonRight.pressed == true);
 		}
 
 		if(result) controllerMode = true;
@@ -245,24 +240,24 @@ class Controls
 		if (controlsType == 0)
 		{
 			if (key == 'note_left')
-				result = (androidControls.hints[0].justReleased == true);
+				result = (androidControls.hitbox.hints[0].justReleased == true);
 			if (key == 'note_down')
-				result = (androidControls.hints[1].justReleased == true);
+				result = (androidControls.hitbox.hints[1].justReleased == true);
 			if (key == 'note_up')
-				result = (androidControls.hints[2].justReleased == true);
+				result = (androidControls.hitbox.hints[2].justReleased == true);
 			if (key == 'note_right')
-				result = (androidControls.hints[3].justReleased == true);
+				result = (androidControls.hitbox.hints[3].justReleased == true);
 		}
 		else if (controlsType == 1)
 		{
 			if (key == 'note_up')
-				result = (androidControls.buttonUp.justReleased == true);
+				result = (androidControls.virtualPad.buttonUp.justReleased == true);
 			if (key == 'note_down')
-				result = (androidControls.buttonDown.justReleased == true);
+				result = (androidControls.virtualPad.buttonDown.justReleased == true);
 			if (key == 'note_left')
-				result = (androidControls.buttonLeft.justReleased == true);
+				result = (androidControls.virtualPad.buttonLeft.justReleased == true);
 			if (key == 'note_right')
-				result = (androidControls.buttonRight.justReleased == true);
+				result = (androidControls.virtualPad.buttonRight.justReleased == true);
 		}
 
 		if(result) controllerMode = true;
