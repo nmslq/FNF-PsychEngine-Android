@@ -102,11 +102,12 @@ class Controls
 
 		#if android
 		var virtualPad = checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad;
+		var androidControls = null;
 
 		if (controlsType == 1)
-			var androidControls = MusicBeatState.androidControls.virtualPad;
+			androidControls = MusicBeatState.androidControls.virtualPad;
 		else if (controlsType == 0)
-			var androidControls = MusicBeatState.androidControls.hitbox;
+			androidControls = MusicBeatState.androidControls.hitbox;
 
 		if (checkKeys)
 		{
