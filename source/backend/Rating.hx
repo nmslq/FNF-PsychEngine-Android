@@ -6,7 +6,6 @@ class Rating
 {
 	public var name:String = '';
 	public var image:String = '';
-	public var counter:String = '';
 	public var hitWindow:Null<Int> = 0; //ms
 	public var ratingMod:Float = 1;
 	public var score:Int = 350;
@@ -17,7 +16,6 @@ class Rating
 	{
 		this.name = name;
 		this.image = name;
-		this.counter = name + 's';
 		this.hitWindow = 0;
 
 		var window:String = name + 'Window';
@@ -51,7 +49,4 @@ class Rating
 		ratingsData.push(rating);
 		return ratingsData;
 	}
-
-	public function increase(blah:Int = 1)
-		Reflect.setField(PlayState.instance, counter, Reflect.field(PlayState.instance, counter) + blah);
 }
