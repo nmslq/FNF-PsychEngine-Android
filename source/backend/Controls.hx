@@ -228,17 +228,18 @@ class Controls
 	function checkAndroidKeys(key:String, state:String):Bool
 	{
 		var keys = ["accept", "back", "ui_up", "ui_down", "ui_left", "ui_right", "note_left", "note_down", "note_up", "note_right"];
+		var buttons = [];
 		if (checkStates)
-			var buttons = [MusicBeatState.virtualPad.buttonA, MusicBeatState.virtualPad.buttonB, MusicBeatState.virtualPad.buttonUp, MusicBeatState.virtualPad.buttonDown, MusicBeatState.virtualPad.buttonLeft, MusicBeatState.virtualPad.buttonRight, MusicBeatState.androidControls.hitbox.hints[0], MusicBeatState.androidControls.hitbox.hints[1], MusicBeatState.androidControls.hitbox.hints[2], MusicBeatState.androidControls.hitbox.hints[3]];
+			buttons = [MusicBeatState.virtualPad.buttonA, MusicBeatState.virtualPad.buttonB, MusicBeatState.virtualPad.buttonUp, MusicBeatState.virtualPad.buttonDown, MusicBeatState.virtualPad.buttonLeft, MusicBeatState.virtualPad.buttonRight, MusicBeatState.androidControls.hitbox.hints[0], MusicBeatState.androidControls.hitbox.hints[1], MusicBeatState.androidControls.hitbox.hints[2], MusicBeatState.androidControls.hitbox.hints[3]];
 		else
-			var buttons = [MusicBeatSubstate.virtualPad.buttonA, MusicBeatSubstate.virtualPad.buttonB, MusicBeatSubstate.virtualPad.buttonUp, MusicBeatSubstate.virtualPad.buttonDown, MusicBeatSubstate.virtualPad.buttonLeft, MusicBeatSubstate.virtualPad.buttonRight, MusicBeatState.androidControls.hitbox.hints[0], MusicBeatState.androidControls.hitbox.hints[1], MusicBeatState.androidControls.hitbox.hints[2], MusicBeatState.androidControls.hitbox.hints[3]];
+			buttons = [MusicBeatSubstate.virtualPad.buttonA, MusicBeatSubstate.virtualPad.buttonB, MusicBeatSubstate.virtualPad.buttonUp, MusicBeatSubstate.virtualPad.buttonDown, MusicBeatSubstate.virtualPad.buttonLeft, MusicBeatSubstate.virtualPad.buttonRight, MusicBeatState.androidControls.hitbox.hints[0], MusicBeatState.androidControls.hitbox.hints[1], MusicBeatState.androidControls.hitbox.hints[2], MusicBeatState.androidControls.hitbox.hints[3]];
 
 		if (controlsType == 1)
 		{
 			buttons[6] = MusicBeatState.androidControls.virtualPad.buttonLeft;
 			buttons[7] = MusicBeatState.androidControls.virtualPad.buttonDown;
-		    buttons[8] = MusicBeatState.androidControls.virtualPad.buttonUp;
-		    buttons[9] = MusicBeatState.androidControls.virtualPad.buttonRight;
+			buttons[8] = MusicBeatState.androidControls.virtualPad.buttonUp;
+			buttons[9] = MusicBeatState.androidControls.virtualPad.buttonRight;
 		}
 		for (i in 0...keys.length)
 		{
