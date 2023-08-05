@@ -40,6 +40,17 @@ jobs:
         with:
           haxe-version: 4.2.5
 
+      - name: Restore Previous Cache
+        id: cache-debug-build-android-restore
+        uses: actions/cache/restore@main
+        with:
+          path: |
+            ~/haxelib
+            ~/.gradle
+            export/release/android/haxe
+            export/release/android/obj
+          key: cache-android-build
+
       - name: Install Haxelib
         run: |
           haxelib setup ~/haxelib
