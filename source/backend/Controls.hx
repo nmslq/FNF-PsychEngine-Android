@@ -101,22 +101,23 @@ class Controls
 		var result:Bool = false;
 
 		#if android
+		var virtualPad = MusicBeatState.virtualPad;
 		if (checkKeys)
 		{
 			if (checkStates)
 		    {
 				if (key == 'accept')
-					result = (MusicBeatState.virtualPad.buttonA.justPressed == true);
+					result = (virtualPad.buttonA.justPressed == true);
 				if (key == 'back')
-					result = (MusicBeatState.virtualPad.buttonB.justPressed == true);
+					result = (virtualPad.buttonB.justPressed == true);
 				if (key == 'ui_up')
-					result = (MusicBeatState.virtualPad.buttonUp.justPressed == true);
+					result = (virtualPad.buttonUp.justPressed == true);
 				if (key == 'ui_down')
-					result = (MusicBeatState.virtualPad.buttonDown.justPressed == true);
+					result = (virtualPad.buttonDown.justPressed == true);
 				if (key == 'ui_left')
-					result = (MusicBeatState.virtualPad.buttonLeft.justPressed == true);
+					result = (virtualPad.buttonLeft.justPressed == true);
 				if (key == 'ui_right')
-					result = (MusicBeatState.virtualPad.buttonRight.justPressed == true);
+					result = (virtualPad.buttonRight.justPressed == true);
 		    }		
 		    else
 		    {
@@ -175,18 +176,19 @@ class Controls
 		var result:Bool = false;
 
 		#if android
+		var virtualPad = MusicBeatState.virtualPad;
 		if (checkKeys)
 		{
 			if (checkStates)
 		    {
 				if (key == 'ui_up')
-					result = (MusicBeatState.virtualPad.buttonUp.pressed == true);
+					result = (virtualPad.buttonUp.pressed == true);
 				if (key == 'ui_down')
-					result = (MusicBeatState.virtualPad.buttonDown.pressed == true);
+					result = (virtualPad.buttonDown.pressed == true);
 				if (key == 'ui_left')
-					result = (MusicBeatState.virtualPad.buttonLeft.pressed == true);
+					result = (virtualPad.buttonLeft.pressed == true);
 				if (key == 'ui_right')
-					result = (MusicBeatState.virtualPad.buttonRight.pressed == true);
+					result = (virtualPad.buttonRight.pressed == true);
 		    }		
 		    else
 		    {
@@ -241,18 +243,19 @@ class Controls
 		var result:Bool = false;
 
 		#if android
+		var virtualPad = MusicBeatState.virtualPad;
 		if (checkKeys)
 		{
 			if (checkStates)
 		    {
 				if (key == 'ui_up')
-					result = (MusicBeatState.virtualPad.buttonUp.justReleased == true);
+					result = (virtualPad.buttonUp.justReleased == true);
 				if (key == 'ui_down')
-					result = (MusicBeatState.virtualPad.buttonDown.justReleased == true);
+					result = (virtualPad.buttonDown.justReleased == true);
 				if (key == 'ui_left')
-					result = (MusicBeatState.virtualPad.buttonLeft.justReleased == true);
+					result = (virtualPad.buttonLeft.justReleased == true);
 				if (key == 'ui_right')
-					result = (MusicBeatState.virtualPad.buttonRight.justReleased == true);
+					result = (virtualPad.buttonRight.justReleased == true);
 		    }		
 		    else
 		    {
