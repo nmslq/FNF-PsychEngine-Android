@@ -109,7 +109,7 @@ class NoteSplashDebugState extends MusicBeatState
 		var text:FlxText = new FlxText(0, 520, FlxG.width,
 			"Press B to Reset animation\n
 			Press A twice to save to the loaded Note Splash PNG's folder\n
-			Left/Right change selected note - Arrow Keys to change offset (Hold F for 10x)\n
+			Left/Right change selected note - Arrow Keys to change offset (Hold D for 10x)\n
 			Z + C/V - Copy & Paste", 16);
 		#else
 		var text:FlxText = new FlxText(0, 520, FlxG.width,
