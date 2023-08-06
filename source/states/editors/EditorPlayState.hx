@@ -959,7 +959,7 @@ class EditorPlayState extends MusicBeatSubstate
 	{
 		var result:Bool = false;
 
-		if (controlsType == 0)
+		if (Controls.controlsType == 0)
 		{
 			if (key == 'note_left')
 				result = (androidControls.hitbox.hints[0].pressed == true);
@@ -970,7 +970,7 @@ class EditorPlayState extends MusicBeatSubstate
 			if (key == 'note_right')
 				result = (androidControls.hitbox.hints[3].pressed == true);
 		}
-		else if (controlsType == 1)
+		else if (Controls.controlsType == 1)
 		{
 			if (key == 'note_up')
 				result = (androidControls.virtualPad.buttonUp.pressed == true);
@@ -981,13 +981,14 @@ class EditorPlayState extends MusicBeatSubstate
 			if (key == 'note_right')
 				result = (androidControls.virtualPad.buttonRight.pressed == true);
 		}
+		return result;
 	}
 
 	function keysJustPressed(key:String):Bool
 	{
 		var result:Bool = false;
 
-		if (controlsType == 0)
+		if (Controls.controlsType == 0)
 		{
 			if (key == 'note_left')
 				result = (androidControls.hitbox.hints[0].justPressed == true);
@@ -998,7 +999,7 @@ class EditorPlayState extends MusicBeatSubstate
 			if (key == 'note_right')
 				result = (androidControls.hitbox.hints[3].justPressed == true);
 		}
-		else if (controlsType == 1)
+		else if (Controls.controlsType == 1)
 		{
 			if (key == 'note_up')
 				result = (androidControls.virtualPad.buttonUp.justPressed == true);
@@ -1009,13 +1010,14 @@ class EditorPlayState extends MusicBeatSubstate
 			if (key == 'note_right')
 				result = (androidControls.virtualPad.buttonRight.justPressed == true);
 		}
+		return result;
 	}
 
 	function keysJustReleased(key:String):Bool
 	{
 		var result:Bool = false;
 
-		if (controlsType == 0)
+		if (Controls.controlsType == 0)
 		{
 			if (key == 'note_left')
 				result = (androidControls.hitbox.hints[0].justReleased == true);
@@ -1026,7 +1028,7 @@ class EditorPlayState extends MusicBeatSubstate
 			if (key == 'note_right')
 				result = (androidControls.hitbox.hints[3].justReleased == true);
 		}
-		else if (controlsType == 1)
+		else if (Controls.controlsType == 1)
 		{
 			if (key == 'note_up')
 				result = (androidControls.virtualPad.buttonUp.justReleased == true);
@@ -1037,5 +1039,6 @@ class EditorPlayState extends MusicBeatSubstate
 			if (key == 'note_right')
 				result = (androidControls.virtualPad.buttonRight.justReleased == true);
 		}
+		return result;
 	}
 }
