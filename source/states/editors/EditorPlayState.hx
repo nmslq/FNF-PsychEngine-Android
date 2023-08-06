@@ -352,9 +352,7 @@ class EditorPlayState extends MusicBeatSubstate
 				var gottaHitNote:Bool = section.mustHitSection;
 
 				if (songNotes[1] > 3)
-				{
 					gottaHitNote = !section.mustHitSection;
-				}
 
 				var oldNote:Note;
 				if (unspawnNotes.length > 0)
@@ -758,12 +756,21 @@ class EditorPlayState extends MusicBeatSubstate
 		var holdArray:Array<Bool> = [];
 		var pressArray:Array<Bool> = [];
 		var releaseArray:Array<Bool> = [];
+		#if !android
 		for (key in keysArray)
 		{
 			holdArray.push(controls.pressed(key));
 			pressArray.push(controls.justPressed(key));
 			releaseArray.push(controls.justReleased(key));
 		}
+		#else
+		for (key in keysArray)
+		{
+			holdArray.push(keysPressed(key));
+			pressArray.push(keysJustPressed(key));
+			releaseArray.push(keysJustReleased(key));
+		}
+		#end
 
 		// TO DO: Find a better way to handle controller inputs, this should work for now
 		if(controls.controllerMode && pressArray.contains(true))
@@ -949,5 +956,89 @@ class EditorPlayState extends MusicBeatSubstate
 
 		androidControls.cameras = [camControls];
 		add(androidControls);
+	}
+
+	function keysPressed(key:String):Bool
+	{
+		var result:Bool = false;
+
+		if (controlsType == 0)
+		{
+			if (key == 'note_left')
+				result = (androidControls.hitbox.hints[0].pressed == true);
+			if (key == 'note_down')
+				result = (androidControls.hitbox.hints[1].pressed == true);
+			if (key == 'note_up')
+				result = (androidControls.hitbox.hints[2].pressed == true);
+			if (key == 'note_right')
+				result = (androidControls.hitbox.hints[3].pressed == true);
+		}
+		else if (controlsType == 1)
+		{
+			if (key == 'note_up')
+				result = (androidControls.virtualPad.buttonUp.pressed == true);
+			if (key == 'note_down')
+				result = (androidControls.virtualPad.buttonDown.pressed == true);
+			if (key == 'note_left')
+				result = (androidControls.virtualPad.buttonLeft.pressed == true);
+			if (key == 'note_right')
+				result = (androidControls.virtualPad.buttonRight.pressed == true);
+		}
+	}
+
+	function keysJustPressed(key:String):Bool
+	{
+		var result:Bool = false;
+
+		if (controlsType == 0)
+		{
+			if (key == 'note_left')
+				result = (androidControls.hitbox.hints[0].justPressed == true);
+			if (key == 'note_down')
+				result = (androidControls.hitbox.hints[1].justPressed == true);
+			if (key == 'note_up')
+				result = (androidControls.hitbox.hints[2].justPressed == true);
+			if (key == 'note_right')
+				result = (androidControls.hitbox.hints[3].justPressed == true);
+		}
+		else if (controlsType == 1)
+		{
+			if (key == 'note_up')
+				result = (androidControls.virtualPad.buttonUp.justPressed == true);
+			if (key == 'note_down')
+				result = (androidControls.virtualPad.buttonDown.justPressed == true);
+			if (key == 'note_left')
+				result = (androidControls.virtualPad.buttonLeft.justPressed == true);
+			if (key == 'note_right')
+				result = (androidControls.virtualPad.buttonRight.justPressed == true);
+		}
+	}
+
+	function keysJustReleased(key:String):Bool
+	{
+		var result:Bool = false;
+
+		if (controlsType == 0)
+		{
+			if (key == 'note_left')
+				result = (androidControls.hitbox.hints[0].justReleased == true);
+			if (key == 'note_down')
+				result = (androidControls.hitbox.hints[1].justReleased == true);
+			if (key == 'note_up')
+				result = (androidControls.hitbox.hints[2].justReleased == true);
+			if (key == 'note_right')
+				result = (androidControls.hitbox.hints[3].justReleased == true);
+		}
+		else if (controlsType == 1)
+		{
+			if (key == 'note_up')
+				result = (androidControls.virtualPad.buttonUp.justReleased == true);
+			if (key == 'note_down')
+				result = (androidControls.virtualPad.buttonDown.justReleased == true);
+			if (key == 'note_left')
+				result = (androidControls.virtualPad.buttonLeft.justReleased == true);
+			if (key == 'note_right')
+				result = (androidControls.virtualPad.buttonRight.justReleased == true);
+		}
 	}
 }
