@@ -756,21 +756,18 @@ class EditorPlayState extends MusicBeatSubstate
 		var holdArray:Array<Bool> = [];
 		var pressArray:Array<Bool> = [];
 		var releaseArray:Array<Bool> = [];
-		#if !android
 		for (key in keysArray)
 		{
+			#if !android
 			holdArray.push(controls.pressed(key));
 			pressArray.push(controls.justPressed(key));
 			releaseArray.push(controls.justReleased(key));
-		}
-		#else
-		for (key in keysArray)
-		{
+			#else
 			holdArray.push(keysPressed(key));
 			pressArray.push(keysJustPressed(key));
 			releaseArray.push(keysJustReleased(key));
+			#end
 		}
-		#end
 
 		// TO DO: Find a better way to handle controller inputs, this should work for now
 		if(controls.controllerMode && pressArray.contains(true))
