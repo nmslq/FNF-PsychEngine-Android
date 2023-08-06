@@ -537,17 +537,25 @@ class PlayState extends MusicBeatState
 
 		stagesFunc(function(stage:BaseStage) stage.createPost());
 
+		comboGroup = new FlxSpriteGroup();
+		add(comboGroup);
+		uiGroup = new FlxSpriteGroup();
+		add(uiGroup);
+
 		Conductor.songPosition = -5000 / Conductor.songPosition;
 
-		if (ClientPrefs.data.laneUnderlay > 0) {
-			for (i in 0...2) {
-				lane = new FlxSprite(42 + 50 + (FlxG.width/2 * i) - 10, 0).makeGraphic(Std.int(42 + Note.swagWidth * 3 + 90), FlxG.height);
+		if (ClientPrefs.data.laneUnderlay > 0)
+		{
+			for (i in 0...2)
+			{
+				lane = new FlxSprite(42 + 50 + (FlxG.width / 2 * i) - 10, 0).makeGraphic(Std.int(42 + Note.swagWidth * 3 + 90), FlxG.height);
 				lane.color = FlxColor.BLACK;
 				lane.alpha = ClientPrefs.data.laneUnderlay;
-				add(lane);
+				uiGroup.add(lane);
 				lane.cameras = [camHUD];
 
-				if (ClientPrefs.data.middleScroll) {
+				if (ClientPrefs.data.middleScroll)
+				{
 					lane.screenCenter(X);
 					lane.alpha = ClientPrefs.data.laneUnderlay / 2;
 				}
@@ -569,8 +577,8 @@ class PlayState extends MusicBeatState
 		timeBar.screenCenter(X);
 		timeBar.alpha = 0;
 		timeBar.visible = showTime;
-		add(timeBar);
-		add(timeTxt);
+		uiGroup.add(timeBar);
+		uiGroup.add(timeTxt);
 
 		strumLineNotes = new FlxTypedGroup<StrumNote>();
 		add(strumLineNotes);
@@ -620,7 +628,7 @@ class PlayState extends MusicBeatState
 		healthBar.visible = !ClientPrefs.data.hideHud;
 		healthBar.alpha = ClientPrefs.data.healthBarAlpha;
 		reloadHealthBarColors();
-		add(healthBar);
+		uiGroup.add(healthBar);
 
 		healthStrips = new FlxSprite().loadGraphic(Paths.image('healthBarOverlay'));
 		healthStrips.y = FlxG.height * 0.89;
@@ -631,35 +639,39 @@ class PlayState extends MusicBeatState
 		healthStrips.color = FlxColor.BLACK;
 		healthStrips.blend = MULTIPLY;
 		healthStrips.x = healthBar.x - 5.9;
-		add(healthStrips);
+		uiGroup.add(healthStrips);
 		if(ClientPrefs.data.downScroll) healthStrips.y = 0.11 * FlxG.height;
 
 		iconP1 = new HealthIcon(boyfriend.healthIcon, true);
 		iconP1.y = healthBar.y - 75;
 		iconP1.visible = !ClientPrefs.data.hideHud;
 		iconP1.alpha = ClientPrefs.data.healthBarAlpha;
-		add(iconP1);
+		uiGroup.add(iconP1);
 
 		iconP2 = new HealthIcon(dad.healthIcon, false);
 		iconP2.y = healthBar.y - 75;
 		iconP2.visible = !ClientPrefs.data.hideHud;
 		iconP2.alpha = ClientPrefs.data.healthBarAlpha;
-		add(iconP2);
+		uiGroup.add(iconP2);
 
 		scoreTxt = new FlxText(0, healthBar.y + 40, FlxG.width, "", 20);
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreTxt.scrollFactor.set();
 		scoreTxt.borderSize = 1.25;
 		scoreTxt.visible = !ClientPrefs.data.hideHud;
-		add(scoreTxt);
+		updateScore(false);
+		uiGroup.add(scoreTxt);
 
 		botplayTxt = new FlxText(400, timeBar.y + 55, FlxG.width - 800, "BOTPLAY", 32);
 		botplayTxt.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		botplayTxt.scrollFactor.set();
 		botplayTxt.borderSize = 1.25;
 		botplayTxt.visible = cpuControlled;
-		add(botplayTxt);
-		if(ClientPrefs.data.downScroll) botplayTxt.y = timeBar.y - 78;
+		uiGroup.add(botplayTxt);
+
+		if(ClientPrefs.data.downScroll)
+			botplayTxt.y = timeBar.y - 78;
+
 		if(ClientPrefs.data.middleScroll) {
 			if(ClientPrefs.data.downScroll)
 				botplayTxt.y = botplayTxt.y - 78;
@@ -671,15 +683,8 @@ class PlayState extends MusicBeatState
 		grpNoteSplashes.cameras = [camHUD];
 		notes.cameras = [camHUD];
 
-		healthStrips.cameras = [camHUD];
-		healthBar.cameras = [camHUD];
-		iconP1.cameras = [camHUD];
-		iconP2.cameras = [camHUD];
-		scoreTxt.cameras = [camHUD];
-
-		botplayTxt.cameras = [camHUD];
-		timeBar.cameras = [camHUD];
-		timeTxt.cameras = [camHUD];
+		uiGroup.cameras = [camHUD];
+		comboGroup.cameras = [camHUD];
 
 		#if android
 		Controls.getKeys();
@@ -691,7 +696,6 @@ class PlayState extends MusicBeatState
 		#if LUA_ALLOWED
 		for (notetype in noteTypes)
 			startLuasNamed('custom_notetypes/' + notetype + '.lua');
-
 		for (event in eventsPushed)
 			startLuasNamed('custom_events/' + event + '.lua');
 		#end
@@ -2504,12 +2508,10 @@ class PlayState extends MusicBeatState
 	public var showComboNum:Bool = true;
 	public var showRating:Bool = true;
 
-	// stores the last judgement object
-	var lastRating:FlxSprite;
-	// stores the last combo sprite object
-	var lastCombo:FlxSprite;
-	// stores the last combo score objects in an array
-	var lastScore:Array<FlxSprite> = [];
+	// Stores Ratings and Combo Sprites in a group
+	public var comboGroup:FlxSpriteGroup;
+	// Stores HUD Elements in a Group
+	public var uiGroup:FlxSpriteGroup;
 
 	private function cachePopUpScore()
 	{
@@ -2532,6 +2534,13 @@ class PlayState extends MusicBeatState
 	{
 		var noteDiff:Float = Math.abs(note.strumTime - Conductor.songPosition + ClientPrefs.data.ratingOffset);
 		vocals.volume = 1;
+
+		if (!ClientPrefs.data.comboStacking && comboGroup.members.length > 0) {
+			for (spr in comboGroup) {
+				spr.destroy();
+				comboGroup.remove(spr);
+			}
+		}
 
 		var placement:Float =  FlxG.width * 0.35;
 
@@ -2572,7 +2581,6 @@ class PlayState extends MusicBeatState
 		}
 
 		rating.loadGraphic(Paths.image(uiPrefix + daRating.image + uiSuffix));
-		rating.cameras = [camHUD];
 		rating.screenCenter();
 		rating.x = placement - 40;
 		rating.y -= 60;
@@ -2585,7 +2593,6 @@ class PlayState extends MusicBeatState
 		rating.antialiasing = antialias;
 
 		var comboSpr:FlxSprite = new FlxSprite().loadGraphic(Paths.image(uiPrefix + 'combo' + uiSuffix));
-		comboSpr.cameras = [camHUD];
 		comboSpr.screenCenter();
 		comboSpr.x = placement;
 		comboSpr.acceleration.y = FlxG.random.int(200, 300) * playbackRate * playbackRate;
@@ -2596,14 +2603,7 @@ class PlayState extends MusicBeatState
 		comboSpr.antialiasing = antialias;
 		comboSpr.y += 60;
 		comboSpr.velocity.x += FlxG.random.int(1, 10) * playbackRate;
-
-		insert(members.indexOf(strumLineNotes), rating);
-
-		if (!ClientPrefs.data.comboStacking)
-		{
-			if (lastRating != null) lastRating.kill();
-			lastRating = rating;
-		}
+		comboGroup.add(rating);
 
 		if (!PlayState.isPixelStage)
 		{
@@ -2631,31 +2631,14 @@ class PlayState extends MusicBeatState
 		var daLoop:Int = 0;
 		var xThing:Float = 0;
 		if (showCombo && combo >= 2)
-			insert(members.indexOf(strumLineNotes), comboSpr);
+			comboGroup.add(comboSpr);
 
-		if (!ClientPrefs.data.comboStacking)
-		{
-			if (lastCombo != null) lastCombo.kill();
-			lastCombo = comboSpr;
-		}
-		if (lastScore != null)
-		{
-			while (lastScore.length > 0)
-			{
-				lastScore[0].kill();
-				lastScore.remove(lastScore[0]);
-			}
-		}
 		for (i in seperatedScore)
 		{
 			var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(uiPrefix + 'num' + Std.int(i) + uiSuffix));
-			numScore.cameras = [camHUD];
 			numScore.screenCenter();
 			numScore.x = placement + (43 * daLoop) - 90 + ClientPrefs.data.comboOffset[2];
 			numScore.y += 80 - ClientPrefs.data.comboOffset[3];
-
-			if (!ClientPrefs.data.comboStacking)
-				lastScore.push(numScore);
 
 			if (!PlayState.isPixelStage) numScore.setGraphicSize(Std.int(numScore.width * 0.5));
 			else numScore.setGraphicSize(Std.int(numScore.width * daPixelZoom));
@@ -2669,7 +2652,7 @@ class PlayState extends MusicBeatState
 
 			//if (combo >= 10 || combo == 0)
 			if(showComboNum)
-				insert(members.indexOf(strumLineNotes), numScore);
+				comboGroup.add(numScore);
 
 			FlxTween.tween(numScore, {alpha: 0}, 0.2 / playbackRate, {
 				onComplete: function(tween:FlxTween)
