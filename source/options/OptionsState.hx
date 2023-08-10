@@ -14,28 +14,26 @@ class OptionsState extends MusicBeatState
 	function openSelectedSubstate(label:String) {
 		switch(label) {
 			case 'Note Colors':
-			    removeControls();
 				openSubState(new options.NotesSubState());
 			case 'Controls':
-			    removeControls();
 				openSubState(new options.ControlsSubState());
 			case 'Graphics':
-			    removeControls();
 				openSubState(new options.GraphicsSettingsSubState());
 			case 'Visuals and UI':
-			    removeControls();
 				openSubState(new options.VisualsUISubState());
 			case 'Gameplay':
-			    removeControls();
 				openSubState(new options.GameplaySettingsSubState());
 			case 'Adjust Delay and Combo':
 				MusicBeatState.switchState(new options.NoteOffsetState());
  			case 'Android Controls':
 				#if android
-				removeVirtualPad();
 				openSubState(new android.options.AndroidControlsSubState());
 				#end
 		}
+
+		#if android
+		removeVirtualPad();
+		#end
 	}
 
 	var selectorLeft:Alphabet;
@@ -126,12 +124,5 @@ class OptionsState extends MusicBeatState
 			}
 		}
 		FlxG.sound.play(Paths.sound('scrollMenu'));
-	}
-
-	function removeControls()
-	{
-		#if android
-		removeVirtualPad();
-		#end
 	}
 }
