@@ -217,7 +217,11 @@ class NoteSplashDebugState extends MusicBeatState
 
 		if(FlxG.keys.justPressed.ENTER #if android || MusicBeatState.virtualPad.buttonA.justPressed #end)
 		{
+			#if android
+			savedText.text = 'Press A again to save.';
+			#else
 			savedText.text = 'Press ENTER again to save.';
+			#end
 			if(pressEnterToSave > 0) //save
 			{
 				saveFile();
