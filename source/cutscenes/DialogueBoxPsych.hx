@@ -173,7 +173,7 @@ class DialogueBoxPsych extends FlxSpriteGroup
 			}
 			#end
 
-			if(Controls.instance.ACCEPT #if android || justTouched #end) {
+			if(#if !android Controls.instance.ACCEPT #else justTouched #end) {
 				if(!daText.finishedText) {
 					daText.finishText();
 					if(skipDialogueThing != null) {
@@ -380,9 +380,8 @@ class DialogueBoxPsych extends FlxSpriteGroup
 		}
 		currentText++;
 
-		if(nextDialogueThing != null) {
+		if(nextDialogueThing != null)
 			nextDialogueThing();
-		}
 	}
 
 	public static function parseDialogue(path:String):DialogueFile {
