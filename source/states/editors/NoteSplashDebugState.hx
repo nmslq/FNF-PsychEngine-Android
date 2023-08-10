@@ -3,6 +3,7 @@ package states.editors;
 import objects.Note;
 import objects.StrumNote;
 import objects.NoteSplash;
+
 import flixel.addons.ui.FlxInputText;
 import flixel.addons.ui.FlxUINumericStepper;
 
@@ -133,7 +134,7 @@ class NoteSplashDebugState extends MusicBeatState
 		FlxG.mouse.visible = true;
 
 		#if android
-		addVirtualPad(LEFT_FULL, A_B_C_D_V_X_Y_Z);
+		addVirtualPad(DUO, A_B_C_D_V_X_Y_Z);
 		#end
 	}
 
@@ -165,12 +166,12 @@ class NoteSplashDebugState extends MusicBeatState
 		{
 			var movex = 0;
 			var movey = 0;
-			if(FlxG.keys.justPressed.LEFT) movex = -1;
-			else if(FlxG.keys.justPressed.RIGHT) movex = 1;
+			if(FlxG.keys.justPressed.LEFT #if android || MusicBeatState.virtualPad.buttonLeft2.justPressed #end) movex = -1;
+			else if(FlxG.keys.justPressed.RIGHT #if android || MusicBeatState.virtualPad.buttonRight2.justPressed #end) movex = 1;
 
-			if(FlxG.keys.justPressed.UP) movey = 1;
-			else if(FlxG.keys.justPressed.DOWN) movey = -1;
-			
+			if(FlxG.keys.justPressed.UP #if android || MusicBeatState.virtualPad.buttonUp2.justPressed #end) movey = 1;
+			else if(FlxG.keys.justPressed.DOWN #if android || MusicBeatState.virtualPad.buttonDown2.justPressed #end) movey = -1;
+
 			if(FlxG.keys.pressed.SHIFT #if android || MusicBeatState.virtualPad.buttonD.pressed #end)
 			{
 				movex *= 10;
