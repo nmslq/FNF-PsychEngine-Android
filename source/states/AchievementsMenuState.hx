@@ -1,5 +1,7 @@
 package states;
 
+import objects.AttachedAchievement;
+
 class AchievementsMenuState extends MusicBeatState
 {
 	#if ACHIEVEMENTS_ALLOWED

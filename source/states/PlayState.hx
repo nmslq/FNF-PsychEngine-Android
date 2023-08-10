@@ -3241,7 +3241,6 @@ class PlayState extends MusicBeatState
 			if(!script.closed) i++;
 			else len--;
 		}
-		for (i in achievementsArray) i.call(funcToCall, args);
 		#end
 		return returnVal;
 	}
@@ -3306,7 +3305,6 @@ class PlayState extends MusicBeatState
 			script.set(variable, arg);
 		}
 		#end
-		for(i in achievementsArray) i.set(variable, arg);
 	}
 
 	public function setOnHScript(variable:String, arg:Dynamic, exclusions:Array<String> = null) {
