@@ -1,7 +1,6 @@
 package states;
 
 import backend.WeekData;
-import backend.Achievements;
 
 import flixel.FlxObject;
 import flixel.addons.transition.FlxTransitionableState;
@@ -9,7 +8,6 @@ import flixel.effects.FlxFlicker;
 import flixel.input.keyboard.FlxKey;
 import lime.app.Application;
 
-import objects.AchievementPopup;
 import states.editors.MasterEditorMenu;
 import options.OptionsState;
 
@@ -45,14 +43,6 @@ class MainMenuState extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end
-
-		camGame = new FlxCamera();
-		camAchievement = new FlxCamera();
-		camAchievement.bgColor.alpha = 0;
-
-		FlxG.cameras.reset(camGame);
-		FlxG.cameras.add(camAchievement, false);
-		FlxG.cameras.setDefaultDrawTarget(camGame, true);
 
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
@@ -128,16 +118,10 @@ class MainMenuState extends MusicBeatState
 		changeItem();
 
 		#if ACHIEVEMENTS_ALLOWED
-		Achievements.loadAchievements();
+		// Unlocks "Freaky on a Friday Night" achievement if it's a Friday and between 18:00 PM and 23:59 PM
 		var leDate = Date.now();
-		if (leDate.getDay() == 5 && leDate.getHours() >= 18) {
-			var achieveID:Int = Achievements.getAchievementIndex('friday_night_play');
-			if(!Achievements.isAchievementUnlocked(Achievements.achievementsStuff[achieveID][2])) { //It's a friday night. WEEEEEEEEEEEEEEEEEE
-				Achievements.achievementsMap.set(Achievements.achievementsStuff[achieveID][2], true);
-				giveAchievement();
-				ClientPrefs.saveSettings();
-			}
-		}
+		if (leDate.getDay() == 5 && leDate.getHours() >= 18)
+			Achievements.unlockAchievement('friday_night_play');
 		#end
 
 		#if android
@@ -147,15 +131,6 @@ class MainMenuState extends MusicBeatState
 
 		super.create();
 	}
-
-	#if ACHIEVEMENTS_ALLOWED
-	// Unlocks "Freaky on a Friday Night" achievement
-	function giveAchievement() {
-		add(new AchievementPopup('friday_night_play', camAchievement));
-		FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
-		trace('Giving achievement "friday_night_play"');
-	}
-	#end
 
 	var selectedSomethin:Bool = false;
 

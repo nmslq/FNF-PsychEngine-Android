@@ -9,7 +9,6 @@ package states;
 // "function eventEarlyTrigger" - Used for making your event start a few MILLISECONDS earlier
 // "function triggerEvent" - Called when the song hits your event's timestamp, this is probably what you were looking for
 
-import backend.Achievements;
 import backend.Highscore;
 import backend.StageData;
 import backend.WeekData;
@@ -248,8 +247,6 @@ class PlayState extends MusicBeatState
 	var keysPressed:Array<Int> = [];
 	var boyfriendIdleTime:Float = 0.0;
 	var boyfriendIdled:Bool = false;
-	var achievementsArray:Array<FunkinLua> = [];
-	var achievementWeeks:Array<String> = [];
 
 	// Lua shit
 	public static var instance:PlayState;
@@ -409,74 +406,6 @@ class PlayState extends MusicBeatState
 		luaDebugGroup = new FlxTypedGroup<DebugLuaText>();
 		luaDebugGroup.cameras = [camOther];
 		add(luaDebugGroup);
-		#end
-
-		function addAbilityToUnlockAchievements(funkinLua:FunkinLua)
-		{
-			var lua = funkinLua.lua;
-			if (lua != null)
-			{
-				Lua_helper.add_callback(lua, "giveAchievement", function(name:String)
-				{
-					if (luaArray.contains(funkinLua))
-						throw 'Illegal attempt to unlock ' + name;
-
-					@:privateAccess
-					if (Achievements.isAchievementUnlocked(name))
-						return "Achievement " + name + " is already unlocked!";
-
-					if (!Achievements.exists(name))
-						return "Achievement " + name + " does not exist."; 
-					if(instance != null)
-					{ 
-						Achievements.unlockAchievement(name);
-						instance.startAchievement(name);
-						ClientPrefs.saveSettings();
-						return "Unlocked achievement " + name + "!";
-					}
-					else return "Instance is null.";
-				});
-			}
-		}
-
-		//CUSTOM ACHIVEMENTS
-		#if (MODS_ALLOWED && LUA_ALLOWED && ACHIEVEMENTS_ALLOWED)
-		var luaFiles:Array<String> = Achievements.getModAchievements().copy();
-		if(luaFiles.length > 0)
-		{
-			for(luaFile in luaFiles)
-			{
-				var meta:AchievementMeta = try Json.parse(File.getContent(luaFile.substring(0, luaFile.length - 4) + '.json')) catch(e) throw e;
-				if (meta != null)
-				{
-					if ((meta.global == null || meta.global.length < 1) && meta.song != null && meta.song.length > 0 && SONG.song.toLowerCase().replace(' ', '-') != meta.song.toLowerCase().replace(' ', '-'))
-						continue;
-
-					var lua = new FunkinLua(luaFile);
-					addAbilityToUnlockAchievements(lua);
-					achievementsArray.push(lua);
-				}
-			}
-		}
-
-		var achievementMetas = Achievements.getModAchievementMetas().copy();
-		for (i in achievementMetas) { 
-			if (i.global == null || i.global.length < 1)
-			{
-				if(i.song != null)
-				{
-					if(i.song.length > 0 && SONG.song.toLowerCase().replace(' ', '-') != i.song.toLowerCase().replace(' ', '-'))
-						continue;
-				}
-				if(i.lua_code != null) {
-					var lua = new FunkinLua(null, i.lua_code);
-					addAbilityToUnlockAchievements(lua);
-					achievementsArray.push(lua);
-				}
-				if(i.week_nomiss != null)
-					achievementWeeks.push(i.week_nomiss + '_nomiss');
-			}
-		}
 		#end
 
 		// "GLOBAL" SCRIPTS
@@ -2383,18 +2312,8 @@ class PlayState extends MusicBeatState
 		seenCutscene = false;
 
 		#if ACHIEVEMENTS_ALLOWED
-		if(achievementObj != null)
-			return false;
-		else {
-			var noMissWeek:String = WeekData.getWeekFileName() + '_nomiss';
-			var achieve:String = checkForAchievement([noMissWeek, 'ur_bad', 'ur_good', 'hype', 'two_keys', 'toastie', 'debugger']);
-			var customAchieve:String = checkForAchievement(achievementWeeks);
-
-			if(achieve != null || customAchieve != null) {
-				startAchievement(customAchieve != null ? customAchieve : achieve);
-				return false;
-			}
-		}
+		var weekNoMiss:String = WeekData.getWeekFileName() + '_nomiss';
+		checkForAchievement([weekNoMiss, 'ur_bad', 'ur_good', 'hype', 'two_keys', 'toastie', 'debugger']);
 		#end
 
 		var ret:Dynamic = callOnScripts('onEndSong', null, true);
@@ -2471,21 +2390,6 @@ class PlayState extends MusicBeatState
 		}
 		return true;
 	}
-
-	#if ACHIEVEMENTS_ALLOWED
-	var achievementObj:AchievementPopup = null;
-	function startAchievement(achieve:String) {
-		achievementObj = new AchievementPopup(achieve, camOther);
-		achievementObj.onFinish = achievementEnd;
-		add(achievementObj);
-		trace('Giving achievement ' + achieve);
-	}
-	function achievementEnd():Void
-	{
-		achievementObj = null;
-		if(endingSong && !inCutscene) endSong();
-	}
-	#end
 
 	public function KillNotes() {
 		while(notes.length > 0) {
@@ -2702,39 +2606,43 @@ class PlayState extends MusicBeatState
 				var canMiss:Bool = !ClientPrefs.data.ghostTapping;
 
 				// heavily based on my own code LOL if it aint broke dont fix it
-				var pressNotes:Array<Note> = [];
-				var notesStopped:Bool = false;
 				var sortedNotesList:Array<Note> = [];
-				notes.forEachAlive(function(daNote:Note)
+				for (daNote in notes)
 				{
-					if (strumsBlocked[daNote.noteData] != true && daNote.canBeHit && daNote.mustPress &&
+					if (strumsBlocked[daNote.noteData] != true && daNote.exists && daNote.canBeHit && daNote.mustPress &&
 						!daNote.tooLate && !daNote.wasGoodHit && !daNote.isSustainNote && !daNote.blockHit)
 					{
 						if(daNote.noteData == key) sortedNotesList.push(daNote);
 						canMiss = true;
 					}
-				});
+				}
 				sortedNotesList.sort(sortHitNotes);
 
 				if (sortedNotesList.length > 0) {
-					for (epicNote in sortedNotesList)
-					{
-						for (doubleNote in pressNotes) {
-							if (Math.abs(doubleNote.strumTime - epicNote.strumTime) < 1) {
-								doubleNote.kill();
+					var epicNote:Note = sortedNotesList[0];
+					if (sortedNotesList.length > 1) {
+						for (bad in 1...sortedNotesList.length)
+						{
+							var doubleNote:Note = sortedNotesList[bad];
+							// no point in jack detection if it isn't a jack
+							if (doubleNote.noteData != epicNote.noteData)
+								break;
+
+							if (Math.abs(doubleNote.strumTime - epicNote.strumTime) < 1)
+							{
 								notes.remove(doubleNote, true);
 								doubleNote.destroy();
-							} else
-								notesStopped = true;
+								break;
+							}
+							else if (doubleNote.strumTime < epicNote.strumTime)
+							{
+								// replace the note if its ahead of time
+								epicNote = doubleNote; 
+								break;
+							}
 						}
-
-						// eee jack detection before was not super good
-						if (!notesStopped) {
-							goodNoteHit(epicNote);
-							pressNotes.push(epicNote);
-						}
-
 					}
+					goodNoteHit(epicNote);
 				}
 				else {
 					callOnScripts('onGhostTap', [key]);
@@ -2845,19 +2753,17 @@ class PlayState extends MusicBeatState
 				});
 			}
 
-			if (holdArray.contains(true) && !endingSong) {
-				#if ACHIEVEMENTS_ALLOWED
-				var achieve:String = checkForAchievement(['oversinging']);
-				if (achieve != null) {
-					startAchievement(achieve);
-				}
-				#end
-			}
-			else if (boyfriend.animation.curAnim != null && boyfriend.holdTimer > Conductor.stepCrochet * (0.0011 / FlxG.sound.music.pitch) * boyfriend.singDuration && boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss'))
+			if (!holdArray.contains(true) || endingSong)
 			{
-				boyfriend.dance();
-				//boyfriend.animation.curAnim.finish();
+				if (boyfriend.animation.curAnim != null && boyfriend.holdTimer > Conductor.stepCrochet * (0.0011 / FlxG.sound.music.pitch) * boyfriend.singDuration && boyfriend.animation.curAnim.name.startsWith('sing') && !boyfriend.animation.curAnim.name.endsWith('miss'))
+				{
+					boyfriend.dance();
+					//boyfriend.animation.curAnim.finish();
+				}
 			}
+			#if ACHIEVEMENTS_ALLOWED
+			else checkForAchievement(['oversinging']);
+			#end
 		}
 
 		// TO DO: Find a better way to handle controller inputs, this should work for now
@@ -3482,58 +3388,46 @@ class PlayState extends MusicBeatState
 	}
 
 	#if ACHIEVEMENTS_ALLOWED
-	private function checkForAchievement(achievesToCheck:Array<String> = null):String
+	private function checkForAchievement(achievesToCheck:Array<String> = null)
 	{
-		if(chartingMode) return null;
+		if(chartingMode) return;
 
 		var usedPractice:Bool = (ClientPrefs.getGameplaySetting('practice') || ClientPrefs.getGameplaySetting('botplay'));
-		for (i in 0...achievesToCheck.length) {
-			var achievementName:String = achievesToCheck[i];
-			if(!Achievements.isAchievementUnlocked(achievementName) && !cpuControlled && Achievements.getAchievementIndex(achievementName) > -1) {
-				var unlock:Bool = false;
-				if (achievementName == WeekData.getWeekFileName() + '_nomiss') // any FC achievements, name should be "weekFileName_nomiss", e.g: "weekd_nomiss";
+		if(cpuControlled) return;
+
+		for (name in achievesToCheck) {
+			var unlock:Bool = false;
+			if (name != WeekData.getWeekFileName() + '_nomiss') // any FC achievements, name should be "weekFileName_nomiss", e.g: "week3_nomiss";
+			{
+				switch(name)
 				{
-					if(isStoryMode && campaignMisses + songMisses < 1 && Difficulty.getString().toUpperCase() == 'HARD'
-						&& storyPlaylist.length <= 1 && !changedDifficulty && !usedPractice)
-						unlock = true;
-				}
-				else
-				{
-					switch(achievementName)
-					{
-						case 'ur_bad':
-							unlock = (ratingPercent < 0.2 && !practiceMode);
+					case 'ur_bad':
+						unlock = (ratingPercent < 0.2 && !practiceMode);
+					case 'ur_good':
+						unlock = (ratingPercent >= 1 && !usedPractice);
+					case 'oversinging':
+						unlock = (boyfriend.holdTimer >= 10 && !usedPractice);
+					case 'hype':
+						unlock = (!boyfriendIdled && !usedPractice);
+					case 'two_keys':
+						unlock = (!usedPractice && keysPressed.length <= 2);
 
-						case 'ur_good':
-							unlock = (ratingPercent >= 1 && !usedPractice);
+					case 'toastie':
+						unlock = (!ClientPrefs.data.cacheOnGPU && !ClientPrefs.data.shaders && ClientPrefs.data.lowQuality && !ClientPrefs.data.antialiasing);
 
-						case 'roadkill_enthusiast':
-							unlock = (Achievements.henchmenDeath >= 50);
-
-						case 'oversinging':
-							unlock = (boyfriend.holdTimer >= 10 && !usedPractice);
-
-						case 'hype':
-							unlock = (!boyfriendIdled && !usedPractice);
-
-						case 'two_keys':
-							unlock = (!usedPractice && keysPressed.length <= 2);
-
-						case 'toastie':
-							unlock = (/*ClientPrefs.data.framerate <= 60 &&*/ !ClientPrefs.data.shaders && ClientPrefs.data.lowQuality && !ClientPrefs.data.antialiasing);
-
-						case 'debugger':
-							unlock = (Paths.formatToSongPath(SONG.song) == 'test' && !usedPractice);
-					}
-				}
-
-				if(unlock) {
-					Achievements.unlockAchievement(achievementName);
-					return achievementName;
+					case 'debugger':
+						unlock = (Paths.formatToSongPath(SONG.song) == 'test' && !usedPractice);
 				}
 			}
+			else
+			{
+				if(isStoryMode && campaignMisses + songMisses < 1 && Difficulty.getString().toUpperCase() == 'HARD'
+					&& storyPlaylist.length <= 1 && !changedDifficulty && !usedPractice)
+					unlock = true;
+			}
+
+			if(unlock) Achievements.unlockAchievement(name);
 		}
-		return null;
 	}
 	#end
 
