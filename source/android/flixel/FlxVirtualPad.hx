@@ -1,11 +1,14 @@
 package android.flixel;
 
 import android.flixel.FlxButton;
+
 import flixel.graphics.frames.FlxTileFrames;
-import flixel.math.FlxPoint;
 import flixel.graphics.frames.FlxAtlasFrames;
+
+import flixel.math.FlxPoint;
 import flixel.graphics.FlxGraphic;
 import flixel.util.FlxDestroyUtil;
+
 import openfl.utils.Assets;
 
 enum FlxDPadMode
@@ -15,6 +18,7 @@ enum FlxDPadMode
 	UP_LEFT_RIGHT;
 	LEFT_FULL;
 	RIGHT_FULL;
+	DUO;
 	NONE;
 }
 
@@ -45,6 +49,11 @@ class FlxVirtualPad extends FlxSpriteGroup
 	public var buttonUp:FlxButton = new FlxButton(0, 0);
 	public var buttonRight:FlxButton = new FlxButton(0, 0);
 	public var buttonDown:FlxButton = new FlxButton(0, 0);
+
+	public var buttonLeft2:FlxButton = new FlxButton(0, 0);
+	public var buttonUp2:FlxButton = new FlxButton(0, 0);
+	public var buttonRight2:FlxButton = new FlxButton(0, 0);
+	public var buttonDown2:FlxButton = new FlxButton(0, 0);
 
 	public var buttonA:FlxButton = new FlxButton(0, 0);
 	public var buttonB:FlxButton = new FlxButton(0, 0);
@@ -88,6 +97,15 @@ class FlxVirtualPad extends FlxSpriteGroup
 				add(buttonLeft = createButton(FlxG.width - 384, FlxG.height - 309, 'left', 0xFF00FF));
 				add(buttonRight = createButton(FlxG.width - 132, FlxG.height - 309, 'right', 0xFF0000));
 				add(buttonDown = createButton(FlxG.width - 258, FlxG.height - 201, 'down', 0x00FFFF));
+			case DUO:
+				add(buttonLeft = createButton(0, 0 'left', 0xFFFF00FF));
+				add(buttonRight = createButton(127, 0, 'right', 0xFFFF0000));
+				add(buttonUp = createButton(0, 125, 'up', 0xFF00FF00));
+				add(buttonDown = createButton(127, 125, 'down', 0xFF00FFFF));
+				add(buttonUp2 = createButton(127, 393, 'up', 0xFF00FF00));
+				add(buttonLeft2 = createButton(0, 393, 'left', 0xFFFF00FF));
+				add(buttonRight2 = createButton(1145, 393, 'right', 0xFFFF0000));
+				add(buttonDown2 = createButton(1015, 393, 'down', 0xFF00FFFF));
 			case NONE: // do nothing
 		}
 
@@ -152,6 +170,11 @@ class FlxVirtualPad extends FlxSpriteGroup
 		buttonUp = FlxDestroyUtil.destroy(buttonUp);
 		buttonDown = FlxDestroyUtil.destroy(buttonDown);
 		buttonRight = FlxDestroyUtil.destroy(buttonRight);
+
+		buttonLeft2 = FlxDestroyUtil.destroy(buttonLeft2);
+		buttonUp2 = FlxDestroyUtil.destroy(buttonUp2);
+		buttonDown2 = FlxDestroyUtil.destroy(buttonDown2);
+		buttonRight2 = FlxDestroyUtil.destroy(buttonRight2);
 
 		buttonA = FlxDestroyUtil.destroy(buttonA);
 		buttonB = FlxDestroyUtil.destroy(buttonB);
