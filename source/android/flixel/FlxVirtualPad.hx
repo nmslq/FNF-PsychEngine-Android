@@ -18,7 +18,7 @@ enum FlxDPadMode
 	UP_LEFT_RIGHT;
 	LEFT_FULL;
 	RIGHT_FULL;
-	DUO;
+	NOTEDEBUG_DUO;
 	NONE;
 }
 
@@ -97,15 +97,16 @@ class FlxVirtualPad extends FlxSpriteGroup
 				add(buttonLeft = createButton(FlxG.width - 384, FlxG.height - 309, 'left', 0xFF00FF));
 				add(buttonRight = createButton(FlxG.width - 132, FlxG.height - 309, 'right', 0xFF0000));
 				add(buttonDown = createButton(FlxG.width - 258, FlxG.height - 201, 'down', 0x00FFFF));
-			case DUO:
-				add(buttonLeft = createButton(0, 0, 'left', 0xFFFF00FF));
-				add(buttonRight = createButton(127, 0, 'right', 0xFFFF0000));
-				add(buttonUp = createButton(0, 125, 'up', 0xFF00FF00));
-				add(buttonDown = createButton(127, 125, 'down', 0xFF00FFFF));
-				add(buttonUp2 = createButton(127, 393, 'up', 0xFF00FF00));
-				add(buttonLeft2 = createButton(0, 393, 'left', 0xFFFF00FF));
-				add(buttonRight2 = createButton(1145, 393, 'right', 0xFFFF0000));
-				add(buttonDown2 = createButton(1015, 393, 'down', 0xFF00FFFF));
+			case NOTEDEBUG_DUO:
+				add(buttonUp = createButton(105, FlxG.height - 345, 'up', 0x00FF00));
+				add(buttonLeft = createButton(0, FlxG.height - 243, 'left', 0xFF00FF));
+				add(buttonRight = createButton(207, FlxG.height - 243, 'right', 0xFF0000));
+				add(buttonDown = createButton(105, FlxG.height - 135, 'down', 0x00FFFF));
+
+				add(buttonLeft2 = createButton(0, 0, 'left', 0xFFFF00FF));
+				add(buttonRight2 = createButton(127, 0, 'right', 0xFFFF0000));
+				add(buttonUp2 = createButton(0, 125, 'up', 0xFF00FF00));
+				add(buttonDown2 = createButton(127, 125, 'down', 0xFF00FFFF));
 			case NONE: // do nothing
 		}
 
