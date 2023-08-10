@@ -95,8 +95,7 @@ class Controls
 	public static var checkStates:Bool = true;
 	public static var controlsType:Int = -1; // -1 = null, 0 = Hitbox, 1 = Vpad
 	var noteHit = MusicBeatState.androidControls;
-	var vpad = MusicBeatState.virtualPad;
-	if (!checkStates) vpad = MusicBeatSubstate.virtualPad;
+	var vpad = checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad;
 	#end
 
 	public function justPressed(key:String)
