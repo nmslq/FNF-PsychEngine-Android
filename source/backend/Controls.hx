@@ -302,7 +302,7 @@ class Controls
 		return result || _myGamepadJustReleased(gamepadBinds[key]) == true;
 	}
 
-	public var controllerMode:Bool = #if android true #else false #end;
+	public var controllerMode:Bool = false;
 	private function _myGamepadJustPressed(keys:Array<FlxGamepadInputID>):Bool
 	{
 		if(keys != null)
