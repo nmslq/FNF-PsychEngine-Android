@@ -142,8 +142,7 @@ class Conductor
 		return (60 / bpm) * 1000;
 
 	public static function set_bpm(newBPM:Float):Float {
-		bpm = newBPM;
-		crochet = calculateCrochet(bpm);
+		crochet = calculateCrochet(newBPM);
 		stepCrochet = crochet / 4;
 
 		return bpm = newBPM;
