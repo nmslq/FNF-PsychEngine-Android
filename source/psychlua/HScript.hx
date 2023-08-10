@@ -14,10 +14,23 @@ class HScript extends SScript
 	public static function initHaxeModule(parent:FunkinLua)
 	{
 		#if (SScript >= "3.0.0")
-		if(parent.hscript == null)
+		var hs:HScript = parent.hscript;
+		if(hs == null)
 		{
 			trace('initializing haxe interp for: ${parent.scriptName}');
 			parent.hscript = new HScript(parent);
+		}
+		else
+		{
+			hs.doString(code);
+			@:privateAccess
+			if(hs.parsingExceptions != null && hs.parsingExceptions.length > 0)
+			{
+				@:privateAccess
+				for (e in hs.parsingExceptions)
+					if(e != null)
+						PlayState.instance.addTextToDebug('ERROR ON LOADING (${hs.origin}): ${e.message.substr(0, e.message.indexOf('\n'))}', FlxColor.RED);
+			}
 		}
 		#end
 	}
