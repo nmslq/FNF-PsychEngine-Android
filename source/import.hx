@@ -3,8 +3,15 @@
 import backend.Discord;
 #end
 
+//Android
+#if android
+import android.SUtil;
+#end
+
 //Psych
-#if android import android.SUtil; #end
+#if ACHIEVEMENTS_ALLOWED
+import backend.Achievements;
+#end
 
 #if LUA_ALLOWED
 import llua.*;
