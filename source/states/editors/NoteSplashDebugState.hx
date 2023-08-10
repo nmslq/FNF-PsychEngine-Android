@@ -134,7 +134,7 @@ class NoteSplashDebugState extends MusicBeatState
 		FlxG.mouse.visible = true;
 
 		#if android
-		addVirtualPad(DUO, A_B_C_D_V_X_Y_Z);
+		addVirtualPad(NOTEDEBUG_DUO, A_B_C_D_V_X_Y_Z);
 		#end
 	}
 
