@@ -191,7 +191,7 @@ class NoteOffsetState extends MusicBeatState
 		}
 
 		if(FlxG.gamepads.anyJustPressed(ANY)) controls.controllerMode = true;
-		else if(FlxG.mouse.justPressed) controls.controllerMode = #if android true #else false #end;
+		else if(FlxG.mouse.justPressed) controls.controllerMode = false;
 
 		if(controls.controllerMode != _lastControllerMode)
 		{
@@ -301,6 +301,7 @@ class NoteOffsetState extends MusicBeatState
 			if (FlxG.mouse.justPressed || gamepadPressed)
 			{
 				holdingObjectType = null;
+
 				if(!controls.controllerMode)
 					FlxG.mouse.getScreenPosition(camHUD, startMousePos);
 				else
@@ -333,6 +334,7 @@ class NoteOffsetState extends MusicBeatState
 				if(FlxG.mouse.justMoved || analogMoved)
 				{
 					var mousePos:FlxPoint = null;
+
 					if(!controls.controllerMode)
 						mousePos = FlxG.mouse.getScreenPosition(camHUD);
 					else
