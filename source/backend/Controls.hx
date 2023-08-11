@@ -274,7 +274,7 @@ class Controls
 					result = anc.virtualPad.buttonRight.justPressed;
 			}
 		}
-	    return result;
+		return result;
 	}
 
 	function checkPressed(key:String, vpad:FlxVirtualPad, anc:AndroidControls):Bool
@@ -325,7 +325,7 @@ class Controls
 					result = anc.virtualPad.buttonRight.pressed;
 			}
 		}
-	    return result;
+		return result;
 	}
 
 	function checkJustReleased(key:String, vpad:FlxVirtualPad, anc:AndroidControls):Bool
@@ -376,7 +376,7 @@ class Controls
 					result = anc.virtualPad.buttonRight.justReleased;
 			}
 		}
-	    return result;
+		return result;
 	}
 	#end
 }
