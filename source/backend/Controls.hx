@@ -6,7 +6,7 @@ import flixel.input.gamepad.mappings.FlxGamepadMapping;
 import flixel.input.keyboard.FlxKey;
 
 #if android
-import android.FlxVirtualPad;
+import android.flixel.FlxVirtualPad;
 import android.AndroidControls;
 #end
 
