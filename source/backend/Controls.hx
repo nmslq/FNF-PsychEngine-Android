@@ -6,6 +6,7 @@ import flixel.input.gamepad.mappings.FlxGamepadMapping;
 import flixel.input.keyboard.FlxKey;
 
 #if android
+import android.FlxVirtualPad;
 import android.AndroidControls;
 #end
 
@@ -102,7 +103,7 @@ class Controls
 
 		#if android
 		if (checkKeys)
-			result = checkPadJustPressed(key);
+			result = checkPadJustPressed(key, checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad);
 
 		if (controlsType == 0)
 		{
@@ -145,7 +146,7 @@ class Controls
 
 		#if android
 		if (checkKeys)
-			checkPadPressed(key);
+			result = checkPadPressed(key, checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad);
 
 		if (controlsType == 0)
 		{
@@ -188,7 +189,7 @@ class Controls
 
 		#if android
 		if (checkKeys)
-			result = checkPadJustReleased(key);
+			result = checkPadJustReleased(key, checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad);
 
 		if (controlsType == 0)
 		{
@@ -294,114 +295,63 @@ class Controls
 		}
 	}
 
-	function checkPadJustPressed(key:String):Bool
+	function checkPadJustPressed(key:String, vpad:FlxVirtualPad):Bool
 	{
 		var result:Bool = false;
 
-		if (checkStates)
-		{
-			if (key == 'accept')
-				result = (MusicBeatState.virtualPad.buttonA.justPressed);
-			if (key == 'back')
-				result = (MusicBeatState.virtualPad.buttonB.justPressed);
-			if (key == 'ui_up')
-				result = (MusicBeatState.virtualPad.buttonUp.justPressed);
-			if (key == 'ui_down')
-				result = (MusicBeatState.virtualPad.buttonDown.justPressed);
-			if (key == 'ui_left')
-				result = (MusicBeatState.virtualPad.buttonLeft.justPressed);
-			if (key == 'ui_right')
-				result = (MusicBeatState.virtualPad.buttonRight.justPressed);
-	    }
-	    else
-	    {
-			if (key == 'accept')
-				result = (MusicBeatSubstate.virtualPad.buttonA.justPressed);
-			if (key == 'back')
-				result = (MusicBeatSubstate.virtualPad.buttonB.justPressed);
-			if (key == 'ui_up')
-				result = (MusicBeatSubstate.virtualPad.buttonUp.justPressed);
-			if (key == 'ui_down')
-				result = (MusicBeatSubstate.virtualPad.buttonDown.justPressed);
-			if (key == 'ui_left')
-				result = (MusicBeatSubstate.virtualPad.buttonLeft.justPressed);
-			if (key == 'ui_right')
-				result = (MusicBeatSubstate.virtualPad.buttonRight.justPressed);
-	    }
+		if (key == 'accept')
+			result = (vpad.buttonA.justPressed);
+		if (key == 'back')
+			result = (vpad.buttonB.justPressed);
+		if (key == 'ui_up')
+			result = (vpad.buttonUp.justPressed);
+		if (key == 'ui_down')
+			result = (vpad.buttonDown.justPressed);
+		if (key == 'ui_left')
+			result = (vpad.buttonLeft.justPressed);
+		if (key == 'ui_right')
+			result = (vpad.buttonRight.justPressed);
+
 	    return result;
 	}
 
-	function checkPadPressed(key:String):Bool
+	function checkPadPressed(key:String, vpad:FlxVirtualPad):Bool
 	{
 		var result:Bool = false;
 
-		if (checkStates)
-		{
-			if (key == 'accept')
-				result = (MusicBeatState.virtualPad.buttonA.pressed);
-			if (key == 'back')
-				result = (MusicBeatState.virtualPad.buttonB.pressed);
-			if (key == 'ui_up')
-				result = (MusicBeatState.virtualPad.buttonUp.pressed);
-			if (key == 'ui_down')
-				result = (MusicBeatState.virtualPad.buttonDown.pressed);
-			if (key == 'ui_left')
-				result = (MusicBeatState.virtualPad.buttonLeft.pressed);
-			if (key == 'ui_right')
-				result = (MusicBeatState.virtualPad.buttonRight.pressed);
-	    }
-	    else
-	    {
-			if (key == 'accept')
-				result = (MusicBeatSubstate.virtualPad.buttonA.pressed);
-			if (key == 'back')
-				result = (MusicBeatSubstate.virtualPad.buttonB.pressed);
-			if (key == 'ui_up')
-				result = (MusicBeatSubstate.virtualPad.buttonUp.pressed);
-			if (key == 'ui_down')
-				result = (MusicBeatSubstate.virtualPad.buttonDown.pressed);
-			if (key == 'ui_left')
-				result = (MusicBeatSubstate.virtualPad.buttonLeft.pressed);
-			if (key == 'ui_right')
-				result = (MusicBeatSubstate.virtualPad.buttonRight.pressed);
-	    }
+		if (key == 'accept')
+			result = (vpad.buttonA.pressed);
+		if (key == 'back')
+			result = (vpad.buttonB.pressed);
+		if (key == 'ui_up')
+			result = (vpad.buttonUp.pressed);
+		if (key == 'ui_down')
+			result = (vpad.buttonDown.pressed);
+		if (key == 'ui_left')
+			result = (vpad.buttonLeft.pressed);
+		if (key == 'ui_right')
+			result = (vpad.buttonRight.pressed);
+
 	    return result;
 	}
 
-	function checkPadJustReleased(key:String):Bool
+	function checkPadJustReleased(key:String, vpad:FlxVirtualPad):Bool
 	{
 		var result:Bool = false;
 
-		if (checkStates)
-		{
-			if (key == 'accept')
-				result = (MusicBeatState.virtualPad.buttonA.justReleased);
-			if (key == 'back')
-				result = (MusicBeatState.virtualPad.buttonB.justReleased);
-			if (key == 'ui_up')
-				result = (MusicBeatState.virtualPad.buttonUp.justReleased);
-			if (key == 'ui_down')
-				result = (MusicBeatState.virtualPad.buttonDown.justReleased);
-			if (key == 'ui_left')
-				result = (MusicBeatState.virtualPad.buttonLeft.justReleased);
-			if (key == 'ui_right')
-				result = (MusicBeatState.virtualPad.buttonRight.justReleased);
-	    }
-	    else
-	    {
-			if (key == 'accept')
-				result = (MusicBeatSubstate.virtualPad.buttonA.justReleased);
-			if (key == 'back')
-				result = (MusicBeatSubstate.virtualPad.buttonB.justReleased);
-			if (key == 'ui_up')
-				result = (MusicBeatSubstate.virtualPad.buttonUp.justReleased);
-			if (key == 'ui_down')
-				result = (MusicBeatSubstate.virtualPad.buttonDown.justReleased);
-			if (key == 'ui_left')
-				result = (MusicBeatSubstate.virtualPad.buttonLeft.justReleased);
-			if (key == 'ui_right')
-				result = (MusicBeatSubstate.virtualPad.buttonRight.justReleased);
-	    }
+		if (key == 'accept')
+			result = (vpad.buttonA.justReleased);
+		if (key == 'back')
+			result = (vpad.buttonB.justReleased);
+		if (key == 'ui_up')
+			result = (vpad.buttonUp.justReleased);
+		if (key == 'ui_down')
+			result = (vpad.buttonDown.justReleased);
+		if (key == 'ui_left')
+			result = (vpad.buttonLeft.justReleased);
+		if (key == 'ui_right')
+			result = (vpad.buttonRight.justReleased);
+
 	    return result;
 	}
 	#end
