@@ -104,7 +104,7 @@ class Controls
 
 		#if android
 		if (checkKeys)
-			result = checkJustPressed(key, checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad, MusicBeatState.androidControls, 'justPressed');
+			result = checkAndroidKeys(key, checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad, MusicBeatState.androidControls, 'justPressed');
 
 		if(result) controllerMode = true;
 		#end
@@ -124,7 +124,7 @@ class Controls
 
 		#if android
 		if (checkKeys)
-			result = checkJustPressed(key, checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad, MusicBeatState.androidControls, 'pressed');
+			result = checkAndroidKeys(key, checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad, MusicBeatState.androidControls, 'pressed');
 
 		if(result) controllerMode = true;
 		#end
@@ -144,7 +144,7 @@ class Controls
 
 		#if android
 		if (checkKeys)
-			result = checkJustPressed(key, checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad, MusicBeatState.androidControls, 'justReleased');
+			result = checkAndroidKeys(key, checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad, MusicBeatState.androidControls, 'justReleased');
 
 		if(result) controllerMode = true;
 		#end
