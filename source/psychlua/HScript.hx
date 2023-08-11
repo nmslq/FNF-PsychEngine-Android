@@ -5,6 +5,11 @@ import objects.Character;
 import psychlua.FunkinLua;
 import psychlua.CustomSubstate;
 
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+#end
+
 #if (HSCRIPT_ALLOWED && SScript >= "3.0.0")
 import tea.SScript;
 class HScript extends SScript
@@ -25,23 +30,10 @@ class HScript extends SScript
 	public static function initHaxeModuleCode(parent:FunkinLua, code:String)
 	{
 		#if (SScript >= "3.0.0")
-		var hs:HScript = parent.hscript;
-		if(hs == null)
+		if(parent.hscript == null)
 		{
 			trace('initializing haxe interp for: ${parent.scriptName}');
 			parent.hscript = new HScript(parent, code);
-		}
-		else
-		{
-			hs.doString(code);
-			@:privateAccess
-			if(hs.parsingExceptions != null && hs.parsingExceptions.length > 0)
-			{
-				@:privateAccess
-				for (e in hs.parsingExceptions)
-					if(e != null)
-						PlayState.instance.addTextToDebug('ERROR ON LOADING (${hs.origin}): ${e.message.substr(0, e.message.indexOf('\n'))}', FlxColor.RED);
-			}
 		}
 		#end
 	}
@@ -49,10 +41,21 @@ class HScript extends SScript
 	public var origin:String;
 	override public function new(?parent:FunkinLua, ?file:String)
 	{
+		var usesClasses = false;
+
 		if (file == null)
 			file = '';
-	
-		super(file, false, false);
+		#if sys
+		else if (FileSystem.exists(file)) {
+			var fileWithoutComments = ~/(\/[*](?:[^*]|[\r\n]|([*]+([^*\/]|[\r\n])))*[*]+\/|\/\/.*)/gm.replace(File.getContent(file), '');
+			usesClasses = ~/class\s.*\s*{/.match(fileWithoutComments);
+		}
+		#end
+
+		super(null, false, false);
+		classSupport = usesClasses;
+		doFile(file);
+
 		parentLua = parent;
 		if (parent != null)
 			origin = parent.scriptName;
@@ -143,7 +146,10 @@ class HScript extends SScript
 				if(libPackage.length > 0)
 					str = libPackage + '.';
 
-				set(libName, Type.resolveClass(str + libName));
+				var c:Dynamic = Type.resolveClass(str + libName);
+				if (c == null)
+					c = Type.resolveEnum(str + libName);
+				set(libName, c);
 			}
 			catch (e:Dynamic) {
 				var msg:String = e.message.substr(0, e.message.indexOf('\n'));
@@ -218,7 +224,8 @@ class HScript extends SScript
 		funk.addLocalCallback("runHaxeCode", function(codeToRun:String, ?varsToBring:Any = null, ?funcToRun:String = null, ?funcArgs:Array<Dynamic> = null):Dynamic {
 			var retVal:SCall = null;
 			#if (SScript >= "3.0.0")
-			initHaxeModuleCode(funk, codeToRun);
+			initHaxeModule(funk);
+			funk.hscript.doString(codeToRun);
 			if(varsToBring != null)
 			{
 				for (key in Reflect.fields(varsToBring))
@@ -270,7 +277,9 @@ class HScript extends SScript
 			else if(libName == null)
 				libName = '';
 
-			var c = Type.resolveClass(str + libName);
+			var c:Dynamic = Type.resolveClass(str + libName);
+			if (c == null)
+				c = Type.resolveEnum(str + libName);
 
 			#if (SScript >= "3.0.3")
 			if (c != null)
