@@ -188,30 +188,7 @@ class Controls
 
 		#if android
 		if (checkKeys)
-		{
-			if (checkStates)
-			{
-				if (key == 'ui_up')
-					result = (MusicBeatState.virtualPad.buttonUp.justReleased);
-				if (key == 'ui_down')
-					result = (MusicBeatState.virtualPad.buttonDown.justReleased);
-				if (key == 'ui_left')
-					result = (MusicBeatState.virtualPad.buttonLeft.justReleased);
-				if (key == 'ui_right')
-					result = (MusicBeatState.virtualPad.buttonRight.justReleased);
-		    }		
-		    else
-		    {
-				if (key == 'ui_up')
-					result = (MusicBeatSubstate.virtualPad.buttonUp.justReleased);
-				if (key == 'ui_down')
-					result = (MusicBeatSubstate.virtualPad.buttonDown.justReleased);
-				if (key == 'ui_left')
-					result = (MusicBeatSubstate.virtualPad.buttonLeft.justReleased);
-				if (key == 'ui_right')
-					result = (MusicBeatSubstate.virtualPad.buttonRight.justReleased);
-		    }
-		}
+			result = checkPadJustReleased();
 
 		if (controlsType == 0)
 		{
