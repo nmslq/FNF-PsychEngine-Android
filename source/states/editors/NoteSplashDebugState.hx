@@ -245,16 +245,20 @@ class NoteSplashDebugState extends MusicBeatState
 
 		// Force frame
 		var updatedFrame:Bool = false;
-		if(updatedFrame = FlxG.keys.justPressed.Q) forceFrame--;
-		else if(updatedFrame = FlxG.keys.justPressed.E) forceFrame++;
+		if(updatedFrame = FlxG.keys.justPressed.Q #if android || MusicBeatState.virtualPad.buttonX.justPressed #end) forceFrame--;
+		else if(updatedFrame = FlxG.keys.justPressed.E #if android || MusicBeatState.virtualPad.buttonY.justPressed #end) forceFrame++;
 
 		if(updatedFrame)
 		{
 			if(forceFrame < 0) forceFrame = 0;
 			else if(forceFrame >= maxFrame) forceFrame = maxFrame - 1;
 			//trace('curFrame: $forceFrame');
-			
+
+			#if android
+			curFrameText.text = 'Force Frame: ${forceFrame+1} / $maxFrame\n(Press X/Y to change)';
+			#else
 			curFrameText.text = 'Force Frame: ${forceFrame+1} / $maxFrame\n(Press Q/E to change)';
+			#end
 			splashes.forEachAlive(function(spr:FlxSprite) {
 				spr.animation.curAnim.paused = true;
 				spr.animation.curAnim.curFrame = forceFrame;
@@ -376,8 +380,13 @@ class NoteSplashDebugState extends MusicBeatState
 			if(curAnim > maxAnims) curAnim = 1;
 			else if(curAnim < 1) curAnim = maxAnims;
 
+			#if android
+			curAnimText.text = 'Current Animation: $curAnim / $maxAnims\n(Press Up/Down to change)';
+			curFrameText.text = 'Force Frame Disabled\n(Press X/Y to change)';
+			#else
 			curAnimText.text = 'Current Animation: $curAnim / $maxAnims\n(Press W/S to change)';
 			curFrameText.text = 'Force Frame Disabled\n(Press Q/E to change)';
+			#end
 
 			for (i in 0...maxNotes)
 			{
