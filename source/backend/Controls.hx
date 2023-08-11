@@ -102,7 +102,7 @@ class Controls
 
 		#if android
 		if (checkKeys)
-			result = checkPadJustPressed();
+			result = checkPadJustPressed(key);
 
 		if (controlsType == 0)
 		{
@@ -145,7 +145,7 @@ class Controls
 
 		#if android
 		if (checkKeys)
-			checkPadPressed();
+			checkPadPressed(key);
 
 		if (controlsType == 0)
 		{
@@ -188,7 +188,7 @@ class Controls
 
 		#if android
 		if (checkKeys)
-			result = checkPadJustReleased();
+			result = checkPadJustReleased(key);
 
 		if (controlsType == 0)
 		{
