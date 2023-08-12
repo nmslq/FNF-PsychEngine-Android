@@ -95,6 +95,8 @@ class Controls
 	public static var checkKeys:Bool = true;
 	public static var checkStates:Bool = true;
 	public static var controlsType:Int = -1; // -1 = null, 0 = Hitbox, 1 = Vpad
+	var vpad:FlxVirtualPad = checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad;
+	var anc:AndroidControls = MusicBeatState.androidControls;
 	#end
 
 	public function justPressed(key:String)
@@ -103,7 +105,7 @@ class Controls
 
 		#if android
 		if (checkKeys)
-			result = checkJustPressed(key, checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad, MusicBeatState.androidControls);
+			result = checkJustPressed(key);
 
 		if(result) controllerMode = true;
 		#end
@@ -123,7 +125,7 @@ class Controls
 
 		#if android
 		if (checkKeys)
-			result = checkPressed(key, checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad, MusicBeatState.androidControls);
+			result = checkPressed(key);
 
 		if(result) controllerMode = true;
 		#end
@@ -143,7 +145,7 @@ class Controls
 
 		#if android
 		if (checkKeys)
-			result = checkJustReleased(key, checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad, MusicBeatState.androidControls);
+			result = checkJustReleased(key);
 
 		if(result) controllerMode = true;
 		#end
@@ -226,7 +228,7 @@ class Controls
 		}
 	}
 
-	function checkJustPressed(key:String, vpad:FlxVirtualPad, anc:AndroidControls):Bool
+	function checkJustPressed(key:String):Bool
 	{
 		var result:Bool = false;
 
@@ -277,16 +279,12 @@ class Controls
 		return result;
 	}
 
-	function checkPressed(key:String, vpad:FlxVirtualPad, anc:AndroidControls):Bool
+	function checkPressed(key:String):Bool
 	{
 		var result:Bool = false;
 
 		switch (key)
 		{
-			case 'accept':
-				result = vpad.buttonA.pressed;
-			case 'back':
-				result = vpad.buttonB.pressed;
 			case 'ui_up':
 				result = vpad.buttonUp.pressed;
 			case 'ui_down':
@@ -334,10 +332,6 @@ class Controls
 
 		switch (key)
 		{
-			case 'accept':
-				result = vpad.buttonA.justReleased;
-			case 'back':
-				result = vpad.buttonB.justReleased;
 			case 'ui_up':
 				result = vpad.buttonUp.justReleased;
 			case 'ui_down':
