@@ -95,8 +95,6 @@ class Controls
 	public static var checkKeys:Bool = true;
 	public static var checkStates:Bool = true;
 	public static var controlsType:Int = -1; // -1 = null, 0 = Hitbox, 1 = Vpad
-	var vpad:FlxVirtualPad = checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad;
-	var anc:AndroidControls = MusicBeatState.androidControls;
 	#end
 
 	public function justPressed(key:String)
@@ -105,7 +103,7 @@ class Controls
 
 		#if android
 		if (checkKeys)
-			result = checkJustPressed(key);
+			result = checkJustPressed(key, checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad, MusicBeatState.androidControls);
 
 		if(result) controllerMode = true;
 		#end
@@ -125,7 +123,7 @@ class Controls
 
 		#if android
 		if (checkKeys)
-			result = checkPressed(key);
+			result = checkPressed(key, checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad, MusicBeatState.androidControls);
 
 		if(result) controllerMode = true;
 		#end
@@ -145,7 +143,7 @@ class Controls
 
 		#if android
 		if (checkKeys)
-			result = checkJustReleased(key);
+			result = checkJustReleased(key, checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad, MusicBeatState.androidControls);
 
 		if(result) controllerMode = true;
 		#end
@@ -228,7 +226,7 @@ class Controls
 		}
 	}
 
-	function checkJustPressed(key:String):Bool
+	function checkJustPressed(key:String, vpad:FlxVirtualPad, anc:AndroidControls):Bool
 	{
 		var result:Bool = false;
 
@@ -279,7 +277,7 @@ class Controls
 		return result;
 	}
 
-	function checkPressed(key:String):Bool
+	function checkPressed(key:String, vpad:FlxVirtualPad, anc:AndroidControls):Bool
 	{
 		var result:Bool = false;
 
@@ -326,7 +324,7 @@ class Controls
 		return result;
 	}
 
-	function checkJustReleased(key:String):Bool
+	function checkJustReleased(key:String, vpad:FlxVirtualPad, anc:AndroidControls):Bool
 	{
 		var result:Bool = false;
 
