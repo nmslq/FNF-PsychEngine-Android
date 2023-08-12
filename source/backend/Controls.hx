@@ -326,7 +326,7 @@ class Controls
 		return result;
 	}
 
-	function checkJustReleased(key:String, vpad:FlxVirtualPad, anc:AndroidControls):Bool
+	function checkJustReleased(key:String):Bool
 	{
 		var result:Bool = false;
 
