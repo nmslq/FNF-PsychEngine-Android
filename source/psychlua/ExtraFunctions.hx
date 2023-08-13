@@ -254,27 +254,40 @@ class ExtraFunctions
 			return list;
 		});
 		Lua_helper.add_callback(lua, "createDirectory", function(folder:String) {
-			FileSystem.createDirectory(SUtil.getStorageDirectory() + folder);
+			try {
+				FileSystem.createDirectory(SUtil.getStorageDirectory() + folder);
+				return true;
+			} catch (e:Dynamic) {
+				FunkinLua.luaTrace("createDirectory: Error trying to create " + folder + ": " + e, false, false, FlxColor.RED);
+			}
+			return false;
 		});
 		Lua_helper.add_callback(lua, "deleteDirectory", function(folder:String) {
-			FileSystem.deleteDirectory(SUtil.getStorageDirectory() + folder);
+			try {
+				if(FileSystem.exists(folder))
+					FileSystem.deleteDirectory(SUtil.getStorageDirectory() + folder);
+					return true;
+			} catch (e:Dynamic) {
+				FunkinLua.luaTrace("deleteDirectory: Error trying to delete " + folder + ": " + e, false, false, FlxColor.RED);
+			}
+			return false;
 		});
 		Lua_helper.add_callback(lua, "parseJson", function(jsonStr:String, varName:String) {
 			var json = Paths.modFolders('data/' + jsonStr + '.json');
 			var foundJson:Bool;
 
 			#if sys
-				if (FileSystem.exists(json)) {
+				if (FileSystem.exists(json))
 					foundJson = true;
-				} else {
+				else {
 					FunkinLua.luaTrace('parseJson: Invalid json file path!', false, false, FlxColor.RED);
 					foundJson = false;
 					return;	
 				}
 			#else
-				if (Assets.exists(json)) {
+				if (Assets.exists(json))
 					foundJson = true;
-				} else {
+				else {
 					FunkinLua.luaTrace('parseJson: Invalid json file path!', false, false, FlxColor.RED);
 					foundJson = false;
 					return;	
@@ -339,12 +352,12 @@ class ExtraFunctions
 		Lua_helper.add_callback(lua, "applicationAlert", function(title:String, description:String) {
 			lime.app.Application.current.window.alert(description, title);
 		});
-		Lua_helper.add_callback(lua, "setKeyboard", function(open:Bool = false) {
-			FlxG.stage.window.textInputEnabled = open;
+		Lua_helper.add_callback(lua, "setKeyboard", function(isOpen:Bool = false) {
+			FlxG.stage.window.textInputEnabled = isOpen;
 		});
-		Lua_helper.add_callback(lua, "toast", function(text:String, code:Int = 0) {
+		Lua_helper.add_callback(lua, "toast", function(text:String, time:Int = 0) {
 			#if android
-			Toast.makeText(text, code);
+			Toast.makeText(text, time);
 			#end
 		});
 	}
