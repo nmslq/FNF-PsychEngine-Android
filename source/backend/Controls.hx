@@ -90,7 +90,7 @@ class Controls
 	public var keyboardBinds:Map<String, Array<FlxKey>>;
 	public var gamepadBinds:Map<String, Array<FlxGamepadInputID>>;
 
-	// code by beihu235
+	// original by beihu235
 	#if android
 	public static var checkKeys:Bool = true;
 	public static var checkStates:Bool = true;
@@ -103,7 +103,7 @@ class Controls
 
 		#if android
 		if (checkKeys)
-			result = checkKeyState(key, checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad, MusicBeatState.androidControls);
+			result = checkKeyState(key, checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad, MusicBeatState.androidControls, 'justPressed');
 
 		if(result) controllerMode = true;
 		#end
@@ -123,7 +123,7 @@ class Controls
 
 		#if android
 		if (checkKeys)
-			result = checkKeyState(key, checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad, MusicBeatState.androidControls);
+			result = checkKeyState(key, checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad, MusicBeatState.androidControls, 'pressed');
 
 		if(result) controllerMode = true;
 		#end
@@ -143,7 +143,7 @@ class Controls
 
 		#if android
 		if (checkKeys)
-			result = checkKeyState(key, checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad, MusicBeatState.androidControls);
+			result = checkKeyState(key, checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad, MusicBeatState.androidControls, 'justReleased');
 
 		if(result) controllerMode = true;
 		#end
