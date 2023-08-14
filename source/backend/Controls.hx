@@ -6,6 +6,7 @@ import flixel.input.gamepad.mappings.FlxGamepadMapping;
 import flixel.input.keyboard.FlxKey;
 
 #if android
+import android.flixel.FlxVirtualPad;
 import android.AndroidControls;
 #end
 
@@ -94,8 +95,6 @@ class Controls
 	public static var checkKeys:Bool = true;
 	public static var checkStates:Bool = true;
 	public static var controlsType:Int = -1; // -1 = null, 0 = Hitbox, 1 = Vpad
-	final vpad = checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad;
-	final anc = MusicBeatState.androidControls;
 	#end
 
 	public function justPressed(key:String)
@@ -104,7 +103,7 @@ class Controls
 
 		#if android
 		if (checkKeys)
-			result = checkJustPressed(key);
+			result = checkKeyState(key, checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad, MusicBeatState.androidControls);
 
 		if(result) controllerMode = true;
 		#end
@@ -124,7 +123,7 @@ class Controls
 
 		#if android
 		if (checkKeys)
-			result = checkPressed(key);
+			result = checkKeyState(key, checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad, MusicBeatState.androidControls);
 
 		if(result) controllerMode = true;
 		#end
@@ -144,7 +143,7 @@ class Controls
 
 		#if android
 		if (checkKeys)
-			result = checkJustReleased(key);
+			result = checkKeyState(key, checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad, MusicBeatState.androidControls);
 
 		if(result) controllerMode = true;
 		#end
@@ -227,24 +226,24 @@ class Controls
 		}
 	}
 
-	function checkJustPressed(key:String):Bool
+	function checkKeyState(key:String, vpad:FlxVirtualPad, anc:AndroidControls, state:String):Bool
 	{
 		var result:Bool = false;
 
 		switch (key)
 		{
 			case 'accept':
-				result = vpad.buttonA.justPressed;
+				result = vpad.buttonA[state];
 			case 'back':
-				result = vpad.buttonB.justPressed;
+				result = vpad.buttonB[state];
 			case 'ui_up':
-				result = vpad.buttonUp.justPressed;
+				result = vpad.buttonUp[state];
 			case 'ui_down':
-				result = vpad.buttonDown.justPressed;
+				result = vpad.buttonDown[state];
 			case 'ui_left':
-				result = vpad.buttonLeft.justPressed;
+				result = vpad.buttonLeft[state];
 			case 'ui_right':
-				result = vpad.buttonRight.justPressed;
+				result = vpad.buttonRight[state];
 		}
 
 		if (controlsType == 0)
@@ -252,13 +251,13 @@ class Controls
 			switch (key)
 			{
 				case 'note_left':
-					result = anc.hitbox.hints[0].justPressed;
+					result = anc.hitbox.hints[0][state];
 				case 'note_down':
-					result = anc.hitbox.hints[1].justPressed;
+					result = anc.hitbox.hints[1][state];
 				case 'note_up':
-					result = anc.hitbox.hints[2].justPressed;
+					result = anc.hitbox.hints[2][state];
 				case 'note_right':
-					result = anc.hitbox.hints[3].justPressed;
+					result = anc.hitbox.hints[3][state];
 			}
 		}
 		else if (controlsType == 1)
@@ -266,107 +265,13 @@ class Controls
 			switch (key)
 			{
 				case 'note_left':
-					result = anc.virtualPad.buttonLeft.justPressed;
+					result = anc.virtualPad.buttonLeft[state];
 				case 'note_down':
-					result = anc.virtualPad.buttonDown.justPressed;
+					result = anc.virtualPad.buttonDown[state];
 				case 'note_up':
-					result = anc.virtualPad.buttonUp.justPressed;
+					result = anc.virtualPad.buttonUp[state];
 				case 'note_right':
-					result = anc.virtualPad.buttonRight.justPressed;
-			}
-		}
-		return result;
-	}
-
-	function checkPressed(key:String):Bool
-	{
-		var result:Bool = false;
-
-		switch (key)
-		{
-			case 'ui_up':
-				result = vpad.buttonUp.pressed;
-			case 'ui_down':
-				result = vpad.buttonDown.pressed;
-			case 'ui_left':
-				result = vpad.buttonLeft.pressed;
-			case 'ui_right':
-				result = vpad.buttonRight.pressed;
-		}
-
-		if (controlsType == 0)
-		{
-			switch (key)
-			{
-				case 'note_left':
-					result = anc.hitbox.hints[0].pressed;
-				case 'note_down':
-					result = anc.hitbox.hints[1].pressed;
-				case 'note_up':
-					result = anc.hitbox.hints[2].pressed;
-				case 'note_right':
-					result = anc.hitbox.hints[3].pressed;
-			}
-		}
-		else if (controlsType == 1)
-		{
-			switch (key)
-			{
-				case 'note_left':
-					result = anc.virtualPad.buttonLeft.pressed;
-				case 'note_down':
-					result = anc.virtualPad.buttonDown.pressed;
-				case 'note_up':
-					result = anc.virtualPad.buttonUp.pressed;
-				case 'note_right':
-					result = anc.virtualPad.buttonRight.pressed;
-			}
-		}
-		return result;
-	}
-
-	function checkJustReleased(key:String):Bool
-	{
-		var result:Bool = false;
-
-		switch (key)
-		{
-			case 'ui_up':
-				result = vpad.buttonUp.justReleased;
-			case 'ui_down':
-				result = vpad.buttonDown.justReleased;
-			case 'ui_left':
-				result = vpad.buttonLeft.justReleased;
-			case 'ui_right':
-				result = vpad.buttonRight.justReleased;
-		}
-
-		if (controlsType == 0)
-		{
-			switch (key)
-			{
-				case 'note_left':
-					result = anc.hitbox.hints[0].justReleased;
-				case 'note_down':
-					result = anc.hitbox.hints[1].justReleased;
-				case 'note_up':
-					result = anc.hitbox.hints[2].justReleased;
-				case 'note_right':
-					result = anc.hitbox.hints[3].justReleased;
-			}
-		}
-		else if (controlsType == 1)
-		{
-			switch (key)
-			{
-				case 'note_left':
-					result = anc.virtualPad.buttonLeft.justReleased;
-				case 'note_down':
-					result = anc.virtualPad.buttonDown.justReleased;
-				case 'note_up':
-					result = anc.virtualPad.buttonUp.justReleased;
-				case 'note_right':
-					result = anc.virtualPad.buttonRight.justReleased;
+					result = anc.virtualPad.buttonRight[state];
 			}
 		}
 		return result;
