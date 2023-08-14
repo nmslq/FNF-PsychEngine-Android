@@ -90,7 +90,7 @@ class Controls
 	public var keyboardBinds:Map<String, Array<FlxKey>>;
 	public var gamepadBinds:Map<String, Array<FlxGamepadInputID>>;
 
-	// original by beihu235
+	// original code by beihu235
 	#if android
 	public static var checkKeys:Bool = true;
 	public static var checkStates:Bool = true;
