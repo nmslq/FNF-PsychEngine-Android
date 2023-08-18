@@ -27,8 +27,10 @@ class VisualsUISubState extends BaseOptionsMenu
 		}
 
 		// options
-		var noteSkins:Array<String> = Mods.mergeAllTextsNamed('images/noteSkins/list.txt');
-		if(!noteSkins.length > 0)
+		var noteSkins:Array<String> = [];
+		if(Mods.mergeAllTextsNamed('images/noteSkins/list.txt').length > 0)
+			noteSkins = Mods.mergeAllTextsNamed('images/noteSkins/list.txt');
+		else
 			noteSkins = CoolUtil.coolTextFile(Paths.getPreloadPath('shared/images/noteSkins/list.txt'));
 
 		if(noteSkins.length > 0)
@@ -47,8 +49,10 @@ class VisualsUISubState extends BaseOptionsMenu
 			noteOptionID = optionsArray.length - 1;
 		}
 
-		var noteSplashes:Array<String> = Mods.mergeAllTextsNamed('images/noteSplashes/list.txt');
-		if(!noteSplashes.length > 0)
+		var noteSplashes:Array<String> = [];
+		if(Mods.mergeAllTextsNamed('images/noteSplashes/list.txt').length > 0)
+			noteSplashes = Mods.mergeAllTextsNamed('images/noteSplashes/list.txt');
+		else
 			noteSplashes = CoolUtil.coolTextFile(Paths.getPreloadPath('shared/images/noteSplashes/list.txt'));
 
 		if(noteSplashes.length > 0)
