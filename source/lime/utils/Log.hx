@@ -3,6 +3,7 @@ package lime.utils;
 #if android
 import android.widget.Toast;
 #end
+import openfl.Lib;
 import haxe.PosInfos;
 import lime.app.Application;
 import lime.system.System;
