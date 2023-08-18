@@ -12,8 +12,6 @@ import sys.io.File;
 import sys.FileSystem;
 #end
 
-using StringTools;
-
 #if !lime_debug
 @:fileXml('tags="haxe,release"')
 @:noDebug
