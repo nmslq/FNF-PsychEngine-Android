@@ -269,7 +269,8 @@ class ExtraFunctions
 			return false;
 		});
 		Lua_helper.add_callback(lua, "parseJson", function(jsonStr:String, varName:String) {
-			var json = Paths.modFolders(jsonStr + '.json');
+			if (!jsonStr.endsWith('.json')) jsonStr += '.json';
+			var json = Paths.modFolders(jsonStr);
 			var foundJson:Bool;
 
 			#if sys
