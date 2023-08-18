@@ -269,29 +269,31 @@ class ExtraFunctions
 			return false;
 		});
 		Lua_helper.add_callback(lua, "parseJson", function(jsonStr:String, varName:String) {
-			var json = Paths.modFolders('data/' + jsonStr + '.json');
+			var json = Paths.modFolders(jsonStr + '.json');
 			var foundJson:Bool;
 
 			#if sys
-				if (FileSystem.exists(json))
-					foundJson = true;
-				else {
-					FunkinLua.luaTrace('parseJson: Invalid json file path!', false, false, FlxColor.RED);
-					foundJson = false;
-					return;	
-				}
+			if (FileSystem.exists(json))
+				foundJson = true;
+			else
+			{
+				FunkinLua.luaTrace('parseJson: Invalid json file path!', false, false, FlxColor.RED);
+				foundJson = false;
+				return;
+			}
 			#else
-				if (Assets.exists(json))
-					foundJson = true;
-				else {
-					FunkinLua.luaTrace('parseJson: Invalid json file path!', false, false, FlxColor.RED);
-					foundJson = false;
-					return;	
-				}
+			if (Assets.exists(json))
+				foundJson = true;
+			else
+			{
+				FunkinLua.luaTrace('parseJson: Invalid json file path!', false, false, FlxColor.RED);
+				foundJson = false;
+				return;
+			}
 			#end
 
 			if (foundJson) {
-				var parsedJson = haxe.Json.parse(File.getContent(json));				
+				var parsedJson = haxe.Json.parse(File.getContent(json));
 				PlayState.instance.variables.set(varName, parsedJson);
 			}
 		});
@@ -333,28 +335,45 @@ class ExtraFunctions
 			return FlxG.random.bool(chance);
 		});
 
-		// other functions
+		// Android functions
 		Lua_helper.add_callback(lua, "vibration", function(period:Int, milliseconds:Int) {
 			#if android
 			Haptic.vibrate(period, milliseconds);
 			#end
 		});
-		Lua_helper.add_callback(lua, "browserLoad", function(url:String) {
-			CoolUtil.browserLoad(url);
-		});
-		Lua_helper.add_callback(lua, "setClipboard", function(data:String) {
-			openfl.system.System.setClipboard(data);
-		});
-		Lua_helper.add_callback(lua, "applicationAlert", function(title:String, description:String) {
-			lime.app.Application.current.window.alert(description, title);
-		});
-		Lua_helper.add_callback(lua, "setKeyboard", function(isOpen:Bool = false) {
-			FlxG.stage.window.textInputEnabled = isOpen;
-		});
 		Lua_helper.add_callback(lua, "toast", function(text:String, time:Int = 0) {
 			#if android
 			Toast.makeText(text, time);
 			#end
+		});
+
+		// Other functions
+		Lua_helper.add_callback(lua, "browserLoad", function(url:String) {
+			try {
+				CoolUtil.browserLoad(url);
+				return true;
+			} catch (e:Dynamic) {
+				FunkinLua.luaTrace("browserLoad: Error trying to load " + url + ": " + e, false, false, FlxColor.RED);
+			}
+			return false;
+		});
+		Lua_helper.add_callback(lua, "setClipboard", function(data:String) {
+			try {
+				openfl.system.System.setClipboard(data);
+				return true;
+			} catch (e:Dynamic) {
+				FunkinLua.luaTrace("setClipboard: Error trying to copy " + data + ": " + e, false, false, FlxColor.RED);
+			}
+			return false;
+		});
+		Lua_helper.add_callback(lua, "applicationAlert", function(title:String, description:String) {
+			try {
+				lime.app.Application.current.window.alert(description, title);
+				return true;
+			} catch (e:Dynamic) {
+				FunkinLua.luaTrace("applicationAlert: Error trying to open alert: " + e, false, false, FlxColor.RED);
+			}
+			return false;
 		});
 	}
 }
