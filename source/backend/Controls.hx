@@ -94,7 +94,7 @@ class Controls
 	#if android
 	public static var checkKeys:Bool = true;
 	public static var checkStates:Bool = true;
-	public static var controlsType:Int = -1; // -1 = null, 0 = Hitbox, 1 = Vpad
+	public static var controlsMode:Int = -1; // -1 = null, 0 = Hitbox, 1 = Vpad
 	#end
 
 	public function justPressed(key:String)
@@ -218,11 +218,11 @@ class Controls
 		switch (AndroidControls.mode)
 		{
 			case 'Hitbox':
-				controlsType = 0;
+				controlsMode = 0;
 			case 'Pad-Left' | 'Pad-Custom' | 'Pad-Right':
-				controlsType = 1;
+				controlsMode = 1;
 			case 'Keyboard':
-				controlsType = -1;
+				controlsMode = -1;
 		}
 	}
 
@@ -246,7 +246,7 @@ class Controls
 				result = vpad.buttonRight.justPressed;
 		}
 
-		if (controlsType == 0)
+		if (controlsMode == 0)
 		{
 			switch (key)
 			{
@@ -260,7 +260,7 @@ class Controls
 					result = anc.hitbox.hints[3].justPressed;
 			}
 		}
-		else if (controlsType == 1)
+		else if (controlsMode == 1)
 		{
 			switch (key)
 			{
@@ -293,7 +293,7 @@ class Controls
 				result = vpad.buttonRight.pressed;
 		}
 
-		if (controlsType == 0)
+		if (controlsMode == 0)
 		{
 			switch (key)
 			{
@@ -307,7 +307,7 @@ class Controls
 					result = anc.hitbox.hints[3].pressed;
 			}
 		}
-		else if (controlsType == 1)
+		else if (controlsMode == 1)
 		{
 			switch (key)
 			{
@@ -340,7 +340,7 @@ class Controls
 				result = vpad.buttonRight.justReleased;
 		}
 
-		if (controlsType == 0)
+		if (controlsMode == 0)
 		{
 			switch (key)
 			{
@@ -354,7 +354,7 @@ class Controls
 					result = anc.hitbox.hints[3].justReleased;
 			}
 		}
-		else if (controlsType == 1)
+		else if (controlsMode == 1)
 		{
 			switch (key)
 			{
