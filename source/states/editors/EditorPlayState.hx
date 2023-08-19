@@ -959,60 +959,72 @@ class EditorPlayState extends MusicBeatSubstate
 		add(androidControls);
 	}
 
-	function keysPressed(key:String):Bool
-	{
-		var result:Bool = false;
-
-		if (Controls.controlsType == 0)
-		{
-			if (key == 'note_left')
-				result = (androidControls.hitbox.hints[0].pressed == true);
-			if (key == 'note_down')
-				result = (androidControls.hitbox.hints[1].pressed == true);
-			if (key == 'note_up')
-				result = (androidControls.hitbox.hints[2].pressed == true);
-			if (key == 'note_right')
-				result = (androidControls.hitbox.hints[3].pressed == true);
-		}
-		else if (Controls.controlsType == 1)
-		{
-			if (key == 'note_up')
-				result = (androidControls.virtualPad.buttonUp.pressed == true);
-			if (key == 'note_down')
-				result = (androidControls.virtualPad.buttonDown.pressed == true);
-			if (key == 'note_left')
-				result = (androidControls.virtualPad.buttonLeft.pressed == true);
-			if (key == 'note_right')
-				result = (androidControls.virtualPad.buttonRight.pressed == true);
-		}
-		return result;
-	}
-
 	function keysJustPressed(key:String):Bool
 	{
 		var result:Bool = false;
 
-		if (Controls.controlsType == 0)
+		if (Controls.controlsMode == 0)
 		{
-			if (key == 'note_left')
-				result = (androidControls.hitbox.hints[0].justPressed == true);
-			if (key == 'note_down')
-				result = (androidControls.hitbox.hints[1].justPressed == true);
-			if (key == 'note_up')
-				result = (androidControls.hitbox.hints[2].justPressed == true);
-			if (key == 'note_right')
-				result = (androidControls.hitbox.hints[3].justPressed == true);
+			switch (key)
+			{
+				case 'note_left':
+					result = androidControls.hitbox.hints[0].justPressed;
+				case 'note_down':
+					result = androidControls.hitbox.hints[1].justPressed;
+				case 'note_up':
+					result = androidControls.hitbox.hints[2].justPressed;
+				case 'note_right':
+					result = androidControls.hitbox.hints[3].justPressed;
+			}
 		}
-		else if (Controls.controlsType == 1)
+		else if (Controls.controlsMode == 1)
 		{
-			if (key == 'note_up')
-				result = (androidControls.virtualPad.buttonUp.justPressed == true);
-			if (key == 'note_down')
-				result = (androidControls.virtualPad.buttonDown.justPressed == true);
-			if (key == 'note_left')
-				result = (androidControls.virtualPad.buttonLeft.justPressed == true);
-			if (key == 'note_right')
-				result = (androidControls.virtualPad.buttonRight.justPressed == true);
+			switch (key)
+			{
+				case 'note_left':
+					result = androidControls.virtualPad.buttonLeft.justPressed;
+				case 'note_down':
+					result = androidControls.virtualPad.buttonDown.justPressed;
+				case 'note_up':
+					result = androidControls.virtualPad.buttonUp.justPressed;
+				case 'note_right':
+					result = androidControls.virtualPad.buttonRight.justPressed;
+			}
+		}
+		return result;
+	}
+
+	function keysPressed(key:String):Bool
+	{
+		var result:Bool = false;
+
+		if (Controls.controlsMode == 0)
+		{
+			switch (key)
+			{
+				case 'note_left':
+					result = androidControls.hitbox.hints[0].pressed;
+				case 'note_down':
+					result = androidControls.hitbox.hints[1].pressed;
+				case 'note_up':
+					result = androidControls.hitbox.hints[2].pressed;
+				case 'note_right':
+					result = androidControls.hitbox.hints[3].pressed;
+			}
+		}
+		else if (Controls.controlsMode == 1)
+		{
+			switch (key)
+			{
+				case 'note_left':
+					result = androidControls.virtualPad.buttonLeft.pressed;
+				case 'note_down':
+					result = androidControls.virtualPad.buttonDown.pressed;
+				case 'note_up':
+					result = androidControls.virtualPad.buttonUp.pressed;
+				case 'note_right':
+					result = androidControls.virtualPad.buttonRight.pressed;
+			}
 		}
 		return result;
 	}
@@ -1021,27 +1033,33 @@ class EditorPlayState extends MusicBeatSubstate
 	{
 		var result:Bool = false;
 
-		if (Controls.controlsType == 0)
+		if (Controls.controlsMode == 0)
 		{
-			if (key == 'note_left')
-				result = (androidControls.hitbox.hints[0].justReleased == true);
-			if (key == 'note_down')
-				result = (androidControls.hitbox.hints[1].justReleased == true);
-			if (key == 'note_up')
-				result = (androidControls.hitbox.hints[2].justReleased == true);
-			if (key == 'note_right')
-				result = (androidControls.hitbox.hints[3].justReleased == true);
+			switch (key)
+			{
+				case 'note_left':
+					result = androidControls.hitbox.hints[0].justReleased;
+				case 'note_down':
+					result = androidControls.hitbox.hints[1].justReleased;
+				case 'note_up':
+					result = androidControls.hitbox.hints[2].justReleased;
+				case 'note_right':
+					result = androidControls.hitbox.hints[3].justReleased;
+			}
 		}
-		else if (Controls.controlsType == 1)
+		else if (Controls.controlsMode == 1)
 		{
-			if (key == 'note_up')
-				result = (androidControls.virtualPad.buttonUp.justReleased == true);
-			if (key == 'note_down')
-				result = (androidControls.virtualPad.buttonDown.justReleased == true);
-			if (key == 'note_left')
-				result = (androidControls.virtualPad.buttonLeft.justReleased == true);
-			if (key == 'note_right')
-				result = (androidControls.virtualPad.buttonRight.justReleased == true);
+			switch (key)
+			{
+				case 'note_left':
+					result = androidControls.virtualPad.buttonLeft.justReleased;
+				case 'note_down':
+					result = androidControls.virtualPad.buttonDown.justReleased;
+				case 'note_up':
+					result = androidControls.virtualPad.buttonUp.justReleased;
+				case 'note_right':
+					result = androidControls.virtualPad.buttonRight.justReleased;
+			}
 		}
 		return result;
 	}
