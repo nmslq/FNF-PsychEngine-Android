@@ -196,6 +196,12 @@ class FunkinLua {
 		set('splashSkin', ClientPrefs.data.splashSkin);
 		set('splashSkinPostfix', NoteSplash.getSplashSkinPostfix());
 		set('splashAlpha', ClientPrefs.data.splashAlpha);
+		
+		// Android Controls
+		#if android
+		set('androidControls', MusicBeatState.androidControls);
+		set('controlsMode', android.AndroidControls.mode);
+		#end
 
 		set('buildTarget', getBuildTarget());
 
