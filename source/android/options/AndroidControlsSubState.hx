@@ -47,8 +47,6 @@ class AndroidControlsSubState extends FlxSubState
 			if (controlsItems[i] == AndroidControls.mode)
 				curSelected = i;
 
-		Controls.checkKeys = false;
-
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = 0xFF7DD47D;
 		bg.antialiasing = ClientPrefs.data.antialiasing;
@@ -92,45 +90,31 @@ class AndroidControlsSubState extends FlxSubState
 		resetButton.visible = false;
 		add(resetButton);
 
-		funitext = new FlxText(0, 0, 0, 'No Android Controls!', 32);
-		funitext.setFormat(Assets.getFont('assets/fonts/vcr.ttf').fontName, 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,
-			FlxColor.BLACK, true);
-		funitext.borderSize = 3;
-		funitext.borderQuality = 1;
+		funitext = createText(0, 'No Android Controls!');
 		funitext.screenCenter();
 		funitext.visible = false;
 		add(funitext);
 
-		grpControls = new FlxText(0, 100, 0, '', 32);
-		grpControls.setFormat(Assets.getFont('assets/fonts/vcr.ttf').fontName, 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,
-			FlxColor.BLACK, true);
-		grpControls.borderSize = 3;
-		grpControls.borderQuality = 1;
+		grpControls = createText(100, '');
 		grpControls.screenCenter(X);
 		add(grpControls);
 
-		leftArrow = new FlxSprite(grpControls.x - 60, grpControls.y - 25);
-		leftArrow.frames = Paths.getSparrowAtlas('android/menu/arrows');
-		leftArrow.animation.addByPrefix('idle', 'arrow left');
-		leftArrow.animation.play('idle');
+		leftArrow = createArrow(grpControls.x - 60, 'arrow left');
 		add(leftArrow);
 
-		rightArrow = new FlxSprite(grpControls.x + grpControls.width + 10, grpControls.y - 25);
-		rightArrow.frames = Paths.getSparrowAtlas('android/menu/arrows');
-		rightArrow.animation.addByPrefix('idle', 'arrow right');
-		rightArrow.animation.play('idle');
+		rightArrow = createArrow(grpControls.x + grpControls.width + 10, 'arrow right');
 		add(rightArrow);
 
-		rightPosition = createText(24);
+		rightPosition = createPosition(24);
 		add(rightPosition);
 
-		leftPosition = createText(44);
+		leftPosition = createPosition(44);
 		add(leftPosition);
 
-		downPosition = createText(64);
+		downPosition = createPosition(64);
 		add(downPosition);
 
-		upPosition = createText(84);
+		upPosition = createPosition(84);
 		add(upPosition);
 
 		changeSelection();
@@ -138,10 +122,31 @@ class AndroidControlsSubState extends FlxSubState
 		super.create();
 	}
 
-	function createText(y:Int):FlxText
+	function createPosition(y:Int):FlxText
 	{
-		var text:FlxText = new FlxText(10, FlxG.height - y, 0, '', 16);
-		text.setFormat(Assets.getFont('assets/fonts/vcr.ttf').fontName, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
+		var position:FlxText = new FlxText(10, FlxG.height - y, 0, '', 16);
+		position.setFormat(Assets.getFont('assets/fonts/vcr.ttf').fontName, 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE,
+			FlxColor.BLACK, true);
+		position.borderSize = 3;
+		position.borderQuality = 1;
+		add(position);
+		return position;
+	}
+
+	function createArrow(x:Float, anim:String):FlxSprite
+	{
+		var arrow:FlxSprite = new FlxSprite(x, grpControls.y - 25);
+		arrow.frames = Paths.getSparrowAtlas('android/menu/arrows');
+		arrow.animation.addByPrefix('idle', anim);
+		arrow.animation.play('idle');
+		add(arrow);
+		return arrow;
+	}
+
+	function createText(y:Int, txt:String)
+	{
+		var text:FlxText = new FlxText(0, y, 0, txt, 32);
+		text.setFormat(Assets.getFont('assets/fonts/vcr.ttf').fontName, 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,
 			FlxColor.BLACK, true);
 		text.borderSize = 3;
 		text.borderQuality = 1;
