@@ -181,7 +181,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			new FlxTimer().start(0.7, function(tmr:FlxTimer)
 			{
 				#if android
-				FlxTween.tween(MusicBeatState.virtualPad, {alpha: 0}, 2);
+				FlxTween.tween(MusicBeatSubstate.virtualPad, {alpha: 0}, 2);
 				#end
 				FlxG.camera.fade(FlxColor.BLACK, 2, false, function()
 				{
