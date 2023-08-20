@@ -65,8 +65,6 @@ class ChartingState extends MusicBeatState
 	];
 	public var ignoreWarnings = false;
 	var curNoteTypes:Array<String> = [];
-	var undos = [];
-	var redos = [];
 	var eventStuff:Array<Dynamic> =
 	[
 		['', "Nothing. Yep, that's right."],
@@ -1820,9 +1818,6 @@ class ChartingState extends MusicBeatState
 				return;
 			}
 
-			if(FlxG.keys.justPressed.Z && FlxG.keys.pressed.CONTROL)
-				undos.pop();
-
 			if(FlxG.keys.justPressed.Z #if android || MusicBeatState.virtualPad.buttonZ.justPressed #end && curZoom > 0 && !FlxG.keys.pressed.CONTROL) {
 				--curZoom;
 				updateZoom();
@@ -2984,7 +2979,6 @@ class ChartingState extends MusicBeatState
 	{
 		//curUndoIndex++;
 		//var newsong = _song.notes;
-	//	undos.push(newsong);
 		var noteStrum = getStrumTime(dummyArrow.y * (getSectionBeats() / 4), false) + sectionStartTime();
 		var noteData = 0;
 		#if android
