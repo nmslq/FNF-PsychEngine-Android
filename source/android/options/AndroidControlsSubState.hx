@@ -39,15 +39,13 @@ class AndroidControlsSubState extends FlxSubState
 	private var bindButton:FlxButton;
 	private var resetButton:FlxButton;
 
-	private var bg:FlxSprite;
-
 	override function create()
 	{
 		for (i in 0...controlsItems.length)
 			if (controlsItems[i] == AndroidControls.mode)
 				curSelected = i;
 
-		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = 0xFF7DD47D;
 		bg.antialiasing = ClientPrefs.data.antialiasing;
 		bg.screenCenter();
