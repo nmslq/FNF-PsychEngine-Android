@@ -141,7 +141,7 @@ class AndroidControlsSubState extends FlxSubState
 		return arrow;
 	}
 
-	function createText(y:Int, txt:String)
+	function createText(y:Int, txt:String):FlxText
 	{
 		var text:FlxText = new FlxText(0, y, 0, txt, 32);
 		text.setFormat(Assets.getFont('assets/fonts/vcr.ttf').fontName, 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,
