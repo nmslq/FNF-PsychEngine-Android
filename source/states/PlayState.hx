@@ -1172,7 +1172,7 @@ class PlayState extends MusicBeatState
 	{
 		tempScore = "Score: " + songScore;
 
-		if (scoreDisplays.misses)
+		if (scoreDisplays.misses && !instakillOnMiss)
 			tempScore += scoreSeparator + "Misses: " + songMisses;
 
 		if (scoreDisplays.ratingName)
