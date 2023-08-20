@@ -44,11 +44,11 @@ class SaveVariables {
 	public var checkForUpdates:Bool = true;
 	public var comboStacking:Bool = true;
 	public var vibration:Bool = false;
-	public var gradientHitboxes = false;
+	public var gradientHitboxes:Bool = false;
 	public var laneUnderlay:Float = 0;
 	public var gameplaySettings:Map<String, Dynamic> = [
 		'scrollspeed' => 1.0,
-		'scrolltype' => 'multiplicative', 
+		'scrolltype' => 'multiplicative',
 		// anyone reading this, amod is multiplicative speed mod, cmod is constant speed mod, and xmod is bpm based speed mod.
 		// an amod example would be chartSpeed * multiplier
 		// cmod would just be constantSpeed = chartSpeed
