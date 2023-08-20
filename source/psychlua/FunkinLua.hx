@@ -199,7 +199,6 @@ class FunkinLua {
 		
 		// Android Controls
 		#if android
-		set('androidControls', MusicBeatState.androidControls);
 		set('controlsMode', android.AndroidControls.mode);
 		#end
 
