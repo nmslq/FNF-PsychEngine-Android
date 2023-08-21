@@ -47,8 +47,10 @@
     },
     {
       "name": "hxCodec",
-      "type": "haxelib",
-      "version": null
+      "type": "git",
+      "dir": null,
+      "ref": "main",
+      "url": "https://github.com/JonnycatMeow/hxCodec-old"
     },
     {
       "name": "SScript",
