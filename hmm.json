@@ -74,7 +74,7 @@
       "type": "git",
       "dir": null,
       "ref": "master",
-      "url": "https://github.com/nmslq/linc_luajit"
+      "url": "https://github.com/superpowers04/linc_luajit"
     },
     {
       "name": "extension-androidtools",
