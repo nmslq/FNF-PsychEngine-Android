@@ -4,6 +4,7 @@ import flixel.FlxBasic;
 import objects.Character;
 import psychlua.FunkinLua;
 import psychlua.CustomSubstate;
+import psychlua.CustomFlxColor;
 
 #if (HSCRIPT_ALLOWED && SScript >= "3.0.0")
 import tea.SScript;
