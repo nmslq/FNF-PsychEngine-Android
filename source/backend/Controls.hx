@@ -228,9 +228,7 @@ class Controls
 
 	function checkJustPressed(key:String, vpad:FlxVirtualPad, anc:AndroidControls):Bool
 	{
-		var result:Bool = false;
-
-		result = switch (key)
+		var result:Bool = switch (key)
 		{
 			case 'accept': vpad.buttonA.justPressed;
 			case 'back': vpad.buttonB.justPressed;
@@ -249,9 +247,7 @@ class Controls
 
 	function checkPressed(key:String, vpad:FlxVirtualPad, anc:AndroidControls):Bool
 	{
-		var result:Bool = false;
-
-		result = switch (key)
+		var result:Bool = switch (key)
 		{
 			case 'accept': vpad.buttonA.pressed;
 			case 'back': vpad.buttonB.pressed;
@@ -270,9 +266,7 @@ class Controls
 
 	function checkJustReleased(key:String, vpad:FlxVirtualPad, anc:AndroidControls):Bool
 	{
-		var result:Bool = false;
-
-		result = switch (key)
+		var result:Bool = switch (key)
 		{
 			case 'accept': vpad.buttonA.justReleased;
 			case 'back': vpad.buttonB.justReleased;
