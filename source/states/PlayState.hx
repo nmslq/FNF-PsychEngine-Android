@@ -3416,7 +3416,7 @@ class PlayState extends MusicBeatState
 					remove(songDisplay);
 				}
 			});
-		}
+		});
 	}
 
 	#if ACHIEVEMENTS_ALLOWED
