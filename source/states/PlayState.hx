@@ -265,6 +265,9 @@ class PlayState extends MusicBeatState
 	public var startCallback:Void->Void = null;
 	public var endCallback:Void->Void = null;
 
+	// Song display
+	public var songDisplay:SongDisplay;
+
 	override public function create()
 	{
 		Paths.clearStoredMemory();
@@ -610,6 +613,10 @@ class PlayState extends MusicBeatState
 
 		uiGroup.cameras = [camHUD];
 		comboGroup.cameras = [camHUD];
+		
+		songDisplay = new SongDisplay(-1000, 200);
+		songDisplay.cameras = [camOther];
+		add(songDisplay);
 
 		#if android
 		Controls.getKeys();
@@ -681,6 +688,14 @@ class PlayState extends MusicBeatState
 			FlxG.stage.addEventListener(KeyboardEvent.KEY_UP, onKeyRelease);
 		}
 		callOnScripts('onCreatePost');
+
+		FlxTween.tween(songDisplay, {x: 0}, 1, {
+			ease: FlxEase.cubeOut,
+			onComplete: function(twn:FlxTween)
+			{
+				timeDisplay();
+			}
+		});
 
 		cacheCountdown();
 		cachePopUpScore();
@@ -3390,6 +3405,20 @@ class PlayState extends MusicBeatState
 			ratingFC = 'SDCB';
 	}
 
+	function timeDisplay()
+	{
+		startTimer = new FlxTimer().start(3, function(tmr:FlxTimer)
+		{
+			FlxTween.tween(songDisplay, {x: -1000}, 1, {
+				ease: FlxEase.cubeIn,
+				onComplete: function(twn:FlxTween)
+				{
+					remove(songDisplay);
+				}
+			});
+		}
+	}
+
 	#if ACHIEVEMENTS_ALLOWED
 	private function checkForAchievement(achievesToCheck:Array<String> = null)
 	{
@@ -3428,7 +3457,6 @@ class PlayState extends MusicBeatState
 					&& storyPlaylist.length <= 1 && !changedDifficulty && !usedPractice)
 					unlock = true;
 			}
-
 			if(unlock) Achievements.unlockAchievement(name);
 		}
 	}
