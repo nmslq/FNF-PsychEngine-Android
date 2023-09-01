@@ -230,49 +230,19 @@ class Controls
 	{
 		var result:Bool = false;
 
-		switch (key)
+		result = switch (key)
 		{
-			case 'accept':
-				result = vpad.buttonA.justPressed;
-			case 'back':
-				result = vpad.buttonB.justPressed;
-			case 'ui_up':
-				result = vpad.buttonUp.justPressed;
-			case 'ui_down':
-				result = vpad.buttonDown.justPressed;
-			case 'ui_left':
-				result = vpad.buttonLeft.justPressed;
-			case 'ui_right':
-				result = vpad.buttonRight.justPressed;
-		}
-
-		if (controlsMode == 0)
-		{
-			switch (key)
-			{
-				case 'note_left':
-					result = anc.hitbox.hints[0].justPressed;
-				case 'note_down':
-					result = anc.hitbox.hints[1].justPressed;
-				case 'note_up':
-					result = anc.hitbox.hints[2].justPressed;
-				case 'note_right':
-					result = anc.hitbox.hints[3].justPressed;
-			}
-		}
-		else if (controlsMode == 1)
-		{
-			switch (key)
-			{
-				case 'note_left':
-					result = anc.virtualPad.buttonLeft.justPressed;
-				case 'note_down':
-					result = anc.virtualPad.buttonDown.justPressed;
-				case 'note_up':
-					result = anc.virtualPad.buttonUp.justPressed;
-				case 'note_right':
-					result = anc.virtualPad.buttonRight.justPressed;
-			}
+			case 'accept': vpad.buttonA.justPressed;
+			case 'back': vpad.buttonB.justPressed;
+			case 'ui_up': vpad.buttonUp.justPressed;
+			case 'ui_down': vpad.buttonDown.justPressed;
+			case 'ui_left':vpad.buttonLeft.justPressed;
+			case 'ui_right': vpad.buttonRight.justPressed;
+			case 'note_left': controlsMode == 0 ? anc.hitbox.hints[0].justPressed : anc.virtualPad.buttonLeft.justPressed;
+			case 'note_down': controlsMode == 0 ? anc.hitbox.hints[1].justPressed : anc.virtualPad.buttonDown.justPressed;
+			case 'note_up': controlsMode == 0 ? anc.hitbox.hints[2].justPressed : anc.virtualPad.buttonUp.justPressed;
+			case 'note_right': controlsMode == 0 ? anc.hitbox.hints[3].justPressed : anc.virtualPad.buttonRight.justPressed;
+			default: false;
 		}
 		return result;
 	}
@@ -281,45 +251,19 @@ class Controls
 	{
 		var result:Bool = false;
 
-		switch (key)
+		result = switch (key)
 		{
-			case 'ui_up':
-				result = vpad.buttonUp.pressed;
-			case 'ui_down':
-				result = vpad.buttonDown.pressed;
-			case 'ui_left':
-				result = vpad.buttonLeft.pressed;
-			case 'ui_right':
-				result = vpad.buttonRight.pressed;
-		}
-
-		if (controlsMode == 0)
-		{
-			switch (key)
-			{
-				case 'note_left':
-					result = anc.hitbox.hints[0].pressed;
-				case 'note_down':
-					result = anc.hitbox.hints[1].pressed;
-				case 'note_up':
-					result = anc.hitbox.hints[2].pressed;
-				case 'note_right':
-					result = anc.hitbox.hints[3].pressed;
-			}
-		}
-		else if (controlsMode == 1)
-		{
-			switch (key)
-			{
-				case 'note_left':
-					result = anc.virtualPad.buttonLeft.pressed;
-				case 'note_down':
-					result = anc.virtualPad.buttonDown.pressed;
-				case 'note_up':
-					result = anc.virtualPad.buttonUp.pressed;
-				case 'note_right':
-					result = anc.virtualPad.buttonRight.pressed;
-			}
+			case 'accept': vpad.buttonA.pressed;
+			case 'back': vpad.buttonB.pressed;
+			case 'ui_up': vpad.buttonUp.pressed;
+			case 'ui_down': vpad.buttonDown.pressed;
+			case 'ui_left':vpad.buttonLeft.pressed;
+			case 'ui_right': vpad.buttonRight.pressed;
+			case 'note_left': controlsMode == 0 ? anc.hitbox.hints[0].pressed : anc.virtualPad.buttonLeft.pressed;
+			case 'note_down': controlsMode == 0 ? anc.hitbox.hints[1].pressed : anc.virtualPad.buttonDown.pressed;
+			case 'note_up': controlsMode == 0 ? anc.hitbox.hints[2].pressed : anc.virtualPad.buttonUp.pressed;
+			case 'note_right': controlsMode == 0 ? anc.hitbox.hints[3].pressed : anc.virtualPad.buttonRight.pressed;
+			default: false;
 		}
 		return result;
 	}
@@ -328,45 +272,19 @@ class Controls
 	{
 		var result:Bool = false;
 
-		switch (key)
+		result = switch (key)
 		{
-			case 'ui_up':
-				result = vpad.buttonUp.justReleased;
-			case 'ui_down':
-				result = vpad.buttonDown.justReleased;
-			case 'ui_left':
-				result = vpad.buttonLeft.justReleased;
-			case 'ui_right':
-				result = vpad.buttonRight.justReleased;
-		}
-
-		if (controlsMode == 0)
-		{
-			switch (key)
-			{
-				case 'note_left':
-					result = anc.hitbox.hints[0].justReleased;
-				case 'note_down':
-					result = anc.hitbox.hints[1].justReleased;
-				case 'note_up':
-					result = anc.hitbox.hints[2].justReleased;
-				case 'note_right':
-					result = anc.hitbox.hints[3].justReleased;
-			}
-		}
-		else if (controlsMode == 1)
-		{
-			switch (key)
-			{
-				case 'note_left':
-					result = anc.virtualPad.buttonLeft.justReleased;
-				case 'note_down':
-					result = anc.virtualPad.buttonDown.justReleased;
-				case 'note_up':
-					result = anc.virtualPad.buttonUp.justReleased;
-				case 'note_right':
-					result = anc.virtualPad.buttonRight.justReleased;
-			}
+			case 'accept': vpad.buttonA.justReleased;
+			case 'back': vpad.buttonB.justReleased;
+			case 'ui_up': vpad.buttonUp.justReleased;
+			case 'ui_down': vpad.buttonDown.justReleased;
+			case 'ui_left':vpad.buttonLeft.justReleased;
+			case 'ui_right': vpad.buttonRight.justReleased;
+			case 'note_left': controlsMode == 0 ? anc.hitbox.hints[0].justReleased : anc.virtualPad.buttonLeft.justReleased;
+			case 'note_down': controlsMode == 0 ? anc.hitbox.hints[1].justReleased : anc.virtualPad.buttonDown.justReleased;
+			case 'note_up': controlsMode == 0 ? anc.hitbox.hints[2].justReleased : anc.virtualPad.buttonUp.justReleased;
+			case 'note_right': controlsMode == 0 ? anc.hitbox.hints[3].justReleased : anc.virtualPad.buttonRight.justReleased;
+			default: false;
 		}
 		return result;
 	}
