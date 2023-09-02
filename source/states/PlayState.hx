@@ -3414,15 +3414,14 @@ class PlayState extends MusicBeatState
 
 	function timeDisplay()
 	{
-		startTimer = new FlxTimer().start(2, function(tmr:FlxTimer)
-		{
-			FlxTween.tween(songDisplay, {x: -1000}, 1, {
-				ease: FlxEase.cubeIn,
-				onComplete: function(twn:FlxTween)
-				{
-					remove(songDisplay);
-				}
-			});
+		FlxTween.tween(songDisplay, {x: -1000}, 1, {
+			ease: FlxEase.cubeIn,
+			startDelay: 2,
+			onComplete: function(twn:FlxTween)
+			{
+				remove(songDisplay);
+				songDisplay.destroy();
+			}
 		});
 	}
 
