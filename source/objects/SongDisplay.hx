@@ -12,6 +12,7 @@ class SongDisplay extends FlxSpriteGroup
 
 		bg = new FlxSprite().makeGraphic(400, 100, FlxColor.WHITE);
 		bg.antialiasing = ClientPrefs.data.antialiasing;
+		bg.alpha = 0.7;
 		add(bg);
 
 		difficultyText = new FlxText(0, 0, 400, Difficulty.getString(), 30);
