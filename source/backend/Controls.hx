@@ -242,7 +242,7 @@ class Controls
 			case 'note_right': controlsMode == 0 ? anc.hitbox.hints[3].justPressed : anc.virtualPad.buttonRight.justPressed;
 			default: false;
 		}
-		return result;
+		return controlsMode != -1 ? result : false;
 	}
 
 	function checkPressed(key:String, vpad:FlxVirtualPad, anc:AndroidControls):Bool
@@ -261,7 +261,7 @@ class Controls
 			case 'note_right': controlsMode == 0 ? anc.hitbox.hints[3].pressed : anc.virtualPad.buttonRight.pressed;
 			default: false;
 		}
-		return result;
+		return controlsMode != -1 ? result : false;
 	}
 
 	function checkJustReleased(key:String, vpad:FlxVirtualPad, anc:AndroidControls):Bool
@@ -280,7 +280,7 @@ class Controls
 			case 'note_right': controlsMode == 0 ? anc.hitbox.hints[3].justReleased : anc.virtualPad.buttonRight.justReleased;
 			default: false;
 		}
-		return result;
+		return controlsMode != -1 ? result : false;
 	}
 	#end
 }
