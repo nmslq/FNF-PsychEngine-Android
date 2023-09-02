@@ -62,10 +62,9 @@ class FunkinLua {
 	public var hscript:HScript = null;
 	#end
 
-	public var scriptCode:String;
 	public var callbacks:Map<String, Dynamic> = new Map<String, Dynamic>();
 	public static var customFunctions:Map<String, Dynamic> = new Map<String, Dynamic>();
-	public function new(scriptName:String, ?scriptCode:String) {
+	public function new(scriptName:String) {
 		#if LUA_ALLOWED
 		lua = LuaL.newstate();
 		LuaL.openlibs(lua);
@@ -76,9 +75,6 @@ class FunkinLua {
 		//LuaL.dostring(lua, CLENSE);
 
 		this.scriptName = scriptName;
-
-		if (scriptCode != null) this.scriptCode = scriptCode;
-
 		var game:PlayState = PlayState.instance;
 		game.luaArray.push(this);
 
@@ -1551,12 +1547,7 @@ class FunkinLua {
 
 		try
 		{
-			var result;
-			if(scriptCode != null)
-				result = LuaL.dostring(lua, scriptCode);
-			else
-				result = LuaL.dofile(lua, scriptName);
-
+			var result:Dynamic = LuaL.dofile(lua, scriptName);
 			var resultStr:String = Lua.tostring(lua, result);
 			if(resultStr != null && result != 0) {
 				trace(resultStr);
