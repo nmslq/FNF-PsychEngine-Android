@@ -699,7 +699,7 @@ class PlayState extends MusicBeatState
 				ease: FlxEase.cubeOut,
 				onComplete: function(twn:FlxTween)
 				{
-					timeDisplay();
+					tweenDisplay();
 				}
 			});
 		}
@@ -3412,11 +3412,11 @@ class PlayState extends MusicBeatState
 			ratingFC = 'SDCB';
 	}
 
-	function timeDisplay()
+	function tweenDisplay()
 	{
 		FlxTween.tween(songDisplay, {x: -1000}, 1, {
 			ease: FlxEase.cubeIn,
-			startDelay: 2,
+			startDelay: 1.5,
 			onComplete: function(twn:FlxTween)
 			{
 				remove(songDisplay);
