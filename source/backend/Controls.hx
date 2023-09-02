@@ -225,7 +225,7 @@ class Controls
 				controlsMode = -1;
 		}
 	}
-	
+
 	function getVirtualPad():FlxVirtualPad
 		return checkStates ? MusicBeatState.virtualPad : MusicBeatSubstate.virtualPad;
 	
@@ -242,12 +242,15 @@ class Controls
 			case 'ui_down': vpad.buttonDown.justPressed;
 			case 'ui_left': vpad.buttonLeft.justPressed;
 			case 'ui_right': vpad.buttonRight.justPressed;
-			case 'note_left': controlsMode == 0 ? anc.hitbox.hints[0].justPressed : controlsMode != -1 ? anc.virtualPad.buttonLeft.justPressed;
-			case 'note_down': controlsMode == 0 ? anc.hitbox.hints[1].justPressed : controlsMode != -1 ? anc.virtualPad.buttonDown.justPressed;
-			case 'note_up': controlsMode == 0 ? anc.hitbox.hints[2].justPressed : controlsMode != -1 ? anc.virtualPad.buttonUp.justPressed;
-			case 'note_right': controlsMode == 0 ? anc.hitbox.hints[3].justPressed : controlsMode != -1 ? anc.virtualPad.buttonRight.justPressed;
+			case 'note_left': controlsMode == 0 ? anc.hitbox.hints[0].justPressed : anc.virtualPad.buttonLeft.justPressed;
+			case 'note_down': controlsMode == 0 ? anc.hitbox.hints[1].justPressed : anc.virtualPad.buttonDown.justPressed;
+			case 'note_up': controlsMode == 0 ? anc.hitbox.hints[2].justPressed : anc.virtualPad.buttonUp.justPressed;
+			case 'note_right': controlsMode == 0 ? anc.hitbox.hints[3].justPressed : anc.virtualPad.buttonRight.justPressed;
 			default: false;
 		}
+		if (key.startsWith('note') && controlsMode == -1)
+			result = false;
+
 		return result;
 	}
 
@@ -261,12 +264,15 @@ class Controls
 			case 'ui_down': vpad.buttonDown.pressed;
 			case 'ui_left': vpad.buttonLeft.pressed;
 			case 'ui_right': vpad.buttonRight.pressed;
-			case 'note_left': controlsMode == 0 ? anc.hitbox.hints[0].pressed : controlsMode != -1 ? anc.virtualPad.buttonLeft.pressed;
-			case 'note_down': controlsMode == 0 ? anc.hitbox.hints[1].pressed : controlsMode != -1 ? anc.virtualPad.buttonDown.pressed;
-			case 'note_up': controlsMode == 0 ? anc.hitbox.hints[2].pressed : controlsMode != -1 ? anc.virtualPad.buttonUp.pressed;
-			case 'note_right': controlsMode == 0 ? anc.hitbox.hints[3].pressed : controlsMode != -1 ? anc.virtualPad.buttonRight.pressed;
+			case 'note_left': controlsMode == 0 ? anc.hitbox.hints[0].pressed : anc.virtualPad.buttonLeft.pressed;
+			case 'note_down': controlsMode == 0 ? anc.hitbox.hints[1].pressed : anc.virtualPad.buttonDown.pressed;
+			case 'note_up': controlsMode == 0 ? anc.hitbox.hints[2].pressed : anc.virtualPad.buttonUp.pressed;
+			case 'note_right': controlsMode == 0 ? anc.hitbox.hints[3].pressed : anc.virtualPad.buttonRight.pressed;
 			default: false;
 		}
+		if (key.startsWith('note') && controlsMode == -1)
+			result = false;
+
 		return result;
 	}
 
@@ -280,12 +286,15 @@ class Controls
 			case 'ui_down': vpad.buttonDown.justReleased;
 			case 'ui_left': vpad.buttonLeft.justReleased;
 			case 'ui_right': vpad.buttonRight.justReleased;
-			case 'note_left': controlsMode == 0 ? anc.hitbox.hints[0].justReleased : controlsMode != -1 ? anc.virtualPad.buttonLeft.justReleased;
-			case 'note_down': controlsMode == 0 ? anc.hitbox.hints[1].justReleased : controlsMode != -1 ? anc.virtualPad.buttonDown.justReleased;
-			case 'note_up': controlsMode == 0 ? anc.hitbox.hints[2].justReleased : controlsMode != -1 ? anc.virtualPad.buttonUp.justReleased;
-			case 'note_right': controlsMode == 0 ? anc.hitbox.hints[3].justReleased : controlsMode != -1 ? anc.virtualPad.buttonRight.justReleased;
+			case 'note_left': controlsMode == 0 ? anc.hitbox.hints[0].justReleased : anc.virtualPad.buttonLeft.justReleased;
+			case 'note_down': controlsMode == 0 ? anc.hitbox.hints[1].justReleased : anc.virtualPad.buttonDown.justReleased;
+			case 'note_up': controlsMode == 0 ? anc.hitbox.hints[2].justReleased : anc.virtualPad.buttonUp.justReleased;
+			case 'note_right': controlsMode == 0 ? anc.hitbox.hints[3].justReleased : anc.virtualPad.buttonRight.justReleased;
 			default: false;
 		}
+		if (key.startsWith('note') && controlsMode == -1)
+			result = false;
+
 		return result;
 	}
 	#end
