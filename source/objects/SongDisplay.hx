@@ -17,11 +17,15 @@ class SongDisplay extends FlxSpriteGroup
 
 		difficultyText = new FlxText(0, 0, 400, Difficulty.getString(), 30);
 		difficultyText.setFormat(Paths.font("vcr.ttf"), 30, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		difficultyText.borderSize = 2;
 		add(difficultyText);
 
 		songText = new FlxText(0, 60, 400, PlayState.SONG.song, 30);
 		songText.setFormat(Paths.font("vcr.ttf"), 30, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		songText.borderSize = 2;
 		add(songText);
+
+		scrollFactor.set();
 	}
 
 	override function destroy()
