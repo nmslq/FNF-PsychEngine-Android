@@ -267,6 +267,7 @@ class PlayState extends MusicBeatState
 
 	// Song display
 	public var songDisplay:SongDisplay;
+	public var showDisplay:Bool = true;
 
 	override public function create()
 	{
@@ -613,10 +614,13 @@ class PlayState extends MusicBeatState
 
 		uiGroup.cameras = [camHUD];
 		comboGroup.cameras = [camHUD];
-		
-		songDisplay = new SongDisplay(-1000, 200);
-		songDisplay.cameras = [camOther];
-		add(songDisplay);
+
+		if (showDisplay)
+		{
+			songDisplay = new SongDisplay(-1000, 200);
+			songDisplay.cameras = [camOther];
+			add(songDisplay);
+		}
 
 		#if android
 		Controls.getKeys();
@@ -689,13 +693,16 @@ class PlayState extends MusicBeatState
 		}
 		callOnScripts('onCreatePost');
 
-		FlxTween.tween(songDisplay, {x: 0}, 1, {
-			ease: FlxEase.cubeOut,
-			onComplete: function(twn:FlxTween)
-			{
-				timeDisplay();
-			}
-		});
+		if (showDisplay)
+		{
+			FlxTween.tween(songDisplay, {x: 0}, 1, {
+				ease: FlxEase.cubeOut,
+				onComplete: function(twn:FlxTween)
+				{
+					timeDisplay();
+				}
+			});
+		}
 
 		cacheCountdown();
 		cachePopUpScore();
@@ -3407,7 +3414,7 @@ class PlayState extends MusicBeatState
 
 	function timeDisplay()
 	{
-		startTimer = new FlxTimer().start(3, function(tmr:FlxTimer)
+		startTimer = new FlxTimer().start(2, function(tmr:FlxTimer)
 		{
 			FlxTween.tween(songDisplay, {x: -1000}, 1, {
 				ease: FlxEase.cubeIn,
