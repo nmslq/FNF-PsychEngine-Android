@@ -234,6 +234,9 @@ class Controls
 
 	function checkJustPressed(key:String, vpad:FlxVirtualPad, anc:AndroidControls):Bool
 	{
+		if (key.startsWith('note') && controlsMode == -1)
+			return false;
+
 		var result:Bool = switch (key)
 		{
 			case 'accept': vpad.buttonA.justPressed;
@@ -248,14 +251,14 @@ class Controls
 			case 'note_right': controlsMode == 0 ? anc.hitbox.hints[3].justPressed : anc.virtualPad.buttonRight.justPressed;
 			default: false;
 		}
-		if (key.startsWith('note') && controlsMode == -1)
-			result = false;
-
 		return result;
 	}
 
 	function checkPressed(key:String, vpad:FlxVirtualPad, anc:AndroidControls):Bool
 	{
+		if (key.startsWith('note') && controlsMode == -1)
+			return false;
+
 		var result:Bool = switch (key)
 		{
 			case 'accept': vpad.buttonA.pressed;
@@ -270,14 +273,14 @@ class Controls
 			case 'note_right': controlsMode == 0 ? anc.hitbox.hints[3].pressed : anc.virtualPad.buttonRight.pressed;
 			default: false;
 		}
-		if (key.startsWith('note') && controlsMode == -1)
-			result = false;
-
 		return result;
 	}
 
 	function checkJustReleased(key:String, vpad:FlxVirtualPad, anc:AndroidControls):Bool
 	{
+		if (key.startsWith('note') && controlsMode == -1)
+			return false;
+
 		var result:Bool = switch (key)
 		{
 			case 'accept': vpad.buttonA.justReleased;
@@ -292,9 +295,6 @@ class Controls
 			case 'note_right': controlsMode == 0 ? anc.hitbox.hints[3].justReleased : anc.virtualPad.buttonRight.justReleased;
 			default: false;
 		}
-		if (key.startsWith('note') && controlsMode == -1)
-			result = false;
-
 		return result;
 	}
 	#end
