@@ -115,7 +115,7 @@ class AchievementsMenuState extends MusicBeatState
 		_changeSelection();
 
 		#if android
-		addVirtualPad(UP_DOWN, B_C);
+		addVirtualPad(LEFT_FULL, B_C);
 		#end
 
 		super.create();
@@ -290,7 +290,7 @@ class ResetAchievementSubstate extends MusicBeatSubstate
 		updateOptions();
 
 		#if android
-		addVirtualPad(UP_DOWN, A_B);
+		addVirtualPad(LEFT_RIGHT, A_B);
 		#end
 	}
 
