@@ -22,6 +22,14 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
+#if linux
+@:cppInclude('./external/gamemode_client.h')
+@:cppFileCode('
+	#define GAMEMODE_AUTO
+')
+import lime.graphics.Image;
+#end
+
 class Main extends Sprite
 {
 	var game = {
@@ -66,7 +74,7 @@ class Main extends Sprite
 	
 		Controls.instance = new Controls();
 		ClientPrefs.loadDefaultKeys();
-		Achievements.load();
+		#if ACHIEVEMENTS_ALLOWED Achievements.load(); #end
 		#if LUA_ALLOWED Lua.set_callbacks_function(cpp.Callable.fromStaticFunction(psychlua.CallbackHandler.call)); #end
 		addChild(new FlxGame(game.width, game.height, game.initialState, game.framerate, game.framerate, game.skipSplash, game.startFullscreen));
 
@@ -76,6 +84,11 @@ class Main extends Sprite
 		Lib.current.stage.scaleMode = StageScaleMode.NO_SCALE;
 		if(fpsVar != null)
 			fpsVar.visible = ClientPrefs.data.showFPS;
+
+		#if linux
+		var icon = Image.fromFile("icon.png");
+		Lib.current.stage.window.setIcon(icon);
+		#end
 
 		#if html5
 		FlxG.autoPause = false;
