@@ -49,7 +49,7 @@ class CreditsState extends MusicBeatState
 			[
 				'Saw (M.A. Jigsaw)',
 				'saw',
-				'Main Programmer of Psych Engine\nAndroid Support',
+				'Main Programmer of Psych Engine\nAndroid SupportV0.5.2',
 				'https://www.youtube.com/channel/UC2Sk7vtPzOvbVzdVTWrribQ',
 				'444444'
 			],
@@ -195,8 +195,11 @@ class CreditsState extends MusicBeatState
 					Mods.currentModDirectory = creditsStuff[i][5];
 
 				var str:String = 'credits/missing_icon';
-				if (Paths.image('credits/' + creditsStuff[i][1]) != null) str = 'credits/' + creditsStuff[i][1];
+				var fileName = 'credits/' + creditsStuff[i][1];
+				if (Paths.fileExists('images/$fileName.png', IMAGE)) str = fileName;
+				else if (Paths.fileExists('images/$fileName-pixel.png', IMAGE)) str = fileName + '-pixel';
 				var icon:AttachedSprite = new AttachedSprite(str);
+				if(str.endsWith('-pixel')) icon.antialiasing = false;
 				icon.xAdd = optionText.width + 10;
 				icon.sprTracker = optionText;
 	

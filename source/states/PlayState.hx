@@ -695,12 +695,8 @@ class PlayState extends MusicBeatState
 
 		if (showDisplay)
 		{
-			FlxTween.tween(songDisplay, {x: 0}, 1, {
-				ease: FlxEase.cubeOut,
-				onComplete: function(twn:FlxTween)
-				{
-					tweenDisplay();
-				}
+			FlxTween.tween(songDisplay, {x: 0}, 1, {ease: FlxEase.cubeOut,
+				onComplete: function(twn:FlxTween) tweenDisplay()
 			});
 		}
 
@@ -2305,7 +2301,6 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-
 	public var transitioning = false;
 	public function endSong()
 	{
@@ -3435,7 +3430,7 @@ class PlayState extends MusicBeatState
 
 		for (name in achievesToCheck) {
 			var unlock:Bool = false;
-			if (name != WeekData.getWeekFileName() + '_nomiss') // any FC achievements, name should be "weekFileName_nomiss", e.g: "week3_nomiss";
+			if (name != WeekData.getWeekFileName() + '_nomiss') // common achievements
 			{
 				switch(name)
 				{
@@ -3457,13 +3452,13 @@ class PlayState extends MusicBeatState
 						unlock = (Paths.formatToSongPath(SONG.song) == 'test' && !usedPractice);
 				}
 			}
-			else
+			else // any FC achievements, name should be "weekFileName_nomiss", e.g: "week3_nomiss";
 			{
 				if(isStoryMode && campaignMisses + songMisses < 1 && Difficulty.getString().toUpperCase() == 'HARD'
 					&& storyPlaylist.length <= 1 && !changedDifficulty && !usedPractice)
 					unlock = true;
 			}
-			if(unlock) Achievements.unlockAchievement(name);
+			if(unlock) Achievements.unlock(name);
 		}
 	}
 	#end
