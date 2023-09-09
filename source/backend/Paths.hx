@@ -215,12 +215,6 @@ class Paths
 	inline static public function json(key:String, ?library:String)
 		return getPath('data/$key.json', TEXT, library);
 
-	inline static public function shaderFragment(key:String, ?library:String)
-		return getPath('shaders/$key.frag', TEXT, library);
-
-	inline static public function shaderVertex(key:String, ?library:String)
-		return getPath('shaders/$key.vert', TEXT, library);
-
 	inline static public function lua(key:String, ?library:String)
 		return getPath('$key.lua', TEXT, library);
 
