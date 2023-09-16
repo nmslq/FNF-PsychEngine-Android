@@ -170,7 +170,7 @@ class Philly extends BaseStage
 						color.saturation = ClientPrefs.data.flashing ? color.saturation * 0.75 : color.saturation * 0.5;
 
 						for (who in chars)
-							who.color = charColor;
+							who.color = color;
 
 						phillyGlowParticles.forEachAlive(function(particle:PhillyGlowParticle)
 						{
