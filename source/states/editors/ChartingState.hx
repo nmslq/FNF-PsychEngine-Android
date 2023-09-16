@@ -1986,8 +1986,6 @@ class ChartingState extends MusicBeatState
 				if (FlxG.keys.justPressed.UP || FlxG.keys.justPressed.DOWN #if android || MusicBeatState.virtualPad.buttonUp.justPressed || MusicBeatState.virtualPad.buttonDown.justPressed #end)
 				{
 					FlxG.sound.music.pause();
-					
-					
 					updateCurStep();
 				
 					var time:Float = FlxG.sound.music.time;
