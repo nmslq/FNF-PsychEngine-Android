@@ -83,14 +83,9 @@ class ReflectionFunctions
 			}
 
 			var leArray:Dynamic = realObject[index];
-			if(leArray != null) {
-				var result:Dynamic = null;
-				if(Type.typeof(variable) == ValueType.TInt)
-					result = leArray[variable];
-				else
-					result = LuaUtils.getGroupStuff(leArray, variable, allowMaps);
-				return result;
-			}
+			if(leArray != null)
+				return Type.typeof(variable) == ValueType.TInt ? leArray[variable] : LuaUtils.getGroupStuff(leArray, variable, allowMaps);
+
 			FunkinLua.luaTrace("getPropertyFromGroup: Object #" + index + " from group: " + obj + " doesn't exist!", false, false, FlxColor.RED);
 			return null;
 		});
