@@ -267,7 +267,6 @@ class PlayState extends MusicBeatState
 
 	// Song display
 	public var songDisplay:SongDisplay;
-	public var showDisplay:Bool = true;
 
 	override public function create()
 	{
@@ -420,7 +419,6 @@ class PlayState extends MusicBeatState
 					initHScript(folder + file);
 			}
 		#end
-
 
 		// STAGE SCRIPTS
 		#if LUA_ALLOWED
@@ -615,7 +613,7 @@ class PlayState extends MusicBeatState
 		uiGroup.cameras = [camHUD];
 		comboGroup.cameras = [camHUD];
 
-		if (showDisplay)
+		if (ClientPrefs.data.showDisplay)
 		{
 			songDisplay = new SongDisplay(-1000, 200);
 			songDisplay.cameras = [camOther];
@@ -693,7 +691,7 @@ class PlayState extends MusicBeatState
 		}
 		callOnScripts('onCreatePost');
 
-		if (showDisplay)
+		if (ClientPrefs.data.showDisplay)
 		{
 			FlxTween.tween(songDisplay, {x: 0}, 1, {ease: FlxEase.cubeOut,
 				onComplete: function(twn:FlxTween) tweenDisplay()
@@ -3411,7 +3409,7 @@ class PlayState extends MusicBeatState
 	{
 		FlxTween.tween(songDisplay, {x: -1000}, 1, {
 			ease: FlxEase.cubeIn,
-			startDelay: 1.5,
+			startDelay: ClientPrefs.data.displayTime,
 			onComplete: function(twn:FlxTween)
 			{
 				remove(songDisplay);
