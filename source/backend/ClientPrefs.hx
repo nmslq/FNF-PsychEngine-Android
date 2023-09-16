@@ -46,6 +46,8 @@ class SaveVariables {
 	public var vibration:Bool = false;
 	public var gradientHitboxes:Bool = false;
 	public var laneUnderlay:Float = 0;
+	public var showDisplay:Bool = true;
+	public var displayTime:Float = 2;
 	public var gameplaySettings:Map<String, Dynamic> = [
 		'scrollspeed' => 1.0,
 		'scrolltype' => 'multiplicative',
