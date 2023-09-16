@@ -156,12 +156,12 @@ class Character extends FlxSprite
 					spriteType = "I8";
 				}
 
-				frames = switch (spriteType)
+				switch (spriteType)
 				{
-					case "packer": Paths.getPackerAtlas(json.image);
-					case "sparrow": Paths.getSparrowAtlas(json.image);
-					case "texture": AtlasFrameMaker.construct(json.image);
-					case "I8": Paths.getJsonAtlas(json.image);
+					case "packer": frames = Paths.getPackerAtlas(json.image);
+					case "sparrow": frames = Paths.getSparrowAtlas(json.image);
+					case "texture": frames = AtlasFrameMaker.construct(json.image);
+					case "I8": frames = Paths.getJsonAtlas(json.image);
 				}
 
 				imageFile = json.image;
