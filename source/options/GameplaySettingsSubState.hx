@@ -81,6 +81,22 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.decimals = 1;
 		option.onChange = onChangeHitsoundVolume;
 
+		var option:Option = new Option('Show Song Display',
+			'If checked, there is a song display at the beginning of the song.',
+			'showDisplay',
+			'bool');
+		addOption(option);
+
+		var option:Option = new Option('Song Display Wait Time',
+			'Changes the waiting time of the song display.',
+			'displayTime',
+			'float');
+		option.scrollSpeed = 5;
+		option.minValue = 0.5;
+		option.maxValue = 3;
+		option.changeValue = 0.1;
+		addOption(option);
+
 		var option:Option = new Option('Rating Offset',
 			'Changes how late/early you have to hit for a "Sick!"\nHigher values mean you have to hit later.',
 			'ratingOffset',
