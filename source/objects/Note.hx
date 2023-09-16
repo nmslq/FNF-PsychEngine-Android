@@ -317,9 +317,8 @@ class Note extends FlxSprite
 		}
 
 		var animName:String = null;
-		if(animation.curAnim != null) {
+		if(animation.curAnim != null)
 			animName = animation.curAnim.name;
-		}
 
 		var skinPixel:String = skin;
 		var lastScaleY:Float = scale.y;
@@ -372,10 +371,7 @@ class Note extends FlxSprite
 
 	public static function getNoteSkinPostfix()
 	{
-		var skin:String = '';
-		if(ClientPrefs.data.noteSkin != ClientPrefs.defaultData.noteSkin)
-			skin = '-' + ClientPrefs.data.noteSkin.trim().toLowerCase().replace(' ', '_');
-		return skin;
+		return ClientPrefs.data.noteSkin != ClientPrefs.defaultData.noteSkin ? '-' + ClientPrefs.data.noteSkin.trim().toLowerCase().replace(' ', '_') : '';
 	}
 
 	function loadNoteAnims() {
@@ -396,7 +392,8 @@ class Note extends FlxSprite
 		{
 			animation.add(colArray[noteData] + 'holdend', [noteData + 4], 24, true);
 			animation.add(colArray[noteData] + 'hold', [noteData], 24, true);
-		} else animation.add(colArray[noteData] + 'Scroll', [noteData + 4], 24, true);
+		}
+		else animation.add(colArray[noteData] + 'Scroll', [noteData + 4], 24, true);
 	}
 
 	override function update(elapsed:Float)

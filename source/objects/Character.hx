@@ -90,9 +90,7 @@ class Character extends FlxSprite
 				#if MODS_ALLOWED
 				var path:String = Paths.modFolders(characterPath);
 				if (!FileSystem.exists(path))
-				{
 					path = SUtil.getStorageDirectory() + Paths.getPreloadPath(characterPath);
-				}
 
 				if (!FileSystem.exists(path))
 				#else
@@ -158,19 +156,12 @@ class Character extends FlxSprite
 					spriteType = "I8";
 				}
 
-				switch (spriteType)
+				frames = switch (spriteType)
 				{
-					case "packer":
-						frames = Paths.getPackerAtlas(json.image);
-
-					case "sparrow":
-						frames = Paths.getSparrowAtlas(json.image);
-
-					case "texture":
-						frames = AtlasFrameMaker.construct(json.image);
-
-					case "I8":
-						frames = Paths.getJsonAtlas(json.image);
+					case "packer": Paths.getPackerAtlas(json.image);
+					case "sparrow": Paths.getSparrowAtlas(json.image);
+					case "texture": AtlasFrameMaker.construct(json.image);
+					case "I8": Paths.getJsonAtlas(json.image);
 				}
 
 				imageFile = json.image;
@@ -340,9 +331,7 @@ class Character extends FlxSprite
 					playAnim('danceLeft' + idleSuffix);
 			}
 			else if (animation.getByName('idle' + idleSuffix) != null)
-			{
 					playAnim('idle' + idleSuffix);
-			}
 		}
 	}
 
@@ -353,27 +342,19 @@ class Character extends FlxSprite
 
 		var daOffset = animOffsets.get(AnimName);
 		if (animOffsets.exists(AnimName))
-		{
 			offset.set(daOffset[0], daOffset[1]);
-		}
 		else
 			offset.set(0, 0);
 
 		if (curCharacter.startsWith('gf'))
 		{
 			if (AnimName == 'singLEFT')
-			{
 				danced = true;
-			}
 			else if (AnimName == 'singRIGHT')
-			{
 				danced = false;
-			}
 
 			if (AnimName == 'singUP' || AnimName == 'singDOWN')
-			{
 				danced = !danced;
-			}
 		}
 	}
 
@@ -381,18 +362,15 @@ class Character extends FlxSprite
 	{
 		var noteData:Array<SwagSection> = Song.loadFromJson('picospeaker', Paths.formatToSongPath(PlayState.SONG.song)).notes;
 		for (section in noteData) {
-			for (songNotes in section.sectionNotes) {
+			for (songNotes in section.sectionNotes)
 				animationNotes.push(songNotes);
-			}
 		}
 		TankmenBG.animationNotes = animationNotes;
 		animationNotes.sort(sortAnims);
 	}
 
 	function sortAnims(Obj1:Array<Dynamic>, Obj2:Array<Dynamic>):Int
-	{
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1[0], Obj2[0]);
-	}
 
 	public var danceEveryNumBeats:Int = 2;
 
@@ -404,29 +382,16 @@ class Character extends FlxSprite
 		danceIdle = (animation.getByName('danceLeft' + idleSuffix) != null && animation.getByName('danceRight' + idleSuffix) != null);
 
 		if (settingCharacterUp)
-		{
 			danceEveryNumBeats = (danceIdle ? 1 : 2);
-		}
 		else if (lastDanceIdle != danceIdle)
-		{
-			var calc:Float = danceEveryNumBeats;
-			if (danceIdle)
-				calc /= 2;
-			else
-				calc *= 2;
+			danceEveryNumBeats = Math.round(Math.max(danceIdle ? danceEveryNumBeats * 0.5 : danceEveryNumBeats * 2, 1));
 
-			danceEveryNumBeats = Math.round(Math.max(calc, 1));
-		}
 		settingCharacterUp = false;
 	}
 
 	public function addOffset(name:String, x:Float = 0, y:Float = 0)
-	{
 		animOffsets[name] = [x, y];
-	}
 
 	public function quickAnimAdd(name:String, anim:String)
-	{
 		animation.addByPrefix(name, anim, 24, false);
-	}
 }
