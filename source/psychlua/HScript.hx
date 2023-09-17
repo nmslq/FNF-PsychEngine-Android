@@ -9,6 +9,52 @@ import psychlua.CustomSubstate;
 import tea.SScript;
 class HScript extends SScript
 {
+	public static var properties(default, null):Map<String, Dynamic> = [
+		'FlxG' => flixel.FlxG,
+		'FlxSprite' => flixel.FlxSprite,
+		'FlxCamera' => flixel.FlxCamera,
+		'FlxTimer' => flixel.util.FlxTimer,
+		'FlxTween' => flixel.tweens.FlxTween,
+		'FlxEase' => flixel.tweens.FlxEase,
+		'FlxColor' => CustomFlxColor.instance,
+		'PlayState' => PlayState,
+		'Paths' => Paths,
+		'Conductor' => Conductor,
+		'ClientPrefs' => ClientPrefs,
+		'Character' => Character,
+		'Alphabet' => Alphabet,
+		'Note' => objects.Note,
+		'CustomSubstate' => CustomSubstate,
+		'Countdown' => backend.BaseStage.Countdown,
+		#if (!flash && sys)
+		'FlxRuntimeShader' => flixel.addons.display.FlxRuntimeShader,
+		#end
+		'ShaderFilter' => openfl.filters.ShaderFilter,
+		'StringTools' => StringTools,
+		'setVar' => function(name:String, value:Dynamic) PlayState.instance.variables.set(name, value),
+		'getVar' => function(name:String) return PlayState.instance.variables.get(name),
+		'removeVar' => function(name:String) return PlayState.instance.variables.remove(name),
+		'debugPrint' => function(text:String, ?color:FlxColor = FlxColor.WHITE) PlayState.instance.addTextToDebug(text, color),
+		'parentLua' => parentLua,
+		'this' => this,
+		'game' => PlayState.instance,
+		'buildTarget' => FunkinLua.getBuildTarget(),
+		'customSubstate' => CustomSubstate.instance,
+		'customSubstateName' => CustomSubstate.name,
+		'Function_Stop' => FunkinLua.Function_Stop,
+		'Function_Continue' => FunkinLua.Function_Continue,
+		'Function_StopLua' => FunkinLua.Function_StopLua,
+		'Function_StopHScript' => FunkinLua.Function_StopHScript,
+		'Function_StopAll' => FunkinLua.Function_StopAll,
+		
+		'add' => function(obj:FlxBasic) PlayState.instance.add(obj),
+		'addBehindGF' => function(obj:FlxBasic) PlayState.instance.addBehindGF(obj),
+		'addBehindDad' => function(obj:FlxBasic) PlayState.instance.addBehindDad(obj),
+		'addBehindBF' => function(obj:FlxBasic) PlayState.instance.addBehindBF(obj),
+		'insert' => function(pos:Int, obj:FlxBasic) PlayState.instance.insert(pos, obj),
+		'remove' => function(obj:FlxBasic, splice:Bool = false) PlayState.instance.remove(obj, splice),
+	];
+
 	public var parentLua:FunkinLua;
 	
 	public static function initHaxeModule(parent:FunkinLua)
@@ -47,44 +93,8 @@ class HScript extends SScript
 		super.preset();
 
 		// Some very commonly used classes
-		set('FlxG', flixel.FlxG);
-		set('FlxSprite', flixel.FlxSprite);
-		set('FlxCamera', flixel.FlxCamera);
-		set('FlxTimer', flixel.util.FlxTimer);
-		set('FlxTween', flixel.tweens.FlxTween);
-		set('FlxEase', flixel.tweens.FlxEase);
-		set('FlxColor', CustomFlxColor.instance);
-		set('PlayState', PlayState);
-		set('Paths', Paths);
-		set('Conductor', Conductor);
-		set('ClientPrefs', ClientPrefs);
-		set('Character', Character);
-		set('Alphabet', Alphabet);
-		set('Note', objects.Note);
-		set('CustomSubstate', CustomSubstate);
-		set('Countdown', backend.BaseStage.Countdown);
-		#if (!flash && sys)
-		set('FlxRuntimeShader', flixel.addons.display.FlxRuntimeShader);
-		#end
-		set('ShaderFilter', openfl.filters.ShaderFilter);
-		set('StringTools', StringTools);
-
-		// Functions & Variables
-		set('setVar', function(name:String, value:Dynamic)
-		{
-			PlayState.instance.variables.set(name, value);
-		});
-		set('getVar', function(name:String)
-		{
-			return PlayState.instance.variables.get(name);
-		});
-		set('removeVar', function(name:String)
-		{
-			return PlayState.instance.variables.remove(name);
-		});
-		set('debugPrint', function(text:String, ?color:FlxColor = FlxColor.WHITE) {
-			PlayState.instance.addTextToDebug(text, color);
-		});
+		for (key => value in properties)
+			set(key, value);
 
 		// For adding your own callbacks
 
@@ -115,25 +125,6 @@ class HScript extends SScript
 
 			set(libName, resolveClassOrEnum(str + libName));
 		});
-		set('parentLua', parentLua);
-		set('this', this);
-		set('game', PlayState.instance);
-		set('buildTarget', FunkinLua.getBuildTarget());
-		set('customSubstate', CustomSubstate.instance);
-		set('customSubstateName', CustomSubstate.name);
-
-		set('Function_Stop', FunkinLua.Function_Stop);
-		set('Function_Continue', FunkinLua.Function_Continue);
-		set('Function_StopLua', FunkinLua.Function_StopLua); //doesnt do much cuz HScript has a lower priority than Lua
-		set('Function_StopHScript', FunkinLua.Function_StopHScript);
-		set('Function_StopAll', FunkinLua.Function_StopAll);
-		
-		set('add', function(obj:FlxBasic) PlayState.instance.add(obj));
-		set('addBehindGF', function(obj:FlxBasic) PlayState.instance.addBehindGF(obj));
-		set('addBehindDad', function(obj:FlxBasic) PlayState.instance.addBehindDad(obj));
-		set('addBehindBF', function(obj:FlxBasic) PlayState.instance.addBehindBF(obj));
-		set('insert', function(pos:Int, obj:FlxBasic) PlayState.instance.insert(pos, obj));
-		set('remove', function(obj:FlxBasic, splice:Bool = false) PlayState.instance.remove(obj, splice));
 	}
 
 	function resolveClassOrEnum(name:String):Dynamic {
