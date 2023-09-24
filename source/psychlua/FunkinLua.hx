@@ -38,7 +38,7 @@ import states.FreeplayState;
 import substates.PauseSubState;
 import substates.GameOverSubstate;
 
-#if (SScript >= "3.0.0")
+#if BrewScript
 import psychlua.HScript;
 #end
 import psychlua.DebugLuaText;
@@ -58,7 +58,7 @@ class FunkinLua {
 	public var scriptName:String = '';
 	public var closed:Bool = false;
 
-	#if (SScript >= "3.0.0")
+	#if BrewScript
 	public var hscript:HScript = null;
 	#end
 
@@ -1537,7 +1537,7 @@ class FunkinLua {
 		});
 
 		#if desktop DiscordClient.addLuaCallbacks(lua); #end
-		#if (SScript >= "3.0.0") HScript.implement(this); #end
+		#if BrewScript HScript.implement(this); #end
 		ReflectionFunctions.implement(this);
 		TextFunctions.implement(this);
 		ExtraFunctions.implement(this);
@@ -1808,7 +1808,7 @@ class FunkinLua {
 		#if HSCRIPT_ALLOWED
 		if(hscript != null)
 		{
-			hscript.destroy();
+			hscript.kill();
 			hscript = null;
 		}
 		#end
