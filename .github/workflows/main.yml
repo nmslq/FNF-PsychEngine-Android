@@ -64,7 +64,7 @@ jobs:
           haxelib install flixel-addons
           haxelib install tjson
           haxelib install BrewScript
-          haxelib remove SScript
+          haxelib remove hscript
           haxelib git hxCodec https://github.com/JonnycatMeow/hxCodec-old
           haxelib git linc_luajit https://github.com/nmslq/linc_luajit.git
           haxelib --quiet git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools.git
