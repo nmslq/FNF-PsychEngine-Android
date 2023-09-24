@@ -61,9 +61,9 @@ jobs:
           haxelib run lime setup flixel
           haxelib install flixel-tools
           haxelib install flixel-ui
-          haxelib install SScript
           haxelib install flixel-addons
           haxelib install tjson
+          haxelib install BrewScript
           haxelib git hxCodec https://github.com/JonnycatMeow/hxCodec-old
           haxelib git linc_luajit https://github.com/nmslq/linc_luajit.git
           haxelib --quiet git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools.git
