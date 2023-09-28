@@ -50,7 +50,7 @@ jobs:
             export/release/android/haxe
             export/release/android/obj
           key: cache-android-build
- 
+
       - name: Install Haxelib
         run: |
           haxelib setup ~/haxelib
@@ -63,8 +63,8 @@ jobs:
           haxelib install flixel-ui
           haxelib install flixel-addons
           haxelib install tjson
-          haxelib install BrewScript
-          haxelib remove hscript
+          haxelib install SScript
+          haxelib remove BrewScript
           haxelib git hxCodec https://github.com/JonnycatMeow/hxCodec-old
           haxelib git linc_luajit https://github.com/nmslq/linc_luajit.git
           haxelib --quiet git extension-androidtools https://github.com/MAJigsaw77/extension-androidtools.git
