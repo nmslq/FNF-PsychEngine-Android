@@ -148,7 +148,7 @@ class ReflectionFunctions
 
 				var obj:Dynamic = Type.createInstance(myType, args);
 				if(obj != null)
-					PlayState.instance.variables.funk.set(variableToSave, obj);
+					PlayState.instance.variables.set(variableToSave, obj);
 				else
 					FunkinLua.luaTrace('createInstance: Failed to create $variableToSave, arguments are possibly wrong.', false, false, FlxColor.RED);
 
