@@ -3205,7 +3205,7 @@ class PlayState extends MusicBeatState
 		catch(e)
 		{
 			addTextToDebug('ERROR ($file) - ' + e.message.substr(0, e.message.indexOf('\n')), FlxColor.RED);
-			var newScript:HScript = cast (BrewScript.global.get(file), HScript);
+			var newScript:HScript = cast (SScript.global.get(file), HScript);
 			if(newScript != null)
 			{
 				newScript.kill();
