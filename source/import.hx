@@ -14,11 +14,6 @@ import android.SUtil;
 import backend.Achievements;
 #end
 
-#if LUA_ALLOWED
-import llua.*;
-import llua.Lua;
-#end
-
 import backend.Paths;
 import backend.Controls;
 import backend.CoolUtil;
